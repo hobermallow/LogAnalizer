@@ -1,7 +1,9 @@
 package it.uniroma1.lcl.dietrolequinte.search;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
+import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.Loader;
 
@@ -9,6 +11,7 @@ public class Searcher {
 
 	static private Searcher istanza;
 	List<AbstractLoader> listaLoader;
+	private Loader loader;
 	
 	static public Searcher getIstanza(String s)
 	{
@@ -18,14 +21,35 @@ public class Searcher {
 	
 	private Searcher(String s)
 	{
-		Loader main = new Loader(s);
-		listaLoader = main.getLoaders();
+		loader = new Loader(s);
+		listaLoader = loader.getLoaders();
 	}
 	
 	
-//	public Collection getUsers()
+	public Collection getUsers()
+	{
+		TreeSet<Utente> users = new TreeSet<Utente>();
+		
+		for (AbstractLoader l: loader.getLoaders())
+		{
+			for (Utente u: l.getUsers())
+			{
+				users.add(u);
+			}
+		}
+		return users;
+	}
+	
+//	public Collection getUsers(String s)
 //	{
 //		
 //	}
+	
+	
+	
+	
+	
+	
+	
 	
 }
