@@ -27,7 +27,7 @@ public abstract class AbstractLoader {
 		return getList().contains(string);
 	}
 	
-	TreeSet<Utente> getUsers() {
+	public TreeSet<Utente> getUsers() {
 		return insiemeUtenti;
 	}
 	
