@@ -1,6 +1,5 @@
 package it.uniroma1.lcl.dietrolequinte.loader;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 

@@ -10,6 +10,9 @@ public class Loader {
 	private List<AbstractLoader> loaders;
 	
 	
+	/**
+	 * @param directory
+	 */
 	public Loader(String directory) {
 		
 		this.directory = directory;
@@ -19,6 +22,9 @@ public class Loader {
 		}
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getDirectory() {
 		return directory;
 	}
@@ -26,13 +32,18 @@ public class Loader {
 	
 	
 	
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
-		Loader loader = new Loader(args[0]);
 		
 		
 	}
 
+	/**
+	 * @return
+	 */
 	public List<AbstractLoader> getLoaders() {
 		return loaders;
 	}
