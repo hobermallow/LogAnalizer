@@ -7,7 +7,7 @@ public class Loader {
 	
 	private String directory;
 	private File fileDirectory;
-	private List<Loadable> loaders;
+	private List<AbstractLoader> loaders;
 	
 	
 	public Loader(String directory) {
@@ -33,7 +33,7 @@ public class Loader {
 		
 	}
 
-	public List<Loadable> getLoaders() {
+	public List<AbstractLoader> getLoaders() {
 		return loaders;
 	}
 
