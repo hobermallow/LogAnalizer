@@ -1,5 +1,7 @@
 package it.uniroma1.lcl.dietrolequinte.search;
 import java.util.List;
+
+import exception.EmptyDirectoryException;
 import it.uniroma1.lcl.dietrolequinte.loader.Loadable;
 import it.uniroma1.lcl.dietrolequinte.loader.Loader;
 
@@ -14,10 +16,18 @@ public class Searcher {
 		return istanza;
 	}
 	
-	static public Searcher getIstanza()
-	{
-		return istanza;
-	}
+//	static public Searcher getIstanza() throws EmptyDirectoryException
+//	{
+//		try
+//		{
+//			return istanza;
+//		}
+//		catch
+//		{
+//			
+//		}
+//		
+//	}
 	
 	
 	
