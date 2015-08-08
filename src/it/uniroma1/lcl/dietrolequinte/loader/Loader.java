@@ -1,14 +1,13 @@
 package it.uniroma1.lcl.dietrolequinte.loader;
 
 import java.io.File;
-import java.rmi.RMISecurityException;
 import java.util.List;
 
 public class Loader {
 	
 	private String directory;
 	private File fileDirectory;
-	private List<Loadable> loaders;
+	private List<AbstractLoader> loaders;
 	
 	
 	public Loader(String directory) {
@@ -34,7 +33,7 @@ public class Loader {
 		
 	}
 
-	public List<Loadable> getLoaders() {
+	public List<AbstractLoader> getLoaders() {
 		return loaders;
 	}
 
