@@ -1,7 +1,6 @@
 package it.uniroma1.lcl.dietrolequinte.loader;
 
 import java.io.File;
-import java.rmi.RMISecurityException;
 import java.util.List;
 
 public class Loader {
