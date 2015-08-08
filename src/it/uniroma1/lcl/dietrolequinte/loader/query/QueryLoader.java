@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import it.uniroma1.lcl.dietrolequinte.Interrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
-import it.uniroma1.lcl.dietrolequinte.loader.Loadable;
+import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 
-public class QueryLoader implements Loadable {
+public class QueryLoader extends AbstractLoader {
 
 	@Override
 	public boolean checkValidSearch(String string) {
