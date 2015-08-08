@@ -4,6 +4,12 @@ public class Loader {
 	
 	private String directory;
 	
+	
+	public Loader(String directory) {
+		
+		this.directory = directory;
+	}
+	
 	public String getDirectory() {
 		return directory;
 	}
