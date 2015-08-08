@@ -22,6 +22,7 @@ public class Searcher {
 		listaLoader = main.getLoaders();
 	}
 	
+	
 //	public Collection getUsers()
 //	{
 //		
