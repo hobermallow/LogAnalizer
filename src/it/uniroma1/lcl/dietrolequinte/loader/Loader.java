@@ -17,6 +17,9 @@ public class Loader {
 	
 	public static void main(String[] args) {
 		
+		Loader loader = new Loader(args[0]);
+		
+		
 	}
 
 }
