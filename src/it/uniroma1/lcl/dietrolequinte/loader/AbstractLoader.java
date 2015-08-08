@@ -1,11 +1,19 @@
 package it.uniroma1.lcl.dietrolequinte.loader;
 
-import java.util.Collection;
+import java.util.List;
 
-import it.uniroma1.lcl.dietrolequinte.Interrogazione;
-import it.uniroma1.lcl.dietrolequinte.Utente;
 
 public abstract class AbstractLoader implements Loadable {
+	
+	
+	abstract protected  List<String> getList();
+	
+	public boolean checkValidSearch(String string) {
+		
+		return getList().contains(string);
+	}
+	
+	
 
 	
 
