@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.exception.DirectoryNotFoundException;
 import it.uniroma1.lcl.dietrolequinte.exception.EmptyDirectoryException;
+import it.uniroma1.lcl.dietrolequinte.exception.EndProgramException;
 import it.uniroma1.lcl.dietrolequinte.exception.NotADirectoryException;
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.Loader;
@@ -16,13 +17,18 @@ public class Searcher {
 	List<AbstractLoader> listaLoader;
 	private Loader loader;
 	
-	static public Searcher getIstanza(String s)
+	static public Searcher getIstanza(String s) throws EndProgramException
 	{
-		if(istanza==null)istanza= new Searcher(s);
+		if(istanza==null)
+			try {
+				istanza= new Searcher(s);
+			} catch (EndProgramException e) {
+				throw new EndProgramException();
+			}
 		return istanza;
 	}
 	
-	private Searcher(String s) 
+	private Searcher(String s) throws EndProgramException 
 	{
 		try
 		{
@@ -30,7 +36,7 @@ public class Searcher {
 		}
 		catch(DirectoryNotFoundException | NotADirectoryException | EmptyDirectoryException e)
 		{
-			e.printStackTrace();
+			throw new EndProgramException();
 		}
 		listaLoader = loader.getLoaders();
 	}
