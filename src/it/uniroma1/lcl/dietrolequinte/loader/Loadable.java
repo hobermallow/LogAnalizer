@@ -7,7 +7,7 @@ import it.uniroma1.lcl.dietrolequinte.Utente;
 
 public interface Loadable {
 	
-	boolean checkValidSearch(String string);
+
 	
 	Collection<Utente> getUsers();
 	
