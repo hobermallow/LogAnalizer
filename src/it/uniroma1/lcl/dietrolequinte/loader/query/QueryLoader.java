@@ -8,10 +8,18 @@ public class QueryLoader extends AbstractLoader {
 
 
 
+	public QueryLoader(String nomeFile) {
+		super(nomeFile);
+	}
+
 	@Override
 	protected List<String> getList() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected void inizializzaLoader() {
+		
 	}
 
 }

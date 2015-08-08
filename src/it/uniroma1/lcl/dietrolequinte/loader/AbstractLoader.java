@@ -11,6 +11,18 @@ public abstract class AbstractLoader {
 	
 	protected TreeSet<Utente> insiemeUtenti;
 	protected TreeSet<Interrogazione> insiemeInterrogazioni;
+	private String nomeFile;
+	
+	/**
+	 * @param nomeFile nome del file sul quale lavora il loader
+	 * Richiama il metodo inizializzaLoader() che dovrà
+	 * essere implementato dal loader specifico
+	 * 
+	 */
+	public AbstractLoader(String nomeFile) {
+		this.nomeFile=nomeFile;
+		inizializzaLoader();
+	}
 	
 	/**
 	 * @return list of allowed search words for
@@ -35,9 +47,10 @@ public abstract class AbstractLoader {
 		return insiemeInterrogazioni;
 	}
 	
-	
+	abstract protected void inizializzaLoader();
 
-	
-
+	public String getNomeFile() {
+		return nomeFile;
+	}
 	
 }
