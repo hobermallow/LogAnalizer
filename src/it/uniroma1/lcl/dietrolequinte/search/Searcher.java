@@ -52,22 +52,10 @@ public class Searcher {
 	
 	public Collection getUsers(String s)
 	{
-		TreeSet<Utente> users = new TreeSet<Utente>();
-		
-		
-		
-		
-		
-		
-		
-		
+		for (AbstractLoader l: loader.getLoaders())
+		{
+			if (l.getNomeFile().equals(s)){return l.getUsers();}
+		}
+		return null;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }
