@@ -1,14 +1,14 @@
 package it.uniroma1.lcl.dietrolequinte.search;
+import java.util.Collection;
 import java.util.List;
 
-import it.uniroma1.lcl.dietrolequinte.exception.EmptyDirectoryException;
-import it.uniroma1.lcl.dietrolequinte.loader.Loadable;
+import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.Loader;
 
 public class Searcher {
 
 	static private Searcher istanza;
-	List<Loadable> listaLoader;
+	List<AbstractLoader> listaLoader;
 	
 	static public Searcher getIstanza(String s)
 	{
@@ -16,26 +16,15 @@ public class Searcher {
 		return istanza;
 	}
 	
-//	static public Searcher getIstanza() throws EmptyDirectoryException
-//	{
-//		try
-//		{
-//			return istanza;
-//		}
-//		catch
-//		{
-//			
-//		}
-//		
-//	}
-	
-	
-	
 	private Searcher(String s)
 	{
 		Loader main = new Loader(s);
 		listaLoader = main.getLoaders();
-		
 	}
+	
+//	public Collection getUsers()
+//	{
+//		
+//	}
 	
 }
