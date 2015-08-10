@@ -44,7 +44,7 @@ public class QueryLoader extends AbstractLoader {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		File f = new File("/home/onoda/Documents/progetto_metodologie2015/AOL/query.user-ct-test-collection-02.txt");
+		File f = new File("/home/onoda/Documents/progetto_metodologie2015/AOL/query.user-ct-test-collection-03.txt.gz");
 		QueryLoader ql = new QueryLoader(f);
 		ql.getInterrogazioni().forEach(System.out::println);
 	}

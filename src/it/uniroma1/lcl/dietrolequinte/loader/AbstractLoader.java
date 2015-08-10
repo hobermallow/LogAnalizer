@@ -122,7 +122,7 @@ public abstract class AbstractLoader {
 	 * @return boolean, vero se il file è zippato, altrimenti falso
 	 */
 	private boolean checkIfZipped(File f) {
-		return Arrays.asList(f.getName().split(".")).contains("zip");
+		return Arrays.asList(f.getName().split(".")).contains("gz");
 	}
 	
 	/**
