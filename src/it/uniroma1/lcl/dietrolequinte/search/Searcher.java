@@ -42,7 +42,7 @@ public class Searcher {
 	}
 	
 	
-	public Collection getUsers()
+	public Collection<Utente> getUsers()
 	{
 		TreeSet<Utente> users = new TreeSet<Utente>();
 		
@@ -56,7 +56,7 @@ public class Searcher {
 		return users;
 	}
 	
-	public Collection getUsers(String s)
+	public Collection<Utente> getUsers(String s)
 	{
 		for (AbstractLoader l: loader.getLoaders())
 		{
@@ -64,4 +64,13 @@ public class Searcher {
 		}
 		return null;
 	}
+	
+	
+//	public Collection<SearchResult> search(Utente u, String s)
+//	{
+//		
+//	}
+	
+	
+	
 }
