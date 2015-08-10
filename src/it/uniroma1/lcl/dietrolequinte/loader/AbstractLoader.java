@@ -35,7 +35,7 @@ public abstract class AbstractLoader {
 	 */
 	public AbstractLoader(File file) throws IOException {
 		this.file=file;
-		insiemeUtenti = new TreeSet<>();
+		insiemeUtenti = new TreeSet<Utente>();
 		insiemeInterrogazioni = new ArrayList<Interrogazione>();
 		FileInputStream fis = new FileInputStream(file);
 		InputStreamReader isr = checkIfZipped(file) ? new InputStreamReader(new GZIPInputStream(fis)) : new InputStreamReader(fis);

@@ -30,7 +30,11 @@ public abstract class Interrogazione {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return stringaImmessa;
+		StringBuffer sb = new StringBuffer();
+		sb.append("Utente: "+user+"\n");
+		sb.append("Stringa Immessa: "+stringaImmessa+"\n");
+		sb.append("Tempo: "+time+"\n");
+		return sb.toString();
 	}
 
 }

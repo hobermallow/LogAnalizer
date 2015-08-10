@@ -26,17 +26,18 @@ public class QueryLoader extends AbstractLoader {
 
 	@Override
 	protected void inizializzaLoader(List<String> list) {
-		list.parallelStream().map(s -> Arrays.asList(s.split("\t"))).forEach(this::analizzaRiga);
+		list.remove(0);
+		list.stream().filter(s -> s != null).map(s -> Arrays.asList(s.split("\t"))).forEach(this::analizzaRiga);
 	}
 
 	@Override
 	protected void analizzaRiga(List<String> riga) {
-		if(riga.size() > 3) {
-			addInterrogazione(new InterrogazioneQuery(new Utente(riga.get(0)), String.join("\t", riga), LocalDateTime.now() , riga.get(4), Integer.getInteger(riga.get(3))));	
+		if(riga.size() == 5) {
+			addInterrogazione(new InterrogazioneQuery(new Utente(riga.get(0)), riga.get(1), LocalDateTime.now() , riga.get(4), Integer.valueOf(riga.get(3))));	
 	
 		}
-		else {
-			addInterrogazione(new InterrogazioneQuery(new Utente(riga.get(0)), String.join("\t", riga), LocalDateTime.now()));		
+		else if(riga.size() == 3) {
+			addInterrogazione(new InterrogazioneQuery(new Utente(riga.get(0)), riga.get(1), LocalDateTime.now()));		
 		}
 		
 		addUtente(new Utente(riga.get(0)));
@@ -45,7 +46,7 @@ public class QueryLoader extends AbstractLoader {
 	public static void main(String[] args) throws IOException {
 		File f = new File("/home/onoda/Documents/progetto_metodologie2015/AOL/query.user-ct-test-collection-02.txt");
 		QueryLoader ql = new QueryLoader(f);
-		ql.getUsers().forEach(System.out::println);
+		ql.getInterrogazioni().forEach(System.out::println);
 	}
 
 	

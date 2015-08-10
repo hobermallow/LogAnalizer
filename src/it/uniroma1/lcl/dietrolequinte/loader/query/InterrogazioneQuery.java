@@ -27,5 +27,13 @@ public class InterrogazioneQuery extends Interrogazione {
 	public int getPosizioneLink() {
 		return posizioneLink;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("Link Cliccato: "+linkCliccato+"\n");
+		sb.append("Posizione Link: "+posizioneLink+"\n");
+		return super.toString()+sb.toString();
+	}
 
 }
