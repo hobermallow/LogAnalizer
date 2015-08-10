@@ -26,6 +26,7 @@ public class QueryLoader extends AbstractLoader {
 
 	@Override
 	protected void inizializzaLoader(List<String> list) {
+		list.forEach(System.out::println);
 		list.parallelStream().map(s -> Arrays.asList(s.split("\t"))).forEach(this::analizzaRiga);
 	}
 
