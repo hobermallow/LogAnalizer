@@ -47,7 +47,7 @@ public abstract class AbstractLoader {
 	 * @return list of allowed search words for
 	 * the specific type of log file
 	 */
-	abstract protected  List<String> getList();
+	abstract protected  List<String> getListValidSearch();
 	
 	/**
 	 * @param string the word passed by the Searcher
@@ -55,7 +55,7 @@ public abstract class AbstractLoader {
 	 */
 	public boolean checkValidSearch(String string) {
 		
-		return getList().contains(string);
+		return getListValidSearch().contains(string);
 	}
 	
 	/**

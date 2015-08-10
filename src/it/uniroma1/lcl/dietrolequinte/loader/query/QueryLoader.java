@@ -20,8 +20,8 @@ public class QueryLoader extends AbstractLoader {
 	}
 
 	@Override
-	protected List<String> getList() {
-		return null;
+	protected List<String> getListValidSearch() {
+		return Arrays.asList("interrogazione");
 	}
 
 	@Override

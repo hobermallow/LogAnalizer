@@ -15,7 +15,7 @@ public class ChatLoader extends AbstractLoader {
 	}
 
 	@Override
-	protected List<String> getList() {
+	protected List<String> getListValidSearch() {
 		return null;
 	}
 
