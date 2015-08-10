@@ -66,11 +66,17 @@ public class Searcher {
 	}
 	
 	
-//	public Collection<SearchResult> search(Utente u, String s)
-//	{
-//		
-//	}
+	public Collection<SearchResult> search(Utente u, String s)
+	{
+		return null;
+		
+	}
 	
+	public Collection<SearchResult> search(Utente u, String s, String file)
+	{
+		return null;
+		
+	} 
 	
 	
 }
