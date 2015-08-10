@@ -71,14 +71,25 @@ public class Loader {
 		
 	}
 	
+	/**
+	 * @param f file a partire dal quale creare il loader
+	 */
 	private void createSpecificLoader(File f) {
 		String type = f.getName().split(".")[0];
 		try {
 			loaders.add((AbstractLoader) Class.forName(Character.toUpperCase(type.charAt(0))+type.substring(1)+"Loader").getConstructor(File.class).newInstance(f));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+				| NoSuchMethodException | SecurityException  e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return;
+		}
+		/* caso in cui non sia stato creato il loader specifico
+		 * relativo al file f
+		 */
+		catch (ClassNotFoundException e) {
+			System.out.println("Non esiste loader per il tipo di file specificato");
+			return;
 		}
 	}
 	
