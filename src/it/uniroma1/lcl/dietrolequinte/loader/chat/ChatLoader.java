@@ -20,8 +20,17 @@ public class ChatLoader extends AbstractLoader {
 	}
 
 	@Override
-	protected void inizializzaLoader(BufferedReader br) {
+	protected void inizializzaLoader(List<String> list) {
+		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected void analizzaRiga(List<String> riga) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }

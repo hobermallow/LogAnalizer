@@ -26,5 +26,11 @@ public abstract class Interrogazione {
 	public LocalDateTime getTime() {
 		return time;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return stringaImmessa;
+	}
 
 }
