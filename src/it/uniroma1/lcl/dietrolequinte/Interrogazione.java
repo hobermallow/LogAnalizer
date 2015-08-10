@@ -1,5 +1,18 @@
 package it.uniroma1.lcl.dietrolequinte;
 
-public class Interrogazione {
+import java.time.LocalDateTime;
+
+public abstract class Interrogazione {
+	
+	private Utente user;
+	private String stringaImmessa;
+	private LocalDateTime time;
+	
+	public Interrogazione(Utente u, String stringaImmessa, LocalDateTime ldt) {
+		
+		this.user = u;
+		this.stringaImmessa = stringaImmessa;
+		this.time = ldt;
+	}
 
 }
