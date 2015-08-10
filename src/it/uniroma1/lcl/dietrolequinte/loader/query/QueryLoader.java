@@ -26,7 +26,6 @@ public class QueryLoader extends AbstractLoader {
 
 	@Override
 	protected void inizializzaLoader(List<String> list) {
-		list.forEach(System.out::println);
 		list.parallelStream().map(s -> Arrays.asList(s.split("\t"))).forEach(this::analizzaRiga);
 	}
 
@@ -39,12 +38,14 @@ public class QueryLoader extends AbstractLoader {
 		else {
 			addInterrogazione(new InterrogazioneQuery(new Utente(riga.get(0)), String.join("\t", riga), LocalDateTime.now()));		
 		}
+		
+		addUtente(new Utente(riga.get(0)));
 	}
 	
 	public static void main(String[] args) throws IOException {
 		File f = new File("/home/onoda/Documents/progetto_metodologie2015/AOL/query.user-ct-test-collection-02.txt");
 		QueryLoader ql = new QueryLoader(f);
-		System.out.println(ql.getInterrogazioni().get(0));
+		ql.getUsers().forEach(System.out::println);
 	}
 
 	

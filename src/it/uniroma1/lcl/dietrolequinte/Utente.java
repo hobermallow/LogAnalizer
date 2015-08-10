@@ -1,6 +1,6 @@
 package it.uniroma1.lcl.dietrolequinte;
 
-public class Utente {
+public class Utente implements Comparable<Utente> {
 	
 	private String nomeUtente;
 	
@@ -12,6 +12,18 @@ public class Utente {
 
 	public String getNomeUtente() {
 		return nomeUtente;
+	}
+
+	@Override
+	public int compareTo(Utente o) {
+		// TODO Auto-generated method stub
+		return nomeUtente.compareTo(o.getNomeUtente());
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getNomeUtente();
 	}
 
 
