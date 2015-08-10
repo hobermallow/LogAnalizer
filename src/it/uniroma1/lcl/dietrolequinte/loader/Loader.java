@@ -93,6 +93,16 @@ public class Loader {
 		}
 	}
 	
+	/**
+	 * @return Restituisce la lista dei loader specifici, 
+	 * inizializzati per ogni file di log presente
+	 * nella cartella
+	 */
+	public List<AbstractLoader> getLoaders() {
+		return loaders;
+	}
+
+	
 	
 	
 	
@@ -105,14 +115,6 @@ public class Loader {
 		
 	}
 
-	/**
-	 * @return Restituisce la lista dei loader specifici, 
-	 * inizializzati per ogni file di log presente
-	 * nella cartella
-	 */
-	public List<AbstractLoader> getLoaders() {
-		return loaders;
-	}
-
+	
 
 }
