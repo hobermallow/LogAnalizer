@@ -16,4 +16,12 @@ public class InterrogazioneQuery extends Interrogazione {
 		this.posizioneLink = posizioneLink;
 	}
 
+	public String getLinkCliccato() {
+		return linkCliccato;
+	}
+
+	public int getPosizioneLink() {
+		return posizioneLink;
+	}
+
 }

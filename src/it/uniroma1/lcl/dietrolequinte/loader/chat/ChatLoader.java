@@ -1,5 +1,8 @@
 package it.uniroma1.lcl.dietrolequinte.loader.chat;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
@@ -7,8 +10,8 @@ import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 public class ChatLoader extends AbstractLoader {
 
 
-	public ChatLoader(String nomeFile) {
-		super(nomeFile);
+	public ChatLoader(File file) throws IOException {
+		super(file);
 	}
 
 	@Override
@@ -17,7 +20,7 @@ public class ChatLoader extends AbstractLoader {
 	}
 
 	@Override
-	protected void inizializzaLoader() {
+	protected void inizializzaLoader(BufferedReader br) {
 		
 	}
 

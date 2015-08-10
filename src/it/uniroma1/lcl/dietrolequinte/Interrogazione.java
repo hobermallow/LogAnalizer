@@ -15,4 +15,16 @@ public abstract class Interrogazione {
 		this.time = ldt;
 	}
 
+	public Utente getUser() {
+		return user;
+	}
+
+	public String getStringaImmessa() {
+		return stringaImmessa;
+	}
+
+	public LocalDateTime getTime() {
+		return time;
+	}
+
 }

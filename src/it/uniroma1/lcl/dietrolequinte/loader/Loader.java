@@ -73,6 +73,8 @@ public class Loader {
 	
 	/**
 	 * @param f file a partire dal quale creare il loader
+	 * Il metodo aggiunge allla lista dei loader il loader specifico
+	 * per il file passato in input
 	 */
 	private void createSpecificLoader(File f) {
 		String type = f.getName().split(".")[0];
