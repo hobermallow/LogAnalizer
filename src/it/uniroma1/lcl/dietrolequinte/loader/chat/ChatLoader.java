@@ -2,9 +2,11 @@ package it.uniroma1.lcl.dietrolequinte.loader.chat;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 
 public class ChatLoader extends AbstractLoader {
@@ -27,13 +29,39 @@ public class ChatLoader extends AbstractLoader {
 
 	@Override
 	protected void analizzaRiga(List<String> riga) {
-		InterrogazioneChat ic;
 		switch (riga.get(2)) {
 		
-		case "***": 
+		case "***": {
+			if(riga.contains("quit") || riga.contains("left")) {
+				addInterrogazione(new Logout(new Utente(riga.get(3)), String.join(" ",riga.subList(3, riga.size())), LocalDateTime.parse(riga.get(0)), ""));
+			}
+			else {
+				addInterrogazione(new Login(new Utente(riga.get(3)), String.join(" ",riga.subList(3, riga.size())), LocalDateTime.parse(riga.get(0)), ""));
+
+			}
+			addUtente(new Utente(riga.get(3)));
+			break;
+		}
 		
+		case "*": {
+			addInterrogazione(new Azione(new Utente(riga.get(3)), String.join(" ",riga.subList(3, riga.size())), LocalDateTime.parse(riga.get(0)), String.join(" ", riga.subList(4, riga.size()))));
+			addUtente(new Utente(riga.get(3)));
+			break;
+			
+		}
+		
+		default: {
+			addInterrogazione(new Messaggio(new Utente(riga.get(2).replace("<", " ").trim()), String.join(" ", riga.subList(2, riga.size())), LocalDateTime.parse(riga.get(0)), String.join(" ", riga.subList(3, riga.size()))));
+		}
 		
 		}
+	}
+	
+	
+	public static void main(String[] args) throws IOException {
+		File f = new File("/home/onoda/Documents/progetto_metodologie2015/IRC/chat.evergreen.01.02-Fri-2015.log");
+		ChatLoader cl = new ChatLoader(f);
+		cl.insiemeInterrogazioni.stream().filter(s -> s instanceof Messaggio).forEach(System.out::println);
 	}
 
 	
