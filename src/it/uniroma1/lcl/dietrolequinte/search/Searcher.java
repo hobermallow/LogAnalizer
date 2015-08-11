@@ -1,9 +1,11 @@
 package it.uniroma1.lcl.dietrolequinte.search;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
+import it.uniroma1.lcl.dietrolequinte.Interrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.exception.DirectoryNotFoundException;
 import it.uniroma1.lcl.dietrolequinte.exception.EmptyDirectoryException;
@@ -42,7 +44,10 @@ public class Searcher {
 		listaLoader = loader.getLoaders();
 	}
 	
-	
+	/**
+	 * 
+	 * @return return a collection Iterable of Users
+	 */
 	public Collection<Utente> getUsers()
 	{
 		TreeSet<Utente> users = new TreeSet<Utente>();
@@ -66,10 +71,31 @@ public class Searcher {
 		return null;
 	}
 	
-	
-	public Collection<SearchResult> search(Utente u, String s)
+	/**
+	 * 
+	 * @param u User to search
+	 * @param Information to search
+	 * @return return a collection iterable of SearchResult
+	 */
+	public Collection<SearchResult> search(Utente u, String info) 
 	{
-		return null;
+		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
+		
+		for (AbstractLoader l: loader.getLoaders())
+		{
+			if(l.checkValidSearch(info))
+			{
+				for(Interrogazione i : l.getInterrogazioni())
+					{
+						String infoCapitalized = info.substring(0, 1).toUpperCase() + info.substring(1);
+						//Class.forName(infoCapitalized);
+						
+						
+						if(i.getUser().equals(u))output.add(new SearchResult(i));
+					}
+			}
+		}
+		return output;
 		
 	}
 	
