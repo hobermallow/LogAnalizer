@@ -1,6 +1,5 @@
 package it.uniroma1.lcl.dietrolequinte.loader;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -25,6 +23,7 @@ public abstract class AbstractLoader {
 	protected TreeSet<Utente> insiemeUtenti;
 	protected List<Interrogazione> insiemeInterrogazioni;
 	private File file;
+	private String path = this.getClass().getName();
 	
 	/**
 	 * @param nomeFile nome del file sul quale lavora il loader
@@ -131,5 +130,13 @@ public abstract class AbstractLoader {
 	 * degli elementi di una riga
 	 */
 	abstract protected void analizzaRiga(List<String> riga);
+
+	/**
+	 * @return il percorso del loader
+	 */
+	protected String getPath() {
+		String[] p = path.split("\\.");
+		return String.join(".", Arrays.asList(path.split("\\.")).subList(0, p.length-1))+".";
+	}
 	
 }
