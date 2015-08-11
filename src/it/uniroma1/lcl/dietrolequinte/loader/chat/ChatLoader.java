@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import it.uniroma1.lcl.dietrolequinte.Interrogazione;
+import it.uniroma1.lcl.dietrolequinte.AbstractInterrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.chat.Messaggio;
@@ -63,7 +63,7 @@ public class ChatLoader extends AbstractLoader {
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		File f = new File("/home/onoda/Documents/progetto_metodologie2015/IRC/chat.evergreen.01.02-Fri-2015.log");
 		ChatLoader cl = new ChatLoader(f);
-		for(Interrogazione i: cl.getInterrogazioni()) {
+		for(AbstractInterrogazione i: cl.getInterrogazioni()) {
 			System.out.println(Class.forName(cl.getPath()+"Messaggio").isInstance(i));
 		}
 	}

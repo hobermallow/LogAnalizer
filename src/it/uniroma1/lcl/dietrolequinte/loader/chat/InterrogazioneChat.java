@@ -2,10 +2,10 @@ package it.uniroma1.lcl.dietrolequinte.loader.chat;
 
 import java.time.LocalDateTime;
 
-import it.uniroma1.lcl.dietrolequinte.Interrogazione;
+import it.uniroma1.lcl.dietrolequinte.AbstractInterrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 
-public class InterrogazioneChat extends Interrogazione {
+public class InterrogazioneChat extends AbstractInterrogazione {
 	
 	private String ipAddress, azione;
 

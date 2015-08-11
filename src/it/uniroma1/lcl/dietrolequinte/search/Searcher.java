@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
-import it.uniroma1.lcl.dietrolequinte.Interrogazione;
+import it.uniroma1.lcl.dietrolequinte.AbstractInterrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.exception.DirectoryNotFoundException;
 import it.uniroma1.lcl.dietrolequinte.exception.EmptyDirectoryException;
@@ -85,7 +85,7 @@ public class Searcher {
 		{
 			if(l.checkValidSearch(info))
 			{
-				for(Interrogazione i : l.getInterrogazioni())
+				for(AbstractInterrogazione i : l.getInterrogazioni())
 					{
 						String infoCapitalized = info.substring(0, 1).toUpperCase() + info.substring(1);
 						//Class.forName(infoCapitalized);

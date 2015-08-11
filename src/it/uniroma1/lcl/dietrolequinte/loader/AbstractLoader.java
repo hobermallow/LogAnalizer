@@ -14,14 +14,14 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
-import it.uniroma1.lcl.dietrolequinte.Interrogazione;
+import it.uniroma1.lcl.dietrolequinte.AbstractInterrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 
 
 public abstract class AbstractLoader {
 	
 	protected TreeSet<Utente> insiemeUtenti;
-	protected List<Interrogazione> insiemeInterrogazioni;
+	protected List<AbstractInterrogazione> insiemeInterrogazioni;
 	private File file;
 	private String path = this.getClass().getName();
 	
@@ -35,7 +35,7 @@ public abstract class AbstractLoader {
 	public AbstractLoader(File file) throws IOException {
 		this.file=file;
 		insiemeUtenti = new TreeSet<Utente>();
-		insiemeInterrogazioni = new ArrayList<Interrogazione>();
+		insiemeInterrogazioni = new ArrayList<AbstractInterrogazione>();
 		FileInputStream fis = new FileInputStream(file);
 		InputStreamReader isr = checkIfZipped(file) ? new InputStreamReader(new GZIPInputStream(fis)) : new InputStreamReader(fis);
 		BufferedReader bis = new BufferedReader(isr);
@@ -75,7 +75,7 @@ public abstract class AbstractLoader {
 	/**
 	 * @return L'insieme delle interrogazioni
 	 */
-	public List<Interrogazione> getInterrogazioni() {
+	public List<AbstractInterrogazione> getInterrogazioni() {
 		return insiemeInterrogazioni;
 	}
 	
@@ -83,7 +83,7 @@ public abstract class AbstractLoader {
 	 * @param i interrogazione
 	 * Aggiunge un'interrogazione all'insieme delle interrogazioni
 	 */
-	protected void addInterrogazione(Interrogazione i) {
+	protected void addInterrogazione(AbstractInterrogazione i) {
 		insiemeInterrogazioni.add(i);
 	}
 	
