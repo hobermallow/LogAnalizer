@@ -1,4 +1,5 @@
 package it.uniroma1.lcl.dietrolequinte.search;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
@@ -72,11 +73,22 @@ public class Searcher {
 		
 	}
 	
-	public Collection<SearchResult> search(Utente u, String s, String file)
+	public Collection<SearchResult> search(Utente u, String info, String file)
 	{
 		return null;
 		
 	} 
 	
+	public Collection<SearchResult> search(Utente u, String info, LocalDateTime inizio, LocalDateTime fine)
+	{
+		return null;
+		
+	}
+	
+	public Collection<SearchResult> search(Utente u, String info, String file, LocalDateTime inizio, LocalDateTime fine)
+	{
+		return null;
+		
+	}
 	
 }
