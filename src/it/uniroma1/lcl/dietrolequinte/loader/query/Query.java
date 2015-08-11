@@ -5,18 +5,18 @@ import java.time.LocalDateTime;
 import it.uniroma1.lcl.dietrolequinte.Interrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 
-public class InterrogazioneQuery extends Interrogazione {
+public class Query extends Interrogazione {
 	
 	private String linkCliccato;
 	private Integer posizioneLink;
 	
-	public InterrogazioneQuery(Utente u, String stringaImmessa, LocalDateTime ldt, String linkCliccato, Integer posizioneLink) {
+	public Query(Utente u, String stringaImmessa, LocalDateTime ldt, String linkCliccato, Integer posizioneLink) {
 		super(u, stringaImmessa, ldt);
 		this.linkCliccato = linkCliccato;
 		this.posizioneLink = posizioneLink;
 	}
 	
-	public InterrogazioneQuery(Utente u, String stringaImmessa, LocalDateTime ldt) {
+	public Query(Utente u, String stringaImmessa, LocalDateTime ldt) {
 		super(u, stringaImmessa, ldt);
 	}
 
