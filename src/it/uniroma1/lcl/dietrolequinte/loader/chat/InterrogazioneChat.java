@@ -9,12 +9,19 @@ public class InterrogazioneChat extends Interrogazione {
 	
 	private String ipAddress, azione;
 
-	public InterrogazioneChat(Utente u, String stringaImmessa, LocalDateTime ldt, String ipAddress, String azione ) {
+	public InterrogazioneChat(Utente u, String stringaImmessa, LocalDateTime ldt, String ipAddress, String azione, String messaggio ) {
 		super(u, stringaImmessa, ldt);
-		this.ipAddress  = ipAddress;
+		this.ipAddress = ipAddress;
 		this.azione = azione;
 	}
-	
+
+	public String getAzione() {
+		return azione;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
 	
 
 }
