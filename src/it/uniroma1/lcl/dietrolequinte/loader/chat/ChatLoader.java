@@ -21,7 +21,7 @@ public class ChatLoader extends AbstractLoader {
 
 	@Override
 	protected List<String> getListValidSearch() {
-		return Arrays.asList("loginout","messaggio","azione");
+		return Arrays.asList("loginout","messaggio","azione","login", "logout");
 	}
 
 	@Override

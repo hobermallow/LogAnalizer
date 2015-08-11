@@ -21,6 +21,15 @@ public class Utente implements Comparable<Utente> {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Utente) {
+			Utente u = (Utente)obj;
+			return u.getNomeUtente().equals(this.getNomeUtente());
+		}
+		else return false;
+	}
+	
+	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return getNomeUtente();
