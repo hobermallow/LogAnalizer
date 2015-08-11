@@ -85,8 +85,9 @@ public class Searcher {
 	 * @param u User to search
 	 * @param Information to search
 	 * @return return a collection iterable of SearchResult
+	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info) 
+	public Collection<SearchResult> search(Utente u, String info) throws ClassNotFoundException 
 	{
 		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
 		
@@ -97,17 +98,19 @@ public class Searcher {
 				for(AbstractInterrogazione i : l.getInterrogazioni())
 					{
 						String infoCapitalized = info.substring(0, 1).toUpperCase() + info.substring(1);
-						//Class.forName(infoCapitalized);
-						//if(i.getClass().getName().equals(infoCapitalized))
-						
 						
 						String estratto=i.getClass().getName();
 						String[] a=estratto.split("\\.");
 						String nomeClasse=a[a.length-1];
-						System.out.println(nomeClasse+" "+infoCapitalized);
-						System.out.println(nomeClasse.equals(infoCapitalized));
+//						System.out.println(i.getUser()+" "+u);
+//						System.out.println(i.getUser().equals(u));
+						infoCapitalized = l.getPath()+infoCapitalized;
+						if(i.getUser().equals(u) && Class.forName(infoCapitalized).isInstance(i) ){
 							
-						//if(i.getUser().equals(u))output.add(new SearchResult(i));
+							output.add(new SearchResult(i));
+//							System.out.println("BIG GAY");
+							
+						}
 					}
 			}
 		}
@@ -156,11 +159,14 @@ public class Searcher {
 	
 	public static void main(String[] args) {
 		try {
-			Searcher sea=getIstanza("/Users/Steve/Documents/DietroLeQuinte/progetto_metodologie2015/AOL");
-			System.out.println(sea.search(new Utente("dfs"), "interrogazione"));
-			
+			Searcher sea=getIstanza("/Users/Steve/Documents/DietroLeQuinte/progetto_metodologie2015/IRC");
+			System.out.println(sea.search(new Utente("BigRig"), "logout"));
+//			System.out.println(sea.getUsers().contains(new Utente("BigRig")));
 			
 		} catch (EndProgramException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
