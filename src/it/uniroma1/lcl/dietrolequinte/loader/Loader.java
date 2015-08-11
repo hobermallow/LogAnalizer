@@ -2,6 +2,7 @@ package it.uniroma1.lcl.dietrolequinte.loader;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +30,7 @@ public class Loader {
 		
 		this.directory = directory;
 		fileDirectory = new File(directory);
+		loaders = new ArrayList<>();
 		if(!fileDirectory.exists()) {
 			
 			throw new DirectoryNotFoundException();
@@ -45,7 +47,6 @@ public class Loader {
 		non sia vuota. Si può procedere a filtrare la lista dei file e ad
 		eliminare quelli che non sono file di log e a creare, per quelli rimasti, lo specifico
 		AbstractLoader */
-		
 		Arrays.stream(fileDirectory.listFiles()).filter(this::fileIsLogFile).forEach(this::createSpecificLoader);
 	}
 	
@@ -64,10 +65,9 @@ public class Loader {
 	 */
 	private boolean fileIsLogFile(File f) {
 		String format, zippedFormat;
-		format = f.getName().split(".")[f.getName().split(".").length-1];
-		zippedFormat = f.getName().split(".")[f.getName().split(".").length-2];
-		
-		return (format==LogFileExtensions.log.toString() || format == LogFileExtensions.txt.toString()) || (format == LogFileExtensions.gz.toString() && (zippedFormat == LogFileExtensions.txt.name() || zippedFormat == LogFileExtensions.log.name()));
+		format = f.getName().split("\\.")[f.getName().split("\\.").length-1];
+		zippedFormat = f.getName().split("\\.")[f.getName().split("\\.").length-2];
+		return (format.equals(LogFileExtensions.log.toString()) || format.equals(LogFileExtensions.txt.toString())) || (format.equals(LogFileExtensions.gz.toString()) && (zippedFormat.equals(LogFileExtensions.txt.toString()) || zippedFormat.equals(LogFileExtensions.log.toString())));
 		
 	}
 	
@@ -77,12 +77,12 @@ public class Loader {
 	 * per il file passato in input
 	 */
 	private void createSpecificLoader(File f) {
-		String type = f.getName().split(".")[0];
+		String type = f.getName().split("\\.")[0];
+		String path = "it.uniroma1.lcl.dietrolequinte."+"loader."+type+"."+Character.toUpperCase(type.charAt(0))+type.substring(1)+"Loader";
 		try {
-			loaders.add((AbstractLoader) Class.forName(Character.toUpperCase(type.charAt(0))+type.substring(1)+"Loader").getConstructor(File.class).newInstance(f));
+			loaders.add((AbstractLoader) Class.forName(path).getConstructor(File.class).newInstance(f));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException  e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return;
 		}
@@ -110,9 +110,13 @@ public class Loader {
 	
 	/**
 	 * @param args
+	 * @throws EmptyDirectoryException 
+	 * @throws NotADirectoryException 
+	 * @throws DirectoryNotFoundException 
 	 */
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) throws DirectoryNotFoundException, NotADirectoryException, EmptyDirectoryException {
+		Loader l = new Loader("/home/onoda/Documents/progetto_metodologie2015/AOL");
+		System.out.println(l.getLoaders().size());
 		
 		
 	}
