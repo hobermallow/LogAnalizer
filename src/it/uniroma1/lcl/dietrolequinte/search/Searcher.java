@@ -14,6 +14,11 @@ import it.uniroma1.lcl.dietrolequinte.exception.NotADirectoryException;
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.Loader;
 
+/**
+ * 
+ * @author Steve
+ *
+ */
 public class Searcher {
 
 	static private Searcher istanza;
@@ -46,7 +51,7 @@ public class Searcher {
 	
 	/**
 	 * 
-	 * @return return a collection Iterable of Users
+	 * @return return a collection Iterable of all Users
 	 */
 	public Collection<Utente> getUsers()
 	{
@@ -61,7 +66,11 @@ public class Searcher {
 		}
 		return users;
 	}
-	
+	/**
+	 * 
+	 * @param s file to look
+	 * @return return a collection Iterable of all Users in the file 
+	 */
 	public Collection<Utente> getUsers(String s)
 	{
 		for (AbstractLoader l: loader.getLoaders())
@@ -89,32 +98,72 @@ public class Searcher {
 					{
 						String infoCapitalized = info.substring(0, 1).toUpperCase() + info.substring(1);
 						//Class.forName(infoCapitalized);
+						//if(i.getClass().getName().equals(infoCapitalized))
 						
 						
-						if(i.getUser().equals(u))output.add(new SearchResult(i));
+						String estratto=i.getClass().getName();
+						String[] a=estratto.split("\\.");
+						String nomeClasse=a[a.length-1];
+						System.out.println(nomeClasse+" "+infoCapitalized);
+						System.out.println(nomeClasse.equals(infoCapitalized));
+							
+						//if(i.getUser().equals(u))output.add(new SearchResult(i));
 					}
 			}
 		}
 		return output;
 		
 	}
-	
+	/**
+	 * 
+	 * @param u User to look
+	 * @param info info to look
+	 * @param file file to look
+	 * @return return an Iterable Collection of the search
+	 */
 	public Collection<SearchResult> search(Utente u, String info, String file)
 	{
 		return null;
 		
 	} 
-	
-	public Collection<SearchResult> search(Utente u, String info, LocalDateTime inizio, LocalDateTime fine)
+	/**
+	 * 
+	 * @param u User to look
+	 * @param info info to look
+	 * @param begin 
+	 * @param end
+	 * @return
+	 */
+	public Collection<SearchResult> search(Utente u, String info, LocalDateTime begin, LocalDateTime end)
+	{
+		return null;
+		
+	}
+	/**
+	 * 
+	 * @param u User to look
+	 * @param info 
+	 * @param file
+	 * @param begin
+	 * @param end
+	 * @return
+	 */
+	public Collection<SearchResult> search(Utente u, String info, String file, LocalDateTime begin, LocalDateTime end)
 	{
 		return null;
 		
 	}
 	
-	public Collection<SearchResult> search(Utente u, String info, String file, LocalDateTime inizio, LocalDateTime fine)
-	{
-		return null;
-		
+	public static void main(String[] args) {
+		try {
+			Searcher sea=getIstanza("/Users/Steve/Documents/DietroLeQuinte/progetto_metodologie2015/AOL");
+			System.out.println(sea.search(new Utente("dfs"), "interrogazione"));
+			
+			
+		} catch (EndProgramException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

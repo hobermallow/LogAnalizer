@@ -53,7 +53,7 @@ public class ChatLoader extends AbstractLoader {
 		}
 		
 		default: {
-			addInterrogazione(new Messaggio(new Utente(riga.get(2).replace("<", " ").trim()), String.join(" ", riga.subList(2, riga.size())), LocalDateTime.parse(riga.get(0)), String.join(" ", riga.subList(3, riga.size()))));
+			addInterrogazione(new Messaggio(new Utente(riga.get(2).replace("<", " ").replace(">", " ").trim()), String.join(" ", riga.subList(2, riga.size())), LocalDateTime.parse(riga.get(0)), String.join(" ", riga.subList(3, riga.size()))));
 		}
 		
 		}
@@ -63,8 +63,8 @@ public class ChatLoader extends AbstractLoader {
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		File f = new File("/home/onoda/Documents/progetto_metodologie2015/IRC/chat.evergreen.01.02-Fri-2015.log");
 		ChatLoader cl = new ChatLoader(f);
-		for(AbstractInterrogazione i: cl.getInterrogazioni()) {
-			System.out.println(Class.forName(cl.getPath()+"Messaggio").isInstance(i));
+		for(Utente u: cl.getUsers()) {
+			System.out.println(u);
 		}
 	}
 
