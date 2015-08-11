@@ -3,6 +3,8 @@ package it.uniroma1.lcl.dietrolequinte.loader.query;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +22,8 @@ public class QueryLoader extends AbstractLoader {
 	}
 
 	@Override
-	protected List<String> getList() {
-		return null;
+	protected List<String> getListValidSearch() {
+		return Arrays.asList("interrogazione");
 	}
 
 	@Override
@@ -33,18 +35,18 @@ public class QueryLoader extends AbstractLoader {
 	@Override
 	protected void analizzaRiga(List<String> riga) {
 		if(riga.size() == 5) {
-			addInterrogazione(new InterrogazioneQuery(new Utente(riga.get(0)), riga.get(1), LocalDateTime.now() , riga.get(4), Integer.valueOf(riga.get(3))));	
+			addInterrogazione(new Query(new Utente(riga.get(0)), riga.get(1), LocalDateTime.parse(riga.get(2).replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME) , riga.get(4), Integer.valueOf(riga.get(3))));	
 	
 		}
 		else if(riga.size() == 3) {
-			addInterrogazione(new InterrogazioneQuery(new Utente(riga.get(0)), riga.get(1), LocalDateTime.now()));		
+			addInterrogazione(new Query(new Utente(riga.get(0)), riga.get(1), LocalDateTime.parse(riga.get(2).replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));		
 		}
 		
 		addUtente(new Utente(riga.get(0)));
 	}
 	
 	public static void main(String[] args) throws IOException {
-		File f = new File("/home/onoda/Documents/progetto_metodologie2015/AOL/query.user-ct-test-collection-02.txt");
+		File f = new File("/home/onoda/Documents/progetto_metodologie2015/AOL/query.user-ct-test-collection-03.txt.gz");
 		QueryLoader ql = new QueryLoader(f);
 		ql.getInterrogazioni().forEach(System.out::println);
 	}

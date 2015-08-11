@@ -47,7 +47,7 @@ public abstract class AbstractLoader {
 	 * @return list of allowed search words for
 	 * the specific type of log file
 	 */
-	abstract protected  List<String> getList();
+	abstract protected  List<String> getListValidSearch();
 	
 	/**
 	 * @param string the word passed by the Searcher
@@ -55,7 +55,7 @@ public abstract class AbstractLoader {
 	 */
 	public boolean checkValidSearch(String string) {
 		
-		return getList().contains(string);
+		return getListValidSearch().contains(string);
 	}
 	
 	/**
@@ -122,7 +122,7 @@ public abstract class AbstractLoader {
 	 * @return boolean, vero se il file è zippato, altrimenti falso
 	 */
 	private boolean checkIfZipped(File f) {
-		return Arrays.asList(f.getName().split(".")).contains("zip");
+		return Arrays.asList(f.getName().split("\\.")).contains("gz");
 	}
 	
 	/**

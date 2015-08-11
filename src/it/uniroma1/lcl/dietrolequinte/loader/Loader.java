@@ -67,7 +67,7 @@ public class Loader {
 		format = f.getName().split(".")[f.getName().split(".").length-1];
 		zippedFormat = f.getName().split(".")[f.getName().split(".").length-2];
 		
-		return (format==LogFileExtensions.log.toString() || format == LogFileExtensions.txt.toString()) || (format == LogFileExtensions.zip.toString() && (zippedFormat == LogFileExtensions.txt.name() || zippedFormat == LogFileExtensions.log.name()));
+		return (format==LogFileExtensions.log.toString() || format == LogFileExtensions.txt.toString()) || (format == LogFileExtensions.gz.toString() && (zippedFormat == LogFileExtensions.txt.name() || zippedFormat == LogFileExtensions.log.name()));
 		
 	}
 	
