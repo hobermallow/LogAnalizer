@@ -16,7 +16,6 @@ public class Utente implements Comparable<Utente> {
 
 	@Override
 	public int compareTo(Utente o) {
-		// TODO Auto-generated method stub
 		return nomeUtente.compareTo(o.getNomeUtente());
 	}
 	
@@ -31,7 +30,6 @@ public class Utente implements Comparable<Utente> {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return getNomeUtente();
 	}
 

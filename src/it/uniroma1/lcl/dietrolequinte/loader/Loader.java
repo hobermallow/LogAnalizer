@@ -115,7 +115,7 @@ public class Loader {
 	 * @throws DirectoryNotFoundException 
 	 */
 	public static void main(String[] args) throws DirectoryNotFoundException, NotADirectoryException, EmptyDirectoryException {
-		Loader l = new Loader("/home/onoda/Documents/progetto_metodologie2015/AOL");
+		Loader l = new Loader(args[0]);
 		System.out.println(l.getLoaders().size());
 		
 		
