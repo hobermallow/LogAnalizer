@@ -1,17 +1,14 @@
 package it.uniroma1.lcl.dietrolequinte.loader.chat;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 
 public class ChatLoader extends AbstractLoader {
 	
-	private List<String> specialIRCCode = Arrays.asList("***","-!-","*");
 
 
 	public ChatLoader(File file) throws IOException {
@@ -32,6 +29,8 @@ public class ChatLoader extends AbstractLoader {
 	protected void analizzaRiga(List<String> riga) {
 		InterrogazioneChat ic;
 		switch (riga.get(2)) {
+		
+		case "***": 
 		
 		
 		}
