@@ -134,7 +134,7 @@ public abstract class AbstractLoader {
 	/**
 	 * @return il percorso del loader
 	 */
-	protected String getPath() {
+	public String getPath() {
 		String[] p = path.split("\\.");
 		return String.join(".", Arrays.asList(path.split("\\.")).subList(0, p.length-1))+".";
 	}
