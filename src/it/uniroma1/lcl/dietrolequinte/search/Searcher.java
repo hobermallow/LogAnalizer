@@ -159,12 +159,14 @@ public class Searcher {
 	
 	private Collection<SearchResult> filterDate(List<SearchResult> risultati, LocalDateTime begin, LocalDateTime end)
 	{
+		ArrayList<SearchResult> ris= new ArrayList<SearchResult>();
+		
 		for ( SearchResult r: risultati)
 		{
-			if(r.getInterrogazione().getTime().compareTo(begin)<0 && r.getInterrogazione().getTime().compareTo(end)>0)
-				risultati.remove(r);
+			if(r.getInterrogazione().getTime().compareTo(begin)>=0 && r.getInterrogazione().getTime().compareTo(end)<=0)
+				ris.add(r);
 		}
-		return risultati;
+		return ris;
 	}
 	
 	
@@ -180,22 +182,6 @@ public class Searcher {
 					if(i.getUser().equals(u) && Class.forName(infoCapitalized).isInstance(i) )
 						output.add(new SearchResult(i));
 				}
-		}
-	}
-	
-	public static void main(String[] args) {
-		try {
-			Searcher sea=getIstanza("/Users/Steve/Documents/DietroLeQuinte/progetto_metodologie2015/IRC");
-			System.out.println(sea.search(new Utente("BigRig"), "loginout"));
-//			System.out.println(sea.getUsers().contains(new Utente("BigRig")));
-//			sea.search(new Utente("BigRig"), "loginout");
-			
-		} catch (EndProgramException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
