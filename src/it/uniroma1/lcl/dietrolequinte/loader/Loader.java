@@ -105,7 +105,43 @@ public class Loader {
 	}
 
 	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("Numero di file in "+getDirectory()+": "+getLoaders().size()+"\n");
+		for(String s : getLoadersTypes()) {
+			try {
+				sb.append("Numero di file di tipo "+s+": "+countLoaderPerTipo(s)+"\n");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		sb.append("Numero totale di byte: "+getLoaders().stream().map(l -> l.getFileSize()).reduce(0, (a, b) -> a+b)+"\n");
+		sb.append("Numero totale di righe: "+getLoaders().stream().map(l -> l.getLinesNumber()).reduce(0, (a,b)->a+b)+"\n");
+		for(AbstractLoader a: getLoaders()) {
+			sb.append(a);
+		}
+		return sb.toString();
+		
+		
+	}
 	
+	private int countLoaderPerTipo(String type) throws ClassNotFoundException {
+		String path = "it.uniroma1.lcl.dietrolequinte."+"loader."+type+"."+Character.toUpperCase(type.charAt(0))+type.substring(1)+"Loader";
+		Class c = Class.forName(path);
+		List<AbstractLoader> l = new ArrayList<>();
+		for(AbstractLoader a: getLoaders()) {
+			if(c.isInstance(a)) {
+				l.add(a);
+			}
+		}
+		return l.size();
+	}
+	
+	public List<String> getLoadersTypes() {
+		return Arrays.asList("query","chat");
+	}
 	
 	
 	/**
@@ -116,7 +152,7 @@ public class Loader {
 	 */
 	public static void main(String[] args) throws DirectoryNotFoundException, NotADirectoryException, EmptyDirectoryException {
 		Loader l = new Loader(args[0]);
-		System.out.println(l.getLoaders().size());
+		System.out.println(l);
 		
 		
 	}

@@ -146,8 +146,8 @@ public abstract class AbstractLoader {
 	public String toString()  {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getNomeFile()+" Tipo di file: "+getNomeFile().split("\\.")[0]+"\n");
-		sb.append(getNomeFile()+" Numero totale di byte: "+file.length()+"\n");
-		sb.append(getNomeFile()+" Numero totale di righe: "+linesNumber+"\n");
+		sb.append(getNomeFile()+" Numero totale di byte: "+getFileSize()+"\n");
+		sb.append(getNomeFile()+" Numero totale di righe: "+getLinesNumber()+"\n");
 		for(String s: getListValidSearch()) {
 			try {
 				sb.append(getNomeFile()+" Numero totale di "+s+": "+countSpecificAbstractInterrogazione(s)+"\n");
@@ -177,6 +177,15 @@ public abstract class AbstractLoader {
 		return l.size();
 	}
 	
-	
+	public int getFileSize() {
+		return (int)file.length();
+	}
+
+	/**
+	 * @return the linesNumber
+	 */
+	public Integer getLinesNumber() {
+		return linesNumber;
+	}
 	
 }
