@@ -177,6 +177,15 @@ public abstract class AbstractLoader {
 		return l.size();
 	}
 	
-	
+	public int getFileSize() {
+		return (int)file.length();
+	}
+
+	/**
+	 * @return the linesNumber
+	 */
+	public Integer getLinesNumber() {
+		return linesNumber;
+	}
 	
 }
