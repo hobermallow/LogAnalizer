@@ -24,6 +24,7 @@ public abstract class AbstractLoader {
 	protected List<AbstractInterrogazione> insiemeInterrogazioni;
 	private File file;
 	private String path = this.getClass().getName();
+	private Integer linesNumber;
 	
 	/**
 	 * @param nomeFile nome del file sul quale lavora il loader
@@ -39,7 +40,9 @@ public abstract class AbstractLoader {
 		FileInputStream fis = new FileInputStream(file);
 		InputStreamReader isr = checkIfZipped(file) ? new InputStreamReader(new GZIPInputStream(fis)) : new InputStreamReader(fis);
 		BufferedReader bis = new BufferedReader(isr);
-		inizializzaLoader(bis.lines().collect(Collectors.toList()));
+		List<String> lines = bis.lines().collect(Collectors.toList());
+		linesNumber = lines.size();
+		inizializzaLoader(lines);
 	}
 	
 	/**
@@ -138,5 +141,42 @@ public abstract class AbstractLoader {
 		String[] p = path.split("\\.");
 		return String.join(".", Arrays.asList(path.split("\\.")).subList(0, p.length-1))+".";
 	}
+	
+	@Override
+	public String toString()  {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getNomeFile()+" Tipo di file: "+getNomeFile().split("\\.")[0]+"\n");
+		sb.append(getNomeFile()+" Numero totale di byte: "+file.length()+"\n");
+		sb.append(getNomeFile()+" Numero totale di righe: "+linesNumber+"\n");
+		for(String s: getListValidSearch()) {
+			try {
+				sb.append(getNomeFile()+" Numero totale di "+s+": "+countSpecificAbstractInterrogazione(s)+"\n");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * @param s Tipo di interrogazione
+	 * @return Il numero di interrogazioni di quel tipo contenute nel loader
+	 * @throws ClassNotFoundException
+	 */
+	private int countSpecificAbstractInterrogazione(String s) throws ClassNotFoundException {
+		List<AbstractInterrogazione> l = new ArrayList<>();
+		Class c = Class.forName(getPath()+(Character.toUpperCase(s.charAt(0))+s.substring(1)));
+
+		for(AbstractInterrogazione a: getInterrogazioni()) {
+			if(c.isInstance(a)) {
+				l.add(a);
+				
+			}
+		}
+		
+		return l.size();
+	}
+	
+	
 	
 }
