@@ -80,6 +80,10 @@ public class Searcher {
 		return null;
 	}
 	
+	
+	
+	
+	
 	/**
 	 * 
 	 * @param u User to search
@@ -92,30 +96,9 @@ public class Searcher {
 		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
 		
 		for (AbstractLoader l: loader.getLoaders())
-		{
-			if(l.checkValidSearch(info))
-			{
-				for(AbstractInterrogazione i : l.getInterrogazioni())
-					{
-						String infoCapitalized = info.substring(0, 1).toUpperCase() + info.substring(1);
-						
-						String estratto=i.getClass().getName();
-						String[] a=estratto.split("\\.");
-						String nomeClasse=a[a.length-1];
-//						System.out.println(i.getUser()+" "+u);
-//						System.out.println(i.getUser().equals(u));
-						infoCapitalized = l.getPath()+infoCapitalized;
-						if(i.getUser().equals(u) && Class.forName(infoCapitalized).isInstance(i) ){
-							
-							output.add(new SearchResult(i));
-//							System.out.println("BIG GAY");
-							
-						}
-					}
-			}
-		}
-		return output;
+			metodo(u, info, l, output);
 		
+		return output;
 	}
 	/**
 	 * 
@@ -123,10 +106,19 @@ public class Searcher {
 	 * @param info info to look
 	 * @param file file to look
 	 * @return return an Iterable Collection of the search
+	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info, String file)
+	public Collection<SearchResult> search(Utente u, String info, String file) throws ClassNotFoundException
 	{
-		return null;
+		
+		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
+		
+		for (AbstractLoader l: loader.getLoaders())
+		{
+			if(l.getNomeFile().equals(file))
+				metodo(u, info, l, output);
+		}
+		return output;
 		
 	} 
 	/**
@@ -136,11 +128,16 @@ public class Searcher {
 	 * @param begin 
 	 * @param end
 	 * @return
+	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info, LocalDateTime begin, LocalDateTime end)
+	public Collection<SearchResult> search(Utente u, String info, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
 	{
-		return null;
+		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
+	
+		for (AbstractLoader l: loader.getLoaders())
+			metodo(u, info, l, output);
 		
+		return filterDate(output, begin, end);
 	}
 	/**
 	 * 
@@ -150,18 +147,48 @@ public class Searcher {
 	 * @param begin
 	 * @param end
 	 * @return
+	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info, String file, LocalDateTime begin, LocalDateTime end)
+	public Collection<SearchResult> search(Utente u, String info, String file, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
 	{
-		return null;
+		ArrayList<SearchResult> output= (ArrayList<SearchResult>) search(u, info, file);
 		
+		return filterDate(output, begin, end);
+		
+	}
+	
+	private Collection<SearchResult> filterDate(List<SearchResult> risultati, LocalDateTime begin, LocalDateTime end)
+	{
+		for ( SearchResult r: risultati)
+		{
+			if(r.getInterrogazione().getTime().compareTo(begin)<0 && r.getInterrogazione().getTime().compareTo(end)>0)
+				risultati.remove(r);
+		}
+		return risultati;
+	}
+	
+	
+	private void metodo(Utente u, String info, AbstractLoader l, Collection<SearchResult> output) throws ClassNotFoundException
+	{
+		if(l.checkValidSearch(info))
+		{
+			for(AbstractInterrogazione i : l.getInterrogazioni())
+				{
+					String infoCapitalized = info.substring(0, 1).toUpperCase() + info.substring(1);
+					
+					infoCapitalized = l.getPath()+infoCapitalized;
+					if(i.getUser().equals(u) && Class.forName(infoCapitalized).isInstance(i) )
+						output.add(new SearchResult(i));
+				}
+		}
 	}
 	
 	public static void main(String[] args) {
 		try {
 			Searcher sea=getIstanza("/Users/Steve/Documents/DietroLeQuinte/progetto_metodologie2015/IRC");
-			System.out.println(sea.search(new Utente("BigRig"), "logout"));
+			System.out.println(sea.search(new Utente("BigRig"), "loginout"));
 //			System.out.println(sea.getUsers().contains(new Utente("BigRig")));
+//			sea.search(new Utente("BigRig"), "loginout");
 			
 		} catch (EndProgramException e) {
 			// TODO Auto-generated catch block

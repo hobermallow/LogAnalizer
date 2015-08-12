@@ -8,5 +8,7 @@ public class SearchResult {
 	
 	public SearchResult(AbstractInterrogazione i){this.i=i;}
 	
+	public AbstractInterrogazione getInterrogazione(){return i;}
+	
 	public String toString(){return i.toString();}
 }
