@@ -3,6 +3,7 @@ package it.uniroma1.lcl.dietrolequinte.cmdline;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,15 +29,23 @@ public class DietroLeQuinte {
 	static private String nomeFileComandi;
 	static private File fileComandi;
 	static private boolean batchModeActive = false;
+	static private FileInputStream fis;
+	static private InputStreamReader isr;
+	static private BufferedReader bis;
 	
 	private DietroLeQuinte(String nomeDirectory, String nomeFileComandi) throws EndProgramException, FileNotFoundException {
 		this(nomeDirectory);
+		this.nomeFileComandi = nomeFileComandi;
 		this.fileComandi = new File(nomeFileComandi);
 		if(!this.fileComandi.exists()) throw new FileNotFoundException();
+		fis = new FileInputStream(fileComandi);
+		isr = new InputStreamReader(fis);
+		bis = new BufferedReader(isr);
+		
 		batchModeActive = true;
 
 	}
-	public DietroLeQuinte(String nomeDirectory) throws EndProgramException {
+	private DietroLeQuinte(String nomeDirectory) throws EndProgramException {
 		this.nomeDirectory = nomeDirectory;
 		searcher = Searcher.getIstanza(nomeDirectory);
 	}
@@ -192,9 +201,15 @@ public class DietroLeQuinte {
 	}
 
 	private static List<String> prendiInput() throws IOException {
-		InputStreamReader isr = new InputStreamReader(System.in);
-		BufferedReader br = new BufferedReader(isr);
-		return Arrays.asList(br.readLine().replace("query", "interrogazione").split("\\s+"));
+		if(!batchModeActive) {
+			InputStreamReader isr = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(isr);
+			return Arrays.asList(br.readLine().replace("query", "interrogazione").split("\\s+"));
+
+		}
+		else {
+			return Arrays.asList(bis.readLine().replace("query", "interrogazione").split("\\s+"));
+		}
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
