@@ -17,6 +17,7 @@ import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.exception.EndProgramException;
 import it.uniroma1.lcl.dietrolequinte.search.SearchResult;
 import it.uniroma1.lcl.dietrolequinte.search.Searcher;
+import it.uniroma1.lcl.dietrolequinte.loader.query.Interrogazione;;
 
 public class DietroLeQuinte {
 	
@@ -68,14 +69,24 @@ public class DietroLeQuinte {
 		else if(l.size()==4) {
 			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1], LocalDateTime.of(LocalDate.parse(l.get(2)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN));
 		}
-		else if(l.get(0).contains("query")){
+		else if(l.get(0).contains("interrogazione")){
 			if(l.size()==3) {
-				list = searcher.search(new Utente(l.get(1)), "query");
+				list = searcher.search(new Utente(l.get(1)), "interrogazione");
 			}
 			else {
-				list = searcher.search(new Utente(l.get(1)), "query", LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN));
+				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN));
 			}
-			list = list.stream().filter(s -> (Query)(s.getInterrogazione()).)
+			List<SearchResult> searchValide = new ArrayList<>();
+			for(SearchResult s: list) {
+				Interrogazione i = (Interrogazione)s.getInterrogazione();
+				if((i.getPosizioneLink() == Integer.valueOf(l.get(2)) && (i.getPosizioneLink() != 0))) {
+					searchValide.add(s);
+				}
+			}
+			list = searchValide;
+		}
+		else {
+			list = new ArrayList<>();
 		}
 		System.out.println(list.size());
 	}
@@ -83,7 +94,7 @@ public class DietroLeQuinte {
 	private static List<String> prendiInput() throws IOException {
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
-		return Arrays.asList(br.readLine().split("\\s+"));
+		return Arrays.asList(br.readLine().replace("query", "interrogazione").split("\\s+"));
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {

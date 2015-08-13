@@ -18,6 +18,8 @@ public class Interrogazione extends AbstractInterrogazione {
 	
 	public Interrogazione(Utente u, String stringaImmessa, LocalDateTime ldt) {
 		super(u, stringaImmessa, ldt);
+		this.linkCliccato = "";
+		this.posizioneLink = 0;
 	}
 
 	public String getLinkCliccato() {
