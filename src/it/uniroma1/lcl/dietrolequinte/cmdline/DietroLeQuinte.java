@@ -108,7 +108,8 @@ public class DietroLeQuinte {
 
 	private static void richiestaData(List<String> l) throws ClassNotFoundException {
 		Collection<SearchResult> list;
-		String info = l.get(0).split("_")[2];
+		try {
+			String info = l.get(0).split("_")[2];
 		
 		
 		
@@ -140,6 +141,11 @@ public class DietroLeQuinte {
 		}
 		else {
 			System.out.println("Non ci sono "+info);
+		}
+		}
+		catch(ArrayIndexOutOfBoundsException e) {
+			System.out.println("Comando errato");
+			return;
 		}
 	}	
 
