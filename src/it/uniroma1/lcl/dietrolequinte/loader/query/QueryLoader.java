@@ -35,11 +35,11 @@ public class QueryLoader extends AbstractLoader {
 	@Override
 	protected void analizzaRiga(List<String> riga) {
 		if(riga.size() == 5) {
-			addInterrogazione(new Interrogazione(new Utente(riga.get(0)), riga.get(1), LocalDateTime.parse(riga.get(2).replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME) , riga.get(4), Integer.valueOf(riga.get(3))));	
+			addInterrogazione(new Query(new Utente(riga.get(0)), riga.get(1), LocalDateTime.parse(riga.get(2).replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME) , riga.get(4), Integer.valueOf(riga.get(3))));	
 	
 		}
 		else if(riga.size() == 3) {
-			addInterrogazione(new Interrogazione(new Utente(riga.get(0)), riga.get(1), LocalDateTime.parse(riga.get(2).replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));		
+			addInterrogazione(new Query(new Utente(riga.get(0)), riga.get(1), LocalDateTime.parse(riga.get(2).replace(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));		
 		}
 		
 		addUtente(new Utente(riga.get(0)));
