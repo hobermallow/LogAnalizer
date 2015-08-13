@@ -23,7 +23,14 @@ public class DietroLeQuinte {
 	
 	static private String nomeDirectory;
 	static private Searcher searcher;
+	static private String nomeFileComandi;
+	static private boolean batchModeActive = false;
 	
+	private DietroLeQuinte(String nomeDirectory, String nomeFileComandi) throws EndProgramException {
+		this(nomeDirectory);
+		this.nomeFileComandi = nomeFileComandi;
+
+	}
 	public DietroLeQuinte(String nomeDirectory) throws EndProgramException {
 		this.nomeDirectory = nomeDirectory;
 		searcher = Searcher.getIstanza(nomeDirectory);
@@ -186,15 +193,23 @@ public class DietroLeQuinte {
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		
+		DietroLeQuinte dlq;
+		System.out.println(args.length);
 		try {
-			DietroLeQuinte dlq = new DietroLeQuinte(args[0]);
-		} catch (EndProgramException e) {
+			dlq = new DietroLeQuinte(args[0], args[1]);
+		} 
+		catch (ArrayIndexOutOfBoundsException e) {
+				try {
+					dlq = new DietroLeQuinte(args[0]);
+				} catch (EndProgramException e1) {
+					e1.printStackTrace();
+				}
+		} 
+		catch (EndProgramException e) {
 			e.printStackTrace();
-			return;
 		}
-		cicloProgramma();
 		
+		cicloProgramma();
 		
 		
 	}
