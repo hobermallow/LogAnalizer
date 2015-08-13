@@ -2,6 +2,8 @@ package it.uniroma1.lcl.dietrolequinte.cmdline;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
@@ -24,11 +26,14 @@ public class DietroLeQuinte {
 	static private String nomeDirectory;
 	static private Searcher searcher;
 	static private String nomeFileComandi;
+	static private File fileComandi;
 	static private boolean batchModeActive = false;
 	
-	private DietroLeQuinte(String nomeDirectory, String nomeFileComandi) throws EndProgramException {
+	private DietroLeQuinte(String nomeDirectory, String nomeFileComandi) throws EndProgramException, FileNotFoundException {
 		this(nomeDirectory);
-		this.nomeFileComandi = nomeFileComandi;
+		this.fileComandi = new File(nomeFileComandi);
+		if(!this.fileComandi.exists()) throw new FileNotFoundException();
+		batchModeActive = true;
 
 	}
 	public DietroLeQuinte(String nomeDirectory) throws EndProgramException {
@@ -194,7 +199,6 @@ public class DietroLeQuinte {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		DietroLeQuinte dlq;
-		System.out.println(args.length);
 		try {
 			dlq = new DietroLeQuinte(args[0], args[1]);
 		} 
@@ -203,10 +207,16 @@ public class DietroLeQuinte {
 					dlq = new DietroLeQuinte(args[0]);
 				} catch (EndProgramException e1) {
 					e1.printStackTrace();
+					return;
 				}
 		} 
+		catch (FileNotFoundException e) {
+			System.out.println("File comandi non esiste");
+			return;
+		}
 		catch (EndProgramException e) {
 			e.printStackTrace();
+			return;
 		}
 		
 		cicloProgramma();
