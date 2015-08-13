@@ -57,9 +57,42 @@ public class DietroLeQuinte {
 	
 	}
 
-	private static void richiestaData(List<String> l) {
+	private static void richiestaData(List<String> l) throws ClassNotFoundException {
+		Collection<SearchResult> list;
+		String info = l.get(0).split("_")[2];
 		
-	}
+		
+		
+		if(l.size()==3) {
+			list = searcher.search(new Utente(l.get(1)), info);
+		}
+		else if(l.size()==5) {
+			LocalDateTime ldt_prima = LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN);
+			LocalDateTime ldt_dopo = LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN);
+			if(ldt_prima.compareTo(ldt_dopo)>0) {
+				System.out.println("Date nell'ordine sbagliato");
+				return;
+			}
+			list = searcher.search(new Utente(l.get(1)), info, ldt_prima , ldt_dopo);
+		}
+		else {
+			list = new ArrayList<>();
+		}
+		if(!list.isEmpty()) {
+			List<SearchResult> sr = new ArrayList<SearchResult>(list);
+			sr.sort((a,b)-> a.getInterrogazione().getTime().compareTo(b.getInterrogazione().getTime()));
+			try {
+				System.out.println(sr.get(Integer.valueOf(l.get(2))-1));
+			}
+			catch(IndexOutOfBoundsException e) {
+				System.out.println("Indice troppo alto");
+				return;
+			}
+		}
+		else {
+			System.out.println("Non ci sono "+info);
+		}
+	}	
 
 	private static void richiestaNum(List<String> l) throws ClassNotFoundException {
 		Collection<SearchResult> list;
