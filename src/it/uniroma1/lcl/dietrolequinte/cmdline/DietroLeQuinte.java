@@ -4,6 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,8 +65,17 @@ public class DietroLeQuinte {
 		if(l.size()==2) {
 			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1]);
 		}
-		else {
-			list = new ArrayList<>();
+		else if(l.size()==4) {
+			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1], LocalDateTime.of(LocalDate.parse(l.get(2)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN));
+		}
+		else if(l.get(0).contains("query")){
+			if(l.size()==3) {
+				list = searcher.search(new Utente(l.get(1)), "query");
+			}
+			else {
+				list = searcher.search(new Utente(l.get(1)), "query", LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN));
+			}
+			list = list.stream().filter(s -> (Query)(s.getInterrogazione()).)
 		}
 		System.out.println(list.size());
 	}
