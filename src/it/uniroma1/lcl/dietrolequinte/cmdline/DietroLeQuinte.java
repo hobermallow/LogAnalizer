@@ -53,8 +53,57 @@ public class DietroLeQuinte {
 		else richiestaGenerica(l);
 	}
 
-	private static void richiestaGenerica(List<String> l) {
-	
+	private static void richiestaGenerica(List<String> l) throws ClassNotFoundException {
+		Collection<SearchResult> list;
+		String info = l.get(0);
+		if(l.size()==3) {
+			list = searcher.search(new Utente(l.get(1)), info);
+		}
+		else if(l.size()==5) {
+			LocalDateTime ldt_prima = LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN);
+			LocalDateTime ldt_dopo = LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN);
+			if(ldt_prima.compareTo(ldt_dopo)>0) {
+				System.out.println("Date nell'ordine sbagliato");
+				return;
+			}
+			list = searcher.search(new Utente(l.get(1)), info, ldt_prima , ldt_dopo);
+
+		}
+		else if(l.get(0).equals("interrogazione")){
+			if(l.size()==4) {
+				list = searcher.search(new Utente(l.get(1)), "interrogazione");
+			}
+			else {
+				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(5)), LocalTime.MIN));
+			}
+			List<SearchResult> searchValide = new ArrayList<>();
+			for(SearchResult s: list) {
+				Interrogazione i = (Interrogazione)s.getInterrogazione();
+				if((i.getPosizioneLink() == Integer.valueOf(l.get(3)) && (i.getPosizioneLink() != 0))) {
+					searchValide.add(s);
+				}
+			}
+			list = searchValide;
+		}
+		
+		else {
+			list = new ArrayList<>();
+		}
+		
+		if(!list.isEmpty()) {
+			List<SearchResult> sr = new ArrayList<SearchResult>(list);
+			sr.sort((a,b)-> a.getInterrogazione().getTime().compareTo(b.getInterrogazione().getTime()));
+			try {
+				System.out.println(sr.get(Integer.valueOf(l.get(2))-1));
+			}
+			catch(IndexOutOfBoundsException e) {
+				System.out.println("Indice troppo alto");
+				return;
+			}
+		}
+		else {
+			System.out.println("Non ci sono "+info);
+		}
 	}
 
 	private static void richiestaData(List<String> l) throws ClassNotFoundException {
