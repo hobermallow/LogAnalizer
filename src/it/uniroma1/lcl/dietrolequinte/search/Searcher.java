@@ -185,4 +185,9 @@ public class Searcher {
 		}
 	}
 	
+	public static void main(String[] args) throws EndProgramException, ClassNotFoundException {
+		Searcher s = getIstanza(args[0]);
+		System.out.println(s.search(new Utente("jcamins"), "loginout"));
+	}
+	
 }

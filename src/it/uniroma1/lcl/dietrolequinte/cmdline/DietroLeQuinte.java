@@ -81,8 +81,8 @@ public class DietroLeQuinte {
 			list = searcher.search(new Utente(l.get(1)), info);
 		}
 		else if(l.size()==5) {
-			LocalDateTime ldt_prima = LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN);
-			LocalDateTime ldt_dopo = LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN);
+			LocalDateTime ldt_prima = LocalDateTime.parse(l.get(3));
+			LocalDateTime ldt_dopo = LocalDateTime.parse(l.get(4));
 			if(ldt_prima.compareTo(ldt_dopo)>0) {
 				System.out.println("Date nell'ordine sbagliato");
 				return;
@@ -95,7 +95,7 @@ public class DietroLeQuinte {
 				list = searcher.search(new Utente(l.get(1)), "interrogazione");
 			}
 			else {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(5)), LocalTime.MIN));
+				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.parse(l.get(4)), LocalDateTime.parse(l.get(5)));
 			}
 			List<SearchResult> searchValide = new ArrayList<>();
 			for(SearchResult s: list) {
@@ -138,8 +138,8 @@ public class DietroLeQuinte {
 			list = searcher.search(new Utente(l.get(1)), info);
 		}
 		else if(l.size()==5) {
-			LocalDateTime ldt_prima = LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN);
-			LocalDateTime ldt_dopo = LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN);
+			LocalDateTime ldt_prima = LocalDateTime.parse(l.get(3));
+			LocalDateTime ldt_dopo = LocalDateTime.parse(l.get(4));
 			if(ldt_prima.compareTo(ldt_dopo)>0) {
 				System.out.println("Date nell'ordine sbagliato");
 				return;
@@ -176,14 +176,14 @@ public class DietroLeQuinte {
 			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1]);
 		}
 		else if(l.size()==4) {
-			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1], LocalDateTime.of(LocalDate.parse(l.get(2)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN));
+			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1], LocalDateTime.parse(l.get(2)), LocalDateTime.parse(l.get(3)));
 		}
 		else if(l.get(0).contains("interrogazione")){
 			if(l.size()==3) {
 				list = searcher.search(new Utente(l.get(1)), "interrogazione");
 			}
 			else {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.of(LocalDate.parse(l.get(3)), LocalTime.MIN), LocalDateTime.of(LocalDate.parse(l.get(4)), LocalTime.MIN));
+				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.parse(l.get(3)), LocalDateTime.parse(l.get(4)));
 			}
 			List<SearchResult> searchValide = new ArrayList<>();
 			for(SearchResult s: list) {
@@ -208,7 +208,12 @@ public class DietroLeQuinte {
 
 		}
 		else {
-			return Arrays.asList(bis.readLine().replace("query", "interrogazione").split("\\s+"));
+			try {
+				return Arrays.asList(bis.readLine().replace("query", "interrogazione").split("\\s+"));
+			}
+			catch(NullPointerException e) {
+				return Arrays.asList("exit");
+			}
 		}
 	}
 
