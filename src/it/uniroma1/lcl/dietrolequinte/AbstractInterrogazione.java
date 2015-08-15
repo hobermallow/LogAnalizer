@@ -36,5 +36,7 @@ public abstract class AbstractInterrogazione {
 		sb.append("Tempo: "+time+"\n");
 		return sb.toString();
 	}
+	
+	abstract public String stampaPerDietroLeQuinte();
 
 }

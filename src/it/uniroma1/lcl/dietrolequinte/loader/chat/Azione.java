@@ -10,4 +10,10 @@ public class Azione extends InterrogazioneChat {
 		super(u, stringaImmessa, ldt, null, azione, null);
 	}
 
+	@Override
+	public String stampaPerDietroLeQuinte() {
+		return getAzione();
+	}
+	
+
 }

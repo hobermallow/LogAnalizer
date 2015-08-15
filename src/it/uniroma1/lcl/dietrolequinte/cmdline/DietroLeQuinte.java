@@ -116,15 +116,15 @@ public class DietroLeQuinte {
 			List<SearchResult> sr = new ArrayList<SearchResult>(list);
 			sr.sort((a,b)-> a.getInterrogazione().getTime().compareTo(b.getInterrogazione().getTime()));
 			try {
-				System.out.println(sr.get(Integer.valueOf(l.get(2))-1));
+				System.out.println(sr.get(Integer.valueOf(l.get(2))-1).getInterrogazione().stampaPerDietroLeQuinte());
 			}
 			catch(IndexOutOfBoundsException e) {
-				System.out.println("Indice troppo alto");
+				System.out.println("Nessuno");
 				return;
 			}
 		}
 		else {
-			System.out.println("Non ci sono "+info);
+			System.out.println("Nessuno");
 		}
 	}
 
@@ -157,12 +157,12 @@ public class DietroLeQuinte {
 				System.out.println(sr.get(Integer.valueOf(l.get(2))-1).getInterrogazione().getTime());
 			}
 			catch(IndexOutOfBoundsException e) {
-				System.out.println("Indice troppo alto");
+				System.out.println("Nessuno");
 				return;
 			}
 		}
 		else {
-			System.out.println("Non ci sono "+info);
+			System.out.println("Nessuno");
 		}
 		}
 		catch(ArrayIndexOutOfBoundsException e) {

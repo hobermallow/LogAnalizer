@@ -38,4 +38,9 @@ public class Interrogazione extends AbstractInterrogazione {
 		return super.toString()+sb.toString();
 	}
 
+	@Override
+	public String stampaPerDietroLeQuinte() {
+		return getStringaImmessa();
+	}
+
 }

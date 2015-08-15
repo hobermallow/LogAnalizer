@@ -10,4 +10,9 @@ public class Messaggio extends InterrogazioneChat {
 		super(u, stringaImmessa, ldt, null, null, messaggio);
 	}
 
+	@Override
+	public String stampaPerDietroLeQuinte() {
+		return getMessaggio();
+	}
+
 }
