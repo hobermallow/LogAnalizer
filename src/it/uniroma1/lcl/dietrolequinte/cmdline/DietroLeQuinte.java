@@ -204,17 +204,21 @@ public class DietroLeQuinte {
 		if(!batchModeActive) {
 			InputStreamReader isr = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(isr);
-			return Arrays.asList(br.readLine().replace("query", "interrogazione").split("\\s+"));
+			return Arrays.asList(modificaStringaEntrante(br.readLine()).split("\\s+"));
 
 		}
 		else {
 			try {
-				return Arrays.asList(bis.readLine().replace("query", "interrogazione").split("\\s+"));
+				return Arrays.asList(modificaStringaEntrante(bis.readLine()).split("\\s+"));
 			}
 			catch(NullPointerException e) {
 				return Arrays.asList("exit");
 			}
 		}
+	}
+	
+	private static String modificaStringaEntrante(String s) {
+		return s.replace("query", "interrogazione").replace("azioni", "azione").replace("messaggi", "messaggio").replace("messaggioo", "messaggio");
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
