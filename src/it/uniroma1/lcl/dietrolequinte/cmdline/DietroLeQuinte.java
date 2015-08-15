@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,7 +51,7 @@ public class DietroLeQuinte {
 		searcher = Searcher.getIstanza(nomeDirectory);
 	}
 	
-	private static void cicloProgramma() throws IOException, ClassNotFoundException {
+	private static void cicloProgramma() throws IOException, ClassNotFoundException, EndProgramException {
 		
 		for(;;) {
 			List<String> l = prendiInput();
@@ -64,7 +65,7 @@ public class DietroLeQuinte {
 		
 	}
 	
-	private static void analizzaInput(List<String> l) throws ClassNotFoundException {
+	private static void analizzaInput(List<String> l) throws ClassNotFoundException, EndProgramException {
 		if(l.get(0).contains("num")) {
 			richiestaNum(l);
 		}
@@ -74,15 +75,15 @@ public class DietroLeQuinte {
 		else richiestaGenerica(l);
 	}
 
-	private static void richiestaGenerica(List<String> l) throws ClassNotFoundException {
+	private static void richiestaGenerica(List<String> l) throws ClassNotFoundException, EndProgramException {
 		Collection<SearchResult> list;
 		String info = l.get(0);
 		if(l.size()==3) {
 			list = searcher.search(new Utente(l.get(1)), info);
 		}
 		else if(l.size()==5) {
-			LocalDateTime ldt_prima = LocalDateTime.parse(l.get(3));
-			LocalDateTime ldt_dopo = LocalDateTime.parse(l.get(4));
+			LocalDateTime ldt_prima = parseDataOra(l.get(3));
+			LocalDateTime ldt_dopo = parseDataOra(l.get(4));
 			if(ldt_prima.compareTo(ldt_dopo)>0) {
 				System.out.println("Date nell'ordine sbagliato");
 				return;
@@ -95,7 +96,7 @@ public class DietroLeQuinte {
 				list = searcher.search(new Utente(l.get(1)), "interrogazione");
 			}
 			else {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.parse(l.get(4)), LocalDateTime.parse(l.get(5)));
+				list = searcher.search(new Utente(l.get(1)), "interrogazione", parseDataOra(l.get(4)), parseDataOra(l.get(5)));
 			}
 			List<SearchResult> searchValide = new ArrayList<>();
 			for(SearchResult s: list) {
@@ -127,7 +128,7 @@ public class DietroLeQuinte {
 		}
 	}
 
-	private static void richiestaData(List<String> l) throws ClassNotFoundException {
+	private static void richiestaData(List<String> l) throws ClassNotFoundException, EndProgramException {
 		Collection<SearchResult> list;
 		try {
 			String info = l.get(0).split("_")[2];
@@ -138,8 +139,8 @@ public class DietroLeQuinte {
 			list = searcher.search(new Utente(l.get(1)), info);
 		}
 		else if(l.size()==5) {
-			LocalDateTime ldt_prima = LocalDateTime.parse(l.get(3));
-			LocalDateTime ldt_dopo = LocalDateTime.parse(l.get(4));
+			LocalDateTime ldt_prima = parseDataOra(l.get(3));
+			LocalDateTime ldt_dopo = parseDataOra(l.get(4));
 			if(ldt_prima.compareTo(ldt_dopo)>0) {
 				System.out.println("Date nell'ordine sbagliato");
 				return;
@@ -170,20 +171,20 @@ public class DietroLeQuinte {
 		}
 	}	
 
-	private static void richiestaNum(List<String> l) throws ClassNotFoundException {
+	private static void richiestaNum(List<String> l) throws ClassNotFoundException, EndProgramException {
 		Collection<SearchResult> list;
 		if(l.size()==2) {
 			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1]);
 		}
 		else if(l.size()==4) {
-			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1], LocalDateTime.parse(l.get(2)), LocalDateTime.parse(l.get(3)));
+			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1], parseDataOra(l.get(2)), parseDataOra(l.get(3)));
 		}
 		else if(l.get(0).contains("interrogazione")){
 			if(l.size()==3) {
 				list = searcher.search(new Utente(l.get(1)), "interrogazione");
 			}
 			else {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione", LocalDateTime.parse(l.get(3)), LocalDateTime.parse(l.get(4)));
+				list = searcher.search(new Utente(l.get(1)), "interrogazione", parseDataOra(l.get(3)), parseDataOra(l.get(4)));
 			}
 			List<SearchResult> searchValide = new ArrayList<>();
 			for(SearchResult s: list) {
@@ -220,8 +221,23 @@ public class DietroLeQuinte {
 	private static String modificaStringaEntrante(String s) {
 		return s.replace("query", "interrogazione").replace("azioni", "azione").replace("messaggi", "messaggio").replace("messaggioo", "messaggio");
 	}
+	
+	private static LocalDateTime parseDataOra(String s) throws EndProgramException {
+		try {
+			return LocalDateTime.parse(s);
+		}
+		catch(DateTimeParseException e) {
+			try {
+				return LocalDateTime.of(LocalDate.parse(s), LocalTime.MIN);
+			}
+			catch(Exception ee) {
+				System.out.println("Data nel formato sbagliato");
+				throw new EndProgramException();
+			}
+		}
+	}
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException, EndProgramException {
 		DietroLeQuinte dlq;
 		try {
 			dlq = new DietroLeQuinte(args[0], args[1]);
