@@ -41,7 +41,11 @@ public class Searcher {
 			}
 		return istanza;
 	}
-
+	/**
+	 * Costruttore, un Searcher e' costruito dando in input un percorso
+	 * @param s stringa rappresentante il percorso
+	 * @throws EndProgramException
+	 */
 	private Searcher(String s) throws EndProgramException 
 	{
 		try
@@ -91,7 +95,7 @@ public class Searcher {
 	
 	
 	/**
-	 * 
+	 * Cerca i risultati secondo alcuni parametri
 	 * @param u Utente da cercare
 	 * @param informazione da cercare
 	 * @return ritorna una collezione iterabile di SearchResult
@@ -102,12 +106,12 @@ public class Searcher {
 		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
 		
 		for (AbstractLoader l: loader.getLoaders())
-			metodo(u, info, l, output);
+			searchGenerico(u, info, l, output);
 		
 		return output;
 	}
 	/**
-	 * 
+	 * Cerca i risultati secondo alcuni parametri
 	 * @param u Utente da cercare
 	 * @param info informazione da cercare
 	 * @param file file in cui cercare
@@ -122,17 +126,17 @@ public class Searcher {
 		for (AbstractLoader l: loader.getLoaders())
 		{
 			if(l.getNomeFile().equals(file))
-				metodo(u, info, l, output);
+				searchGenerico(u, info, l, output);
 		}
 		return output;
 		
 	} 
 	/**
-	 * 
+	 * Cerca i risultati secondo alcuni parametri entro un intervallo di date
 	 * @param u Utente da cercare
 	 * @param info informazione da cercare
-	 * @param begin 
-	 * @param end
+	 * @param begin data iniziale
+	 * @param end data finale
 	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
@@ -141,18 +145,18 @@ public class Searcher {
 		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
 	
 		for (AbstractLoader l: loader.getLoaders())
-			metodo(u, info, l, output);
+			searchGenerico(u, info, l, output);
 		
 		return filterDate(output, begin, end);
 	}
 	/**
-	 * 
-	 * @param u User to look
-	 * @param info 
-	 * @param file
-	 * @param begin
-	 * @param end
-	 * @return
+	 * Cerca i risultati secondo alcuni parametri entro un intervallo di date
+	 * @param u Utente da cercare
+	 * @param info informazione da cercare
+	 * @param file file in cui cercare
+	 * @param begin data iniziale
+	 * @param end data finale
+	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
 	public Collection<SearchResult> search(Utente u, String info, String file, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
@@ -163,6 +167,13 @@ public class Searcher {
 		
 	}
 	
+	/**
+	 * Filtra i risulati entro un intervallo di date 
+	 * @param risultati lista di SearchResult
+	 * @param begin data iniziale
+	 * @param end data finale
+	 * @return ritorna una collezione iterabile di SearchResult
+	 */
 	private Collection<SearchResult> filterDate(List<SearchResult> risultati, LocalDateTime begin, LocalDateTime end)
 	{
 		ArrayList<SearchResult> ris= new ArrayList<SearchResult>();
@@ -175,8 +186,15 @@ public class Searcher {
 		return ris;
 	}
 	
-	
-	private void metodo(Utente u, String info, AbstractLoader l, Collection<SearchResult> output) throws ClassNotFoundException
+	/**
+	 * Filtra una lista di SearchResult secondo alcuni parametri
+	 * @param u Utente da cercare
+	 * @param info informazione da cercare
+	 * @param l Loader in cui cercare
+	 * @param output ritorna una collezione iterabile di SearchResult
+	 * @throws ClassNotFoundException
+	 */
+	private void searchGenerico(Utente u, String info, AbstractLoader l, Collection<SearchResult> output) throws ClassNotFoundException
 	{
 		if(l.checkValidSearch(info))
 		{
@@ -189,11 +207,6 @@ public class Searcher {
 						output.add(new SearchResult(i));
 				}
 		}
-	}
-	
-	public static void main(String[] args) throws EndProgramException, ClassNotFoundException {
-		Searcher s = getIstanza(args[0]);
-		System.out.println(s.search(new Utente("jcamins"), "loginout"));
 	}
 	
 }
