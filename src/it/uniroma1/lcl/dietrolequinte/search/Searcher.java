@@ -15,7 +15,7 @@ import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.Loader;
 
 /**
- * 
+ * Questa classe legge la struttura dati creata dalla classe Loader e risponde ad una determinata sequenza di query
  * @author Steve
  *
  */
@@ -25,6 +25,12 @@ public class Searcher {
 	List<AbstractLoader> listaLoader;
 	private Loader loader;
 	
+	/**
+	 * 
+	 * @param s percorso del File
+	 * @return ritorna l'unica istanza ammessa dalla classe
+	 * @throws EndProgramException
+	 */
 	static public Searcher getIstanza(String s) throws EndProgramException
 	{
 		if(istanza==null)
@@ -35,7 +41,7 @@ public class Searcher {
 			}
 		return istanza;
 	}
-	
+
 	private Searcher(String s) throws EndProgramException 
 	{
 		try
@@ -51,7 +57,7 @@ public class Searcher {
 	
 	/**
 	 * 
-	 * @return return a collection Iterable of all Users
+	 * @return ritorna una collezione iterabile di tutti Utenti
 	 */
 	public Collection<Utente> getUsers()
 	{
@@ -68,8 +74,8 @@ public class Searcher {
 	}
 	/**
 	 * 
-	 * @param s file to look
-	 * @return return a collection Iterable of all Users in the file 
+	 * @param s File da cui cercare
+	 * @return ritorna una collezione iterabile di tutti Utenti all'interno del file fornito in input
 	 */
 	public Collection<Utente> getUsers(String s)
 	{
@@ -86,9 +92,9 @@ public class Searcher {
 	
 	/**
 	 * 
-	 * @param u User to search
-	 * @param Information to search
-	 * @return return a collection iterable of SearchResult
+	 * @param u Utente da cercare
+	 * @param informazione da cercare
+	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
 	public Collection<SearchResult> search(Utente u, String info) throws ClassNotFoundException 
@@ -102,10 +108,10 @@ public class Searcher {
 	}
 	/**
 	 * 
-	 * @param u User to look
-	 * @param info info to look
-	 * @param file file to look
-	 * @return return an Iterable Collection of the search
+	 * @param u Utente da cercare
+	 * @param info informazione da cercare
+	 * @param file file in cui cercare
+	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
 	public Collection<SearchResult> search(Utente u, String info, String file) throws ClassNotFoundException
@@ -123,11 +129,11 @@ public class Searcher {
 	} 
 	/**
 	 * 
-	 * @param u User to look
-	 * @param info info to look
+	 * @param u Utente da cercare
+	 * @param info informazione da cercare
 	 * @param begin 
 	 * @param end
-	 * @return
+	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
 	public Collection<SearchResult> search(Utente u, String info, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
