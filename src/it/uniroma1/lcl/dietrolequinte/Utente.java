@@ -1,5 +1,14 @@
 package it.uniroma1.lcl.dietrolequinte;
 
+/**
+ * @author onoda
+ * Classe che rappresenta un generico utente, il cui "nome" 
+ * compare come campo di tipo stringa all'interno della classe.
+ * La classe implementa l'intefaccia Comparable<Utente>, in modo da
+ * verificare l'uguaglianza di due utenti con esattamente lo stesso
+ * nome
+ *
+ */
 public class Utente implements Comparable<Utente> {
 	
 	private String nomeUtente;
@@ -10,6 +19,9 @@ public class Utente implements Comparable<Utente> {
 		
 	}
 
+	/**
+	 * @return il nome dell'utente
+	 */
 	public String getNomeUtente() {
 		return nomeUtente;
 	}
