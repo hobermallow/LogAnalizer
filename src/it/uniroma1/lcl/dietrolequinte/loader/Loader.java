@@ -13,6 +13,11 @@ import it.uniroma1.lcl.dietrolequinte.exception.DirectoryNotFoundException;
 import it.uniroma1.lcl.dietrolequinte.exception.EmptyDirectoryException;
 import it.uniroma1.lcl.dietrolequinte.exception.NotADirectoryException;
 
+/**
+ * Classe che si occupa di leggere dei file in input e del caricamento delle informazioni in memoria
+ * @author Steve
+ *
+ */
 public class Loader {
 	
 	private String directory;
@@ -139,24 +144,12 @@ public class Loader {
 		return l.size();
 	}
 	
+	/**
+	 * 
+	 * @return un array dei tipi di Loader permessi __
+	 */
 	public List<String> getLoadersTypes() {
 		return Arrays.asList("query","chat");
-	}
-	
-	
-	/**
-	 * @param args
-	 * @throws EmptyDirectoryException 
-	 * @throws NotADirectoryException 
-	 * @throws DirectoryNotFoundException 
-	 */
-	public static void main(String[] args) throws DirectoryNotFoundException, NotADirectoryException, EmptyDirectoryException {
-		Loader l = new Loader(args[0]);
-		System.out.println(l);
-		
-		
-	}
-
-	
+	}	
 
 }

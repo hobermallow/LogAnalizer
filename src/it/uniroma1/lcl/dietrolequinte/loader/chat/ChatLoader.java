@@ -10,6 +10,11 @@ import it.uniroma1.lcl.dietrolequinte.Utente;
 import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.chat.Messaggio;
 
+/**
+ * 
+ * @author Steve
+ *
+ */
 public class ChatLoader extends AbstractLoader {
 	
 
@@ -57,14 +62,5 @@ public class ChatLoader extends AbstractLoader {
 		
 		}
 	}
-	
-	
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		File f = new File("/home/onoda/Documents/progetto_metodologie2015/esempio_test_studenti/dirLogs/chat.evergreen.01.01-Thu-2015.log");
-		ChatLoader cl = new ChatLoader(f);
-		System.out.println(cl.getInterrogazioni().stream().filter(i->i.getUser().equals(new Utente("jcamins"))).count());
-	}
-
-	
 
 }

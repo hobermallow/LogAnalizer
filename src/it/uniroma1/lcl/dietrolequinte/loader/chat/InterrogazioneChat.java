@@ -5,6 +5,11 @@ import java.time.LocalDateTime;
 import it.uniroma1.lcl.dietrolequinte.AbstractInterrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 
+/**
+ * Classe astratta che definisce i log di chat del tipo IRC
+ * @author Steve
+ *
+ */
 public abstract class InterrogazioneChat extends AbstractInterrogazione {
 	
 	private String ipAddress, azione, messaggio;

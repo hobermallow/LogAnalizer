@@ -19,7 +19,7 @@ public class SearchResult {
 	
 	/**
 	 * 
-	 * @return ritorna AbstractInterrogazione su cui e' costruito l'oggetto
+	 * @return ritorna l'oggetto AbstractInterrogazione su cui e' costruito l'oggetto
 	 */
 	public AbstractInterrogazione getInterrogazione(){return i;}
 	

@@ -17,7 +17,11 @@ import java.util.zip.GZIPInputStream;
 import it.uniroma1.lcl.dietrolequinte.AbstractInterrogazione;
 import it.uniroma1.lcl.dietrolequinte.Utente;
 
-
+/**
+ * Classe che definisce le caratteristiche di un Loader
+ * @author Steve
+ *
+ */
 public abstract class AbstractLoader {
 	
 	protected TreeSet<Utente> insiemeUtenti;
@@ -46,7 +50,7 @@ public abstract class AbstractLoader {
 	}
 	
 	/**
-	 * @return list of allowed search words for
+	 * @return lista delle parole permesse alla ricerca nella 
 	 * the specific type of log file
 	 */
 	abstract protected  List<String> getListValidSearch();
@@ -177,12 +181,16 @@ public abstract class AbstractLoader {
 		return l.size();
 	}
 	
+	/**
+	 * 
+	 * @return la grandezza del file
+	 */
 	public int getFileSize() {
 		return (int)file.length();
 	}
 
 	/**
-	 * @return the linesNumber
+	 * @return il numero delle linee
 	 */
 	public Integer getLinesNumber() {
 		return linesNumber;

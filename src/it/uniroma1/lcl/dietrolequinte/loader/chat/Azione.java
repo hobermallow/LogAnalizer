@@ -4,6 +4,11 @@ import java.time.LocalDateTime;
 
 import it.uniroma1.lcl.dietrolequinte.Utente;
 
+/**
+ * 
+ * @author Steve
+ *
+ */
 public class Azione extends InterrogazioneChat {
 
 	public Azione(Utente u, String stringaImmessa, LocalDateTime ldt, String azione) {
