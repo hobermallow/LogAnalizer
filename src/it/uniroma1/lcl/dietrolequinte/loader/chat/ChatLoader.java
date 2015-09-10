@@ -11,7 +11,7 @@ import it.uniroma1.lcl.dietrolequinte.loader.AbstractLoader;
 import it.uniroma1.lcl.dietrolequinte.loader.chat.Messaggio;
 
 /**
- * Classe che si occupa di leggere il file in input, caricarlo in memoria e analizzarlo
+ * Classe che si occupa di leggere il file in input di tipo IRC, caricarlo in memoria e analizzarlo
  * @author Steve
  *
  */
