@@ -3,21 +3,32 @@ package it.uniroma1.lcl.dietrolequinte;
 import java.time.LocalDateTime;
 
 /**
- * @author onoda
  * La classe rappresenta una generica "interrogazione", intesa come riga
- * di un file dilog, contente un generico utente, la stringa immessa
+ * di un file di log, contente un generico utente, la stringa immessa
  * e una data
- *
+ * 
+ * @author onoda
  */
 public abstract class AbstractInterrogazione {
 	
+	/**
+	 * Utente che effettua l'interrogazione
+	 */
 	private Utente user;
+	
+	/**
+	 * Stringa immessa dall'utente
+	 */
 	private String stringaImmessa;
+	
+	/**
+	 * Data-Ora dell'interrogazione
+	 */
 	private LocalDateTime time;
 	
 	/**
 	 * @param u Utente
-	 * @param stringaImmessa Stringa che compare nela riga
+	 * @param stringaImmessa Stringa che compare nella riga
 	 * @param ldt Oggetto LocalDateTime
 	 */
 	public AbstractInterrogazione(Utente u, String stringaImmessa, LocalDateTime ldt) {
@@ -28,6 +39,8 @@ public abstract class AbstractInterrogazione {
 	}
 
 	/**
+	 * Getter per l'Utente dell'interrogazione
+	 * 
 	 * @return l'utente
 	 */
 	public Utente getUser() {
@@ -35,6 +48,8 @@ public abstract class AbstractInterrogazione {
 	}
 
 	/**
+	 * Getter per la stringa immessa dall'utente
+	 * 
 	 * @return la stringa immessa
 	 */
 	public String getStringaImmessa() {
@@ -42,6 +57,8 @@ public abstract class AbstractInterrogazione {
 	}
 
 	/**
+	 * Getter per la data dell'interrogazione
+	 * 
 	 * @return la data dell'interrogazione
 	 */
 	public LocalDateTime getTime() {
@@ -61,6 +78,9 @@ public abstract class AbstractInterrogazione {
 	}
 	
 	/**
+	 * Ciascuna "interrogazione" implementerà il metodo in maniera diversa, a seconda delle
+	 * necessità del programmatore
+	 * 
 	 * @return la stringa che deve essere stampata, a riga di comando, dall'eseguibile
 	 * che interroga l'analizzatore di log
 	 */

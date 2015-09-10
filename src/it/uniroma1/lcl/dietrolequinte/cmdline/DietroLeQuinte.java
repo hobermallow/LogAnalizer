@@ -22,16 +22,33 @@ import it.uniroma1.lcl.dietrolequinte.search.Searcher;
 import it.uniroma1.lcl.dietrolequinte.loader.query.Interrogazione;;
 
 /**
- * @author onoda
  * Classe eseguibile, che implementa un sistema di interogazione dell'analizzatore
- * di file di log, sia in modalit√† batch sia in modalit√† interattiva da terminale
+ * di file di log, sia in modalit√† batch sia in modalit‡† interattiva da terminale
+ * 
+ * @author onoda
  *
  */
 public class DietroLeQuinte {
 	
+	/**
+	 * Stringa rappresentante il nome completo del percorso della cartella
+	 */
 	private String nomeDirectory;
+	
+	/**
+	 * Campo statico rappresentante il Searcher, cui questa classe far‡ riferimento
+	 * per cercare attraverso i file di log
+	 */
 	static private Searcher searcher;
+	
+	/**
+	 * Percorso completo del file dei comandi
+	 */
 	private String nomeFileComandi;
+	
+	/**
+	 * File dei comandi
+	 */
 	private File fileComandi;
 	
 	/**
@@ -39,13 +56,17 @@ public class DietroLeQuinte {
 	 * altrimenti falsa
 	 */
 	private boolean batchModeActive = false;
+	
+	/**
+	 * Stream e Reader di supporto
+	 */
 	private FileInputStream fis;
 	private InputStreamReader isr;
 	private BufferedReader bis;
 	
 	/**
-	 * @param nomeDirectory
-	 * @param nomeFileComandi
+	 * @param nomeDirectory percorso completo della directory in cui cercare
+	 * @param nomeFileComandi percorso completo del file dei comandi
 	 * @throws EndProgramException fine del programma (es cartella dei file di log
 	 * non esistente, non e' una cartella...)
 	 * @throws FileNotFoundException file dei comandi non trovato
@@ -62,19 +83,26 @@ public class DietroLeQuinte {
 		batchModeActive = true;
 
 	}
+	
+	/**
+	 * @param nomeDirectory percorso completo della directory in cui cercare
+	 * @throws EndProgramException
+	 */
 	private DietroLeQuinte(String nomeDirectory) throws EndProgramException {
 		this.nomeDirectory = nomeDirectory;
 		searcher = Searcher.getIstanza(nomeDirectory);
 	}
 	
 	/**
+	 * Ciclo infinito all'interno del quale si svolge il programma,
+	 * ovvero la gestione dell'input, l'eventuale uscita dal programma
+	 * e l'esecuzione del comando
+	 * 
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @throws EndProgramException
 	 * 
-	 * Ciclo infinito all'interno del quale si svolge il programma,
-	 * ovvero la gestione dell'input, l'eventuale uscita dal programma
-	 * e l'esecuzione del comando
+	 * 
 	 */
 	private void cicloProgramma() throws IOException, ClassNotFoundException, EndProgramException {
 		
@@ -91,12 +119,14 @@ public class DietroLeQuinte {
 	}
 	
 	/**
+	 * Analizza il comando inserito, richiamando il metodo specifico a seconda del tipo
+	 * di comando inserito (richiesta numerica, richiesta data e richiesta generica)
+	 * 
 	 * @param l lista di stringhe rappresentanti i vari elementi della linea di comando
 	 * inserita
 	 * @throws ClassNotFoundException
 	 * @throws EndProgramException
-	 * Analizza il comando inserito, richiamando il metodo specifico a seconda del tipo
-	 * di comando inserito (richiesta numerica, richiesta data e richiesta generica)
+	 * 
 	 */
 	private void analizzaInput(List<String> l) throws ClassNotFoundException, EndProgramException {
 		if(l.get(0).contains("num")) {
@@ -109,11 +139,13 @@ public class DietroLeQuinte {
 	}
 
 	/**
+	 * Il metodo analizza un comando generico, restituendo la versione stampabile della
+	 * specifica informazione richiesta nel comando
+	 * 
 	 * @param l lista delle stringhe del comando inserito
 	 * @throws ClassNotFoundException
 	 * @throws EndProgramException
-	 * Il metodo analizza un comando generico, restituendo la versione stampabile della
-	 * specifica informazione richiesta nel comando
+	 * 
 	 */
 	private void richiestaGenerica(List<String> l) throws ClassNotFoundException, EndProgramException {
 		Collection<SearchResult> list;
@@ -169,11 +201,13 @@ public class DietroLeQuinte {
 	}
 
 	/**
+	 * Gestione delle richieste di tipo data. Stampa, se disponibile, la data
+	 * dell'informazione cercata
+	 * 
 	 * @param l lista delle stringhe del comando inserito
 	 * @throws ClassNotFoundException
 	 * @throws EndProgramException
-	 * Gestione delle richieste di tipo data. Stampa, se disponibile, la data
-	 * dell'informazione cercata
+	 * 
 	 */
 	private void richiestaData(List<String> l) throws ClassNotFoundException, EndProgramException {
 		Collection<SearchResult> list;
@@ -219,12 +253,14 @@ public class DietroLeQuinte {
 	}	
 
 	/**
-	 * @param l lista delle stringhe del comando inserito
-	 * @throws ClassNotFoundException
-	 * @throws EndProgramException
 	 * Gestione delle richieste di tipo numerico. Crea una lista dei risultati di
 	 * ricerca corrispondenti ai parametri presi in argomento e stampa a video la
 	 * size della lista
+	 * 
+	 * @param l lista delle stringhe del comando inserito
+	 * @throws ClassNotFoundException
+	 * @throws EndProgramException
+	 * 
 	 */
 	private void richiestaNum(List<String> l) throws ClassNotFoundException, EndProgramException {
 		Collection<SearchResult> list;
@@ -257,10 +293,12 @@ public class DietroLeQuinte {
 	}
 
 	/**
+	 * Gestisce l'input del comando da utilizzare. Implementa sia il caso in cui si stia
+	 * utilizzando la modalit‡† interattiva, sia la modalit‡† batch
+	 * 
 	 * @return la  lista delle "parole" contenute nella linea di comando
 	 * @throws IOException
-	 * Gestisce l'input del comando da utilizzare. Implementa sia il caso in cui si stia
-	 * utilizzando la modalit√† interattiva, sia la modalit√† batch
+	 * 
 	 */
 	private List<String> prendiInput() throws IOException {
 		if(!batchModeActive) {
@@ -280,24 +318,28 @@ public class DietroLeQuinte {
 	}
 	
 	/**
-	 * @param s stringa da modificare
-	 * @return
-	 * Il metodo √® d'ausilio all'uso della reflection. Modifica il tipo
+	 * Il metodo Ë d'ausilio all'uso della reflection. Modifica il tipo
 	 * d'informazione del comando in modo da farlo corrispondere a quello di una
 	 * delle classi che ereditano da AbstractInterrogzione (ad esempio, "azioni" diviene "azione"). Da modificare nel caso 
 	 * s'aggiungano altri comandi
+	 * 
+	 * @param s stringa da modificare
+	 * @return
+	 * 
 	 */
 	private String modificaStringaEntrante(String s) {
 		return s.replace("query", "interrogazione").replace("azioni", "azione").replace("messaggi", "messaggio").replace("messaggioo", "messaggio");
 	}
 	
 	/**
-	 * @param s Stringa da cui trarre la data e/o ora
-	 * @return
-	 * @throws EndProgramException
 	 * Metodo che gestisce il parsing di una stringa, restituendo un oggetto LocalDateTime
 	 * corrispondente alla stringa in input. Gestisce due tipi di formato,
 	 * "2014-02-02" o "2013-02-22T18:03:03"
+	 * 
+	 * @param s Stringa da cui trarre la data e/o ora
+	 * @return
+	 * @throws EndProgramException
+	 * 
 	 */
 	private LocalDateTime parseDataOra(String s) throws EndProgramException {
 		try {
@@ -315,6 +357,8 @@ public class DietroLeQuinte {
 	}
 
 	/**
+	 * Getter per il nome della directory su cui si sta lavorando
+	 * 
 	 * @return il nome della directory dei file di log
 	 */
 	public  String getNomeDirectory() {
@@ -322,6 +366,8 @@ public class DietroLeQuinte {
 	}
 
 	/**
+	 * Getter per il file dei comandi utilizzato
+	 * 
 	 * @return nome del file dei comandi per la modalit√† batch
 	 */
 	public  String getNomeFileComandi() {
@@ -329,13 +375,15 @@ public class DietroLeQuinte {
 	}
 
 	/**
+	 * Prova a costruire un oggetto di tipo DietroLeQuinte, a partire da due argomenti
+	 * Altrimenti, prova a costruirlo con un solo argomento (modalit‡† interattiva).
+	 * A qual punto richiama il metodo cicloProgramma()
+	 * 
 	 * @param args argomenti in input da linea di comando
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @throws EndProgramException
-	 * Prova a costruire un oggetto di tipo DietroLeQuinte, a partire da due argomenti
-	 * Altrimenti, prova a costruirlo con un solo argomento (modalit√† interattiva).
-	 * A qual punto richiama il metodo cicloProgramma()
+	 * 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException, EndProgramException {
 		DietroLeQuinte dlq;
