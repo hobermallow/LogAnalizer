@@ -23,11 +23,11 @@ public class Interrogazione extends AbstractInterrogazione {
 	
 	/**
 	 * 
-	 * @param u
-	 * @param stringaImmessa
-	 * @param ldt
-	 * @param linkCliccato
-	 * @param posizioneLink
+	 * @param u utente in formato Utente
+	 * @param stringaImmessa stringa immessa dall'utente
+	 * @param ldt data in formato LocalDateTime 
+	 * @param linkCliccato indirizzo del link cliccato
+	 * @param posizioneLink posizione del link nella pagina rispetto agli altri
 	 */
 	public Interrogazione(Utente u, String stringaImmessa, LocalDateTime ldt, String linkCliccato, Integer posizioneLink) {
 		super(u, stringaImmessa, ldt);
@@ -37,9 +37,9 @@ public class Interrogazione extends AbstractInterrogazione {
 	
 	/**
 	 * 
-	 * @param u
-	 * @param stringaImmessa
-	 * @param ldt
+	 * @param u utente in formato Utente
+	 * @param stringaImmessa stringa immessa dall'utente
+	 * @param ldt data in formato LocalDateTime 
 	 */
 	public Interrogazione(Utente u, String stringaImmessa, LocalDateTime ldt) {
 		super(u, stringaImmessa, ldt);
@@ -58,7 +58,7 @@ public class Interrogazione extends AbstractInterrogazione {
 	
 	/**
 	 * 
-	 * @return 
+	 * @return la posizione del link nella pagina rispetto agli altri
 	 */
 	public int getPosizioneLink() {
 		return posizioneLink;
