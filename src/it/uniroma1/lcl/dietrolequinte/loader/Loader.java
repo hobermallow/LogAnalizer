@@ -150,6 +150,11 @@ public class Loader {
 	 */
 	public List<String> getLoadersTypes() {
 		return Arrays.asList("query","chat");
-	}	
+	}
+	
+	public static void main(String[] args) throws DirectoryNotFoundException, NotADirectoryException, EmptyDirectoryException {
+		Loader loader = new Loader(args[0]);
+		System.out.println(loader);
+	}
 
 }
