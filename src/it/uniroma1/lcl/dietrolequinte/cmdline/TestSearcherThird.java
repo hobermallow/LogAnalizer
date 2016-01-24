@@ -1,5 +1,3 @@
-package it.uniroma1.lcl.dietrolequinte.cmdline;
-
 import it.uniroma1.lcl.dietrolequinte.search.Searcher;
 import it.uniroma1.lcl.dietrolequinte.search.SearchResult;
 import it.uniroma1.lcl.dietrolequinte.Utente;
@@ -27,16 +25,16 @@ public class TestSearcherThird {
 		    size = null;
 		    try {
 			if (j == 0) {
-			    size = searcher.search(u, types[i]).size();
+			    size = searcher.search(types[i], u).size();
 			}
 			else if (j == 1) {
-			    size = searcher.search(u, types[i], LocalDateTime.parse(args[2]), LocalDateTime.parse(args[3])).size();
+			    size = searcher.search(types[i], u, LocalDateTime.parse(args[2]), LocalDateTime.parse(args[3])).size();
 			}
 			else if (j == 2) {
-			    size = searcher.search(u, types[i], args[2]).size();
+			    size = searcher.search(types[i], u, args[2]).size();
 			}
 			else {
-			    size = searcher.search(u, types[i], args[2], LocalDateTime.parse(args[3]), LocalDateTime.parse(args[4])).size();
+			    size = searcher.search(types[i], u, args[2], LocalDateTime.parse(args[3]), LocalDateTime.parse(args[4])).size();
 			}
 			System.out.println("Dimensione per tipo " + types[i] + " e modalita' " + j + " per l'utente " + u.toString() + ": " + size);
 		    }
