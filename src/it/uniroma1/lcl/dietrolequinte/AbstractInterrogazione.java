@@ -78,8 +78,8 @@ public abstract class AbstractInterrogazione {
 	}
 	
 	/**
-	 * Ciascuna "interrogazione" implementerà il metodo in maniera diversa, a seconda delle
-	 * necessità del programmatore
+	 * Ciascuna "interrogazione" implementerï¿½ il metodo in maniera diversa, a seconda delle
+	 * necessitï¿½ del programmatore
 	 * 
 	 * @return la stringa che deve essere stampata, a riga di comando, dall'eseguibile
 	 * che interroga l'analizzatore di log
