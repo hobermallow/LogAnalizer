@@ -1,0 +1,168 @@
+2015-04-27T01:52:17  *** jeffdavi1 is now known as jeffdavis
+2015-04-27T01:52:45  *** jeffdavis has joined #evergreen
+2015-04-27T03:06:46  *** gsams has quit IRC
+2015-04-27T03:08:03  *** gsams has joined #evergreen
+2015-04-27T05:03:53  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-27T07:34:58  *** rjackson_isl has joined #evergreen
+2015-04-27T07:39:08  *** graced has joined #evergreen
+2015-04-27T07:39:11  *** sarabee has joined #evergreen
+2015-04-27T07:59:22  <csharp> @hate the EDI ruby bits
+2015-04-27T07:59:22  <pinesol_green> csharp: The operation succeeded.  csharp hates the EDI ruby bits.
+2015-04-27T07:59:22  <csharp> pinesol_green: you there?
+2015-04-27T07:59:23  <pinesol_green> csharp: Leave me alone, I'm busy right now.
+2015-04-27T07:59:37  *** ericar has joined #evergreen
+2015-04-27T07:59:38  <csharp> pinesol_green: obviously
+2015-04-27T07:59:38  <pinesol_green> csharp: <shaggy>We're, like, doomed.</shaggy>
+2015-04-27T08:04:49  *** jboyer-isl has joined #evergreen
+2015-04-27T08:09:39  <csharp> all the ruby pieces are so variable, it's proving nearly impossible to script EDI installation
+2015-04-27T08:27:44  *** akilsdonk has joined #evergreen
+2015-04-27T08:32:38  *** pmurray_away is now known as pmurray
+2015-04-27T08:35:17  *** pmurray has quit IRC
+2015-04-27T08:35:40  *** mmorgan has joined #evergreen
+2015-04-27T08:44:02  *** pmurray_away has joined #evergreen
+2015-04-27T08:44:26  *** pmurray_away is now known as Guest1760
+2015-04-27T08:45:25  *** RoganH has joined #evergreen
+2015-04-27T08:45:58  *** Guest1760 is now known as pmurray
+2015-04-27T08:46:09  *** pmurray has joined #evergreen
+2015-04-27T08:49:20  *** Shae has joined #evergreen
+2015-04-27T08:54:18  *** Dyrcona has joined #evergreen
+2015-04-27T09:17:45  *** ningalls_ has quit IRC
+2015-04-27T09:23:16  *** Newziky has joined #evergreen
+2015-04-27T09:24:30  *** ningalls_ has joined #evergreen
+2015-04-27T09:25:55  *** maryj has joined #evergreen
+2015-04-27T09:39:30  *** phasefx__ is now known as phasefx
+2015-04-27T09:43:38  *** yboston has joined #evergreen
+2015-04-27T10:00:13  *** mrpeters has joined #evergreen
+2015-04-27T10:12:02  *** mrpeters has quit IRC
+2015-04-27T10:26:51  <mmorgan> Hmm, webby seems to be sleeping in this morning. I can't login.
+2015-04-27T10:30:04  <kmlussier> mmorgan: I had that problem last week, but then it suddently started working.
+2015-04-27T10:30:07  <kmlussier> I can login now.
+2015-04-27T10:31:10  <mmorgan> Ah, ok. I had to reload the page, but I'm in now :)
+2015-04-27T10:33:06  <eeevil> it's back now
+2015-04-27T10:34:11  <mmorgan> Thanks!
+2015-04-27T11:05:39  <jeff> csharp: are you trying to script edi_translator install, or package?
+2015-04-27T11:13:40  <csharp> jeff: edi_translator install
+2015-04-27T11:14:01  <csharp> I pulled it off for my local server, but was trying for something more portable
+2015-04-27T11:16:16  <pinesol_green> [evergreen|Jason Stephenson] LP 1444130: Add max_chunk_size guards to Holds.pm. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7ec3ea5>
+2015-04-27T11:21:12  <jeff> csharp: are you trying to script or package?
+2015-04-27T11:21:21  <jeff> (i think you answered the part i already knew)
+2015-04-27T11:25:49  *** TaraC has quit IRC
+2015-04-27T11:27:10  *** TaraC has joined #evergreen
+2015-04-27T11:30:13  <jeff> (and upon re-reading, i think you said "script" to begin with -- oops)
+2015-04-27T11:30:34  <csharp> jeff: script for now
+2015-04-27T11:31:07  <csharp> honestly, I'm hoping "generate EDI within A/T" feature is completed before packaging comes up ;-)
+2015-04-27T11:31:47  <jeff> --bwlimit does not do wonders for rsync's --progress accuracy
+2015-04-27T11:31:54  <csharp> jeff: this is what I ended up with for now: http://paste.fedoraproject.org/215851/14868814/
+2015-04-27T11:32:09  <jeff> very xkcd 612
+2015-04-27T11:32:23  <jeff> (the rsync thing, not your paste)
+2015-04-27T11:32:34  <csharp> jeff: I understood ;-)
+2015-04-27T11:32:53  * berick reminds everyone we're cutting the next point releases wednesday
+2015-04-27T11:33:03  <berick> merge ye bug fixes while ye may
+2015-04-27T11:33:34  <berick> csharp: it's so close...
+2015-04-27T11:33:44  <berick> "generate EDI within A/T" i mean
+2015-04-27T11:34:01  <csharp> berick: I could see that you made a lot of progress on it ;-)
+2015-04-27T11:34:06  <berick> maybe we can get some progress on that at egcon
+2015-04-27T11:34:28  <csharp> I'll totally help with that if I can
+2015-04-27T11:34:39  <berick> yes, you can help test
+2015-04-27T11:34:43  <csharp> perfect
+2015-04-27T11:34:53  <berick> IIRC, there's just a few fields remaining that have to be mapped.
+2015-04-27T11:34:57  <berick> then it's testing time
+2015-04-27T11:35:27  <csharp> awesome
+2015-04-27T11:37:47  <csharp> so once the A/T thing is in place, it might be worth incorporating edi /openils stuff into the standard installation process
+2015-04-27T11:38:28  <csharp> "thing"... "stuff" - technical jargon be damned!
+2015-04-27T11:39:32  <berick> csharp: you mean edi_pusher / edi_fetcher ?
+2015-04-27T11:39:35  <berick> if so, yes
+2015-04-27T11:39:41  <berick> we should do that regarldess
+2015-04-27T11:40:17  *** jihpringle has joined #evergreen
+2015-04-27T11:45:26  *** buzzy has joined #evergreen
+2015-04-27T11:49:52  *** RoganH has quit IRC
+2015-04-27T12:01:22  *** sarabee has quit IRC
+2015-04-27T12:02:56  *** sarabee has joined #evergreen
+2015-04-27T12:18:11  <csharp> berick: yeah, that's what I meant
+2015-04-27T12:35:08  *** sandbergja has joined #evergreen
+2015-04-27T13:01:35  *** tsbere has quit IRC
+2015-04-27T13:03:52  *** tsbere has joined #evergreen
+2015-04-27T13:20:51  *** RoganH has joined #evergreen
+2015-04-27T13:21:29  *** ericar_ has joined #evergreen
+2015-04-27T13:21:56  *** ericar has quit IRC
+2015-04-27T13:22:00  *** ericar_ is now known as ericar
+2015-04-27T13:37:04  <eeevil> has anyone other than gmcharlt looked at LP 1438136?
+2015-04-27T13:37:04  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438136
+2015-04-27T13:37:18  <eeevil> or, the linked branch, more correctly
+2015-04-27T13:40:20  <csharp> eeevil: I applied it to a test server and see far faster search times - I don't have an opinion about the implementation beyond that though
+2015-04-27T13:40:52  <Dyrcona> eeevil: I loaded it on my dev system, which is 9.1 and apparently didn't need it, but I can say it caused no problems there.
+2015-04-27T13:40:52  <eeevil> just hoping for a merge before the next point release, is all
+2015-04-27T13:41:50  <RoganH> I can add it to our test and measure results tonight.
+2015-04-27T13:48:02  *** dac has joined #evergreen
+2015-04-27T13:48:51  *** dac is now known as Guest51304
+2015-04-27T13:51:07  *** Guest61214 has quit IRC
+2015-04-27T13:52:25  <kmlussier> eeevil: Is C/W MARS in production? If so, would it help if they added a comment to the LP bug reporting that it's working well for them?
+2015-04-27T13:53:16  <eeevil> kmlussier: they're using it, and I think it would. I'm trying to avoid self-merging, but if that's what is needed to get it in, I will
+2015-04-27T13:57:06  <Dyrcona> I'd sign off, but I didn't really need it.
+2015-04-27T13:57:22  <Dyrcona> I'd be more comfortable if someone else did.
+2015-04-27T14:04:54  <jboyer-isl> Dyrcona: It can provide benefits for 9.1 installations, it's just that only 1 of the code paths ever gets used. Your bib count determines whether your specific site would benefit or not. I don't particularly feel comfortable signing off on it either since I can't currently exercise the other code path.
+2015-04-27T14:05:29  *** jonadab_znc has joined #evergreen
+2015-04-27T14:05:40  <jboyer-isl> (Also, time works ever against me. :( )
+2015-04-27T14:05:53  <Dyrcona> Well, I have no business signing off, since I obviously didn't look hard enough. :)
+2015-04-27T14:22:48  <RoganH> I was just looking at our current search return numbers but they're even on our low powered test system orders of magnitude faster than csharp's.  I don't know if I'd find anything worth signing off on other than "this didn't screw up an existing system"
+2015-04-27T14:28:40  <kmlussier> After talking to C/W MARS, I'm not comfortable signing off either. They aren't seeing the huge difference between limited searches and non-limited searches anymore. However, they are seeing slower overall search performance since their upgrade.
+2015-04-27T14:28:45  <kmlussier>  Since the patch was applied as part of their upgrade, it's difficult for me to know if that change was partially caused by the patch or whether it was due to something else.
+2015-04-27T14:30:27  *** akilsdonk has quit IRC
+2015-04-27T14:39:50  <csharp> kmlussier: Terran was just testing here, and the challenge was trying to find search terms that weren't already cached by the live server - dunno if that's a factor there, but after a number of tries, Terran definitely sees the difference between pre- and post-fix
+2015-04-27T14:42:57  <kmlussier> csharp: Yeah. I can definitely say that the format limiting problem was resolved. Their format-limited searches were timing out on their test system before their upgrade.
+2015-04-27T14:43:39  <kmlussier> I just don't know if the other reported search slowness was a result of the patch, a result of the upgrade, or the result of something else. Too many moving parts.
+2015-04-27T14:44:13  <csharp> kmlussier: well, the sure fire way to know is with an actual query from the postgres logs
+2015-04-27T14:44:29  <csharp> that can be EXPLAIN ANALYZEd
+2015-04-27T14:49:42  <kmlussier> I'll forward that along to them
+2015-04-27T14:51:19  <csharp> kmlussier: my comments in the bug report might serve as examples for them
+2015-04-27T14:51:29  <csharp> LP 1438136
+2015-04-27T14:51:29  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [High,New] https://launchpad.net/bugs/1438136
+2015-04-27T14:51:49  <jeff> eeevil++ csharp++ kmlussier++
+2015-04-27T14:56:31  *** akilsdonk has joined #evergreen
+2015-04-27T14:58:21  *** RoganH has quit IRC
+2015-04-27T15:00:33  <eeevil> thanks, folks! sorry, was in a meeting
+2015-04-27T15:08:50  <gmcharlt> upgraded the EG website to WP 4.2.1
+2015-04-27T15:09:08  <gmcharlt> *mumble mumble zero day get off my lawn mumble mumble*
+2015-04-27T15:14:21  <Dyrcona> WordPress: a remote hole masquerading as a blogging platform.
+2015-04-27T15:17:45  <jonadab> PHP, ugh.
+2015-04-27T15:20:16  *** ericar_ has joined #evergreen
+2015-04-27T15:20:36  *** ericar has quit IRC
+2015-04-27T15:20:48  *** ericar_ is now known as ericar
+2015-04-27T15:29:09  <mmorgan> Precat question: The precat's owning_lib is always the consortium (owner of call_number.id -1). I'm guessing there's no way to change that?
+2015-04-27T15:30:16  <jboyer-isl> mmorgan: no, but the circ_lib is the location that created it.
+2015-04-27T15:30:46  <jboyer-isl> Is this about reporting, or finding out what happened with some items?
+2015-04-27T15:31:29  <mmorgan> Actually, it's circ policies.
+2015-04-27T15:31:39  <jeff> the copy has a circ lib of the creating library, but it is attached to a call number that has an owning_lib of the top of tree. sometimes that can create challenges in terms of permissions.
+2015-04-27T15:32:26  <jboyer-isl> Ah. That might be a pain then. I've not dealt with circ policies that looked at volumes for anything.
+2015-04-27T15:34:12  * mmorgan started a bad precedent including owning_lib in circ policies way back when.
+2015-04-27T15:35:05  <mmorgan> I guess this is a good reason to remove them.
+2015-04-27T15:35:36  <csharp> gmcharlt++
+2015-04-27T15:37:36  <Dyrcona> Well, you could move them to the circ_lib.
+2015-04-27T15:37:52  <jboyer-isl> mmorgan: If no one there uses floating it may be as easy as just shifting from owning to circ and things will just work. Depends on how you're using them, of course.
+2015-04-27T15:40:36  <mmorgan> circ_lib will work just as well for the rules, I'll just move them over.
+2015-04-27T15:41:27  <tsbere> I seem to recall several parts of the system saying "use circ_lib instead of owning_lib for permission check when call number is -1", but I don't recall if rules do anything like that...
+2015-04-27T15:43:31  <tsbere> Wouldn't be *hard*, persay. Precats should never have holds so only circ policies need adjusting. "If call_number ID = -1 use the circ lib as the owning lib" would probably be only a line or two in the DB func.
+2015-04-27T15:44:01  <jeff> tsbere: may not matter for your current thinking, but precats are designed to be able to have copy-level holds now.
+2015-04-27T15:44:43  <tsbere> jeff: Hmmmm. Ok, so double the number of additional DB func lines. :P
+2015-04-27T15:46:13  <tsbere> Could take it further by defining "precat owning lib is at depth X for circ/hold rules" somewhere, then "fake in" the ancestor at that depth instead of the circ lib itself.
+2015-04-27T15:58:53  *** ericar_ has joined #evergreen
+2015-04-27T16:00:43  *** ericar has quit IRC
+2015-04-27T16:00:46  *** ericar_ is now known as ericar
+2015-04-27T16:24:00  *** ericar_ has joined #evergreen
+2015-04-27T16:26:49  *** ericar has quit IRC
+2015-04-27T16:26:52  *** ericar_ is now known as ericar
+2015-04-27T16:31:03  *** jboyer-isl has quit IRC
+2015-04-27T16:31:43  *** Shae has quit IRC
+2015-04-27T16:35:51  *** ericar has quit IRC
+2015-04-27T16:45:21  *** maryj has quit IRC
+2015-04-27T16:58:15  *** Dyrcona has quit IRC
+2015-04-27T17:07:33  *** graced has quit IRC
+2015-04-27T17:09:37  *** mmorgan has left #evergreen
+2015-04-27T17:49:02  *** Newziky has left #evergreen
+2015-04-27T17:57:05  *** rangi` is now known as rangi
+2015-04-27T18:14:03  *** yboston has quit IRC
+2015-04-27T18:51:58  *** chatley has joined #evergreen
+2015-04-27T18:54:17  *** mglass has joined #evergreen
+2015-04-27T19:35:49  *** akilsdonk has quit IRC
+2015-04-27T20:02:03  *** buzzy has quit IRC
+2015-04-27T21:38:14  *** jihpringle has quit IRC

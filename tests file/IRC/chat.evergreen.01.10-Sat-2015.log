@@ -1,0 +1,39 @@
+2015-01-10T00:36:51  *** AliceR has joined #evergreen
+2015-01-10T02:54:17  *** AliceR has quit IRC
+2015-01-10T02:57:37  *** AliceR has joined #evergreen
+2015-01-10T04:06:07  *** AliceR has quit IRC
+2015-01-10T04:06:41  *** AliceR has joined #evergreen
+2015-01-10T04:10:56  *** AliceR has quit IRC
+2015-01-10T04:47:45  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-10T06:01:28  *** burper has joined #evergreen
+2015-01-10T06:01:29  *** burper has left #evergreen
+2015-01-10T06:10:48  *** BigRig has quit IRC
+2015-01-10T06:11:50  *** graced has quit IRC
+2015-01-10T06:11:50  *** eeevil has quit IRC
+2015-01-10T06:13:02  *** eeevil has joined #evergreen
+2015-01-10T06:14:04  *** BigRig has joined #evergreen
+2015-01-10T06:15:03  *** graced has joined #evergreen
+2015-01-10T09:02:41  *** burper has joined #evergreen
+2015-01-10T09:02:42  *** burper has left #evergreen
+2015-01-10T09:12:33  <csharp> @later tell kmlussier the "right element" to get a list of values when using "In list" for a filter is usually the ID (or the primary key for the table)
+2015-01-10T09:12:33  <pinesol_green> csharp: The operation succeeded.
+2015-01-10T09:15:37  <csharp> @later tell kmlussier also, the values you get in the list depend on the context org unit (the workstation)
+2015-01-10T09:15:37  <pinesol_green> csharp: The operation succeeded.
+2015-01-10T12:00:24  *** AliceR has joined #evergreen
+2015-01-10T12:18:44  *** mrpeters has joined #evergreen
+2015-01-10T12:19:11  *** mrpeters has left #evergreen
+2015-01-10T14:24:18  *** AliceR has quit IRC
+2015-01-10T14:32:00  *** edoceo_ has quit IRC
+2015-01-10T17:03:19  *** mrpeters has joined #evergreen
+2015-01-10T17:30:09  *** mrpeters has left #evergreen
+2015-01-10T17:43:30  *** mtcarlson_away is now known as mtcarlson
+2015-01-10T19:35:17  *** AliceR has joined #evergreen
+2015-01-10T20:12:10  *** remingtron has quit IRC
+2015-01-10T20:13:29  *** dbwells has quit IRC
+2015-01-10T20:17:31  *** dbwells has joined #evergreen
+2015-01-10T20:17:31  *** remingtron has joined #evergreen
+2015-01-10T20:25:58  *** RBecker has quit IRC
+2015-01-10T20:27:58  *** RBecker has joined #evergreen
+2015-01-10T23:19:12  <dbs> @later tell berick i think we need to revisit some of the accessibility stuff again, per bug 1409389
+2015-01-10T23:19:12  <pinesol_green> dbs: The operation succeeded.
+2015-01-10T23:20:31  *** mtcarlson is now known as mtcarlson_away

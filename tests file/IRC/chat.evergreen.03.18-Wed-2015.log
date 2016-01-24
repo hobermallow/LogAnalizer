@@ -1,0 +1,131 @@
+2015-03-18T01:55:04  *** sarabee has quit IRC
+2015-03-18T01:59:18  *** rashma is now known as rashma_away
+2015-03-18T02:32:32  *** mglass has quit IRC
+2015-03-18T02:32:57  *** mglass has joined #evergreen
+2015-03-18T03:53:31  *** Newziky has joined #evergreen
+2015-03-18T03:54:52  *** Newziky1 has quit IRC
+2015-03-18T04:15:39  *** dbwells has quit IRC
+2015-03-18T04:18:37  *** dbwells has joined #evergreen
+2015-03-18T05:02:19  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-18T07:17:31  *** graced has joined #evergreen
+2015-03-18T07:30:50  *** TaraC has quit IRC
+2015-03-18T07:47:04  *** rjackson_isl has joined #evergreen
+2015-03-18T07:55:29  *** jboyer-isl has joined #evergreen
+2015-03-18T08:08:27  *** mrpeters has joined #evergreen
+2015-03-18T08:23:55  *** akilsdonk has joined #evergreen
+2015-03-18T08:25:35  *** collum has joined #evergreen
+2015-03-18T08:28:01  *** TaraC has joined #evergreen
+2015-03-18T08:37:58  *** ericar has joined #evergreen
+2015-03-18T08:59:53  *** maryj has joined #evergreen
+2015-03-18T09:12:10  *** mmorgan has joined #evergreen
+2015-03-18T09:38:14  <csharp> I'm working on a method of getting the effective permission set for a given permission group (and after that, for a particular user)
+2015-03-18T09:39:04  <csharp> what I'd like is to be able to enter something like 'Circ1' and get the aggregated permissions from each ancestor group so it's a full list of non-duplicated perms
+2015-03-18T09:39:16  <csharp> has anyone worked up something like that?
+2015-03-18T09:39:43  <csharp> I've seen the magic spells that do something similar, but it's not aggregating them in the way I was hoping
+2015-03-18T09:40:35  <csharp> (for the logs, I'm referring to http://wiki.evergreen-ils.org/doku.php?id=scratchpad:random_magic_spells#comparing_permissions_between_multiple_permission_groups)
+2015-03-18T09:53:30  *** ericar_ has joined #evergreen
+2015-03-18T09:55:19  *** ericar has quit IRC
+2015-03-18T09:58:32  *** ericar_ has quit IRC
+2015-03-18T10:02:02  *** mllewellyn has joined #evergreen
+2015-03-18T10:12:24  *** jwoodard has joined #evergreen
+2015-03-18T10:20:06  <phasefx> csharp: may be easier to use the has_permission stored procedure against some "reference" users for each group
+2015-03-18T10:21:08  <phasefx> of course, that's also org specific
+2015-03-18T10:33:27  *** dreuther has joined #evergreen
+2015-03-18T11:14:17  *** montgoc1 has joined #evergreen
+2015-03-18T11:16:00  *** montgoc1 has quit IRC
+2015-03-18T11:26:51  *** rashma_away is now known as rashma
+2015-03-18T11:27:28  *** sandbergja has joined #evergreen
+2015-03-18T11:30:49  *** ericar has joined #evergreen
+2015-03-18T11:33:15  *** graced has quit IRC
+2015-03-18T11:33:56  *** graced has joined #evergreen
+2015-03-18T11:57:37  *** bmills has quit IRC
+2015-03-18T12:04:43  *** bmills has joined #evergreen
+2015-03-18T12:12:28  *** ericar_ has joined #evergreen
+2015-03-18T12:15:38  *** ericar has quit IRC
+2015-03-18T12:15:39  *** ericar_ is now known as ericar
+2015-03-18T12:39:45  <mmorgan> csharp: regarding the permission groups, I put together something using php and jquery for my own use (read sanity)
+2015-03-18T12:40:05  <mmorgan> Here is a link to it on a training server: http://egtraining.noblenet.org/permissions_training.php
+2015-03-18T12:41:10  <mmorgan> There is another page that displays users and their associated groups.
+2015-03-18T12:47:44  *** ckolasinski has joined #evergreen
+2015-03-18T12:54:38  *** bmills has quit IRC
+2015-03-18T12:56:41  *** akilsdonk has quit IRC
+2015-03-18T13:01:51  *** jihpringle has joined #evergreen
+2015-03-18T13:03:28  *** bmills has joined #evergreen
+2015-03-18T13:21:46  *** jwoodard has quit IRC
+2015-03-18T13:54:30  *** buzzy has joined #evergreen
+2015-03-18T14:23:29  *** akilsdonk has joined #evergreen
+2015-03-18T14:28:45  * dbs figures it's worth asking "for a friend", does anyone automatically email checkout receipts with embedded ICS invites as a way to help people remember when they have items to return / renew?
+2015-03-18T14:35:41  *** maryj has quit IRC
+2015-03-18T14:36:13  <kmlussier> @quote random
+2015-03-18T14:36:13  <pinesol_green> kmlussier: Quote #41: "<phasefx> when you guys stab me later, make sure it's with a double-dagger" (added by gmcharlt at 05:23 PM, January 07, 2013)
+2015-03-18T14:37:48  <kmlussier> dbs: So the use case is that the patron can add the due date to their calendar directly from the email checkout receipt? That's interesting.
+2015-03-18T14:49:32  <dbs> kmlussier: yep, that's pretty much it
+2015-03-18T14:50:02  <graced> that's a really neat idea
+2015-03-18T14:50:09  <dbs> rather than waiting for a reminder notice, our faculty in particular are very calendar-driven
+2015-03-18T14:51:21  <dbs> It's not without its challenges (e.g. person takes out 5 items and returns 2; the calendar entry isn't going to change from whatever the invite said)
+2015-03-18T14:51:39  <dbs> but at the very least the details could link them to their "My Account" to double check :)
+2015-03-18T14:52:58  <kmlussier> So library elf used to add checkout dates to my calendar. But I think it was done through an ical feed. The feed updated regularly, which solved the issue of removing the calendar entry when the item was checked in.
+2015-03-18T14:56:44  <dbs> Hmm. Caldav maybe?
+2015-03-18T14:57:22  <dbs> I guess an alternate approach would be to add a CalDAV link from My Account
+2015-03-18T14:59:06  <dbs> but that would mean running a CalDAV server, which probably wouldn't be fun
+2015-03-18T15:01:03  *** maryj has joined #evergreen
+2015-03-18T15:07:37  *** RoganH has joined #evergreen
+2015-03-18T15:10:32  <kmlussier> It certainly doesn't sound like fun.
+2015-03-18T15:10:46  *** graced has quit IRC
+2015-03-18T15:12:09  *** graced has joined #evergreen
+2015-03-18T15:14:50  *** TaraC has quit IRC
+2015-03-18T15:19:56  *** maryj has quit IRC
+2015-03-18T15:21:18  *** collum has quit IRC
+2015-03-18T15:21:58  *** maryj has joined #evergreen
+2015-03-18T15:25:43  *** RoganH has quit IRC
+2015-03-18T15:29:46  *** RBecker has quit IRC
+2015-03-18T15:33:06  *** RBecker has joined #evergreen
+2015-03-18T15:41:08  *** RoganH has joined #evergreen
+2015-03-18T15:42:58  *** jwoodard has joined #evergreen
+2015-03-18T15:47:36  *** ckolasinski has left #evergreen
+2015-03-18T15:56:47  *** vlewis has joined #evergreen
+2015-03-18T16:12:19  *** bmills has quit IRC
+2015-03-18T16:16:09  *** bmills has joined #evergreen
+2015-03-18T16:28:45  *** maryj has quit IRC
+2015-03-18T16:29:05  *** rjackson_isl has quit IRC
+2015-03-18T16:30:21  *** jboyer-isl has quit IRC
+2015-03-18T16:32:02  *** RoganH has joined #evergreen
+2015-03-18T16:43:14  *** RoganH has quit IRC
+2015-03-18T16:44:44  *** RoganH has joined #evergreen
+2015-03-18T16:45:12  *** RoganH has quit IRC
+2015-03-18T16:55:41  *** mllewellyn has quit IRC
+2015-03-18T16:56:00  <gsams> Anyone have a suggestion for a SQL query to count titles?  I've created a report that isn't working as intended and don't really have anything substantial to compare it to.
+2015-03-18T16:56:33  <gsams> My title report is reporting more titles than I have in items, using similar filters.
+2015-03-18T16:57:00  <jeff> keep in mind that it's quite possible to have titles without items.
+2015-03-18T16:57:26  <gsams> Yeah, I filtered those out.  Or I tried to at least
+2015-03-18T17:00:17  <gsams> I filtered deleted items, NULL call numbers, and Discard/Weed status items.
+2015-03-18T17:00:35  *** vlewis_ has joined #evergreen
+2015-03-18T17:01:08  <gsams> I suppose I should drop the count and get some details to see what is going on a bit more clearly.
+2015-03-18T17:05:50  *** ericar has quit IRC
+2015-03-18T17:08:05  *** graced has quit IRC
+2015-03-18T17:13:17  *** mmorgan has left #evergreen
+2015-03-18T17:46:18  *** BigRig has quit IRC
+2015-03-18T17:47:36  *** BigRig has joined #evergreen
+2015-03-18T17:49:38  *** mrpeters has quit IRC
+2015-03-18T17:51:51  *** jeffdavis has quit IRC
+2015-03-18T17:52:38  *** jeffdavis has joined #evergreen
+2015-03-18T18:01:58  *** dreuther has quit IRC
+2015-03-18T18:33:53  *** akilsdonk has quit IRC
+2015-03-18T18:56:02  *** akilsdonk has joined #evergreen
+2015-03-18T19:06:32  *** vlewis has quit IRC
+2015-03-18T19:06:32  *** vlewis_ has quit IRC
+2015-03-18T19:08:29  *** jihpringle has quit IRC
+2015-03-18T19:22:59  *** buzzy has quit IRC
+2015-03-18T19:32:29  *** mglass has quit IRC
+2015-03-18T19:37:34  *** RoganH has joined #evergreen
+2015-03-18T19:40:47  *** mceraso has quit IRC
+2015-03-18T19:40:56  *** akilsdonk has quit IRC
+2015-03-18T19:40:58  *** mceraso has joined #evergreen
+2015-03-18T19:54:03  *** akilsdonk has joined #evergreen
+2015-03-18T20:01:07  *** jwoodard has quit IRC
+2015-03-18T20:20:40  *** RoganH has quit IRC
+2015-03-18T20:28:56  *** RoganH has joined #evergreen
+2015-03-18T20:30:29  *** akilsdonk has quit IRC
+2015-03-18T20:37:53  *** sandbergja has quit IRC
+2015-03-18T20:38:08  *** RoganH has quit IRC
+2015-03-18T21:20:51  *** bmills has quit IRC

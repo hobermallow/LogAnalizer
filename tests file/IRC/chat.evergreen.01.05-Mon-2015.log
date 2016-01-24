@@ -1,0 +1,167 @@
+2015-01-05T05:13:40  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-05T06:14:00  *** remingtron__ has joined #evergreen
+2015-01-05T06:17:20  *** remingtron_ has quit IRC
+2015-01-05T06:37:34  *** phasefx__ has joined #evergreen
+2015-01-05T06:37:34  *** phasefx_ has quit IRC
+2015-01-05T07:16:13  *** jboyer-isl has joined #evergreen
+2015-01-05T07:33:12  *** Callender has joined #evergreen
+2015-01-05T07:59:16  *** akilsdonk has joined #evergreen
+2015-01-05T08:03:22  <bshum> Hmm, Archive::Zip issue on testing?
+2015-01-05T08:03:35  <bshum> That's new
+2015-01-05T08:06:39  *** julialima_ has joined #evergreen
+2015-01-05T08:16:31  *** ericar has joined #evergreen
+2015-01-05T08:18:03  * csharp emerges from holiday hibernation
+2015-01-05T08:30:52  *** Shae has joined #evergreen
+2015-01-05T08:32:03  *** ericar_ has joined #evergreen
+2015-01-05T08:33:39  *** ericar has quit IRC
+2015-01-05T08:33:40  *** ericar_ is now known as ericar
+2015-01-05T08:40:59  *** mmorgan has joined #evergreen
+2015-01-05T08:41:10  *** collum has joined #evergreen
+2015-01-05T08:48:01  *** abowling has joined #evergreen
+2015-01-05T08:50:57  *** Dyrcona has joined #evergreen
+2015-01-05T09:02:30  *** julialima_ has quit IRC
+2015-01-05T09:03:52  *** julialima_ has joined #evergreen
+2015-01-05T09:17:08  *** julialima_ has left #evergreen
+2015-01-05T09:17:57  *** julialima_ has joined #evergreen
+2015-01-05T09:27:51  *** tsbere has joined #evergreen
+2015-01-05T09:44:04  *** ericar_ has joined #evergreen
+2015-01-05T09:46:07  *** ericar has quit IRC
+2015-01-05T09:46:12  *** ericar_ is now known as ericar
+2015-01-05T09:47:44  <Bmagic> gmornin
+2015-01-05T09:49:38  <mmorgan> Good Morning!
+2015-01-05T09:50:33  <kmlussier> Good morning
+2015-01-05T09:52:57  <csharp> @eightball is it a good morning?
+2015-01-05T09:52:57  <pinesol_green> csharp: It is so.
+2015-01-05T09:53:07  <Dyrcona> It's morning?
+2015-01-05T10:21:13  *** mrpeters has joined #evergreen
+2015-01-05T10:24:29  *** mllewellyn has joined #evergreen
+2015-01-05T10:35:11  *** pmurray_away has joined #evergreen
+2015-01-05T10:35:16  *** pmurray_away is now known as pmurray
+2015-01-05T10:35:20  *** pmurray has joined #evergreen
+2015-01-05T10:38:36  *** rjackson-isl has joined #evergreen
+2015-01-05T10:45:42  <Dyrcona> Network problems, back in a few.
+2015-01-05T10:45:50  *** Dyrcona has quit IRC
+2015-01-05T10:51:27  *** Dyrcona has joined #evergreen
+2015-01-05T11:22:22  <dbs> Speaking of network problems, trying to fix up our SIP server. Boy, lots of changes since 2.4-ish days :)
+2015-01-05T11:22:27  <dbs> community++
+2015-01-05T11:26:06  *** ericar_ has joined #evergreen
+2015-01-05T11:28:53  *** ericar has quit IRC
+2015-01-05T11:28:59  *** ericar_ is now known as ericar
+2015-01-05T11:36:14  <dbs> Now to figure out why our self-check logs into SIP successfully, renew or checkout items, and then once the session is done, start reporting network failure.
+2015-01-05T11:36:40  <dbs> (and then it automatically logs back in again after a while)
+2015-01-05T11:37:03  <dbs> Only SIPServer has changed, but I guess in a way that no longer works with our previous self-check config. Hrm.
+2015-01-05T11:44:25  <Bmagic> dbs: that sounds familiar
+2015-01-05T11:45:47  <Bmagic> dbs: we found an issue with timeouts on a self check software called circIT, when querying a patron with a ton of holds it would take more than 12 seconds, and circIT would close the session
+2015-01-05T11:46:30  <Bmagic> I know it's not exactly the issue you described but keep that in mind
+2015-01-05T11:47:10  <Bmagic> The AFOK message was removed in the newer versions of SIPserver which tricked some of our self check machines as well
+2015-01-05T11:54:11  <dbs> Bmagic: cool, thanks for the heads up
+2015-01-05T11:54:32  <Dyrcona> <sarcasm>Standards.</sarcasm>
+2015-01-05T11:56:27  <dbs> Or something to do with the new Multiplex worker-keepalive stuff? http://git.evergreen-ils.org/?p=SIPServer.git;a=commitdiff;h=7e4fbac12f6018b4d5a36d7a4360789ced929aa0
+2015-01-05T11:58:48  <dbs> Or allow_sc_status_then_login parameter?
+2015-01-05T11:58:48  <dbs> man.
+2015-01-05T11:59:22  <eeevil> dbs: what's the selfcheck vendor?
+2015-01-05T11:59:39  <dbs> eeevil: 3M
+2015-01-05T12:00:00  <dbs> I'm also trying to untangle the changes to SIPConfig.xml vs. oils_sip.xml.example; bits missing from each
+2015-01-05T12:00:56  <eeevil> I haven't seen 3M require status_then_login before. IIRC, that's an envisionware and bibliotecha issue, primarily
+2015-01-05T12:01:52  <dbs> Seeing as I have "sending SC status without logging in first" in my syslogs, I think our 3M unit is requiring that too
+2015-01-05T12:01:55  <bshum> dbs: Yeah I thought I filed a bug to work on that for 2.8, but I can't seem to find it now.
+2015-01-05T12:02:24  <dbs> Methinks perhaps the default should be "enabled", heh
+2015-01-05T12:02:25  <eeevil> dbs: ha, indeed :)
+2015-01-05T12:02:57  <eeevil> indeed to "you need it" ... unsure (though don't feel strongly about) making that the default
+2015-01-05T12:04:02  <eeevil> thinking a little more, I know many sites need it on, so, I'd be fine with enabling by default, actually.
+2015-01-05T12:04:13  <eeevil> dbs++
+2015-01-05T12:04:50  * dbs will open a bug & create a branch once he's got a few minutes (running to the other side of campus for another reference shift, la la la)
+2015-01-05T12:08:02  *** buzzy has joined #evergreen
+2015-01-05T12:19:49  *** abowling has quit IRC
+2015-01-05T12:28:54  *** jihpringle has joined #evergreen
+2015-01-05T12:29:00  <jboyer-isl> \me pushes a late Christmas present to Evergreen Indiana and mmorgan into git/working.
+2015-01-05T12:29:09  * jboyer-isl fails IRC commands.
+2015-01-05T12:29:27  <mrpeters> haha you didnt fail the 2nd time :P
+2015-01-05T12:29:56  <jboyer-isl> I've got a 50-50 chance each time.
+2015-01-05T12:30:08  <mrpeters> haha true!
+2015-01-05T12:30:31  <csharp> jboyer-isl++
+2015-01-05T12:35:04  <mmorgan> jboyer-isl++
+2015-01-05T12:59:27  *** buzzy has quit IRC
+2015-01-05T13:00:29  *** buzzy has joined #evergreen
+2015-01-05T13:09:43  *** sbrylander has quit IRC
+2015-01-05T13:10:31  *** sarabee has joined #evergreen
+2015-01-05T13:11:55  *** eby has quit IRC
+2015-01-05T13:12:45  *** mceraso has quit IRC
+2015-01-05T13:12:45  *** bshum has quit IRC
+2015-01-05T13:12:45  *** kmlussier has quit IRC
+2015-01-05T13:13:07  *** eby has joined #evergreen
+2015-01-05T13:16:20  <gmcharlt> dbs: sorry, I think our secret is out! ;)
+2015-01-05T13:17:02  *** kmlussier has joined #evergreen
+2015-01-05T13:17:02  *** bshum has joined #evergreen
+2015-01-05T13:17:10  *** mceraso has joined #evergreen
+2015-01-05T13:25:00  *** akilsdonk has quit IRC
+2015-01-05T13:26:19  *** akilsdonk has joined #evergreen
+2015-01-05T13:30:39  <dbs> gmcharlt: har
+2015-01-05T13:30:52  <dbs> Is there a separate bug tracker for SIPServer?
+2015-01-05T13:31:38  <jeff> https://bugs.launchpad.net/sipserver
+2015-01-05T13:34:09  *** eby has quit IRC
+2015-01-05T13:35:14  *** eby has joined #evergreen
+2015-01-05T13:37:31  * bshum has no powers there
+2015-01-05T13:37:58  <dbs> jeff++
+2015-01-05T13:38:19  * dbs will update the SIPServer README to point there
+2015-01-05T13:38:58  <dbs> Meanwhile, wondering whether the SIPServer test suite is supposed to work out of the box with the shipped SIP config
+2015-01-05T14:13:04  *** abowling has joined #evergreen
+2015-01-05T14:31:38  *** buzzy has quit IRC
+2015-01-05T14:59:12  *** kbutler has joined #evergreen
+2015-01-05T15:15:02  *** ericar_ has joined #evergreen
+2015-01-05T15:16:39  *** ericar has quit IRC
+2015-01-05T15:16:40  *** ericar_ is now known as ericar
+2015-01-05T15:16:50  <bshum> jeff: Curious did you get to poke at https://bugs.launchpad.net/evergreen/+bug/1312309 much?
+2015-01-05T15:16:50  <pinesol_green> Launchpad bug 1312309 in Evergreen "to remove last remnants of JSPAC" (affected: 2, heat: 10) [Wishlist,Confirmed] - Assigned to Jeff Godin (jgodin)
+2015-01-05T15:17:07  <bshum> You're the last one to speak on the bug, but I'm curious to get some motion on that for 2.8 :)
+2015-01-05T15:20:45  <bshum> DPearl1: I'm going to dust off https://bugs.launchpad.net/evergreen/+bug/1312699 and see if we can get that slated for 2.8 target.
+2015-01-05T15:20:45  <pinesol_green> Launchpad bug 1312699 in Evergreen "Editable Checkout History" (affected: 5, heat: 22) [Wishlist,Triaged]
+2015-01-05T15:20:49  <bshum> It looks like a nice thing :)
+2015-01-05T15:27:51  <bshum> Unrelated, http://doodle.com/b7ta9ax5hgcifpkh for the January Dev meeting
+2015-01-05T15:28:41  <bshum> berick++
+2015-01-05T15:29:02  <kmlussier> berick++
+2015-01-05T16:16:17  *** collum has quit IRC
+2015-01-05T16:24:29  *** ericar has quit IRC
+2015-01-05T16:27:54  *** rjackson-isl has quit IRC
+2015-01-05T16:30:53  *** julialima_ has left #evergreen
+2015-01-05T16:34:58  <bshum> dbwells: For the LDAP authenticator, can it be assumed that the "org_units" section allows for the possibility that you could have different authenticators for different ou's?
+2015-01-05T16:35:28  <dbwells> bshum: Yes, that's the idea
+2015-01-05T16:35:39  <bshum> Gotcha.
+2015-01-05T16:36:40  <bshum> I was just asked recently whether we could support LDAP authentication for schools that share a system but not the same authentications.
+2015-01-05T16:36:42  <bshum> So that helps.
+2015-01-05T16:36:43  <bshum> Thanks!
+2015-01-05T16:37:04  <dbwells> Feel free to ask me for help if it doesn't work as expected.  I am not sure if anyone has used that feature in a live instance.
+2015-01-05T16:38:04  <bshum> dbwells: Sounds good.  I'm not sure when/if we'll try it out.
+2015-01-05T16:44:28  *** RBecker has quit IRC
+2015-01-05T16:47:34  <pinesol_green> [evergreen|Bill Erickson] LP#1406367 Reduce Fine gen. API memory use - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=09642a7>
+2015-01-05T16:47:35  <pinesol_green> [evergreen|Bill Erickson] LP#1406367 Fine generator skips no-fines transactions - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=80b673d>
+2015-01-05T16:47:36  <pinesol_green> [evergreen|Bill Erickson] LP#1406367 Fine generator skips no-fines transactions (parallel) - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=78d6a87>
+2015-01-05T16:51:24  *** Shae has quit IRC
+2015-01-05T16:54:58  *** RBecker has joined #evergreen
+2015-01-05T16:58:09  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-05T16:59:28  <Dyrcona> Well, that bothers me right after I commit something, too.
+2015-01-05T16:59:38  <bshum> Heh
+2015-01-05T16:59:41  <bshum> It was broken this morning.
+2015-01-05T16:59:51  <bshum> Archive::Zip problems, I think I saw
+2015-01-05T17:00:51  *** Dyrcona has quit IRC
+2015-01-05T17:01:19  <dbwells> Guess he finally had enough ;)
+2015-01-05T17:05:42  *** mmorgan has left #evergreen
+2015-01-05T17:23:27  *** kbutler has quit IRC
+2015-01-05T17:36:23  <dbs> dbwells / bshum: we've used different authenticators for different systems
+2015-01-05T17:36:43  <dbs> err, different OUs inside the same evergreen instance
+2015-01-05T17:37:19  <dbwells> dbs: Thanks for the follow up, that's good to know.
+2015-01-05T17:57:08  *** mllewellyn has quit IRC
+2015-01-05T18:03:03  *** mrpeters has quit IRC
+2015-01-05T18:04:17  *** nhilton has joined #evergreen
+2015-01-05T18:34:08  *** nhilton_ has joined #evergreen
+2015-01-05T18:36:43  *** nhilton has quit IRC
+2015-01-05T19:07:44  *** artunit has quit IRC
+2015-01-05T19:14:08  *** artunit has joined #evergreen
+2015-01-05T19:24:25  *** nhilton_ has quit IRC
+2015-01-05T19:38:23  *** Don has joined #evergreen
+2015-01-05T19:38:46  *** Don is now known as Guest99032
+2015-01-05T19:39:03  *** Guest99032 has left #evergreen
+2015-01-05T19:44:59  *** dm has joined #evergreen
+2015-01-05T20:34:15  *** dm has left #evergreen
+2015-01-05T21:39:46  *** jihpringle has quit IRC
+2015-01-05T23:32:42  *** akilsdonk has quit IRC

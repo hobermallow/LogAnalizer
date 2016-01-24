@@ -1,0 +1,236 @@
+2015-03-20T00:13:52  *** jcamins1 has quit IRC
+2015-03-20T02:03:51  *** dcook has quit IRC
+2015-03-20T07:18:30  *** mrpeters has quit IRC
+2015-03-20T07:27:04  <kmlussier> Happy Vernal Equinox #evergreen!
+2015-03-20T07:27:17  <kmlussier> @weather 02771
+2015-03-20T07:27:18  <pinesol_green> kmlussier: The current temperature in Rumford, East Providence, Rhode Island is 18.1°F (7:25 AM EDT on March 20, 2015). Conditions: Mostly Cloudy. Humidity: 81%. Dew Point: 14.0°F. Windchill: 17.6°F. Pressure: 30.38 in 1029 hPa (Steady). 
+2015-03-20T07:28:19  <kmlussier> Sigh...
+2015-03-20T07:47:52  *** jboyer-isl has joined #evergreen
+2015-03-20T07:56:48  *** collum has joined #evergreen
+2015-03-20T07:57:16  *** graced has joined #evergreen
+2015-03-20T07:58:16  *** rjackson_isl has joined #evergreen
+2015-03-20T08:21:38  <csharp> sudo apt-get update && sudo apt-get install openssl
+2015-03-20T08:22:29  * csharp can't keep track of how often he's had to run that over the last year
+2015-03-20T08:24:27  *** Shae has joined #evergreen
+2015-03-20T08:28:10  <csharp> @weather 30341
+2015-03-20T08:28:11  <pinesol_green> csharp: The current temperature in Rose Arbor, Atlanta, Georgia is 45.9°F (8:25 AM EDT on March 20, 2015). Conditions: Overcast. Humidity: 99%. Dew Point: 46.4°F. Windchill: 46.4°F. Pressure: 30.13 in 1020 hPa (Falling). 
+2015-03-20T08:29:00  <csharp> Rose Arbor? - never heard of that name, but it may be another of Metro Atlanta's proposed Balkanized states
+2015-03-20T08:43:08  *** mrpeters has joined #evergreen
+2015-03-20T08:45:09  <csharp> @later tell Dyrcona we had talked a while back about marc_export letting us know the bib ID for the too-large invalid MARC records it creates (see bug 1397532) - is that something you think could be added without a lot of trouble?  OCLC is now unwilling to work around them on their end.
+2015-03-20T08:45:09  <pinesol_green> csharp: The operation succeeded.
+2015-03-20T08:55:24  *** Dyrcona has joined #evergreen
+2015-03-20T08:58:08  *** maryj has joined #evergreen
+2015-03-20T09:00:20  *** ericar has joined #evergreen
+2015-03-20T09:18:30  *** Stompro has joined #evergreen
+2015-03-20T09:20:13  *** mmorgan has joined #evergreen
+2015-03-20T09:44:18  <bshum> csharp: openssl or libssl1.0.0?
+2015-03-20T09:44:20  <bshum> Or both?  :)
+2015-03-20T09:46:41  <Dyrcona> A little birdy tells me I have a later.
+2015-03-20T09:47:36  <Dyrcona> bshum: libssl is OpenSSL, unless you're using LibreSSL, which you most likely are not.
+2015-03-20T09:47:54  <Dyrcona> And, LibreSSL is affected by some of the same CVEs.
+2015-03-20T09:48:17  <Dyrcona> Hope I guessed the topic of conversation without context correctly.
+2015-03-20T09:48:19  <Dyrcona> :)
+2015-03-20T09:48:25  <bshum> Right :)
+2015-03-20T09:54:59  *** jeff_ has quit IRC
+2015-03-20T09:56:09  *** jeff_ has joined #evergreen
+2015-03-20T09:56:48  <Dyrcona> csharp: On your marc export later, I thought we took care of that at one point, but I can't find a launch pad bug about it.
+2015-03-20T09:58:12  <Dyrcona> Oh, wait, you're talking about the ones that are too large.
+2015-03-20T09:58:27  <Dyrcona> That's not easy to fix, and might actually require changes to MARC::Record.
+2015-03-20T09:58:56  <Dyrcona> Vendors should just a) accept MARCXML and b) ignore the size field.
+2015-03-20T09:59:26  <Dyrcona> It's a throwback to the days of limited storage.
+2015-03-20T09:59:35  *** maryj has quit IRC
+2015-03-20T09:59:44  <Dyrcona> With an end of record indicator in the binary format, it is also unnecessary.
+2015-03-20T10:00:01  <Dyrcona> There's a lot of stupidity in the MARC format itself.
+2015-03-20T10:00:47  <jboyer-isl> Dyrcona: it was designed for tape. If you know how long the record is you can skip ahead without looking for the EOR marker.
+2015-03-20T10:00:53  <Dyrcona> Another option is just don't send them holdings, but that's the whole point of sending to OCLC.
+2015-03-20T10:01:13  <Dyrcona> jboyer-isl: I know what it was designed for and it serverd that purpose at that time OK. It totally sucks today.
+2015-03-20T10:01:37  <jboyer-isl> You’ll certainly get no argument about that from me.
+2015-03-20T10:01:45  <jboyer-isl> argument against that, rather.
+2015-03-20T10:01:52  *** maryj has joined #evergreen
+2015-03-20T10:02:01  <jeff> heh. this ec2 instance has three attached block devices: root, "slow", and "notfast".
+2015-03-20T10:02:28  <Dyrcona> heh.
+2015-03-20T10:03:11  <jeff> only two errors on restore, and i believe those are the two index failures due to unqualified function names.
+2015-03-20T10:03:38  <jeff> and transcript confirms!
+2015-03-20T10:03:58  <Dyrcona> jeff: we might have qualified the function names in our db and not shared with the community.
+2015-03-20T10:04:11  <jeff> possible. i'm going to confirm.
+2015-03-20T10:04:16  <Dyrcona> I haven't run into that one for ages.
+2015-03-20T10:10:54  <Dyrcona> jboyer-isl: And tape is limited storage...Only slightly less limited than punch cards. ;)
+2015-03-20T10:12:54  <jboyer-isl> Dyrcona: Sure, but the size field is there because it’s linear, not just because it’s limited. :) Also, because “9999 characters is enough for anyone.” and no one imagined at the time why you’d want your holdings in a record.
+2015-03-20T10:13:19  *** akilsdonk has joined #evergreen
+2015-03-20T10:13:35  <Dyrcona> Linear is a limitation.
+2015-03-20T10:14:03  <Dyrcona> True about the holdings. The original purpose was to send the tape and have cards printed for the card catalog.
+2015-03-20T10:14:24  <Dyrcona> Everything else we've made the format do is tacked on.
+2015-03-20T10:14:54  <Dyrcona> And, since we're not using linear storage, and it's 2015, vendors should just ignore the size field.
+2015-03-20T10:15:10  <Dyrcona> Evergreen ignores it, as does anything that uses MARC::Record.
+2015-03-20T10:15:40  <Dyrcona> "But this software has worked since 1985! Why should we change it?"
+2015-03-20T10:18:43  *** akilsdonk has quit IRC
+2015-03-20T10:21:57  <jboyer-isl> -= THIS MESSAGE NOT LOGGED =-
+2015-03-20T10:36:15  *** dreuther has joined #evergreen
+2015-03-20T10:45:57  <collum> http://www.cincinnati.com/story/news/2015/03/20/appeals-court-ky-library-tax-legal/25076117/
+2015-03-20T10:46:14  <collum> Yay!!
+2015-03-20T10:46:38  <bshum> Yay!
+2015-03-20T11:13:10  *** vlewis has joined #evergreen
+2015-03-20T11:13:28  *** sal_ has joined #evergreen
+2015-03-20T11:26:13  <csharp> Dyrcona: thanks - I thought that was the case
+2015-03-20T11:26:37  <csharp> collum: awesome!
+2015-03-20T11:59:40  *** sandbergja has joined #evergreen
+2015-03-20T12:05:28  *** bmills has joined #evergreen
+2015-03-20T12:11:36  *** jihpringle has joined #evergreen
+2015-03-20T12:46:47  *** bmills has quit IRC
+2015-03-20T12:53:23  *** bmills has joined #evergreen
+2015-03-20T13:01:00  *** bmills1 has joined #evergreen
+2015-03-20T13:03:50  *** bmills has quit IRC
+2015-03-20T13:17:22  *** mglass has joined #evergreen
+2015-03-20T13:41:43  *** vlewis has quit IRC
+2015-03-20T14:32:29  *** makohund has joined #evergreen
+2015-03-20T14:32:57  *** dreuther has quit IRC
+2015-03-20T15:10:19  *** akilsdonk has joined #evergreen
+2015-03-20T15:27:20  <kmlussier> @swill graced
+2015-03-20T15:27:20  * pinesol_green grabs a bottle of Zima and sends it sliding down the bar to graced
+2015-03-20T15:38:52  <csharp> bshum: @seen StephenGWills
+2015-03-20T15:38:59  <csharp> @seen StephenGWills
+2015-03-20T15:38:59  <pinesol_green> csharp: StephenGWills was last seen in #evergreen 21 weeks, 4 days, 7 hours, 21 minutes, and 46 seconds ago: <StephenGWills> git branch, git merge maybe?
+2015-03-20T15:39:04  <csharp> bshum: bleh - sorry :-/
+2015-03-20T15:39:17  <csharp> @swill StephenGWills
+2015-03-20T15:39:17  * pinesol_green grabs a forty of Steel Reserve 211 and sends it sliding down the bar to StephenGWills
+2015-03-20T15:39:53  <csharp> too bad he's not here - I have a feeling he would've chuckled at that :-)
+2015-03-20T15:40:28  * kmlussier will chuckle on StephenGWills behalf.
+2015-03-20T15:40:51  * jeffdavis googles Zima, shudders
+2015-03-20T15:41:03  <csharp> his original nick was swills, so *that* would've been REALLY funny
+2015-03-20T15:41:45  * csharp is in the office on his normal telework day, finally done with back-to-back-to-back meetings and feeling punchy
+2015-03-20T15:43:03  <kmlussier> jeffdavis: That was my reaction as well.
+2015-03-20T15:43:56  <jeffdavis> :)
+2015-03-20T15:44:00  <berick> jeffdavis: you've never experienced Zima?
+2015-03-20T15:44:06  <berick> you either, kmlussier?
+2015-03-20T15:44:10  <kmlussier> berick: Is it as terrible as it sounds?
+2015-03-20T15:44:56  <sal_> ... pokes head up.  kmlussier: it's awful
+2015-03-20T15:45:12  <kmlussier> sal_! Good to see you!
+2015-03-20T15:45:33  <berick> it's awful, but was briefly the underage^H^H^Himature drinkers go-to.  (not sure why, probably marketing)
+2015-03-20T15:46:01  <sal_> I'm playing with 2.7...  (Finally, time to play again :-) )
+2015-03-20T15:46:07  * csharp remembers tasting zima in his college days
+2015-03-20T15:46:34  <kmlussier> Based on my reading on Wikipedia, I wasn't underage when it came out.
+2015-03-20T15:46:36  * kmlussier feels old now.
+2015-03-20T15:47:08  <berick> @swill kmlussier
+2015-03-20T15:47:08  * pinesol_green grabs a can of Sparks and sends it sliding down the bar to kmlussier
+2015-03-20T15:47:24  <kmlussier> Can we get Sam Adams into the swill database?
+2015-03-20T15:47:25  <csharp> @beer berick
+2015-03-20T15:47:26  <pinesol_green> csharp: Have you tried turning it off and back on again?
+2015-03-20T15:47:37  <csharp> @bartender berick
+2015-03-20T15:47:37  * pinesol_green fills a pint glass with Hitachino Nest White Ale, and sends it sliding down the bar to berick (http://beeradvocate.com/beer/profile/697/2013/)
+2015-03-20T15:47:45  * berick reads
+2015-03-20T15:48:00  <sal_> cider?  (more beer for the rest of you...)
+2015-03-20T15:48:01  <csharp> @swill add Sam Adams
+2015-03-20T15:48:01  * pinesol_green grabs a can of Sparks and sends it sliding down the bar to add Sam Adams
+2015-03-20T15:48:06  <csharp> heh
+2015-03-20T15:48:08  <makohund> Tricerahops, maybe?
+2015-03-20T15:48:16  <berick> wow, highly rated
+2015-03-20T15:48:22  <kmlussier> Ha ha
+2015-03-20T15:50:37  <makohund> Ruination?
+2015-03-20T15:51:00  <makohund> I dunno, I just looked up and saw beer talk.  Ya'll speaking my language all of a sudden.
+2015-03-20T15:51:31  <kmlussier> makohund++
+2015-03-20T15:51:53  <kmlussier> I think beer is a good entry point for the #evergreen channel. :)
+2015-03-20T15:52:32  <makohund> La Fin Du Monde?  Just throwing out some favorites. :)
+2015-03-20T15:53:47  <makohund> Been here before, not often though.  Usually with a bizarre question, long after most folks seem gone for the day.
+2015-03-20T15:54:06  * berick is suddenly thirsty
+2015-03-20T15:54:23  <rjackson_isl> dirty bastard scotch ale!
+2015-03-20T15:55:11  <kmlussier> I think we need one specifically for wine. Maybe we can adapt the dessert plugin to handle wine.
+2015-03-20T15:56:28  <makohund> Sleigh'r!  (Yes, a seasonal)
+2015-03-20T15:59:18  * phasefx still likes New Belgian beers, and Monday Night Brewing :)
+2015-03-20T15:59:46  <berick> @dunno add did you finish your beer?
+2015-03-20T15:59:46  <pinesol_green> berick: The operation succeeded.  Dunno #37 added.
+2015-03-20T16:06:00  <kmlussier> @dunno
+2015-03-20T16:06:00  <pinesol_green> kmlussier: It reads like a Nigerian 419 scam, but I think it is a sincere question sent to the wrong list.
+2015-03-20T16:06:22  * berick chuckles
+2015-03-20T16:07:10  <berick> kmlussier: if you use an invalid command, it will reply w/ a @dunno entry
+2015-03-20T16:07:12  <berick> @foo
+2015-03-20T16:07:13  <pinesol_green> berick: Yeah, well, you know, that's just like uh, your opinion, man.
+2015-03-20T16:08:24  <makohund> that just makes me thirstier
+2015-03-20T16:10:50  <berick> heh
+2015-03-20T16:11:04  <berick> @quote random
+2015-03-20T16:11:05  <pinesol_green> berick: Quote #69: "jeff: All the pain of RHEL, with none of the support." (added by Dyrcona at 08:57 AM, October 30, 2013)
+2015-03-20T16:12:34  *** ericar has quit IRC
+2015-03-20T16:14:54  <jeff> hah
+2015-03-20T16:20:08  *** collum has quit IRC
+2015-03-20T16:22:00  *** Shae has quit IRC
+2015-03-20T16:26:26  <makohund> Ok, real question... I need to report on a bunch of items (status = 3), grouped by user profile of most recent checkout.  In other words... "how many items have been lost by this category of patrons".  Any ideas?
+2015-03-20T16:27:37  <jeff> lots of ways to skin that cat. for one thing, you can report on open circulations with a stop_fines of LOST.
+2015-03-20T16:27:45  <jeff> first question is probably going to be: SQL or Reporter?
+2015-03-20T16:29:05  <makohund> Nevermind the report module, psql is fine.  I was looking for a non-ridiculous join between asset.copy and actor.usr... I could swear I saw a field in a table somewhere that looked like what the "most recent checkout" screen pulled from.
+2015-03-20T16:29:14  *** rjackson_isl has quit IRC
+2015-03-20T16:30:29  <makohund> Just can't remember what it was... and yeah, lots of ways to skin that one.  Just picking which angle to start from is... yeah.
+2015-03-20T16:30:53  <dbs> makohund: join action.circulation to actor.usr and asset.copy (IIRC)
+2015-03-20T16:32:03  *** maryj has quit IRC
+2015-03-20T16:33:36  <dbs> SELECT * FROM action.circulation ac INNER JOIN actor.usr au ON au.id = ac.usr INNER JOIN asset.copy acp ON acp.id = ac.target_copy WHERE stop_fines = 'LOST'; -- is a start, then narrow down your columns and add your GROUP BY / COUNT accordingly
+2015-03-20T16:33:54  <makohund> dbs: thanks, I know I could ultimately get there that way, was hoping to find a shortcut somewhere that wouldn't have to look at every transaction of all time... oh wait, lemme read that...
+2015-03-20T16:34:40  <dbs> SELECT pgt.name, COUNT(*) FROM action.circulation ac INNER JOIN actor.usr au ON au.id = ac.usr INNER JOIN asset.copy acp ON acp.id = ac.target_copy INNER JOIN permission.grp_tree pgt ON pgt.id = au.profile WHERE stop_fines = 'LOST' GROUP BY pgt.name;
+2015-03-20T16:34:55  <dbs> will probably do what you want
+2015-03-20T16:35:23  <jeff> there is no materialized view that includes "most recent circ of this item", so either way you're going to be relying on the planner and indexes to keep you from touching every transaction of all time.
+2015-03-20T16:35:25  <dbs> oh, or change the "stop_fines = 'LOST'" to "acp.status = 3"
+2015-03-20T16:35:40  <makohund> dbs: ok, limit to stop_fines = lost makes me feel a little better, thanks
+2015-03-20T16:35:58  <dbs> It shouldn't be too horrible, the default indexes should guide things pretty well
+2015-03-20T16:36:19  <jeff> wow. we have only one copy with status of Lost that isn't associated with an open circ. that's... I almost don't believe that. :P
+2015-03-20T16:36:31  <makohund> dbs: I was thinking of keeping both
+2015-03-20T16:37:16  <makohund> I'll grab that & translate into what I have already, and post back, thanks!
+2015-03-20T16:37:17  <dbs> Running against our database, I get wildly different numbers for stop_fines = "LOST" vs. status = 3. Probably because we migrated lots of copies from the old system with a status of LOST
+2015-03-20T16:37:34  <dbs> SQL makes me happy.
+2015-03-20T16:37:56  <makohund> me too, the reporter immediately scared me away
+2015-03-20T16:38:41  <makohund> simply couldn't do what we needed without adding custom sources
+2015-03-20T16:41:03  *** jboyer-isl has quit IRC
+2015-03-20T16:41:33  *** mrpeters has left #evergreen
+2015-03-20T16:54:53  *** frank___ has quit IRC
+2015-03-20T16:57:31  <jeff> here's another option: https://gist.github.com/jeff/252fa162d30265abe92a
+2015-03-20T16:58:30  <jeff> tricks like "group by second level profile" left as an exercise to the reader
+2015-03-20T17:09:38  <makohund> thanks, will look at those when I get a moment, my head has been buried in SIP logs on my other monitor... ugh.
+2015-03-20T17:13:04  *** graced has quit IRC
+2015-03-20T17:15:06  * jeff updates said gist a few times
+2015-03-20T17:15:18  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-20T17:15:44  <jeff> dbs++ for the recursive CTE trick
+2015-03-20T17:16:15  *** Dyrcona has quit IRC
+2015-03-20T17:16:16  <jeff> for what it's worth, those queries are pretty speedy on an underpowered dev instance
+2015-03-20T17:16:23  <makohund> oooh... very nice.  so open circ view... does that mean any circ that gets closed out by marking as lost/missing/etc will forever remain an "open circ", and will be in there?
+2015-03-20T17:17:01  *** remingtron has quit IRC
+2015-03-20T17:17:18  <jeff> action.open_circulation is a view based on action.circulation where checkin_time is NULL
+2015-03-20T17:17:40  <jeff> "lost" items never get checked in (unless they find their way home, etc)
+2015-03-20T17:17:49  <makohund> Ah.  Got it.
+2015-03-20T17:17:56  <jeff> (in which case the copy's status usually ALSO stops being "Lost" or "Lost and Paid")
+2015-03-20T17:18:09  <makohund> Yeah, makes sense.
+2015-03-20T17:18:31  <jeff> if you didn't already know, "\d+ action.open_circulation" in the psql shell will show you the definition of a view, including the SQL query behind it
+2015-03-20T17:18:53  <jeff> WHERE acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(1)) -- option to limit by copy circ lib
+2015-03-20T17:19:14  <jeff> that line lets you plug in an org unit id if you want to limit to a specific part of the org hierarchy.
+2015-03-20T17:20:06  *** mmorgan has quit IRC
+2015-03-20T17:21:45  <makohund> Yeah, one of those things lurking in a dusty mind closet, long unused.   And yeah, saw that line. Slick.
+2015-03-20T17:23:17  <jeff> previous to that, we used to do things like acp.circ_lib BETWEEN 3 AND 5 or  acp.circ_lib IN (3,4,5), but that breaks very quickly when you've added a library, etc.
+2015-03-20T17:25:10  <makohund> Yep.  I get away with that (usually IN()), the org tree is pretty simple here.  Only one system (mine) here has more than one branch.
+2015-03-20T17:39:24  *** akilsdonk has quit IRC
+2015-03-20T17:50:16  *** bmills1 has quit IRC
+2015-03-20T17:52:06  <jeff> i do wonder about the 280 items that are "Checked out" with stop_fines of LOST.
+2015-03-20T17:52:12  <jeff> @blame migrated data
+2015-03-20T17:52:12  <pinesol_green> jeff: migrated data broke Evergreen.
+2015-03-20T17:58:32  *** bmills has joined #evergreen
+2015-03-20T18:14:54  *** bmills has quit IRC
+2015-03-20T18:15:12  *** bmills has joined #evergreen
+2015-03-20T18:30:51  *** bbqben has joined #evergreen
+2015-03-20T18:33:01  *** bbqben has quit IRC
+2015-03-20T18:33:16  *** bbqben has joined #evergreen
+2015-03-20T18:36:05  <makohund> just tried the query from dbs, also got wildly different numbers from stop_fines vs status.  For one profile, it is 11,151 vs 68,611.
+2015-03-20T18:37:17  <makohund> For another, the main one we want to look at (that didn't even exist pre-migration), it is 75 vs 479.  Wow... going to look at those closer to see where the diff is.
+2015-03-20T18:49:19  <makohund> found an item that shows up with status, but not with stop_fines.  status is 3, status change time is well after migration (over a year).  stop_fines is CHECKIN.  hmm.
+2015-03-20T18:58:52  *** sandbergja has quit IRC
+2015-03-20T19:03:18  <makohund> ok, looks like the second query hits things multiple times.  it's lost now, but it checked out 33 times. so just limiting it by that gets all 33 transactions
+2015-03-20T19:06:22  *** sal_ has quit IRC
+2015-03-20T19:16:23  *** dbwells has quit IRC
+2015-03-20T19:19:22  *** bbqben has quit IRC
+2015-03-20T19:19:35  *** bbqben has joined #evergreen
+2015-03-20T19:20:52  <makohund> OK, jeff's query gets 38 for that same profile, instead of 75.  poked around, the difference is using open_circulation vs circulation.
+2015-03-20T19:32:22  *** mglass has quit IRC
+2015-03-20T19:36:22  <makohund> just action.circulation is getting lots of things that were eventually checked in, and no longer have a status of lost.  if using both stop_fines and status, the result is the same.  Yay!
+2015-03-20T19:36:29  <jeff> heh
+2015-03-20T19:38:58  <jeff> so is the query i shared suitable, or did it require some modification?
+2015-03-20T19:44:34  <makohund> It's good.  I stripped it down & changed some names to how I usually do it in the process, but running mine & yours back to back gets the same numbers.  Almost*
+2015-03-20T19:45:28  <makohund> Exactly one profile turns up exactly one additional lost item, when I run my version. *boggle*
+2015-03-20T19:55:00  *** bbqben has quit IRC
+2015-03-20T20:32:20  *** jihpringle has quit IRC
+2015-03-20T21:05:16  <makohund> gotta split, thanks!
+2015-03-20T21:05:40  *** makohund has left #evergreen
+2015-03-20T22:27:19  *** sarabee has quit IRC
+2015-03-20T22:49:14  *** bmills has quit IRC

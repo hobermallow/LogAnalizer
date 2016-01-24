@@ -1,0 +1,337 @@
+2015-04-29T01:31:49  *** rashma is now known as rashma_away
+2015-04-29T02:02:31  *** StomproJ has joined #evergreen
+2015-04-29T02:06:00  *** StomproJosh has quit IRC
+2015-04-29T02:07:49  *** BigRig has quit IRC
+2015-04-29T02:09:06  *** BigRig has joined #evergreen
+2015-04-29T07:06:14  *** mrpeters has joined #evergreen
+2015-04-29T07:33:03  *** jboyer-isl has joined #evergreen
+2015-04-29T07:37:34  *** ericar has joined #evergreen
+2015-04-29T07:44:35  *** akilsdonk has joined #evergreen
+2015-04-29T07:47:15  *** Newziky has joined #evergreen
+2015-04-29T07:48:36  *** Newziky has left #evergreen
+2015-04-29T07:53:13  *** graced has joined #evergreen
+2015-04-29T08:29:50  *** ericar_ has joined #evergreen
+2015-04-29T08:31:39  *** ericar has quit IRC
+2015-04-29T08:31:43  *** ericar_ is now known as ericar
+2015-04-29T08:38:28  *** mmorgan has joined #evergreen
+2015-04-29T08:44:45  *** Dyrcona has joined #evergreen
+2015-04-29T08:44:52  * csharp decides that asking libraries to use MarcEdit to remove the {dollar} characters manually is a pretty viable workaround until bug 1449724 is addressed
+2015-04-29T08:44:52  <pinesol_green> Launchpad bug 1449724 in Evergreen "Acq Record Import Fails because of dollar sign in price field" (affected: 2, heat: 12) [Undecided,New] https://launchpad.net/bugs/1449724
+2015-04-29T08:45:42  * csharp wonders how other EG-using agencies ordering from Ingram handle the issue
+2015-04-29T08:52:19  <kmlussier> csharp: I sent a question to my acq people but I haven't heard back.
+2015-04-29T08:53:15  <kmlussier> I suspect we may just omit that subfield altogether. But I don't know for sure. I do know our libraries are not using MarcEdit before importing acq records.
+2015-04-29T09:01:15  *** buzzy has joined #evergreen
+2015-04-29T09:02:46  <mmorgan> csharp: I'm not directly involved in the acquisitions piece, but it's my impression that the $ has never been an issue for us, and many of our libraries have been importing Ingram records for some time.
+2015-04-29T09:06:02  *** buzzy has quit IRC
+2015-04-29T09:07:49  <csharp> kmlussier: that's interesting... if they omit the subfield, do you know how they estimate price?
+2015-04-29T09:08:24  <kmlussier> csharp: They use a subfield in the holdings tag for price information.
+2015-04-29T09:09:05  <csharp> kmlussier: well, the order records I'm looking at don't have holdings information... do you know if the order records they're using do?
+2015-04-29T09:09:52  <kmlussier> Ah, I see now. Maybe it would be best if I send a response to the list, then. :) I just assumed you were using a holdings tag for other info.
+2015-04-29T09:09:54  *** ningalls_ has quit IRC
+2015-04-29T09:10:07  <csharp> yeah, it's the 020 or 022 $c
+2015-04-29T09:10:14  <csharp> @marc 020
+2015-04-29T09:10:14  <pinesol_green> csharp: The ISBN assigned to a monographic publication by designated agencies in each country participating in the program. The field may include terms of availability and canceled or invalid ISBNs. It may be repeated for multiple numbers associated with the item (e.g., ISBNs for the hard bound and paperback manifestations; ISBNs for a set as a whole and for the individual parts in the set). (1 more message)
+2015-04-29T09:10:15  <kmlussier> I'll do it right now.
+2015-04-29T09:10:36  <csharp> @more
+2015-04-29T09:10:36  <pinesol_green> csharp: (Repeatable) [a,c,z,6,8]
+2015-04-29T09:10:37  <kmlussier> We generally use the 962 field for holdings info here, but you can use anything.
+2015-04-29T09:11:06  <csharp> pretty sure we use 952, but I don't remember off the top of my head - but that's with exports
+2015-04-29T09:11:36  <csharp> @marc 022
+2015-04-29T09:11:36  <pinesol_green> csharp: The ISSN, a unique identification number assigned to a continuing resource. (Repeatable) [a,y,z,2,6,8]
+2015-04-29T09:11:46  <csharp> hmm
+2015-04-29T09:13:43  <csharp> so the 022 doesn't have a $c
+2015-04-29T09:14:43  * csharp was just looking at the marc display attributes table where I believe our staff have been trying to fix this themselves (before berick clarified that those only affect display)
+2015-04-29T09:15:00  <csharp> I don't know what's stock and what's custom :-/
+2015-04-29T09:16:12  <csharp> it's the consequence of the fact that I'm really only involved with Acq when something's not working as expected - I usually have to backtrack over everything they've done without really knowing for sure what they've changed :-/
+2015-04-29T09:18:31  *** ningalls_ has joined #evergreen
+2015-04-29T09:19:14  <gmcharlt> csharp: in the line item attribute definitions, there's a "remove" column that lets you specify a regexp
+2015-04-29T09:19:30  <gmcharlt> stuff that matches the regexp then gets removed when the acq MARC record is ingested
+2015-04-29T09:21:04  *** ericar_ has joined #evergreen
+2015-04-29T09:22:28  *** ericar has quit IRC
+2015-04-29T09:22:42  *** ericar_ is now known as ericar
+2015-04-29T09:28:56  <Dyrcona> csharp: When it comes to holding information in acq, it is all pretty much custom. :)
+2015-04-29T09:29:28  <Dyrcona> That is, local configuration.
+2015-04-29T09:29:45  * bshum thinks we don't use Ingram anymore for acq ordering in Evergreen. 
+2015-04-29T09:30:06  <bshum> Mostly I hear about weird B&T stuff.
+2015-04-29T09:30:29  <bshum> So either we don't use Ingram or it works really well... probably the first one.
+2015-04-29T09:30:56  <kmlussier> We use Ingram a lot here. And we find it works pretty well.
+2015-04-29T09:31:25  <bshum> I think how kmlussier described holdings subfield for cost is how we deal with it too.
+2015-04-29T09:32:28  <kmlussier> By adding it to the holdings subfield, it automatically applies that price to the lineitem. I don't think that can happen if you're using the 020.
+2015-04-29T09:36:58  <mmorgan> csharp: gmcharlt: FWIW, In acq.lineitem_marc_attr_definition we have, in the "remove" field for ISSN and ISBN and UPC this string:  (?:-|\s.+$)
+2015-04-29T09:37:18  <mmorgan> We have that same "remove" string in every attr table associated with ISBN, ISSN, UPC.
+2015-04-29T09:37:43  <csharp> gmcharlt: berick told me yesterday that's just for display - is that true?
+2015-04-29T09:37:45  <gmcharlt> indeed - removing hyphens and anything after the first space
+2015-04-29T09:38:25  <gmcharlt> "12345679X (pbk.)" ... you will not defeat us!!! ;)
+2015-04-29T09:38:54  <kmlussier> csharp: I think that's a differnt thing. From what you said above, berick was referring to marc display attributes.
+2015-04-29T09:38:59  <csharp> in that case $ signifies "end of line", right?
+2015-04-29T09:39:08  <gmcharlt> csharp: yes
+2015-04-29T09:39:09  <kmlussier> Or maybe it's the same thing.
+2015-04-29T09:39:11  <csharp> ohh
+2015-04-29T09:39:19  <csharp> lemme look there
+2015-04-29T09:39:24  * kmlussier stops talking now because she is focusing on something else.
+2015-04-29T09:39:26  <csharp> god - so many moving parts :-/
+2015-04-29T09:42:26  <Dyrcona> csharp: It's what you asked for. :)
+2015-04-29T09:42:45  <csharp> Dyrcona: :-)
+2015-04-29T09:43:44  <csharp> argh - I wish I needed regexes more often so I would actually have to learn them :-/
+2015-04-29T09:44:00  <Dyrcona> csharp: Which kind? :)
+2015-04-29T09:44:25  <Dyrcona> jwz underestimated the number of problems. :)
+2015-04-29T09:44:42  <Dyrcona> To match a $ in Perl, you'll want \$
+2015-04-29T09:45:19  <Dyrcona> Otherwise, $ is treated as end of string.
+2015-04-29T09:45:55  <csharp> okay, I'm tranlating (?:|\s.+$) to mean "match either "?:"  or "\s.+" until the end of the line ($)
+2015-04-29T09:46:08  <csharp> but I don't know what ?: means here :-/
+2015-04-29T09:46:26  <gmcharlt> csharp: try this - [^0-9.]
+2015-04-29T09:46:43  <gmcharlt> i.e., moving anything that isn't a digit or a period
+2015-04-29T09:46:46  <gmcharlt> *removing
+2015-04-29T09:46:55  <csharp> gmcharlt: excellent - I'll try that
+2015-04-29T09:46:58  <Dyrcona> csharp; No, "(?:" starts a non-capturing group.
+2015-04-29T09:47:12  <csharp> Dyrcona: ah - thanks
+2015-04-29T09:47:15  <csharp> that was throwing me
+2015-04-29T09:47:25  <Dyrcona> csharp: It's like "(" but without back references.
+2015-04-29T09:47:57  <Dyrcona> It's a smidge faster if you don't need \1, etc.
+2015-04-29T09:48:07  <csharp> makes sense now
+2015-04-29T09:48:38  <csharp> I was reading ? as "the preceding character is optional" but that didn't make sense when it was first
+2015-04-29T09:48:40  <gmcharlt> (also, for the room - the relevant regexp_replace call in the extract_marc_field() stored function is invoking the replace with 'g' -- i.e., apply it to all matches)
+2015-04-29T09:49:06  *** ericar_ has joined #evergreen
+2015-04-29T09:49:24  <csharp> hooray! that did it
+2015-04-29T09:49:42  <csharp> gmcharlt++ # thanks
+2015-04-29T09:49:54  <csharp> Dyrcona++ # helping translate ;-)
+2015-04-29T09:50:05  <Dyrcona> csharp: the original was (?:-|\s.+$) that means hyphen (-) or the first space (\s) followed by one or more of anything (.+) to the end of string ($).
+2015-04-29T09:50:37  <csharp> okay, so | still means "or" there - makes sense
+2015-04-29T09:51:00  <Dyrcona> Yep. The parens with ?: just make a non-capturing group out of it.
+2015-04-29T09:52:25  *** ericar has quit IRC
+2015-04-29T09:52:28  *** ericar_ is now known as ericar
+2015-04-29T09:59:46  <csharp> kmlussier++ # responding on the list
+2015-04-29T10:00:18  <csharp> acq questions tend to result in radio silence in our experience, so I appreciate everyone who took time to respond! :-)
+2015-04-29T10:02:36  <kmlussier> Really? I usually try to answer whenever I see an acq question posted to the list.
+2015-04-29T10:03:06  <bshum> It wasn't asked that many hours ago.
+2015-04-29T10:08:48  *** jwoodard has joined #evergreen
+2015-04-29T10:10:17  <Dyrcona> Well, more sites are using acq these days, so that experience is changing.
+2015-04-29T10:15:25  <csharp> Dyrcona: have you done any more experimentation with EG on 14.04?  looks to me like most of the bigger issues are fixed...
+2015-04-29T10:16:03  <csharp> I'm working on building our debs on 14.04 and jessie right now, but I'm deep in the weeds of packaging best practices right now
+2015-04-29T10:16:08  <Dyrcona> You mean for acq? If so, no. I don't really have much of a way to test, since I don't actually have any vendor accounts.
+2015-04-29T10:16:19  <csharp> nah, just in general
+2015-04-29T10:16:35  <Dyrcona> In general, I have been running Evergreen on 14.04 with success for about a year.
+2015-04-29T10:16:37  <csharp> I think I have the ruby problem solved for now
+2015-04-29T10:16:41  <csharp> oh good to know
+2015-04-29T10:16:47  <Dyrcona> yep. I saw that.
+2015-04-29T10:17:02  <Dyrcona> I thought about faking an EDI transaction for testing.
+2015-04-29T10:17:28  <Dyrcona> That is, setting up a bogus vendor with a canned order and response to send.
+2015-04-29T10:17:36  <berick> we've deployed 2 ubuntu 14.04 servers to productoin.
+2015-04-29T10:17:50  <berick> soon, soon we'll be free of centos
+2015-04-29T10:17:53  <csharp> berick: oh - awesome (on more than one level)
+2015-04-29T10:17:58  <dbs> centos! omg.
+2015-04-29T10:18:14  <berick> yeah
+2015-04-29T10:18:34  * csharp theoretically wants us to support CentOS/RHEL, but understands why it doesn't have traction
+2015-04-29T10:19:25  <csharp> I have an aging OpenSRF branch that installed dependencies from EPEL and got it up and running on CentOS
+2015-04-29T10:19:30  <csharp> 6, I think
+2015-04-29T10:19:49  <csharp> but I didn't get as far as Evergreen
+2015-04-29T10:22:21  <bshum> I think for front-end app servers, I'm not too nervous about Ubuntu 14.04.  But for backend utilities, I get a little anxious to test further.
+2015-04-29T10:22:43  <bshum> Acq EDI stuff, sure, but also have to test things like print notice generation, other scripts.
+2015-04-29T10:22:58  <bshum> z39.50, who knows?  :)
+2015-04-29T10:23:08  <berick> bshum: we should be fully migrated by the end of May.  i'll let you know how it goes
+2015-04-29T10:23:20  <bshum> berick++
+2015-04-29T10:24:30  <csharp> oh yeah - z39.50 is broken in 12.04 too, right?
+2015-04-29T10:24:34  <csharp> (as a server)
+2015-04-29T10:24:42  * bshum hasn't found that to be the case.
+2015-04-29T10:24:52  * csharp just remembers a bug about it
+2015-04-29T10:24:53  <bshum> Since he's using that on 12.04.  But anywho.
+2015-04-29T10:25:27  <berick> we're setting up a parallel ubuntu utility server and carefully migrating one thing at a time until there's nothing left to migrate :)
+2015-04-29T10:26:01  <bshum> csharp: You're probably talking about the errant https://bugs.launchpad.net/evergreen/+bug/1172332
+2015-04-29T10:26:01  <pinesol_green> Launchpad bug 1172332 in Evergreen "simple2zoom has segmentation faults" (affected: 1, heat: 8) [Undecided,Confirmed]
+2015-04-29T10:26:08  <dbwells> Not necessarily CentOS/RHEL specific, but this conversation reminded me of my brief experience with SELinux, which this fits to a tee: http://devopsreactions.tumblr.com/post/82078906895/selinux
+2015-04-29T10:26:43  <berick> dbwells++
+2015-04-29T10:28:51  <Dyrcona> I believe z39.50 works on 14.04. It works on 12.04 with a more up to date libyaz from indexdata's PPA/repo.
+2015-04-29T10:29:00  <dbs> https://coffeecode.net/archives/259-Leaving-SELinux-in-enforcing-mode-with-Evergreen-on-Fedora-17.html
+2015-04-29T10:29:10  <dbs> SO OLD. And pretty hamfisted.
+2015-04-29T10:29:16  <Dyrcona> I've successfully searched without segfaults on 14.04.
+2015-04-29T10:30:55  <csharp> dbwells++
+2015-04-29T10:38:38  <Dyrcona> SELinux has its place, just not on my computers. :)
+2015-04-29T10:38:40  <jboyer-isl> dbs++ for sharing that. If I had known the only reason apache is run as opensrf is for logging I'd have stopped doing that a long time ago. I still want nothing to do with SELinux at the moment, but I did learn something!
+2015-04-29T10:39:57  *** graced has quit IRC
+2015-04-29T10:43:08  *** rjackson_isl has joined #evergreen
+2015-04-29T10:44:01  *** chatley has quit IRC
+2015-04-29T10:44:25  <kmlussier> gmcharlt: I need to post a job to evergreen-ils.org. It looks like we still don't have any direct links to job listings. Is that something I could add to About Us?
+2015-04-29T10:44:39  <gmcharlt> kmlussier: sure, that sounds good
+2015-04-29T10:44:46  <kmlussier> Or maybe to the Get Involved menu. No better way to get involved than to come work for MassLNC. :)
+2015-04-29T10:48:19  <berick> gmcharlt++ csharp++ # acq data cleanup.  sorry for misleading you, csharp
+2015-04-29T10:54:33  <bshum> I'm stepping away for a lunch meeting, but will be back this afternoon berick/dbwells/etc. to work on cutting releases.
+2015-04-29T10:55:43  <kmlussier> Speaking of cutting releases, I took a stab at point release notes last night for 2.8.1. last night.
+2015-04-29T10:55:44  <jboyer-isl> gmcharlt, kmlussier: Get involved does sound pretty good for job links. People may head there naturally, but I don't think About Us would immediately come to mind for that.
+2015-04-29T10:56:26  <kmlussier> My hope was to do a bulletted list, but there were already two lengthier release notes entry there, so it didn't work out that way.
+2015-04-29T10:57:08  <kmlussier> http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/user/kmlussier/2-8-1-release-notes
+2015-04-29T10:57:22  <kmlussier> I'm open to any feedback
+2015-04-29T10:58:05  <kmlussier> jboyer-isl: Yeah, I can see that. I'm on the fence
+2015-04-29T10:58:12  <kmlussier> @coin
+2015-04-29T10:58:12  <pinesol_green> kmlussier: heads
+2015-04-29T10:58:58  * Dyrcona agrees with jboyer-isl. 
+2015-04-29T10:59:40  <jboyer-isl> I think something like @coin "option1" "option2" could be a nice addition. Why make me map my random decisions in my head, just tell me what to do! :)
+2015-04-29T10:59:45  <Dyrcona> Does it make sense to add a Jobs category with only one posting at the moment?
+2015-04-29T11:00:17  <Dyrcona> jboyer-isl: That kind of thinking can get you replaced by a single line of Perl code. :)
+2015-04-29T11:00:23  <jboyer-isl> Dyrcona: Without a place to track them, how will people know when there's more than 1? (unless they're all from the same place, I suppose)
+2015-04-29T11:00:26  <kmlussier> Dyrcona: Well, the thing is, if you don't add the direct link to jobs, nobody remembers it is there and then don't think to post it to the Evergreen site.
+2015-04-29T11:01:13  <Dyrcona> See, that's where my thinking was headed about the Jobs category.
+2015-04-29T11:02:09  <Bmagic> when you make a org_unit opac invisible and run autogen, it should disappear from the opac dropdown right?
+2015-04-29T11:02:15  <Dyrcona> +1 on the release notes
+2015-04-29T11:02:25  <berick> Bmagic: may have to reload apache
+2015-04-29T11:02:37  <Bmagic> oh, just a reload? not a restart?
+2015-04-29T11:02:40  <berick> right
+2015-04-29T11:02:48  <Bmagic> I'll try that
+2015-04-29T11:03:14  <Dyrcona> Bmagic: If a restart didn't work, a reload won't either.
+2015-04-29T11:03:23  <Bmagic> I didnt restart apache
+2015-04-29T11:03:26  <Bmagic> I just ran autogen
+2015-04-29T11:03:33  <Dyrcona> Bmagic: OK, then, reload away.
+2015-04-29T11:03:35  <Dyrcona> ;)
+2015-04-29T11:03:52  <Dyrcona> I took your comment to mean that you had and it failed.
+2015-04-29T11:04:01  * Dyrcona reads too much between the pixels.
+2015-04-29T11:04:04  <Bmagic> berick++  #that did it
+2015-04-29T11:04:25  <berick> yay
+2015-04-29T11:04:51  <Dyrcona> General rule of thumb, do an apache reload after autogen.
+2015-04-29T11:04:51  <Bmagic> I dont understand why. Did autogen alter the apache config?
+2015-04-29T11:05:20  <Bmagic> Dyrcona: good to know
+2015-04-29T11:05:39  <Dyrcona> Nope. But, it alters data that is read by perl mods at startup.
+2015-04-29T11:06:00  <Bmagic> and a reload reinitializes all of the perl stuff?
+2015-04-29T11:06:23  <Dyrcona> A reload tells running Apache processes to finish the request that they are handling, then shut down.
+2015-04-29T11:06:41  <Dyrcona> When the next request comes in, it should spawn a new Apache child.
+2015-04-29T11:06:53  <Dyrcona> Thus rereading the data.
+2015-04-29T11:07:19  <Dyrcona> A restart says, shut down immediately, I don't care what you're doing.
+2015-04-29T11:07:33  <Bmagic> so, it really is a restart but with a graceful first. apache2 reload = apache2 graceful-stop && apache2 start   ?
+2015-04-29T11:08:05  <Dyrcona> That's one way to think of it, but I've never looked at the code or scripts to see what is actually done.
+2015-04-29T11:08:24  <Bmagic> thanks guys!
+2015-04-29T11:08:27  <Dyrcona> yw
+2015-04-29T11:08:45  <berick> with a reload, the master apache process is not restarted.  it stays alive to queue requests while the children (gracefully) die off and start back up
+2015-04-29T11:09:18  <berick> in case anyone is curious
+2015-04-29T11:20:18  <pinesol_green> [evergreen|Jason Boyer] LP#1427309 Fix Crash in Collections User Balance Summary - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=804210a>
+2015-04-29T11:23:37  <kmlussier> Nice! The job automatically posts to all the social networking spots.
+2015-04-29T11:24:08  *** bmills has joined #evergreen
+2015-04-29T11:27:45  *** Newziky has joined #evergreen
+2015-04-29T11:28:13  <kmlussier> That is, everything but Twitter. hmmm
+2015-04-29T11:30:33  <kmlussier> Probably because we don't use JetPack to post to Twitter.
+2015-04-29T11:35:00  <Dyrcona> @@++
+2015-04-29T11:35:00  <pinesol_green> Dyrcona: Zoia knows how to make fusilli.
+2015-04-29T11:35:10  <Dyrcona> Good for zoia!
+2015-04-29T11:35:38  <Dyrcona> pinsesol_greeen: I make a killer London Broil.
+2015-04-29T11:36:03  <Dyrcona> Doh! That's what I get for being cheeky.
+2015-04-29T11:38:00  <kmlussier> Sounds like pinesol_green sometimes sneaks over to code4lib for dinner with zoia.
+2015-04-29T11:41:40  <Dyrcona> The increment above was intended for the @@ operator in Postgress. I figured it would elicit nonsense from pinseol_green.
+2015-04-29T11:42:28  <Dyrcona> And time for some left over, killer london broil. ;)
+2015-04-29T11:45:27  <berick> pinesol_green and zoia...  dining philosophers
+2015-04-29T11:45:27  <pinesol_green> berick: Yeah, well, you know, that's just like uh, your opinion, man.
+2015-04-29T11:45:28  <pinesol_green> berick: I am only a bot, please don't think I'm intelligent :)
+2015-04-29T11:52:42  *** grharry1 has joined #evergreen
+2015-04-29T12:05:31  <csharp> berick: no problem - just glad there was an easy front-end solution :-)
+2015-04-29T12:05:52  <berick> csharp: it takes a village
+2015-04-29T12:06:12  <csharp> @who is one of the Village People?
+2015-04-29T12:06:12  <pinesol_green> hopkinsju is one of the Village People.
+2015-04-29T12:10:08  <Bmagic> lol
+2015-04-29T12:18:30  *** buzzy has joined #evergreen
+2015-04-29T12:22:09  *** buzzy has quit IRC
+2015-04-29T12:49:11  *** Newziky has left #evergreen
+2015-04-29T12:57:58  *** yboston has joined #evergreen
+2015-04-29T13:58:34  *** jihpringle has joined #evergreen
+2015-04-29T14:05:58  <Dyrcona> Meh, Launchpad....
+2015-04-29T14:09:32  *** buzzy has joined #evergreen
+2015-04-29T14:16:29  *** rashma_away is now known as rashma
+2015-04-29T14:34:24  *** jihpringle has quit IRC
+2015-04-29T14:40:15  *** jihpringle has joined #evergreen
+2015-04-29T15:20:50  *** maryj has joined #evergreen
+2015-04-29T15:27:01  *** TaraC_ has quit IRC
+2015-04-29T15:47:12  *** abowling has joined #evergreen
+2015-04-29T15:57:29  <kmlussier> @karma
+2015-04-29T15:57:29  <pinesol_green> kmlussier: Highest karma: "dbs" (992), "bshum" (966), and "Dyrcona" (663).  Lowest karma: "ie" (-62), "^" (-30), and "marc" (-28).  You (kmlussier) are ranked 5 out of 2470.
+2015-04-29T15:58:37  <kmlussier> I've heard that code4lib clears out its karma every year around conference time. Is there any interest in doing that here?
+2015-04-29T15:59:06  <kmlussier> It would give new community members a chance to rank highly along with those of use who have been around for a while.
+2015-04-29T16:00:09  *** vlewis has joined #evergreen
+2015-04-29T16:00:48  <Dyrcona> Sounds fine to me.
+2015-04-29T16:01:40  <kmlussier> @karma
+2015-04-29T16:01:40  <pinesol_green> kmlussier: Highest karma: "dbs" (992), "bshum" (966), and "Dyrcona" (663).  Lowest karma: "ie" (-62), "^" (-30), and "marc" (-28).  You (kmlussier) are ranked 5 out of 2470.
+2015-04-29T16:01:50  <kmlussier> Sigh...that's not what I meant to do.
+2015-04-29T16:01:55  <kmlussier> @karma kmlussier
+2015-04-29T16:01:55  <pinesol_green> kmlussier: Karma for "kmlussier" has been increased 622 times and decreased 0 times for a total karma of 622.
+2015-04-29T16:02:29  <kmlussier> On the other hand, if I try really, really hard, I do have a chance of sneaking past Dyrcona in the next year. ;)
+2015-04-29T16:02:47  <bshum> kmlussier: We'll just volunteer you to be our next RM and you'll definitely get past him ;)
+2015-04-29T16:02:51  <Dyrcona> Yes, you do.
+2015-04-29T16:03:02  <Dyrcona> kmlussier++
+2015-04-29T16:03:05  <bshum> Or you know, just general awesomeness.
+2015-04-29T16:03:07  <bshum> kmlussier++
+2015-04-29T16:03:17  <kmlussier> bshum: Somehow, I don't think the payoff is worth the trouble of being RM.
+2015-04-29T16:03:24  <bshum> But, but... karma!
+2015-04-29T16:03:25  <bshum> :D
+2015-04-29T16:04:49  <Dyrcona> hah
+2015-04-29T16:09:51  *** jihpringle_ has joined #evergreen
+2015-04-29T16:12:35  *** jihpringle has quit IRC
+2015-04-29T16:12:46  *** jihpringle_ is now known as jihpringle
+2015-04-29T16:20:16  *** maryj has quit IRC
+2015-04-29T16:27:19  *** grharry1 has left #evergreen
+2015-04-29T16:28:36  <Bmagic> @karma Bmagic
+2015-04-29T16:28:36  <pinesol_green> Bmagic: Karma for "Bmagic" has been increased 27 times and decreased 0 times for a total karma of 27.
+2015-04-29T16:28:57  <Bmagic> Watch out! I'm coming!
+2015-04-29T16:29:10  *** rjackson_isl has quit IRC
+2015-04-29T16:29:34  <bshum> Bmagic++ # for future good deeds (and some occasional past good ones, including epic magic tricks)
+2015-04-29T16:29:40  <Bmagic> lol
+2015-04-29T16:30:15  <kmlussier> Bmagic++
+2015-04-29T16:30:38  <Bmagic> Awwww dang! Watch out Dyrcona, Im gonna getcha
+2015-04-29T16:30:58  <kmlussier> Bmagic: I've been thinking it's time to schedule our next Bug Squashing Day.
+2015-04-29T16:31:01  <Dyrcona> Bmagic++
+2015-04-29T16:31:18  <Bmagic> I love bugs, I am excited to be apart of them!
+2015-04-29T16:31:31  <kmlussier> It's supposed to be in May, but since the conference is in May and since the last one was a little late, I'm thinking of pushing it into June.
+2015-04-29T16:31:36  <Bmagic> Just don't make me eat them
+2015-04-29T16:31:45  <kmlussier> Ewwwww!
+2015-04-29T16:32:02  <bshum> "This job is not worth eleven five a year"
+2015-04-29T16:32:11  <kmlussier> Anyway, that's for another day.
+2015-04-29T16:32:16  * kmlussier needs to disappear
+2015-04-29T16:32:21  * Bmagic waves
+2015-04-29T16:32:41  <mmorgan> kmlussier: Have a good evening!
+2015-04-29T17:00:08  *** Dyrcona has quit IRC
+2015-04-29T17:15:55  <bshum> Hmm
+2015-04-29T17:16:13  <bshum> We can't seem to add any bibs with URIs to lists.
+2015-04-29T17:16:17  <bshum> That's special.
+2015-04-29T17:16:50  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-29T17:18:08  <mmorgan> bshum: lp 1246385 ?
+2015-04-29T17:18:10  <pinesol_green> Launchpad bug 1246385 in Evergreen "internal server error when adding an item to a list from within staff client" (affected: 1, heat: 6) [Undecided,Confirmed] https://launchpad.net/bugs/1246385
+2015-04-29T17:18:41  <bshum> No, this is in public side
+2015-04-29T17:19:13  <bshum> If I go to try adding a bib that's a URI (aka, $9 trick), it just stays off the list and I get a refreshed page that still says "add to list"
+2015-04-29T17:19:42  <mmorgan> Oh, ok. sounded familiar. But it's too late in the day...
+2015-04-29T17:19:50  <bshum> I'm going to have to get a test system going with 2.8 stock to see if it's a template issue in our systems, or if it's a 2.8 regression.
+2015-04-29T17:20:02  <bshum> It's not broken on MVLC's or PINES systems, but they're on 2.7ish
+2015-04-29T17:20:53  <bshum> mmorgan: We should probably close that bug.  Since no one's confirmed anything since it was reported "fixed" or at least "not broken" for 2.5.
+2015-04-29T17:22:09  <mmorgan> Oh, probably so.
+2015-04-29T17:24:01  *** mmorgan has left #evergreen
+2015-04-29T17:35:03  *** abowling has quit IRC
+2015-04-29T17:37:43  <kmlussier> bshum: There's a bug for that. And old one
+2015-04-29T17:38:49  <kmlussier> bug 979038
+2015-04-29T17:38:49  <pinesol_green> Launchpad bug 979038 in Evergreen "tpac: Records with a located URI cannot be added to a list" (affected: 3, heat: 18) [Low,Confirmed] https://launchpad.net/bugs/979038 - Assigned to Jeff Godin (jgodin)
+2015-04-29T17:40:07  <kmlussier> Filed that one while C/W MARS and NOBLE were getting ready to go live on Evergreen.
+2015-04-29T17:40:09  <bshum> kmlussier: That sounds more like my problem.
+2015-04-29T17:40:28  <bshum> I didn't notice it on MVLC/PINES cause I was only testing temp lists on there (no account to test real with)
+2015-04-29T17:40:37  <bshum> But temp lists don't even take ours on our systems.
+2015-04-29T17:40:48  <bshum> But maybe that's cause we don't use the temp list warning or whatnots.  Who knows.
+2015-04-29T17:41:31  <bshum> Sigh, oh well.
+2015-04-29T17:41:55  * bshum clicks "affects me too" and contemplates dinner.
+2015-04-29T17:43:46  <kmlussier> jeff: Do you still want to be the assignee on that bug?
+2015-04-29T18:01:56  *** jihpringle has quit IRC
+2015-04-29T18:04:37  *** ericar has quit IRC
+2015-04-29T18:16:40  <bshum> csharp: Should we be deprecating https://bugs.launchpad.net/evergreen/+bug/1050384 in favor of your newly filed https://bugs.launchpad.net/evergreen/+bug/1450218
+2015-04-29T18:16:40  <pinesol_green> Launchpad bug 1050384 in Evergreen "Views referenced in reporter UI are not created by default" (affected: 1, heat: 6) [Low,Confirmed]
+2015-04-29T18:16:41  <pinesol_green> Launchpad bug 1450218 in Evergreen "PINES example reports available in fm_IDL.xml by default, but not installed in DB by default" (affected: 1, heat: 6) [Undecided,New]
+2015-04-29T18:17:03  <bshum> Or vice versa.  One of those should be marked duplicate of the other I think.
+2015-04-29T18:19:09  <bshum> And as for stat cats, that can do strange things when you either a) have something else as "1" or "2" than what's expected, or b) not have id 1 or 2 at all, cause our stat cats happen to start at 100+
+2015-04-29T18:19:35  <bshum> So some of us manually edit and remove those from the view definitions prior to creation.  To avoid weirdness.
+2015-04-29T18:28:21  *** mrpeters has left #evergreen
+2015-04-29T18:52:31  *** yboston has quit IRC
+2015-04-29T19:05:31  *** vlewis has quit IRC
+2015-04-29T20:01:49  *** jwoodard has quit IRC
+2015-04-29T20:29:44  *** akilsdonk has quit IRC
+2015-04-29T20:49:27  *** buzzy has quit IRC
+2015-04-29T20:55:47  *** bmills has quit IRC
+2015-04-29T20:56:04  *** bmills has joined #evergreen
+2015-04-29T21:20:21  *** maryj has joined #evergreen
+2015-04-29T21:37:31  *** bmills has quit IRC
+2015-04-29T21:38:43  *** bmills has joined #evergreen
+2015-04-29T22:01:14  *** maryj has quit IRC
+2015-04-29T22:13:52  *** bmills has quit IRC
+2015-04-29T22:29:14  *** pmurray is now known as pmurray_away
+2015-04-29T22:35:19  * dbs hates marking older bugs as duplicates of newer bugs because it masks how freaking old the underlying problem is
+2015-04-29T22:38:28  *** bmills has joined #evergreen
+2015-04-29T22:42:46  *** bmills has quit IRC
+2015-04-29T22:59:51  *** bmills has joined #evergreen
+2015-04-29T23:09:44  *** bmills has quit IRC

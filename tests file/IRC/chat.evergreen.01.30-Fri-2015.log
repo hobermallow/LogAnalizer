@@ -1,0 +1,268 @@
+2015-01-30T01:32:02  *** abowling1 has quit IRC
+2015-01-30T02:06:56  *** bmills has quit IRC
+2015-01-30T02:59:25  *** sbrylander has joined #evergreen
+2015-01-30T03:01:54  *** sarabee has quit IRC
+2015-01-30T03:26:21  *** mmorgan1 has joined #evergreen
+2015-01-30T03:29:55  *** akilsdonk has quit IRC
+2015-01-30T03:31:08  *** akilsdonk has joined #evergreen
+2015-01-30T05:10:18  *** Kshitij has joined #evergreen
+2015-01-30T06:10:45  *** Kshitij has quit IRC
+2015-01-30T06:11:53  *** Kshitij has joined #evergreen
+2015-01-30T06:24:22  *** Kshitij has quit IRC
+2015-01-30T07:01:58  *** Callender_ is now known as Callender
+2015-01-30T07:56:27  *** rjackson-isl has joined #evergreen
+2015-01-30T08:26:17  *** collum has joined #evergreen
+2015-01-30T08:32:55  *** Dyrcona has joined #evergreen
+2015-01-30T08:44:49  *** mmorgan1 has left #evergreen
+2015-01-30T08:45:21  *** mmorgan has joined #evergreen
+2015-01-30T08:48:40  *** StomproJ has quit IRC
+2015-01-30T08:48:59  *** Stompro has joined #evergreen
+2015-01-30T08:54:57  *** julialima_ has joined #evergreen
+2015-01-30T08:55:20  *** mrpeters has joined #evergreen
+2015-01-30T09:04:32  <dbs> sorry for the brief downtime of the evergreen planet. my server ran out of space (sigh). all sorted now
+2015-01-30T09:06:35  *** RoganH has joined #evergreen
+2015-01-30T09:09:33  <bshum> dbs++
+2015-01-30T09:12:14  <Dyrcona> dbs++
+2015-01-30T09:13:38  <dbs> rebooting to get the glibc update in place too. biab
+2015-01-30T09:14:10  <Dyrcona> dbs saves the planet!
+2015-01-30T09:14:16  *** dbs has quit IRC
+2015-01-30T09:16:02  <bshum> @quote add "<Dyrcona> dbs saves the planet!"
+2015-01-30T09:16:02  <pinesol_green> bshum: The operation succeeded.  Quote #105 added.
+2015-01-30T09:17:08  *** dbs has joined #evergreen
+2015-01-30T09:17:17  <dbs> And we're back.
+2015-01-30T09:24:52  <goood> berick / kmlussier: I'm in favor of just hiding the status bar, unless/until we can have it live at the same zindex as the main body so it doesn't cover other bits.  I tried to figure out how to have it collapse to the far right instead of just going away, but the css was beyond me
+2015-01-30T09:29:45  *** Callender has quit IRC
+2015-01-30T09:29:51  *** maryj has joined #evergreen
+2015-01-30T09:32:22  *** yboston has joined #evergreen
+2015-01-30T09:41:41  *** abowling has joined #evergreen
+2015-01-30T09:45:53  *** Callender has joined #evergreen
+2015-01-30T09:52:02  *** berick has quit IRC
+2015-01-30T09:54:41  *** berick has joined #evergreen
+2015-01-30T10:37:05  <goood> berick: remind me, streaming responses should work fine over websockets, and trigger the promise's third .then() function on each response, and the first on respond_complete. yes?
+2015-01-30T10:38:23  <berick> goood: yes, exactly
+2015-01-30T10:38:40  <goood> that's what I though
+2015-01-30T10:38:55  <goood> and what seems to be intended on the clear hold shelf UI
+2015-01-30T10:39:19  <goood> but, it doesn't seem to be updating on each clear...
+2015-01-30T10:39:59  <berick> i think the clear shelf API responds after every X updates
+2015-01-30T10:40:37  <berick> looks like $chunk_size = 25
+2015-01-30T10:42:34  <goood> so an impatient user might not see the UI change, and hit refresh to see what's going on
+2015-01-30T10:43:05  <berick> potentially, yes.  in the land of websockets, we could significantly reduce the chunk_size
+2015-01-30T10:43:16  <berick> since that's mostly there to work around bugs in the old multipart/mixed-replace stuff
+2015-01-30T10:43:29  <goood> got it. well, a param can be passed, maybe
+2015-01-30T10:43:34  <berick> yeah
+2015-01-30T10:44:03  <goood> hrm, not currently
+2015-01-30T10:47:10  <goood> ok, adding, and using chunk size = 1
+2015-01-30T10:48:02  <berick> oh and recall opensrf does some chunking, too.
+2015-01-30T10:52:59  <csharp> dbs: did you end up actually installing an older SIPServer to resolve your issues?
+2015-01-30T10:54:07  * csharp is seeing high RAM on PINES' sip servers and was assuming the fixes for bug 1339190 would help resolve it, but doesn't want to bring on a world of hurt
+2015-01-30T10:54:07  <pinesol_green> Launchpad bug 1339190 in SIPServer "SIPServer is heavy, not my brother" (affected: 3, heat: 14) [Undecided,Fix committed] https://launchpad.net/bugs/1339190
+2015-01-30T10:54:34  <csharp> oh, and we're using a SIPServer of an early 2013 vintage
+2015-01-30T11:00:16  <jeff> do you have time/resources to run a new SIPServer on an alternate host or alternate port, and test with a small group of SIP clients, adding or removing from the test if/as you run into trouble?
+2015-01-30T11:00:38  <jeff> i know you'd hate to be too much of a test bed...
+2015-01-30T11:00:54  <csharp> hmm - that's a thought
+2015-01-30T11:01:52  <csharp> our testing process is actually asking libraries to connect their devices/third-party services to whichever testing cluster we've set up for the purpose
+2015-01-30T11:01:55  <jeff> but there are certainly benefits for you (and all) in having the gains of things like the work in that bug, so identifying any new issues would clear the path...
+2015-01-30T11:02:15  <Dyrcona> Looks like we're not running that fix, yet.
+2015-01-30T11:02:30  <csharp> but it would answer most of our questions to throw in an upgraded sip server for a day and record what happens
+2015-01-30T11:02:47  <csharp> and VMs are cheap ;-)
+2015-01-30T11:04:19  <goood> berick: luckily, we can dynamically set the max_chunk_size for a method ... I'll set that to $chunk_size
+2015-01-30T11:04:34  <berick> goood: oh yeah, forgot about that
+2015-01-30T11:04:36  <berick> cool
+2015-01-30T11:06:09  <goood> csharp: we're using only SipServer master in production, and with the multiplex personality. it's working really well for us.  One note is you may want to increase the worker-timeout (see SipServer example config) if you have sorters and such, as that will allow that connection's worker to stick around and not incur the worker startup cost
+2015-01-30T11:11:45  *** ericar has joined #evergreen
+2015-01-30T11:18:12  <kmlussier> Hmmm...mmorgan had a problem on webby a few months ago where she was prompted for a login every time she tried to edit a patron record. Nobody locally was able to replicate it at the time, but it's happening to me now too.
+2015-01-30T11:18:36  <kmlussier> I thought it might be one of those problems that could be fixed by registering a workstation, but I'm working with a registered workstation now and still see the problem.
+2015-01-30T11:22:58  <csharp> goood: good to know - thanks
+2015-01-30T11:23:30  <goood> kmlussier: I'm working on webby right now. I'll let you know when it's happy
+2015-01-30T11:23:44  <kmlussier> goood: OK, thanks.
+2015-01-30T11:23:51  <goood> (I brought it down for updating)
+2015-01-30T11:29:32  <goood> kmlussier: back up
+2015-01-30T11:29:44  <kmlussier> goood++ #Thank you!
+2015-01-30T11:29:50  <kmlussier> @karma goood
+2015-01-30T11:29:50  <pinesol_green> kmlussier: Karma for "goood" has been increased 3 times and decreased 0 times for a total karma of 3.
+2015-01-30T11:29:57  <jeff> @fire bad
+2015-01-30T11:29:58  <pinesol_green> jeff: Try restarting apache.
+2015-01-30T11:30:06  <berick> @hulk smash
+2015-01-30T11:30:07  <pinesol_green> berick: MARC still isn't dead yet, alas
+2015-01-30T11:30:19  <berick> yeah, hence my comment
+2015-01-30T11:30:44  <jeff> heh
+2015-01-30T11:30:56  <goood> so, $client->max_chunk_size($chunk_size) saves the day. whee
+2015-01-30T11:34:17  <kmlussier> Alas, I still have problems with the login prompt. I'll make note of it where I initially reported mmorgan's problem with the login prompt.
+2015-01-30T11:36:47  <goood> thanks
+2015-01-30T11:37:59  <goood> kmlussier: you're using the admin account?
+2015-01-30T11:38:06  <kmlussier> goood: Yes
+2015-01-30T11:38:16  <goood> I'm not having that issue. just tested with admin
+2015-01-30T11:38:48  <jboyer-isl> csharp, There's no news like old news, but I thought I'd pass along that we've been running SIPServer master as of roughly christmas time with Multiplex and it's been good. (I did have to bring back the nightly service restarts, but that's not that big a deal.)
+2015-01-30T11:39:20  <jeff> jboyer-isl: what made you bring back the nightly service restarts?
+2015-01-30T11:40:08  <jeff> jboyer-isl: and do you mean just SIPServer, or restarting OpenSRF services on the SIP host also?
+2015-01-30T11:40:43  <jboyer-isl> Even with Multiplex our process count would eventually top out. I don't know if that's a difference between the 2 personalities or if I'm missing a config option. We had to restart them nightly on 2.2 (and build a custom script to trim a single location's connections)
+2015-01-30T11:40:49  <kmlussier> goood: I'm not surprised. I never saw that issue when mmorgan first reported it, but it happened consistently every time she tried to edit a patron record. I think today is the 1st time I tried editing a patron account since I got my new laptop.
+2015-01-30T11:40:59  <kmlussier> It's happening both in Firefox and Chrome for me. :(
+2015-01-30T11:41:05  <jboyer-isl> and then on 2.5 our numbers stayed steady/low all the time.
+2015-01-30T11:41:38  <jboyer-isl> jeff: I mean SIPServer specifically, we'd have the max number of SIPServer processes waiting on connections that weren't coming back.
+2015-01-30T11:42:12  <goood> kmlussier: would you mind trying it in an "private browsing" window? (have to close all private windows first -- they share a sandbox) I've seen issues in both FF and chrome where more is cached than should be...
+2015-01-30T11:42:19  <jboyer-isl> Something about SIPServer circa Feb 2013 was different, but I haven't had time to focus on it since the nightly restarts keep everything happy.
+2015-01-30T11:42:23  *** bmills has joined #evergreen
+2015-01-30T11:42:58  <jboyer-isl> Er, Feb 2014, that is.
+2015-01-30T11:45:49  <kmlussier> goood: I just tried it in the private browsing window and I still got the prompt. I don't know if it matters, but I'm not using a registered workstation in the private browsing window.
+2015-01-30T11:47:12  <goood> I don't know if that matters... I wish I could replicate it
+2015-01-30T11:48:11  <kmlussier> goood: I wish you could replicate it too. :)
+2015-01-30T11:48:20  <goood> :)
+2015-01-30T11:48:44  <goood> kmlussier: see if the console in the dev tools shows anything?
+2015-01-30T11:51:11  <kmlussier> goood: http://pastebin.com/Knriva7M
+2015-01-30T11:51:44  <kmlussier> Maybe because I'm not using https?
+2015-01-30T11:51:54  <goood> oh, you def need to use https
+2015-01-30T11:51:57  <berick> kmlussier: that's it
+2015-01-30T11:52:41  <kmlussier> hmmm...is there a way we can force that?
+2015-01-30T11:55:27  <kmlussier> Bah! It just came up again. I'm pretty sure I started with https that time
+2015-01-30T11:55:29  <jeff> should be able to, yes.
+2015-01-30T11:55:36  <jeff> oh?
+2015-01-30T11:55:36  <berick> yeah, it can be forced w/ apache configuration
+2015-01-30T11:55:53  * berick notes the very similar selfcheck https redirect in the stock code
+2015-01-30T11:55:59  *** vlewis has joined #evergreen
+2015-01-30T11:57:26  <kmlussier> Never mind. It seems to be working correctly now. The autocompleting URL probably steered me wrong.
+2015-01-30T11:58:50  <jeff> 9118 Pure Significance Inlet
+2015-01-30T12:00:51  <kmlussier> OK, one webby mystery solved then. :)
+2015-01-30T12:00:56  * kmlussier resumes testing bug fixes
+2015-01-30T12:01:06  *** bmills1 has joined #evergreen
+2015-01-30T12:01:29  *** bmills has quit IRC
+2015-01-30T12:08:30  *** bmills1 has quit IRC
+2015-01-30T12:14:24  <csharp> jboyer-isl: thanks for sharing that
+2015-01-30T12:14:43  <csharp> I'll definitely consider upgrading, at least in a rollback-able way ;-)
+2015-01-30T12:15:39  <jboyer-isl> Eh, make a note of what HEAD points to now, then in the event of an explosion, check out to that commit. :D
+2015-01-30T12:15:40  <csharp> btw, we've *always* done nightly SIPServer restarts and I use that administratively in that when people need new SIP accounts, I tell them that it "activates" overnight (due to the restart)
+2015-01-30T12:16:38  <csharp> of course if we got ldirector/lvs working with sip servers, we could roll them in and out
+2015-01-30T12:18:12  *** bmills has joined #evergreen
+2015-01-30T12:19:05  <Dyrcona> Yeah, what csharp said at 12:15:40. ;)
+2015-01-30T12:19:21  <jboyer-isl> csharp: have I got a paste for you. One moment.
+2015-01-30T12:20:18  <Dyrcona> csharp jboyer-isl You're probably having issues with the timeout code that disconnects idle clients.
+2015-01-30T12:21:15  <jboyer-isl> I suspect so. I thought that a check_for_dead Net::Server param made a difference, but I may have been mistaken.
+2015-01-30T12:22:56  <Dyrcona> It was implemented 'cause we've seen at least one client that makes a new connection for transactions, but leaves the old ones connected.
+2015-01-30T12:23:19  <Dyrcona> After a while, it's hogging all of the available servers.
+2015-01-30T12:25:26  *** RoganH has quit IRC
+2015-01-30T12:27:59  <csharp> Dyrcona: is this what helps?: http://git.evergreen-ils.org/?p=SIPServer.git;a=blobdiff;f=SIPServer.pm;h=4ea82c539b11c64e5bb4d04d9ca82371e38a771e;hp=a826263c092a3592f2c2c149d1823d630617fa5f;hb=5ab053290b08290594b40a4b034135346b5f0d12;hpb=cd4551366fba4c30ad434b0c58432f2d6ff081cc
+2015-01-30T12:27:59  <pinesol_green> [sipserver|Thomas Berezansky] Timeout in protocol loop - <http://git.evergreen-ils.org/?p=SIPServer.git;a=commit;h=5ab0532>
+2015-01-30T12:28:00  <pinesol_green> [sipserver|Thomas Berezansky] LP#1227273: Clear account info at start and end of connection - <http://git.evergreen-ils.org/?p=SIPServer.git;a=commit;h=cd45513>
+2015-01-30T12:28:58  <pastebot> "jboyer-isl" at 64.57.241.14 pasted "ldirector and SIP, siting in a tree..." (48 lines) at http://paste.evergreen-ils.org/29
+2015-01-30T12:29:03  <Dyrcona> Believ so, yes.
+2015-01-30T12:29:17  <csharp> jboyer-isl: nice!
+2015-01-30T12:29:19  <csharp> thanks
+2015-01-30T12:29:25  <csharp> Dyrcona: great
+2015-01-30T12:29:32  <csharp> I'll consider backporting that
+2015-01-30T12:29:42  <csharp> (even if we don't fully upgrade)
+2015-01-30T12:30:53  <dbwells> bshum: I think we need ea1c4303589 in rel_2_7, since LP#1373693 is in there already.  I wanted to ask if you left it out for a reason before I push it in.  Thanks!
+2015-01-30T12:30:53  <pinesol_green> [evergreen|Dan Wells] LP#1389403 Normalizer detection compatibility with LP#1373693 - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=ea1c430>
+2015-01-30T12:32:22  <Dyrcona> Hmm. That went in last December. I guess because we've been using it longer than that, I thought it went in earlier.
+2015-01-30T12:34:41  <csharp> Dyrcona: authored in August 2012, committed December 2014
+2015-01-30T12:34:57  <Dyrcona> Yes.
+2015-01-30T12:35:15  <Dyrcona> We've been using it since August 2012, I'm pretty sure.
+2015-01-30T12:35:37  <Dyrcona> SIPServer doesn't get the attention it maybe deserves.
+2015-01-30T12:39:57  *** graced has joined #evergreen
+2015-01-30T12:41:13  * mmorgan reads backscroll, uses https, no longer gets prompted to login to edit a patron record in webby :)
+2015-01-30T12:41:57  *** buzzy has joined #evergreen
+2015-01-30T12:42:41  <bshum> dbwells: Reading the Launchpad entry, I said I did backport it. So if it's not there, then I guess I screwed something up?
+2015-01-30T12:43:33  * bshum can look more closely when he finishes eating lunch. 
+2015-01-30T12:46:31  <kmlussier> mmorgan: Hooray! :)
+2015-01-30T12:47:23  <dbwells> bshum: Yes, it was probably just an oversight, but the fact that that piece relied on the other bug gave me pause.  I just tested on our live 2.7 install, and am now sure it is needed.  I'll push it in when I get back from lunch unless you beat me to it.  (same for rel_2_6)
+2015-01-30T12:48:04  <mmorgan> Forcing https would be good practice, though.
+2015-01-30T12:54:35  *** ericar has quit IRC
+2015-01-30T12:57:56  <bshum> dbwells: Well darn, that's an annoying screwup.  I'll add that missing commit and then adjust the launchpad ticket to signify that it wasn't actually backported right till now... :(
+2015-01-30T12:58:15  <bshum> dbwells: Related, I think we've got enough stuff for a good maintenance release soon.
+2015-01-30T13:00:30  <kmlussier> goood / berick: Following up on the status bar question from earlier, we would be in favor of hiding it altogether as you both suggested earlier.
+2015-01-30T13:03:01  <bshum> dbwells: Pushed, thanks for finding my mistake :\
+2015-01-30T13:03:05  <bshum> dbwells++
+2015-01-30T13:07:35  *** book`_ has quit IRC
+2015-01-30T13:07:41  *** gmcharlt has quit IRC
+2015-01-30T13:07:47  *** gmcharlt_ has joined #evergreen
+2015-01-30T13:08:41  *** buzzy has quit IRC
+2015-01-30T13:08:41  *** mnsri has quit IRC
+2015-01-30T13:09:03  *** rangi has quit IRC
+2015-01-30T13:11:29  *** nhilton has joined #evergreen
+2015-01-30T13:12:42  *** rangi has joined #evergreen
+2015-01-30T13:12:42  *** rangi has joined #evergreen
+2015-01-30T13:12:46  *** graced has quit IRC
+2015-01-30T13:13:13  *** mnsri_away has joined #evergreen
+2015-01-30T13:13:20  *** mnsri_away is now known as mnsri
+2015-01-30T13:13:22  *** book` has joined #evergreen
+2015-01-30T13:16:44  <goood> kmlussier: I'm going to go ahead and hide it
+2015-01-30T13:18:52  <kmlussier> goood: OK. I'm about to post to the LP bug the results of our first round of testing on the fixes.
+2015-01-30T13:35:33  *** kbutler has joined #evergreen
+2015-01-30T13:56:57  *** graced has joined #evergreen
+2015-01-30T13:57:55  *** graced has joined #evergreen
+2015-01-30T14:02:46  *** graced has quit IRC
+2015-01-30T14:03:06  *** graced has joined #evergreen
+2015-01-30T14:10:48  *** graced has quit IRC
+2015-01-30T14:22:07  *** jihpringle has joined #evergreen
+2015-01-30T14:32:00  *** nhilton has quit IRC
+2015-01-30T14:50:33  <Stompro> Has anyone used relayd for load balancing your servers.  Is it too simplistic?
+2015-01-30T14:55:53  <bshum> Stompro: I have not, for our use, we've only used ldirector.  I think some folks at ESI and Mobius have used Pound proxy too.
+2015-01-30T14:56:02  <bshum> Others may have further experience to share.
+2015-01-30T15:13:14  <Stompro> Our firewall (pfsense) has relayd and haproxy built in, so I would like to try and use one of those to keep things simple.
+2015-01-30T15:28:43  *** buzzy has joined #evergreen
+2015-01-30T15:33:08  *** maryj has quit IRC
+2015-01-30T15:59:03  <collum> gmcharlt++ LITA Patron Privacy Technologies Interest Group
+2015-01-30T16:00:36  <kmlussier> gmcharlt++
+2015-01-30T16:00:45  <kmlussier> collum: Are you at MidWinter?
+2015-01-30T16:01:43  <collum> Nope.
+2015-01-30T16:01:54  <collum> gmcharlt just tweeted.
+2015-01-30T16:02:31  <collum> I can only go to one conference a year, and this year it's going to be Computers in Libraries.
+2015-01-30T16:09:32  *** collum has quit IRC
+2015-01-30T16:26:14  <Dyrcona> Rollback is great for testing.
+2015-01-30T16:28:53  *** rjackson-isl has quit IRC
+2015-01-30T16:30:32  *** jboyer-isl has quit IRC
+2015-01-30T17:01:10  *** Dyrcona has quit IRC
+2015-01-30T17:02:29  *** Kshitij has joined #evergreen
+2015-01-30T17:06:10  *** Kshitij has quit IRC
+2015-01-30T17:06:18  *** mrpeters has left #evergreen
+2015-01-30T17:07:08  *** kshitij_2015 has joined #evergreen
+2015-01-30T17:08:23  *** nhilton has joined #evergreen
+2015-01-30T17:09:00  *** mmorgan has left #evergreen
+2015-01-30T17:11:01  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-30T17:16:57  *** julialima_ has left #evergreen
+2015-01-30T17:39:05  *** akilsdonk has quit IRC
+2015-01-30T17:43:18  *** kshitij_2015 has quit IRC
+2015-01-30T17:55:25  *** kbutler has quit IRC
+2015-01-30T18:17:49  *** nhilton has quit IRC
+2015-01-30T18:25:48  *** vlewis has quit IRC
+2015-01-30T18:29:40  *** sbrylander has quit IRC
+2015-01-30T18:34:16  *** dcook__ has quit IRC
+2015-01-30T18:49:56  *** yboston has quit IRC
+2015-01-30T19:06:49  *** mnsri is now known as mnsri_away
+2015-01-30T19:20:13  *** mnsri_away is now known as mnsri
+2015-01-30T19:25:08  *** mnsri is now known as mnsri_away
+2015-01-30T19:25:16  *** mnsri_away is now known as mnsri
+2015-01-30T19:27:53  *** bmills has quit IRC
+2015-01-30T19:31:41  *** remingtron has quit IRC
+2015-01-30T19:32:00  *** remingtron has joined #evergreen
+2015-01-30T19:38:01  *** bmills has joined #evergreen
+2015-01-30T19:39:05  *** ldw has quit IRC
+2015-01-30T19:39:41  *** ldw has joined #evergreen
+2015-01-30T19:40:04  *** ldw is now known as Guest14599
+2015-01-30T19:55:12  *** mnsri is now known as mnsri_away
+2015-01-30T19:59:19  *** jihpringle has quit IRC
+2015-01-30T20:35:29  *** dcook has joined #evergreen
+2015-01-30T20:37:53  *** mnsri_away is now known as mnsri
+2015-01-30T20:42:28  *** mnsri is now known as mnsri_away
+2015-01-30T20:45:29  *** mnsri_away is now known as mnsri
+2015-01-30T21:04:34  *** bmills has quit IRC
+2015-01-30T21:06:43  *** buzzy has quit IRC
+2015-01-30T21:21:58  *** mnsri is now known as mnsri_away
+2015-01-30T21:23:45  *** mnsri_away is now known as mnsri
+2015-01-30T21:28:16  *** mnsri is now known as mnsri_away
+2015-01-30T21:39:33  *** mnsri_away is now known as mnsri
+2015-01-30T21:44:05  *** mnsri is now known as mnsri_away
+2015-01-30T21:46:04  *** nhilton has joined #evergreen
+2015-01-30T21:51:15  *** mnsri_away is now known as mnsri
+2015-01-30T21:59:31  *** mnsri is now known as mnsri_away
+2015-01-30T22:00:04  *** mnsri_away is now known as mnsri
+2015-01-30T22:09:48  *** mnsri is now known as mnsri_away
+2015-01-30T22:11:41  *** mnsri_away is now known as mnsri
+2015-01-30T22:18:26  *** mnsri is now known as mnsri_away
+2015-01-30T22:25:03  *** mnsri_away is now known as mnsri
+2015-01-30T22:42:49  *** mnsri is now known as mnsri_away
+2015-01-30T22:46:57  *** mnsri_away is now known as mnsri
+2015-01-30T23:05:41  *** mnsri is now known as mnsri_away
+2015-01-30T23:40:38  *** mnsri_away is now known as mnsri
+2015-01-30T23:45:30  *** mnsri is now known as mnsri_away
+2015-01-30T23:45:37  *** mnsri_away is now known as mnsri
+2015-01-30T23:59:39  *** mnsri is now known as mnsri_away

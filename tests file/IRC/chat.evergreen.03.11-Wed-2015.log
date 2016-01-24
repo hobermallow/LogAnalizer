@@ -1,0 +1,402 @@
+2015-03-11T00:28:05  *** akilsdonk has quit IRC
+2015-03-11T02:32:56  *** bmills has joined #evergreen
+2015-03-11T03:26:52  *** artunit has quit IRC
+2015-03-11T03:45:06  *** sarabee has quit IRC
+2015-03-11T03:48:21  *** TaraC_ has quit IRC
+2015-03-11T04:13:53  *** chatley has quit IRC
+2015-03-11T04:15:00  *** chatley has joined #evergreen
+2015-03-11T04:54:42  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-11T06:57:21  *** TaraC has joined #evergreen
+2015-03-11T07:04:38  *** dkyle has quit IRC
+2015-03-11T07:04:38  *** _bott_ has quit IRC
+2015-03-11T07:12:55  *** pmurray is now known as pmurray_away
+2015-03-11T07:20:51  *** dkyle1 has joined #evergreen
+2015-03-11T07:21:25  *** _bott_ has joined #evergreen
+2015-03-11T07:28:43  *** graced has joined #evergreen
+2015-03-11T07:29:10  *** jboyer-isl has joined #evergreen
+2015-03-11T07:53:42  *** collum has joined #evergreen
+2015-03-11T07:56:14  *** rjackson_isl has joined #evergreen
+2015-03-11T08:04:25  *** akilsdonk has joined #evergreen
+2015-03-11T08:31:17  *** mmorgan has joined #evergreen
+2015-03-11T08:39:00  *** Shae has joined #evergreen
+2015-03-11T08:46:16  *** Dyrcona has joined #evergreen
+2015-03-11T08:50:50  *** akilsdonk has quit IRC
+2015-03-11T09:21:13  * jeff yawns
+2015-03-11T09:25:04  *** mrpeters has joined #evergreen
+2015-03-11T09:32:32  <gmcharlt> jeff: WAKE UP
+2015-03-11T09:32:58  <kmlussier> gmcharlt: Shhhhh...you're interrupting my morning nap.
+2015-03-11T09:33:08  <gmcharlt> kmlussier++
+2015-03-11T09:34:19  <Dyrcona> I'm finding it very difficult to figure out why we would run out of settings drones, particularly in the middle of the night.
+2015-03-11T09:37:26  *** yboston has joined #evergreen
+2015-03-11T09:42:55  <Dyrcona> So, running hold targeter right now.
+2015-03-11T09:42:55  <Dyrcona> 56 SettingsClient have been initialized, and for all of that only 1 call to opensrf.settings has actually been made.
+2015-03-11T09:42:55  <Dyrcona> I'll see what a/t runner does after this finishes, but I exepect to see something similar there.
+2015-03-11T09:42:55  <gmcharlt> Dyrcona: grasping at straws here -- //hold_targter/parallel in opensrf.xml isn't set to a super-high value, right?
+2015-03-11T09:42:55  <Dyrcona> gmcharlt: It is set to 6.
+2015-03-11T09:42:55  <Dyrcona> Same as we use in production, IIRC.
+2015-03-11T09:42:55  * gmcharlt tosses that straw away
+2015-03-11T09:42:55  <Dyrcona> I added log statements to Storage when it does soemthing with SettingsClient yesterday.
+2015-03-11T09:42:55  <Dyrcona> Today, I added log statements in OpenSRF::Application::Settings to log what method is called.
+2015-03-11T09:42:55  <Dyrcona> I started with hold targeter to rule it out. I don't think it could have been our problem Thursday night.
+2015-03-11T09:42:55  <Dyrcona> I just checked, 6 is used in production, too.
+2015-03-11T09:42:55  <Dyrcona> All the parallel settings, except a/t are set to 6.
+2015-03-11T09:43:46  *** mllewellyn has joined #evergreen
+2015-03-11T09:53:07  <berick> i still suspect spawning apache children as the source, since each of those will have to talk to the settings server.
+2015-03-11T09:53:44  <kmlussier> berick: You had asked the other day if today was too early for the RC1 release. I didn't have an opinion at the time, but, in thinking about it further, one week seems like a very short beta period.
+2015-03-11T09:54:14  <berick> ... unlike perl/c drones
+2015-03-11T09:54:21  <berick> kmlussier: yeah, it is
+2015-03-11T09:55:12  <berick> if we have to trim anyhing, and we don't necessarily have to.., probably would make more sense to have a longer beta and a shorter RC period
+2015-03-11T09:55:50  <berick> perhaps a beta2 is in order, to pick up the latest db upgrade script
+2015-03-11T09:57:34  *** Newziky has joined #evergreen
+2015-03-11T10:02:23  <Dyrcona> berick: But my access.log has only two entries at the time we ran out of settings drones last Thursday at midnight.
+2015-03-11T10:02:55  <Dyrcona> It goes from 00:15:02 to 00:15:09 and osrfsys.log starts complaining at 00:15:07.
+2015-03-11T10:03:54  <berick> well, dang, probably not that then
+2015-03-11T10:08:44  <Dyrcona> Library Elf does start showing up at 00:15:21.
+2015-03-11T10:08:56  <Dyrcona> I could just blame them and be done with it. :)
+2015-03-11T10:10:37  <berick> apache and log server times are synced?
+2015-03-11T10:10:43  <Dyrcona> Gone through 136 SettingsClients and still only 1 opensrf.settings called.
+2015-03-11T10:10:56  <Dyrcona> They're on the same system, so they use the same clock.
+2015-03-11T10:11:57  * berick nods
+2015-03-11T10:12:10  <Dyrcona> If the access.log entries don't show up until the request is complete, it could be that Elf is causing it.
+2015-03-11T10:12:27  <Dyrcona> If the request took more than 14 seconds to process.
+2015-03-11T10:12:55  <Dyrcona> Which wouldn't surprise me, since it is auth via XML-RPC followed by an actor and a circ call.
+2015-03-11T10:13:23  <berick> yes, good point.  access logs do happen after the request
+2015-03-11T10:13:30  <berick> so they can log the response code, size, etc.
+2015-03-11T10:13:37  <Dyrcona> Yep.
+2015-03-11T10:14:03  <Dyrcona> Ok, so, I'll blame Library Elf. :)
+2015-03-11T10:14:59  <Dyrcona> BTW, I haven't had luck getting auth to work via XML-RPC lately. I wonder how Library Elf still works.
+2015-03-11T10:15:17  <Dyrcona> I didn't try too hard, though.
+2015-03-11T10:16:39  <berick> i just remember having to change the API name, but you're probably past that step
+2015-03-11T10:16:56  <Dyrcona> Yep.
+2015-03-11T10:17:11  *** jwoodard has joined #evergreen
+2015-03-11T10:17:24  <Dyrcona> I should load my access.log that includes the apache child pid.
+2015-03-11T10:17:38  <Dyrcona> That would be helpful in this case.
+2015-03-11T10:18:00  <Dyrcona> I can see how many different child processes they're causing to be spawned.
+2015-03-11T10:21:15  <Dyrcona> <sarcasm>Oh. Nice.</sarcasm> It has a completely different format from my regular custom log.
+2015-03-11T10:38:11  *** jboyer-isl has quit IRC
+2015-03-11T10:38:26  *** jboyer-isl has joined #evergreen
+2015-03-11T10:40:17  <Dyrcona> Hrm.
+2015-03-11T10:40:34  <Dyrcona> Looks like I can make it inherit an existing table.
+2015-03-11T10:41:04  <Dyrcona> If I add a column to the child table, can I update that column based on the parent table's id?
+2015-03-11T10:42:18  <Dyrcona> Except...the domain in the pid log doesn't match the access.log, 'cause a different format specifier was used. Drats.
+2015-03-11T10:45:04  <Dyrcona> Hmm. I'll see what I can come up with anyway.
+2015-03-11T10:45:14  <Dyrcona> Something to do while I wait on other things.
+2015-03-11T10:59:00  <Dyrcona> Hm. When you make a new table that inherits another table, I thought the rows from the parent table showed up in the child table.... Do I have that reversed?
+2015-03-11T10:59:39  <Dyrcona> y'know. I think I od.
+2015-03-11T10:59:40  <Dyrcona> do.
+2015-03-11T10:59:43  <eeevil> yep
+2015-03-11T10:59:50  <Dyrcona> Ok.
+2015-03-11T10:59:53  <eeevil> (just to confirm)
+2015-03-11T11:00:06  <Dyrcona> No. I had it backwards.
+2015-03-11T11:00:20  <Dyrcona> The child rows show up in the parent, but parent rows don't show up in the child.
+2015-03-11T11:00:31  <eeevil> yep to "rows show up in the parent table", sorry
+2015-03-11T11:01:00  <eeevil> or, rather, yep to "do I have that reversed"
+2015-03-11T11:01:12  <Dyrcona> Right. But, for the sake of the logs.....
+2015-03-11T11:01:25  <Dyrcona> "Won't somebody think of the logs?"
+2015-03-11T11:01:28  <Dyrcona> ;)
+2015-03-11T11:02:57  <Dyrcona> So, the fact that my local domain names differ, one log has the value of the HTTP HOST header and the other the canonical name, and that I have multiple matching requests per timestamp, complicates what I'd like to do.
+2015-03-11T11:03:55  <Dyrcona> I should just make these completely separate tables to avoid duplication in the parent.
+2015-03-11T11:28:46  *** jihpringle has joined #evergreen
+2015-03-11T11:31:38  *** sarabee has joined #evergreen
+2015-03-11T11:33:55  *** chatley has quit IRC
+2015-03-11T11:33:56  <Dyrcona> And the timestap is a different format....
+2015-03-11T11:34:03  <Dyrcona> Just for fun, y'know.
+2015-03-11T11:37:20  <Dyrcona> And, natrually, DateTime::Format:HTTP can't parse it.
+2015-03-11T11:37:44  *** vlewis has joined #evergreen
+2015-03-11T11:38:25  * kmlussier notes that holds would be a great topic for a documentation sprint
+2015-03-11T11:39:04  * Dyrcona notes that consistency in log output is often a good thing.
+2015-03-11T11:39:08  <Dyrcona> ;)
+2015-03-11T11:39:49  <kmlussier> Dyrcona: consistency in anything is a good thing.
+2015-03-11T11:42:10  <gmcharlt> almost anything -- I dislike consistently tripping over the same cat every morning ;)
+2015-03-11T11:42:22  <gmcharlt> kmlussier: +1 to a holds doc sprint
+2015-03-11T11:43:07  <kmlussier> gmcharlt: Do you have a cat? You didn't seem like a cat person to me. ;)
+2015-03-11T11:43:23  <mmorgan> gmcharlt: Would tripping over a different cat each morning be preferable?;-)
+2015-03-11T11:43:51  <gmcharlt> kmlussier: I am now weeping at the complete failure of my social media #brand ;)
+2015-03-11T11:43:59  <gmcharlt> mmorgan: it would at least add some variety :)
+2015-03-11T11:44:46  <collum> gmcharlt: you can borrower mine, but they are very difficult not to see, and shipping will be costly.
+2015-03-11T11:45:13  <gmcharlt> collum++
+2015-03-11T11:49:22  *** bmills has joined #evergreen
+2015-03-11T12:07:48  *** bmills has quit IRC
+2015-03-11T12:11:07  *** akilsdonk has joined #evergreen
+2015-03-11T12:12:41  <Dyrcona> @hate the wifi in the office.
+2015-03-11T12:12:41  <pinesol_green> Dyrcona: The operation succeeded.  Dyrcona hates the wifi in the office..
+2015-03-11T12:13:57  *** Dyrcona has quit IRC
+2015-03-11T12:14:16  *** wjr has quit IRC
+2015-03-11T12:14:39  *** Dyrcona has joined #evergreen
+2015-03-11T12:14:45  *** mceraso has quit IRC
+2015-03-11T12:14:56  *** Dyrcona has quit IRC
+2015-03-11T12:15:09  *** dreuther has quit IRC
+2015-03-11T12:15:56  *** mceraso has joined #evergreen
+2015-03-11T12:16:17  *** dreuther has joined #evergreen
+2015-03-11T12:16:19  *** bmills has joined #evergreen
+2015-03-11T12:17:46  *** Dyrcona has joined #evergreen
+2015-03-11T12:18:28  <Dyrcona> Well, let's see how long that fixes things.
+2015-03-11T12:23:04  * mmorgan is trying to understand the difference between permissions UPDATE_RECORD and UPDATE_MARC
+2015-03-11T12:23:33  <mmorgan> It looks like UNdeleting a record requires UPDATE_RECORD.
+2015-03-11T12:23:35  *** bmills1 has joined #evergreen
+2015-03-11T12:25:04  <mmorgan> What else does UPDATE_RECORD allow? Merging two records maybe?
+2015-03-11T12:27:02  *** bmills has quit IRC
+2015-03-11T12:30:37  <mmorgan> Hmm. Merging requires MERGE_BIB_RECORDS.
+2015-03-11T12:32:55  <mmorgan> I would like to give users permission to undelete records, but UPDATE_RECORDS sounds like it could be more permissive than that.
+2015-03-11T12:33:02  <Dyrcona> You were expecting consistency? ;)
+2015-03-11T12:34:40  <gmcharlt> mmorgan: you know, upon skimming the code, I'm not seeing that there's currently a useful distinction expressed between UPDATE_MARC and UPDATE_RECORD
+2015-03-11T12:34:54  <gmcharlt> IOW, perhaps those two perms could be merged
+2015-03-11T12:35:46  <gmcharlt> (what does surprise me is that there aren't separate perms for editing bibs and editing authorities)
+2015-03-11T12:37:41  <mmorgan> UPDATE_MARC does not allow UNdeleting of records.
+2015-03-11T12:37:43  <Dyrcona> Yeah, you would think that there would be.
+2015-03-11T12:38:56  <gmcharlt> mmorgan: right - what I meant was that I haven't seen anything to explain why update_marc and update_record, as generically named permissions, are separate
+2015-03-11T12:38:57  * dbs seems to recall finding that UPDATE_MARC and UPDATE_RECORD were pretty much synonymous back in the oughts
+2015-03-11T12:39:24  <gmcharlt> in the case of undeleting records -- I could see an argument that there should be a distinct permssion for that
+2015-03-11T12:39:51  <dbs> Holding MARC over a fire requires UNDULATE_RECORD perm
+2015-03-11T12:41:02  *** jihpringle has joined #evergreen
+2015-03-11T12:44:26  <eeevil> the reasoning for update_marc vs update_record is that updating the bre row (setting deleted=false) is different from changing the data in the marc column on that table ... not saying it's particularly strong reasoning, but, there it is
+2015-03-11T12:45:20  <eeevil> by that logic, of course, changing the source should require update_record as well.  haven't looked to see if it does, though
+2015-03-11T12:46:55  *** maryj has joined #evergreen
+2015-03-11T12:51:12  <gmcharlt> eeevil: as a data point, open-ils.cat.biblio.record.marc.replace can change the source, but checks UPDATE_MARC
+2015-03-11T13:00:32  <mmorgan> I would tend to agree that undeleting a record should be a distinct permission. Sometimes copies are deleted by a staff member who intends to add a new copy or order. The staff member may not realize it's a last copy and the record deletes.
+2015-03-11T13:01:15  <mmorgan> It would be useful if the staff member could undelete the record. This staff member would not necessarily have the UPDATE_MARC permission.
+2015-03-11T13:03:01  <jonadab> I am having difficulty imagining a scenario where I would want to give someone permission to delete but not to undelete.
+2015-03-11T13:03:17  *** krvmga has joined #evergreen
+2015-03-11T13:03:54  <kmlussier> Looking at mmorgan's scenario, I'm thinking it is more likely they would want to give permission to undelete but not to delete a MARC record.
+2015-03-11T13:03:58  <krvmga> when i run autogen and get the error "No bootstrap config exists.  Have you bootstrapped?
+2015-03-11T13:03:58  <krvmga> ", what has gone wrong?
+2015-03-11T13:04:10  <krvmga> what did i miss?
+2015-03-11T13:04:52  <mmorgan> yes, what kmlussier said :)
+2015-03-11T13:05:10  <mmorgan> We have the system option set to delete the bib when the last copy is deleted.
+2015-03-11T13:06:44  <jonadab> Yes, undelete but not delete permission makes more sense than the other way around.
+2015-03-11T13:09:41  <krvmga> https://bugs.launchpad.net/evergreen/+bug/960552
+2015-03-11T13:09:41  <pinesol_green> Launchpad bug 960552 in Evergreen "Cronscript.pm broke unless --sysconfdir specified during configure" (affected: 2, heat: 10) [Undecided,Fix released]
+2015-03-11T13:10:00  <krvmga> ./configure and checking Open-ILS/src/perlmods/lib/OpenILS/Util/Cronscript.pm is enough to fix it?
+2015-03-11T13:10:24  <krvmga> or is there another way?
+2015-03-11T13:14:45  *** collum has quit IRC
+2015-03-11T13:41:49  <krvmga> i just wonder why, when the fix was released in 2012, i'm still hitting the same problem. quel frustrate.
+2015-03-11T13:45:33  <Dyrcona> krvmga: You sure you did all of the steps?
+2015-03-11T13:46:04  <Dyrcona> I was trying to just install support-scripts yesterday and found the files were not remunged at make install time, only at configure.
+2015-03-11T13:46:23  <Dyrcona> Or something like that.
+2015-03-11T13:46:54  <Dyrcona> You sure didn't pull a new checkout and build without configuring or do a git reset or something like that?
+2015-03-11T13:48:51  <krvmga> Dyrcona: hmmmm....i'm going to have to check that out. i had 2.7.3 up and running when i *cough*foolishly*cough* decided to go to 2.7.4 via the upgrade path.
+2015-03-11T13:49:07  <krvmga> maybe something got missed on the way.
+2015-03-11T13:49:14  <Dyrcona> That's not foolish, that's what most people would do.
+2015-03-11T13:49:29  <Dyrcona> Well, it sounds like something was missed when building 2.7.4.
+2015-03-11T13:49:40  <Dyrcona> You got it via tarball and not git?
+2015-03-11T13:49:50  <krvmga> Dyrcona: i'm guessing you're right. i got it via tarball rather than git.
+2015-03-11T13:50:05  <krvmga> i'm just going to try it again and see how it goes.
+2015-03-11T13:50:25  <Dyrcona> Did you put it in a fresh directory or did you extract over the existing 2.7.3 code?
+2015-03-11T13:50:38  <Dyrcona> The latter might cause a problem.
+2015-03-11T13:50:49  <krvmga> i put it in a fresh directory
+2015-03-11T13:50:52  <Dyrcona> OK.
+2015-03-11T13:51:29  <Dyrcona> When I had trouble with just doing support-scripts yesterday, I just did a fresh build.
+2015-03-11T13:51:38  <Dyrcona> That resolved my issue.
+2015-03-11T13:51:40  <krvmga> it's really hot in my office now.
+2015-03-11T13:51:55  <krvmga> the sun is shining on the blinds and the building hasn't turned the heat off.
+2015-03-11T13:52:05  <krvmga> must be muddling my thinking.
+2015-03-11T13:52:12  <Dyrcona> Could be.
+2015-03-11T13:52:26  <krvmga> Dyrcona: thanks :)
+2015-03-11T13:52:29  <Dyrcona> Anyway, I'd just go through the build steps again and see if that resolves ti.
+2015-03-11T13:52:29  <krvmga> Dyrcona++
+2015-03-11T13:52:30  <Dyrcona> it
+2015-03-11T13:53:02  <Dyrcona> Maybe do a make clean first.
+2015-03-11T13:53:10  * krvmga sees a yellow brick road and feels a strong compulsion just to follow it to find out where it goes.
+2015-03-11T13:53:29  <Dyrcona> If you were using git I'd recommend git clean -x -f -d
+2015-03-11T13:53:52  <krvmga> i'll do the make clean
+2015-03-11T13:54:17  <Dyrcona> I'd watch out for those yellow brick roads. You never where you'll end up.
+2015-03-11T13:54:37  *** collum has joined #evergreen
+2015-03-11T13:55:43  *** akilsdonk has quit IRC
+2015-03-11T13:55:53  * krvmga is standing at the end of a road before a small brick building. Around him is a forest. There is a mailbox here.
+2015-03-11T13:56:22  <krvmga> :)
+2015-03-11T13:57:11  <Dyrcona> You are about to be eaten by a grue.
+2015-03-11T13:57:17  <Dyrcona> Oops. Wrong game. :)
+2015-03-11T13:57:25  <krvmga> lol
+2015-03-11T13:58:05  <Dyrcona> i
+2015-03-11T13:58:20  <Dyrcona> Kill grue.
+2015-03-11T13:58:25  <Dyrcona> Kill grue with what?
+2015-03-11T13:58:26  <Dyrcona> i
+2015-03-11T13:58:33  <Dyrcona> *fork *knife *spoon
+2015-03-11T13:58:40  <Dyrcona> Kill grue with spoon.
+2015-03-11T13:58:46  <Dyrcona> You are eaten by a grue.
+2015-03-11T13:59:47  * Dyrcona goes back to hunting library elves in his apache logs.
+2015-03-11T13:59:57  * collum is standing at the end of aroad before a small brick building. There's a fork, knife, and spoon on the ground.
+2015-03-11T14:00:53  <Dyrcona> heh
+2015-03-11T14:12:48  *** mglass has joined #evergreen
+2015-03-11T14:18:47  <kmlussier> @dessert
+2015-03-11T14:18:47  * pinesol_green grabs some Chocolate Chip Cookies for kmlussier
+2015-03-11T14:20:38  * kmlussier has discovered that if you publicize the fact that you're driving around with cases of Girl Scout cookies in your trunk, people will start buying them in large numbers.
+2015-03-11T14:21:24  <maryj> kmlussier++ # my favorite dealer
+2015-03-11T14:21:55  <kmlussier> maryj: It does lead to a lot of shady transactions in the parking lot.
+2015-03-11T14:22:07  <maryj> :D
+2015-03-11T14:25:41  <Dyrcona> heh
+2015-03-11T14:32:55  <jeff> having once met a stranger (to me) in a parking lot downstate and exchanged a wad of cash for a pillow case that was moving around a bit, i know what you mean by the "shady" (seeming) transactions bit.
+2015-03-11T14:33:06  <jeff> but my son really likes his new ball python. :-)
+2015-03-11T14:38:45  <kmlussier> As in a snake (not a programming language)?
+2015-03-11T14:38:47  * kmlussier shudders
+2015-03-11T14:43:17  <jeffdavis> I've registered the Overdrive API Integration project on Launchpad: https://launchpad.net/overdrive-eg-opac
+2015-03-11T14:44:05  <jeffdavis> The LP setup is pretty minimal, but it should suffice as a place to report bugs.
+2015-03-11T14:45:20  <jeffdavis> gmcharlt: ^ may be of interest if you are looking at that code
+2015-03-11T14:45:27  *** sbrylander has joined #evergreen
+2015-03-11T14:46:56  <gmcharlt> jeffdavis++
+2015-03-11T14:48:08  *** sarabee has quit IRC
+2015-03-11T14:49:03  *** rashma is now known as rashma_away
+2015-03-11T14:49:23  *** rashma_away is now known as rashma
+2015-03-11T14:56:19  *** akilsdonk has joined #evergreen
+2015-03-11T15:00:38  <kmlussier> jeffdavis++
+2015-03-11T15:14:16  *** krvmga has quit IRC
+2015-03-11T15:14:38  *** vlewis has quit IRC
+2015-03-11T15:14:52  *** dreuther has quit IRC
+2015-03-11T15:15:02  *** mglass has quit IRC
+2015-03-11T15:17:11  *** mglass has joined #evergreen
+2015-03-11T15:17:49  *** vlewis has joined #evergreen
+2015-03-11T15:17:55  *** dreuther has joined #evergreen
+2015-03-11T15:18:41  <kmlussier> @eightball is it called a frappe or a milkshake?
+2015-03-11T15:18:41  <pinesol_green> kmlussier: Unlikely.
+2015-03-11T15:19:01  <kmlussier> Hmmmm...I need to rephrase that.
+2015-03-11T15:19:56  *** vlewis has quit IRC
+2015-03-11T15:20:01  *** dreuther has quit IRC
+2015-03-11T15:20:28  <kmlussier> @eightball is it called a frappe?
+2015-03-11T15:20:28  <pinesol_green> kmlussier: NO!
+2015-03-11T15:21:01  *** dreuther has joined #evergreen
+2015-03-11T15:21:03  *** mglass_ has joined #evergreen
+2015-03-11T15:21:08  *** vlewis has joined #evergreen
+2015-03-11T15:21:54  *** mglass has quit IRC
+2015-03-11T15:22:33  *** ningalls has quit IRC
+2015-03-11T15:26:05  <mmorgan> Then it must be a milkshake!
+2015-03-11T15:26:50  <Dyrcona> @eightball is it called a milkshake?
+2015-03-11T15:26:50  <pinesol_green> Dyrcona: The outlook is poor.
+2015-03-11T15:29:17  <kmlussier> That settles it. It's a cabinet.
+2015-03-11T15:29:35  <mmorgan> @eightball is it called a cabinet?
+2015-03-11T15:29:35  <pinesol_green> mmorgan: Come again?
+2015-03-11T15:33:46  <Dyrcona> @eightball Are travel books serials?
+2015-03-11T15:33:46  <pinesol_green> Dyrcona: Unlikely.
+2015-03-11T15:34:01  <Dyrcona> @eightball You aren't a cataloger, are you?
+2015-03-11T15:34:01  <pinesol_green> Dyrcona: The outlook is hazy, please ask again later.
+2015-03-11T15:34:35  <mmorgan> @eightball Are you being indecisive today?
+2015-03-11T15:34:35  <pinesol_green> mmorgan: Unlikely.
+2015-03-11T15:34:45  * mmorgan does not agree ;-)
+2015-03-11T15:35:18  <gmcharlt> @eightball Are all eightballs liars?
+2015-03-11T15:35:18  <pinesol_green> gmcharlt: You're kidding, right?
+2015-03-11T15:35:59  <gmcharlt> @eightball Are all eightballs Cretan?
+2015-03-11T15:35:59  <pinesol_green> gmcharlt: The outlook is hazy, please ask again later.
+2015-03-11T15:36:13  <gmcharlt> not going to be pinned down today, I see!
+2015-03-11T15:56:13  <Dyrcona> Hm... Gues I can't really blame library elf, either.
+2015-03-11T15:56:33  <dbwells> bshum: (or anyone else doing EG self-check) What OS/underlying software do you use for your self-check kiosks?
+2015-03-11T15:56:33  <Dyrcona> Looks like all of their hits during our problem period happened on the same apache child process.
+2015-03-11T15:57:57  <Dyrcona> @blame eightball
+2015-03-11T15:57:57  <pinesol_green> Dyrcona: eightball is why we can never have nice things!
+2015-03-11T16:01:55  <bshum> dbwells: For awhile, we used Ubuntu and OpenKiosk; nowadays I think our tech team is using Win 7 and OpenKiosk
+2015-03-11T16:02:08  <bshum> http://openkiosk.mozdevgroup.com/
+2015-03-11T16:02:18  <mmorgan> dbwells: We have three libraries using (or soon to launch) roughly the same combination of a Windows 8 touchscreen with OpenKiosk.
+2015-03-11T16:02:22  <bshum> I've also setup openkiosk with Mac systems too for one of our schools.
+2015-03-11T16:02:43  <Dyrcona> We did have 40 different apaches active at the time, though.
+2015-03-11T16:02:46  <dbwells> bshum++ mmorgan++ # thank you
+2015-03-11T16:08:04  <Bmagic> So, I have a title level hold on something with 15 copies. I put a hold on it, the hold logic populates those 15 copies into the hold_copy_map. My copy is targeted for the one with the smallest proximity number. Let's say 24 hours go by and the hold targeter "retargets". It will pick the same copy because it has the lowest prox number
+2015-03-11T16:08:20  <Bmagic> how do we get it to pick the next copy instead of the same one with the lower prox number
+2015-03-11T16:10:34  *** bmills1 has quit IRC
+2015-03-11T16:10:38  <Dyrcona> Bmagic: Change the code.
+2015-03-11T16:10:47  <Dyrcona> There's no setting for that.
+2015-03-11T16:11:44  <Bmagic> Dyrcona: bummer
+2015-03-11T16:14:06  <mmorgan> Bmagic: Curious - for what reasons could the targeted item with the lowest proximity not be available?
+2015-03-11T16:14:48  <Dyrcona> mmorgan: Staff could be ignoring or not finishing the pull list.
+2015-03-11T16:16:01  <Bmagic> mmorgan: library is closed is another reason. We would like the system to just move on (without having to take that copy out of the map like marking it missing)
+2015-03-11T16:16:25  *** bmills has joined #evergreen
+2015-03-11T16:16:50  <mmorgan> Closings is what I was wondering about. Are days closed entered when libraries are closed? There's an option not to target when a library is closed.
+2015-03-11T16:21:08  <Dyrcona> Bmagic: When a library is closed for an extended period, you can skip them for hold targeting with an org_unit setting.
+2015-03-11T16:22:12  <Dyrcona> circ.holds.target_skip_me
+2015-03-11T16:25:45  <mmorgan> I am thinking of these two org unit settings: "Target copies for a hold even if copy's circ lib is closed", "Target copies for a hold even if copy's circ lib is closed IF the circ lib is the hold's pickup lib"
+2015-03-11T16:26:29  <mmorgan> IOW, circ.holds.target_when_closed and circ.holds.target_when_closed_if_at_pickup_lib
+2015-03-11T16:26:57  *** collum has quit IRC
+2015-03-11T16:27:06  *** rjackson_isl has quit IRC
+2015-03-11T16:27:08  <Dyrcona> The setting I posted skips the org unit for holds targeting, period.
+2015-03-11T16:28:16  <Dyrcona> It's useful if the library is closed for several weeks/months for renovations or moving or disaster recovery.
+2015-03-11T16:28:48  <mmorgan> Yes, we have had those situations, too.
+2015-03-11T16:36:09  *** maryj has quit IRC
+2015-03-11T16:43:05  <Bmagic> mmorgan: Dyrcona: we are familiar, however it seems that regular library hours can exclude weekends. Will the hold targeter remove their copies from the pool after the fact? Meaning: will it see that the library is currently* closed and change the hold_copy_map, and change the current_copy?
+2015-03-11T16:44:22  *** sbrylander has quit IRC
+2015-03-11T16:45:56  <Bmagic> We want the hold targeter to target a different copy after giving the current_copy's owner an ample amount of time to pull it. For whatever reason, they didn't, so, let's get a different copy from the pool
+2015-03-11T16:46:42  <Dyrcona> I do believe you will have to change the code.
+2015-03-11T16:47:58  <Bmagic> Dyrcona: Thank you. That does help me believe it or not. Holds are fun!
+2015-03-11T16:48:44  <Dyrcona> I believe I have forgotten what that word means...."fun."
+2015-03-11T16:50:10  <Bmagic> Dyrcona: to your knowledge, is there a date that we can rely on for when the current_copy was selected?
+2015-03-11T16:51:51  <Dyrcona> Don't think so, but it should not be to difficult to make the code in OpenILS/Application/Storage/Publisher/action.pm ignore the current copy when finding a new target. Though you might to allow exceptions for the time when only that 1 copy can target.
+2015-03-11T16:52:27  <mmorgan> Bmagic: Dyrcona: would the org unit setting "circ.holds.max_org_unit_target_loops" not apply to this situation? After the number of max targeting attempts is reached, would it not move on to items with higher proximity?
+2015-03-11T16:52:43  <Bmagic> mmorgan: oooo, I like this
+2015-03-11T16:53:02  <Dyrcona> Dunno. never touched it.
+2015-03-11T16:53:42  <Bmagic> mmorgan: oh, yeah, I forgot, we already tried this
+2015-03-11T16:54:01  <Bmagic> mmorgan: it would appear that the lower proximity trumps max_org_unit_target_loops
+2015-03-11T16:54:32  <mmorgan> oh, too bad :-(
+2015-03-11T16:54:50  <Bmagic> unless we need to have it set to the specific branch (we had it set at consortium level and it didn't make a difference)
+2015-03-11T16:55:26  <Bmagic> mmorgan: do you happen to know where it records the number of times a branch is selected?
+2015-03-11T16:55:47  <mmorgan> So, after the max target attempts on the items with the lower proximity was reached, what happened to the hold?
+2015-03-11T16:56:09  <mmorgan> Hmm. don't know off the top of my head. Looking..
+2015-03-11T16:56:32  <Bmagic> mmorgan: nothing happens, the system continues to target the same copy (the one with the lower prox)
+2015-03-11T16:56:43  <Dyrcona> Looks like hold_copy_targeter uses the settings.
+2015-03-11T16:58:31  <Dyrcona> Ah. Looks like it is consulted if the pickup library does not have the best copy.
+2015-03-11T16:59:34  *** chatley has joined #evergreen
+2015-03-11T17:00:01  <Dyrcona> Then, I'm not entirely sure what the rest is doing and no time to dig deeper right now.
+2015-03-11T17:00:08  <Dyrcona> Catch ya'll tomorrow.
+2015-03-11T17:00:14  *** Dyrcona has quit IRC
+2015-03-11T17:00:14  <Bmagic> Later!
+2015-03-11T17:00:50  <mmorgan> Bmagic: don't see where the number of targeting attempts could be recorded. We aren't currently using that setting either.
+2015-03-11T17:01:10  <Bmagic> mmorgan: weird, you would think it would need a "history" of some kind
+2015-03-11T17:01:28  <mmorgan> But I would think if the setting were being consulted, the hold would get cancelled after the max number of target attempts.
+2015-03-11T17:01:38  *** graced has quit IRC
+2015-03-11T17:01:50  <Bmagic> oh canceled?
+2015-03-11T17:03:03  <Bmagic> https://bugs.launchpad.net/evergreen/+bug/1037282
+2015-03-11T17:03:03  <pinesol_green> Launchpad bug 1037282 in Evergreen "Hold un-cancel does not clear target loops " (affected: 1, heat: 6) [Undecided,Triaged]
+2015-03-11T17:03:24  <mmorgan> I thought that was the idea, but, as I mentioned, we aren't using the setting.
+2015-03-11T17:04:07  <Bmagic> mmorgan: I think you are right, in which case, it's not really what we want
+2015-03-11T17:04:59  <mmorgan> That's why we aren't using it currently, but I still would think if there are copies elsewhere, the hold should move on rather than being cancelled.
+2015-03-11T17:05:17  <mmorgan> If the setting is being consulted.
+2015-03-11T17:06:54  <Bmagic> mmorgan: oh here we go, action.unfulfilled_hold_max_loop
+2015-03-11T17:08:34  <Bmagic> mmorgan: which refers back to action.unfulfilled_hold_list which only get's rows when the hold targeter runs (not when humans force the action). And we all know that the hold targeter doesn't pick a higher prox hold
+2015-03-11T17:10:03  <mmorgan> Are you using boundaries?
+2015-03-11T17:10:25  <Bmagic> mmorgan: help me - how would I know?
+2015-03-11T17:10:36  *** MrMayor has joined #evergreen
+2015-03-11T17:11:32  <mmorgan> org unit settings: "circ.hold_boundary.hard", "circ.hold_boundary.soft"
+2015-03-11T17:12:04  <Bmagic> no, neither are set
+2015-03-11T17:12:04  *** mllewellyn has quit IRC
+2015-03-11T17:12:17  <MrMayor> So this may be an easy answer and I have just overlooked it. Is there an easy way (or a hard way) to change when evergreen decides to accrue fines for patrons?
+2015-03-11T17:13:42  <Bmagic> MrMayor: Do you use an action trigger to automatically mark items lost after a set amount of time overdue?
+2015-03-11T17:13:53  <mmorgan> Bmagic: ok, we don't use them either. Our system targets low proximity first, but will target higher proximity if low proximity items aren't available.
+2015-03-11T17:14:25  * mmorgan must dash now. Holds sure are *fun*!
+2015-03-11T17:14:29  *** mrpeters has left #evergreen
+2015-03-11T17:14:29  <Bmagic> mmorgan: I think a code change could still be required to solve our issue
+2015-03-11T17:14:34  <Bmagic> later!
+2015-03-11T17:14:42  *** mmorgan has left #evergreen
+2015-03-11T17:14:45  <MrMayor> mmorgan: Yes we do.
+2015-03-11T17:15:16  <Bmagic> MrMayor: What types of fines are you interested in?
+2015-03-11T17:16:22  <MrMayor> I should have been more clear. It seems evergreen accrues daily fines at 11:59 p.m. Is there a way to change that behavior?
+2015-03-11T17:18:58  <Bmagic> MrMayor: I have recently found out that those times are not exactly when the fines are applied. Those are times are "when to check again". If you are referring to the money.billing table that is.
+2015-03-11T17:20:19  <MrMayor> I see. Ideally we would like fines to be applied in the early a.m. (12:01 for instance) instead of at the end of business.
+2015-03-11T17:23:56  <Bmagic> MrMayor: The fine generator is a piece of software that runs on your linux server. It runs whenever you tell it to run, usually on a cron job. When it runs, it applies fines but the date stamp that is uses is not the same time that it runs.
+2015-03-11T17:24:50  <MrMayor> Ahh interesting.  I will have to look into this. Thank you very much
+2015-03-11T17:34:20  *** MrMayor has quit IRC
+2015-03-11T17:34:28  *** jonadab is now known as tsadok
+2015-03-11T17:34:40  *** tsadok is now known as jonadab
+2015-03-11T17:39:44  *** dreuther has quit IRC
+2015-03-11T17:40:01  <Bmagic> @later tell mmorgan: So, I was wrong. My tests were using the staff action "Find another target" which as I have learned, is not the same thing as the hold targeter running. So, with the hold targeter running, it DOES pick another copy from the pool regardless of the proximity
+2015-03-11T17:40:01  <pinesol_green> Bmagic: The operation succeeded.
+2015-03-11T17:40:30  <Bmagic> @later tell Dyrcona: So, I was wrong. My tests were using the staff action "Find another target" which as I have learned, is not the same thing as the hold targeter running. So, with the hold targeter running, it DOES pick another copy from the pool regardless of the proximity
+2015-03-11T17:40:30  <pinesol_green> Bmagic: The operation succeeded.
+2015-03-11T17:48:37  *** Shae has quit IRC
+2015-03-11T17:58:30  *** jihpringle has quit IRC
+2015-03-11T17:58:40  *** jihpringle has joined #evergreen
+2015-03-11T18:05:17  *** bbqben has joined #evergreen
+2015-03-11T18:18:59  *** yboston has quit IRC
+2015-03-11T18:20:14  *** jihpringle has quit IRC
+2015-03-11T18:20:38  *** jihpringle has joined #evergreen
+2015-03-11T18:57:50  *** mglass_ has quit IRC
+2015-03-11T19:04:26  *** jihpringle has quit IRC
+2015-03-11T19:05:06  *** bbqben has quit IRC
+2015-03-11T19:07:34  *** vlewis has quit IRC
+2015-03-11T19:19:33  *** bbqben has joined #evergreen
+2015-03-11T19:29:46  *** bbqben has quit IRC
+2015-03-11T19:33:46  *** akilsdonk has quit IRC
+2015-03-11T19:58:09  *** jwoodard has quit IRC
+2015-03-11T20:36:50  *** sandbergja has quit IRC
+2015-03-11T20:42:01  <jonadab> Oh, MrMayor's question would be relevant for us too.  (By policy, anything that comes in before 10am counts as having come back the previous day.  Because book drop.)
+2015-03-11T21:26:07  *** akilsdonk has joined #evergreen
+2015-03-11T21:55:49  <kmlussier> jonadab: We usually handle book drop checkins by backdating the checkins. There is an effective date on the checkin screen where you can set the checkin date to the previous day.
+2015-03-11T21:57:09  <jonadab> Ah, interesting.
+2015-03-11T21:57:18  <jonadab> That might could be made to work.
+2015-03-11T22:35:50  *** bmills has quit IRC
+2015-03-11T22:45:42  *** akilsdonk has quit IRC
+2015-03-11T23:00:53  *** artunit has joined #evergreen

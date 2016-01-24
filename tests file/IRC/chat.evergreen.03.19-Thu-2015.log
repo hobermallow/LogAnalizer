@@ -1,0 +1,608 @@
+2015-03-19T05:17:27  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-19T07:30:59  *** jboyer-isl has joined #evergreen
+2015-03-19T07:33:56  *** graced has joined #evergreen
+2015-03-19T07:52:56  *** rjackson_isl has joined #evergreen
+2015-03-19T08:00:28  *** ericar has joined #evergreen
+2015-03-19T08:06:31  *** collum has joined #evergreen
+2015-03-19T08:07:35  *** mrpeters has joined #evergreen
+2015-03-19T08:08:00  *** TaraC has joined #evergreen
+2015-03-19T08:31:41  *** mmorgan has joined #evergreen
+2015-03-19T08:42:39  *** Shae has joined #evergreen
+2015-03-19T08:50:35  *** akilsdonk has joined #evergreen
+2015-03-19T09:00:19  *** maryj has joined #evergreen
+2015-03-19T09:08:41  *** Dyrcona has joined #evergreen
+2015-03-19T09:21:15  * csharp comes up with a (probably unfair) rule of thumb that when given the chance, and enough committee meetings, librarians turn what should be simple in to something complicated :-/
+2015-03-19T09:21:42  <csharp> "but what about ____?"
+2015-03-19T09:21:58  <dbs> corollary: when given a chance, librarians will turn a simple decision into a committee meeting
+2015-03-19T09:22:07  <csharp> dbs++
+2015-03-19T09:22:21  <mmorgan> s/librarians/<almost anyone> ;-)
+2015-03-19T09:22:27  <dbs> mmorgan++
+2015-03-19T09:22:32  * csharp is scheduled up to to the teeth with exactly those kinds of meetings for the next 2 days
+2015-03-19T09:22:55  <csharp> however, my original comment referred to creating reports templates
+2015-03-19T09:23:24  <csharp> the descriptions are things like "total circs by library" but they become massive templates with many knobs and buttons ;-)
+2015-03-19T09:27:17  <tsbere> "Give us a list of holds" ends up implying "and every piece of data we have ever considered being possibly useful from the bib those holds are placed on"
+2015-03-19T09:27:22  <tsbere> <_<
+2015-03-19T09:28:24  <csharp> tsbere: right
+2015-03-19T09:29:07  <csharp> I'm also dealing with the "we want this to display *and* be a filter" issue (which in most cases means potentially excluding the very data they're after)
+2015-03-19T09:29:34  <tsbere> And of course the "Oh, and can we get information from other levels? This report is based on bib records, but we want these copy stat cats included...."
+2015-03-19T09:30:00  <csharp> there are use cases for "cast broadly" reports and for "targeted" reports - and they can't be all-in-one as our end users desire
+2015-03-19T09:30:24  <csharp> yep
+2015-03-19T09:30:33  <dbs> csharp: there's pgdump you know
+2015-03-19T09:30:41  <csharp> :-)
+2015-03-19T09:31:20  <csharp> actually, we often recommend that they cast broadly and sort it all out in Excel, which is way better at doing what they're actually after
+2015-03-19T09:31:29  <jeff> this is why i like reports that link to subreports for the specific details, or just link to the catalog. it's rare that that level is detail is desired to be printed or sorted or even seen on the screen all at once, and for those, we handle with another report.
+2015-03-19T09:31:31  <tsbere> One of my favorites from a phone conversation: They wanted a list of bibs that their patrons had placed holds on, that they don't have copies of, that met some other criteria. And one of the output columns they wanted was their call number.
+2015-03-19T09:31:35  <csharp> but then the problem is one of poor Excel competency :-/
+2015-03-19T09:31:52  <jeff> an optional subreport is also a possibility -- i'm pretty sure i can do that without too much effort, though i've not tried yet.
+2015-03-19T09:33:38  <jeff> "here's a count of different circ modifiers in each shelving location at or below this org unit. what, you want to know which items in the Browsing Hot DVDs shelving location have circ modifier BOOK? click on that line."
+2015-03-19T09:34:12  <jeff> rather, "you see two items with circ modifier BOOK in what seems to be the wrong shelving location and want to see what those two items are? click."
+2015-03-19T09:35:42  <jeff> sometimes i miss procmail. i have an automated mail where i like to set a label if the mail contains "Warning: "
+2015-03-19T09:35:55  <jeff> but it false positives when the output contains this title: ``Warning: do not open this book!''
+2015-03-19T09:52:26  <Dyrcona> Whee! Finding out you didn't move over a couple of circ rules from your migration that you did four years ago!
+2015-03-19T09:53:49  <Dyrcona> No, wait. It is there, but I must need more than 1 rule.
+2015-03-19T10:00:33  <Dyrcona> So, an example of complicating things....
+2015-03-19T10:00:40  <Dyrcona> That rule I was talking about being missing.
+2015-03-19T10:00:45  <Dyrcona> It's there and it works.
+2015-03-19T10:01:02  <Dyrcona> It stops patrons in a certain group from circulating anything anywhere.
+2015-03-19T10:01:16  <Dyrcona> However, we have patrons in that group who were barred.
+2015-03-19T10:01:19  <Dyrcona> Why?
+2015-03-19T10:01:36  <Dyrcona> There's also a rules that blocks them from placing holds.
+2015-03-19T10:02:00  <Dyrcona> However, there are 680 other rules that allow anyone to place holds for certain things for local pickup only.
+2015-03-19T10:02:19  <Dyrcona> Apparently, I need 680 exceptions to those other rules.
+2015-03-19T10:02:56  <Dyrcona> Just another case of, we want people to place holds on everything, except this and this and this and that stuff over there, and....
+2015-03-19T10:04:23  <Dyrcona> Oh, and except these people....
+2015-03-19T10:05:55  <Dyrcona> I suppose before I add another 680 hold matrix entries, I should test if the rules are already working as intended.
+2015-03-19T10:06:20  <Dyrcona> Without an actual test, it is all conjecture and anecdotes.
+2015-03-19T10:14:57  <jonadab> Every time you large-library-system people start talking about holds, I remember how glad I am to work for a single-ou library system.
+2015-03-19T10:15:30  <Dyrcona> Well, I may be going to a lot of trouble for nothing.
+2015-03-19T10:15:39  <jeff> if we could eliminate our use of age hold protection, i'd be pretty happy with holds in general. our rules are pretty simple.
+2015-03-19T10:15:44  <Dyrcona> We only have 24 of these patrons, and 7 are expired.
+2015-03-19T10:16:02  <jeff> it's the "you can't have that unless you go there to pick it up" that's hard to explain without sounding ridiculous.
+2015-03-19T10:16:28  <jonadab> Ah.
+2015-03-19T10:16:46  *** mrpeters has quit IRC
+2015-03-19T10:16:54  <jonadab> For us that would be either "I'm sorry, we don't have that, do you want me to see if we can get it for  you from another library?"
+2015-03-19T10:17:01  <jeff> but we're not "large", either. six locations in this district.
+2015-03-19T10:17:18  <eeevil> Dyrcona: you could consider giving those 17 users a custom penalty that blocks holds and circs, instead of using rules
+2015-03-19T10:17:20  <jonadab> And then if the organization we ILL from doesn't have it, then "I'm sorry, we can't get that one."
+2015-03-19T10:17:48  <eeevil> (IIUC)
+2015-03-19T10:17:51  <Dyrcona> eeevil: Staff have been barring them, but the group should be working, and for circ I'm confident that it is.
+2015-03-19T10:18:02  <Dyrcona> I think it might not be block holds.
+2015-03-19T10:18:08  <jonadab> Admittedly, you don't really want to know about the system we're using for ILL circs.  It's...  a holdover from a holdover.
+2015-03-19T10:18:22  <jonadab> (It involves barcodes on 3x5 cards...)
+2015-03-19T10:18:24  <Dyrcona> And, I need to reember to add this group to our NCIPServer config as a blocked group.
+2015-03-19T10:19:24  <Dyrcona> jeff: We have a lot of that "you have to go here to pick it up" stuff, and that's where I think my trouble lies.
+2015-03-19T10:19:34  <jeff> jonadab: sometimes i think i'd love a system that involved barcodes on cards. we have to fire up a modified/stripped client for an ILS we don't use in order to process items from our state ILL system. :-)
+2015-03-19T10:19:34  <eeevil> Dyrcona: I suspect that the behavior is "allow holds, just don't allow them to actually pick them up" ... some libraries treat that as a way to get "bad" patrons to come in and pay their fines.  "Hey, you're book's here!"
+2015-03-19T10:20:01  <Dyrcona> eeevil: We have that on the penalties, not on groups, and that was not the intention here.
+2015-03-19T10:20:17  <Dyrcona> Mass. has this notion of "certified for ILL."
+2015-03-19T10:20:20  <jeff> eeevil: we do that, but alas it sounds like in Dyrcona's case there's no easy way to bring the patron back into good standing. :-)
+2015-03-19T10:20:23  <eeevil> Dyrcona: gotcha ... I'll hush :)
+2015-03-19T10:20:34  <Dyrcona> Mass. also has a law that says you must serve any patron from a certified library.
+2015-03-19T10:20:42  <Dyrcona> So, we put their home barcode in our system.
+2015-03-19T10:21:01  <Dyrcona> When a library loses its ILL certification, we put them into this group.
+2015-03-19T10:21:17  <Dyrcona> Of course, we almost never take them out later.....
+2015-03-19T10:21:39  <Dyrcona> But, seems like a lot of effort for 24 out of 600,000 patrons.
+2015-03-19T10:21:47  <Dyrcona> give or take.
+2015-03-19T10:21:50  *** RoganH has joined #evergreen
+2015-03-19T10:21:58  <jeff> Are these patrons eligible to receive any kind of service from your libraries? Why not set them to that group + inactive and/or barred?
+2015-03-19T10:23:04  <Dyrcona> Well, why do that? TIMTOWTDI!
+2015-03-19T10:27:44  <Dyrcona> Trouble is, as usual, I'm getting information third hand, so I can't trust any of it.
+2015-03-19T10:28:06  *** jwoodard has joined #evergreen
+2015-03-19T10:46:38  <_bott_> Please forgive my not looking for the answer first, but what's the best Postgres version to use these days.  Any gotchas with 9.4.x?
+2015-03-19T10:49:47  *** mrpeters has joined #evergreen
+2015-03-19T10:52:22  *** ningalls has joined #evergreen
+2015-03-19T10:53:50  <Dyrcona> _bott_: AFAIK, 9.3.6 is the highest being used in production.
+2015-03-19T10:54:11  <Dyrcona> _bott_: That said, I am not aware of any problems with 9.4.x.
+2015-03-19T10:55:03  <_bott_> I shall pay attention while testing!
+2015-03-19T10:57:00  *** vlewis has joined #evergreen
+2015-03-19T10:57:27  *** vlewis_ has joined #evergreen
+2015-03-19T11:00:33  *** RoganH has quit IRC
+2015-03-19T11:01:51  *** RoganH has joined #evergreen
+2015-03-19T11:06:12  <csharp> _bott_: we're very happy on 9.3.X
+2015-03-19T11:06:47  <Dyrcona> Looks like I'm hit with another case of mistaken folkore.
+2015-03-19T11:07:13  <Dyrcona> The hold and circ rules are doing what we want for this patron group, and staff are barring them because, well....
+2015-03-19T11:08:55  <jeff> "because their card still scans at the self checkout terminal unless we bar them"
+2015-03-19T11:09:04  <jeff> "because they were able to use electronic resources"
+2015-03-19T11:09:14  <jeff> "because they were able to get on a computer"
+2015-03-19T11:09:20  <jeff> "because they could log in to the catalog"
+2015-03-19T11:09:22  <jeff> "because."
+2015-03-19T11:09:40  <tsbere> "because they assumed it wasn't working without actually checking"
+2015-03-19T11:09:45  <jeff> lots of possible reasons. frustrating when it's a game of telephone to find out the answers.
+2015-03-19T11:10:07  <tsbere> maybe "because it doesn't scream at staff why the card doesn't work just because the patron type was assigned"
+2015-03-19T11:12:55  <Dyrcona> I still don't know if any libraries are presently not certified for ILL. I'm not sure how to find out, either.
+2015-03-19T11:14:47  <Dyrcona> Heh, and searching turns up certification for public librarians in the state, and that the director of a public library must have this certification for the library to get state aid.
+2015-03-19T11:18:29  * Dyrcona did find a directory of all the libraries in the state, but no mention of their ILL certification status. Still, that's a handy thing to have.
+2015-03-19T11:21:31  <Dyrcona> We have a similar issue with what tsbere last said in regard to our "Local Use Only" patron group.
+2015-03-19T11:21:56  <Dyrcona> Nothing can be simple.
+2015-03-19T11:24:03  <Dyrcona> I imagine that is the main reason the patrons end up barred.
+2015-03-19T11:46:34  <kmlussier> Dyrcona: ILL is a service made available through MLS or through the BPL as library of last recourse. I think they should contact MLS to get an answer to that question.
+2015-03-19T11:46:50  * kmlussier thinks that decertified libraries still gets those services, but isn't sure.
+2015-03-19T11:47:14  <Dyrcona> kmlussier: Yes, but I was hoping for a list of non-certified libraries.
+2015-03-19T11:47:51  <Dyrcona> Last one that I remember for sure was from 2010, and they usually don't stay non-certified for very long, a year or two usually.
+2015-03-19T11:48:17  <Dyrcona> Just another tempest in a tea pot, or a typical day for me. :)
+2015-03-19T11:48:19  <kmlussier> IIRC, there were a lot back then. I think the numbers have gone down since.
+2015-03-19T11:48:48  *** sandbergja has joined #evergreen
+2015-03-19T11:49:16  <kmlussier> Dyrcona: This? http://mblc.state.ma.us/grants/state_aid/awards/noncert_list.php
+2015-03-19T11:50:09  <Dyrcona> kmlussier++ # You're the best.
+2015-03-19T11:50:15  *** bmills has joined #evergreen
+2015-03-19T11:50:22  <Dyrcona> I searched the MBLC site and didn't turn that up.
+2015-03-19T11:50:30  <kmlussier> Dyrcona: Thanks for a reason to put my librarian skills to work. :)
+2015-03-19T11:51:02  <Dyrcona> The one patron that I looked at should probably not be in that group any longer.
+2015-03-19T11:52:23  * Dyrcona updates an internal bug ticket.
+2015-03-19T11:52:31  *** bmills has quit IRC
+2015-03-19T11:52:52  *** bmills has joined #evergreen
+2015-03-19T11:54:52  *** bmills has quit IRC
+2015-03-19T11:55:25  * Dyrcona wonders if there is a list of barcode prefixes for all MA libraries somewhere.
+2015-03-19T11:55:49  <Dyrcona> The statewide library directory doesn't include that information.
+2015-03-19T11:55:55  *** bmills has joined #evergreen
+2015-03-19T11:58:34  <kmlussier> Dyrcona: I think the librarians view of the directory may have it, but you need to log in. pk could probably get that info for you.
+2015-03-19T11:58:53  <Dyrcona> OK.
+2015-03-19T11:59:32  <Dyrcona> That makes sense.
+2015-03-19T11:59:43  <Dyrcona> I could probably get an account, too.
+2015-03-19T12:02:59  *** mrpeters has quit IRC
+2015-03-19T12:05:27  *** mglass has joined #evergreen
+2015-03-19T12:08:15  *** RoganH has quit IRC
+2015-03-19T12:10:04  *** mrpeters has joined #evergreen
+2015-03-19T12:27:53  *** TaraC has quit IRC
+2015-03-19T12:29:17  <bshum> _bott_: We're using PG 9.3.6 in production, but I've got a test server giving PG 9.4.1 a whirl. Love to compare notes with you later on.
+2015-03-19T13:15:02  *** sarabee has joined #evergreen
+2015-03-19T13:23:34  <dbs> Members of the Evergreen Oversight Board, a heads-up that I was asked if Evergreen would be willing to have their logo added to the http://www.libhub.org/sponsors-partners/ page as a "Partner" (given our focus on many of the same goals as libhub, re: visibility on the web, schema.org, etc)
+2015-03-19T13:24:26  <dbs> and my response was "Umm, I don't know if the new logo terms of usage were ever finalized (all I could find is a draft) but I think you would need the EOB's okay"
+2015-03-19T13:25:22  <kmlussier> They were finalized.
+2015-03-19T13:25:54  <dbs> It's not clear to me what being a "partner" would actually mean. On the other hand, there was discussion about raising Evergreen's visibility / PR, so this might fall under that
+2015-03-19T13:25:55  <kmlussier> I don't know if they're posted anywhere, but I know we voted on them.
+2015-03-19T13:26:32  <dbs> http://wiki.evergreen-ils.org/doku.php?id=governance:trademark-policy is what I was able to find
+2015-03-19T13:26:38  <kmlussier> I think it would need the EOB's okay too. bbqben should be here soon. I'll direct him to the question.
+2015-03-19T13:27:11  <jeff> libhub apparently uses squarespace.
+2015-03-19T13:27:20  <jeff> i know this because it stole my Esc key. :P
+2015-03-19T13:27:27  <dbs> http://wiki.evergreen-ils.org/doku.php?id=governance:minutes:2012-10-17 - we did approve it
+2015-03-19T13:28:22  <maryj> Looking at the website, the focus is on exploring "BIBFRAME and the Linked Data in Libraries movement"
+2015-03-19T13:28:28  <kmlussier> I think gmcharlt has had a standing action time to update the trademark page on the site. gmcharlt: Do you want help with that task?
+2015-03-19T13:28:40  <kmlussier> Asks the person who has very little time to help with anything ATM
+2015-03-19T13:29:21  <dbs> kmlussier++
+2015-03-19T13:30:05  <maryj> But I was surprised to see SirsiDynix as a sponsor (maybe I shouldn't be?)
+2015-03-19T13:30:15  <dbs> And III
+2015-03-19T13:31:13  <dbs> BIBFRAME is a part, yes, the linked data part is perhaps more relevant to the libhub goals, which (as far as I understand them) are all about improving discoverability of library resources on the general web
+2015-03-19T13:31:34  *** krvmga has joined #evergreen
+2015-03-19T13:31:45  <maryj> Gotcha, and improving discoverablility would be a great thing.
+2015-03-19T13:32:08  <dbs> e.g. in the search engines most people use, by using sitemaps / integrating schema.org / not sending search engines to search result pages etc
+2015-03-19T13:32:28  <dbs> all things that Evergreen is arguable an industry leader in
+2015-03-19T13:33:41  <krvmga> in the opac, the black diamond/white question mark keeps popping up in various places. (See http://bark.cwmars.org/eg/opac/record/3309215?query=creative%20class%20goes%20global;qtype=keyword;locg=1 )
+2015-03-19T13:33:49  <dbs> Zepheira's approach (again, if I understand it) is to take MARC from participating libraries, convert it to BIBFRAME & link up the resulting data as much as possible, then publish that on libhub.org using the web discoverability best practices that Evergreen largely already does on its own
+2015-03-19T13:34:01  <krvmga> now this typically just screams "encoding"
+2015-03-19T13:34:08  <dbs> krvmga: yep
+2015-03-19T13:34:14  <krvmga> but where to find where the encoding went wrong?
+2015-03-19T13:34:25  <krvmga> tracking it down is the issue
+2015-03-19T13:34:53  * tsbere isn't sure if a...discrepency he found should be considered a security issue or not. <_<
+2015-03-19T13:35:34  <krvmga> i need troubleshooting tips on the order of "computer won't start?" "is it plugged in?" "is it turned on?" "is the monitor on?" etc.
+2015-03-19T13:35:42  <dbs> krvmga: almost 100% that the original MARC record was messed up to begin with
+2015-03-19T13:35:54  <dbs> e.g. that it was in MARC8 but claimed to be UTF8, or vice versa
+2015-03-19T13:36:12  <dbs> or that someone just entered Latin-1 into an existing MARC8 / UTF8 record
+2015-03-19T13:36:24  <krvmga> dbs: thanks for that. i'm trying to be sensitive to our cataloging dept. and not just immediately say "your end!"
+2015-03-19T13:36:37  <krvmga> but what you say is completely reasonable
+2015-03-19T13:37:19  *** abneiman has joined #evergreen
+2015-03-19T13:37:20  <dbs> It could be the record source
+2015-03-19T13:37:40  <dbs> If it was copy-catalogued, they might have messed up the encoding when it was transferred to you
+2015-03-19T13:37:53  <dbs> (they being the z39.50 source)
+2015-03-19T13:38:16  <krvmga> so how do my catalogers insure everything's UTF-8 before they import records?
+2015-03-19T13:38:21  <dbs> tsbere: report it as a security issue and then we'll decide whether to publicize?
+2015-03-19T13:38:51  <jeff> +1 that is my default recommendation
+2015-03-19T13:39:19  *** RoganH has joined #evergreen
+2015-03-19T13:39:27  <jeff> i feel that line would benefit from some punctuation
+2015-03-19T13:41:11  <krvmga> i don't want to give my catalogers a problem without pointing to a solution.
+2015-03-19T13:43:29  <dbs> krvmga: not sure if when they import the record whether the marc view shows the characters as they'll end up being in the catalogue
+2015-03-19T13:43:40  <dbs> Would be worth trying to reproduce
+2015-03-19T13:43:58  <krvmga> dbs: i will ask.
+2015-03-19T13:44:00  <krvmga> dbs++
+2015-03-19T13:44:36  <dbs> And if they don't, we have another bug to work on :)
+2015-03-19T13:45:06  <dbs> s/they don't/the characters look fine in the import marc view but are corrupted once the record is imported/
+2015-03-19T13:45:10  *** montgoc1 has joined #evergreen
+2015-03-19T13:47:48  <Dyrcona> I've seen records that won't import via Z39.50 or won't show up in the list because of encoding issues.
+2015-03-19T13:47:56  <Dyrcona> Dunno if I've made Launchpad bugs.
+2015-03-19T13:48:22  <Dyrcona> I think the SRU double encoding might be part of the problem when talking to an Evergreen server at least.
+2015-03-19T13:51:52  *** bbqben has joined #evergreen
+2015-03-19T13:54:28  <Dyrcona> EOB meeting today?
+2015-03-19T13:54:52  <bshum> Yeah, at 2
+2015-03-19T13:55:02  <bshum> Well, 2pm Eastern
+2015-03-19T13:55:06  <kmlussier> bbqben: Can I direct your attention to a discussion we just had? http://irc.evergreen-ils.org/evergreen/2015-03-19#i_164971
+2015-03-19T13:55:24  <kmlussier> I didn't know if you wanted to raise the question with the EOB if there is time at the end of the meeting.
+2015-03-19T13:57:26  <bbqben> kmlussier: thanks - will slot this in under new business if there's time (should be) ...
+2015-03-19T13:57:41  <Dyrcona> I should book mark the community calendar.
+2015-03-19T13:58:28  <bbqben> All - EOB meeting starting here in a few Alabama Shakes (earworm) - cheers
+2015-03-19T14:01:51  <bbqben> ok, lets get rolling
+2015-03-19T14:01:57  <bbqben> #startmeeting Evergreen Oversight Board Meeting, 19.03.15
+2015-03-19T14:01:57  <pinesol_green> Meeting started Thu Mar 19 14:01:57 2015 US/Eastern.  The chair is bbqben. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-03-19T14:01:57  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-03-19T14:01:57  <pinesol_green> The meeting name has been set to 'evergreen_oversight_board_meeting__19_03_15'
+2015-03-19T14:02:15  <bbqben> #topic introductions
+2015-03-19T14:02:16  <bbqben> EOB members, please introduce yourself with #info
+2015-03-19T14:02:40  <graced> #info graced is Grace Dunbar, Equinox
+2015-03-19T14:02:45  <bshum> #info bshum is Ben Shum, Bibliomation
+2015-03-19T14:02:47  <bbqben> #info bbqben is Ben Hyman, BC Libraries Co-op / Sitka
+2015-03-19T14:02:55  <montgoc1> #info montgoc1 is Chauncey Montgomery, Consortium of Ohio Libraries
+2015-03-19T14:02:57  <RoganH> #info RoganH is Rogan Hamby, SCLENDS
+2015-03-19T14:03:10  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-03-19T14:03:36  <bbqben> hi everyone!
+2015-03-19T14:03:36  <abneiman> #info abneiman is Andrea Buntz Neiman, Kent County Public Library
+2015-03-19T14:04:06  <bbqben> #topic Minutes/Actions from last meeting
+2015-03-19T14:04:15  <bbqben> #info http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-02-19-14.04.html
+2015-03-19T14:05:05  <csharp> #info csharp is Chris Sharp, GPLS
+2015-03-19T14:05:10  <bbqben> looks like most of the actions are on this agenda either explicitly or kindof
+2015-03-19T14:05:35  <bbqben> So, moving on...
+2015-03-19T14:05:43  <bbqben> #topic EG2015 Conference Report
+2015-03-19T14:05:48  *** buzzy has joined #evergreen
+2015-03-19T14:05:57  <bbqben> buzzy: nice timing!
+2015-03-19T14:06:11  <buzzy> great! sorry, i got pulled away to deal with something at the desk
+2015-03-19T14:06:33  <bbqben> buzzy: no worries - how are things coming with planning?
+2015-03-19T14:07:04  <buzzy> conference planning is going fairly well. local staff and i are starting to work on the individual details of how the conference will go with the venue.
+2015-03-19T14:07:43  <buzzy> the programming committee sounds like they got some great proposals, which are viewable on the wiki. i'm working with the venue to get more rooms for wednesday, as it sounds like we'll have the two hackfests as well as a couple of other items
+2015-03-19T14:08:19  <buzzy> we're working on sponsors. we don't have as many as i'd like, but graced and bmills are working on that
+2015-03-19T14:09:10  <buzzy> registration numbers are slightly over 100 right now, which is not where i'd like to be at, but i think they'll go up once we confirm more sponsors and get out the shuttle and program schedules
+2015-03-19T14:09:13  <csharp> #info 2015 EG Conference proposals: http://wiki.evergreen-ils.org/doku.php?id=conference:2015:proposals
+2015-03-19T14:09:20  <buzzy> thanks csharp
+2015-03-19T14:09:37  <csharp> buzzy: sure thing :-)
+2015-03-19T14:10:34  <bbqben> buzzy: shuttle arrangements / costing coming together ok?
+2015-03-19T14:10:36  <buzzy> i do have one area of the budget where we need eob approval. as you've probably heard, we have the awesome joseph janes from the uw information school as our keynote. his honorarium is $1,500, but we only budgeted $1,000. however ...
+2015-03-19T14:11:26  <buzzy> the total price we budgeted for the keynote was $1,950, including travel and incidentals. because he's traveling from seattle, i'm not sure that we'll actually go over that amount. nonetheless, the honorarium line item will be overspent
+2015-03-19T14:11:47  <kmlussier> Do we know how much the travel costs will be?
+2015-03-19T14:12:31  <buzzy> i'd need to talk with tony about that to learn what the sfc pays for mileage. or perhaps someone here knows?
+2015-03-19T14:12:36  <RoganH> Seattle to Hood River is ~228 miles each way.  Not a huge but not a trivial trip.
+2015-03-19T14:13:21  <buzzy> assuming federal reimbursement rate, it'd be about $275
+2015-03-19T14:13:40  <kmlussier> I don't know, but I just pinged Tony.
+2015-03-19T14:14:28  <bbqben> looks like the all-in will still be fairly close, unless I'm reading this wrong.
+2015-03-19T14:15:14  <buzzy> yes. if travel gets rounded up to $300, it would be $300+$1,500+$200 = $2,000
+2015-03-19T14:15:40  <buzzy> although i have a feeling the incidentals won't be that high, either, as alas he's unable to stay for the whole conference
+2015-03-19T14:15:49  <bbqben> so unless there's strong disagreement, the $50 discrepancy can be managed by the local planning team
+2015-03-19T14:16:08  <bbqben> shuttle arrangements / costing coming together ok?
+2015-03-19T14:16:28  <kmlussier> Tony confirms that it's the federal reimbursement rate, so $2,000 sounds about right.
+2015-03-19T14:16:29  <buzzy> sorry, bbqgen, i missed your other question. yes, shuttle is fine. i just confirmed it today. about $2,800. $3,000 was budgeted
+2015-03-19T14:16:40  <buzzy> *bbqben
+2015-03-19T14:17:09  <bbqben> buzzy: great news that the shuttle's within budget.
+2015-03-19T14:17:38  <buzzy> yes indeed! i have nothing further to report, unless there are questions
+2015-03-19T14:17:50  <abneiman> Any sense of the timing of the shuttle?
+2015-03-19T14:17:54  <kmlussier> Can I talk about the Eventbrite sponsorship?
+2015-03-19T14:18:01  <kmlussier> After you answer abneiman's question.
+2015-03-19T14:19:23  <buzzy> abneiman: realizing that we can't serve everyone's needs, they'll be shuttle service in the afternoon and evenings on the 12th and 13th, and service on 16th during the morning and afternoon, and on the morning of the 17th
+2015-03-19T14:19:33  <buzzy> and yes, absolutely, kmlussier
+2015-03-19T14:19:48  <abneiman> thanks buzzy
+2015-03-19T14:20:12  <kmlussier> Tony Sebro was able to get an Eventbrite sponsorship again this year.
+2015-03-19T14:20:25  <kmlussier> However, as in previous years, there are conditions on the sponsorship - http://pastebin.com/N2mkPMnm
+2015-03-19T14:20:41  <kmlussier> The last bullet point is actually something new that was added to the conditions.
+2015-03-19T14:21:16  <kmlussier> I just want to bring it to the Board's attention. Since the Eventbrite sponsorship doesn't go through our typical sponsorship package, I think the EOB needs to be okay with any conditions placed on the sponsorship.
+2015-03-19T14:21:59  <RoganH> It's a bit burdensome but allows us to avoid a substantial cost.
+2015-03-19T14:22:00  <kmlussier> I know when they added the second bulletpoint last year, the EOB requested that all sponsors be acknowledged in the confirmation email so that Eventbrite wasn't getting a benefit that other sponsors weren't receiving.
+2015-03-19T14:22:02  <graced> I think it's going to be challenging to recognize Eventbrite in tweets and still have enough characters to talk about the conference update.
+2015-03-19T14:22:18  <abneiman> whoa.
+2015-03-19T14:22:20  <kmlussier> graced: I asked Tony that very question. :)
+2015-03-19T14:22:30  * kmlussier searches for his response.
+2015-03-19T14:22:38  <graced> Can we get an exception for Twitter at the very least?
+2015-03-19T14:22:52  <RoganH> Sorry, I will have to step away, I have a security issue to deal with a patron harassing a woman.  I'll be back shortly.
+2015-03-19T14:23:29  <kmlussier> From Tony: re: social media:  No, I don't think it's reasonable to apply that requirement to require mentioning Eventbrite in every Twitter blast.  If Evergreen uses Facebook or G+, I'd definitely recommend including the magic language in any Facebook or G+ event page created for the conference.  But, I wouldn't bother including it in short microblogs, e.g., "Evergreen Conference - see you in May!"
+2015-03-19T14:23:50  <graced> So there's some flexibility.
+2015-03-19T14:23:59  * csharp exhales
+2015-03-19T14:24:16  <kmlussier> His suggestion was that we use the following language in other publicity: ""register via Eventbrite [url], Evergreen's official ticketing provider"
+2015-03-19T14:24:28  * csharp was getting ready for having to put their logo on the PINES catalog :-/
+2015-03-19T14:24:37  <graced> But I feel like that's an awful lot of free marketing that we're giving them when our Platinum sponsors at $4,000 don't get the same benefit.
+2015-03-19T14:25:33  <abneiman> I agree with graced ... I mean, mentioning EB on every.single.thing (except I guess Twitter)?  That seems both excessive, and unfair to other sponsors who won't get the same consideration.
+2015-03-19T14:25:46  <graced> OTOH, there's not a ton of choice at this late of an hour...
+2015-03-19T14:25:57  <montgoc1> It does seem like a bit much for logo placement.
+2015-03-19T14:26:00  * csharp agrees
+2015-03-19T14:26:35  <abneiman> And that lack of choice at this point makes me even more uncomfortable with this ... feels a little forced?
+2015-03-19T14:26:47  <montgoc1> Yes
+2015-03-19T14:26:53  <kmlussier> buzzy: How do you feel about the budget? Do you think the Eventbrite fees would add a burden to the budget?
+2015-03-19T14:27:10  <kmlussier> buzzy: I know you mentioned that registrations were lower than you wanted.
+2015-03-19T14:27:30  <buzzy> i was just going to calculate that! hold please ..
+2015-03-19T14:27:43  <csharp> GPLS/PINES staff *just* got approved to go to the conference, so expect us to register this week or next :-/
+2015-03-19T14:28:19  <bbqben> Should mention that the SFC-Eventbrite partnership agreement is for all SFC projects, not just Evergreen
+2015-03-19T14:28:35  <kmlussier> Yes, thank you for that clarification Ben!
+2015-03-19T14:29:03  <buzzy> we're currently on the hook for them for about $475. even if registration numbers more than double, it wouldn't exceed $1,500
+2015-03-19T14:30:05  <buzzy> bbqben: well that changes things a bit, but i'd imagine the sfc's other projects would have similar discomfort
+2015-03-19T14:30:17  <bbqben> IMHO, only EventBrite wins in this arrangement relative to what other sponsors get for their $
+2015-03-19T14:30:51  <graced> Is there room for negotiation?
+2015-03-19T14:30:56  <kmlussier> $475 isn't that much money. And if it's $1,500 then we have enough registration to not be concerned about the budget. :)
+2015-03-19T14:31:11  <graced> good point kmlussier  :)
+2015-03-19T14:31:37  <bbqben> kmlussier: you're suggesting going solo via EventBrite?
+2015-03-19T14:32:02  <RoganH> back
+2015-03-19T14:32:50  <bbqben> graced: negotiation scope wasn't implied in the emails I saw. A concern that projects weren't consulted on the terms.
+2015-03-19T14:32:52  <kmlussier> bbqben: It seems like an option if you all don't feel comfortable with the terms.
+2015-03-19T14:33:27  <graced> bbqben: I assumed no negotiation since it was a blanket agreement for all the SFC.... but thought I'd ask.
+2015-03-19T14:33:43  <kmlussier> From Tony: renegotiating the deal will be difficult -- we're negotiating on behalf of three different projects.
+2015-03-19T14:33:51  <csharp> +1 to going solo (if that's a feasible option)
+2015-03-19T14:34:02  <montgoc1> +1 for solo
+2015-03-19T14:34:13  <graced> +1 to solo if the budget will handle it
+2015-03-19T14:34:28  <RoganH> I don't like the deal they get compared to our sponsors and feels like it undercuts community members who pay for sponsorships so ....
+2015-03-19T14:34:37  <abneiman> yeah +1 for solo as long as it won't impact the budget negatively
+2015-03-19T14:34:37  <RoganH> +1 to solo if the budget will handle it as well
+2015-03-19T14:34:44  <buzzy> i think the budget will be fine without their sponsorship
+2015-03-19T14:34:54  <bbqben> technicality: if solo, whose bank is collecting the $?
+2015-03-19T14:35:23  <bbqben> (presumably the current setup points to SFC's account)
+2015-03-19T14:35:35  <kmlussier> Yes, it points to SFC's account.
+2015-03-19T14:35:50  <buzzy> bbqben: likely, but wouldn't the fee be skimmed off before going to the sfc?
+2015-03-19T14:36:19  <kmlussier> buzzy: No, I don't think it does. I believe a monthly bill is sent to them to collect the fees.
+2015-03-19T14:36:50  <buzzy> kmlussier: ah, okay. thank you
+2015-03-19T14:38:03  <bbqben> seems no one's really opposed to going solo, and I understand from kmlussier that the heavens won't fall if we do
+2015-03-19T14:38:36  <bbqben> any further discussion on this before we move on?
+2015-03-19T14:39:06  <csharp> bbqben: just that your technical concern needs to be addressed before we assume it's a go, right?
+2015-03-19T14:39:14  <kmlussier> Do we need a vote on the budget request re keynote speaker?
+2015-03-19T14:39:54  <csharp> (i.e., can eventbrite fees still be run through the SFC if we refuse sponsorship?)
+2015-03-19T14:39:59  <bbqben> csharp: I think kmlussier was saying we'd just be levied the fee, but the funds would still go to SFC. So, all's well
+2015-03-19T14:40:05  <csharp> ok cool
+2015-03-19T14:40:06  <csharp> thanks
+2015-03-19T14:40:29  <buzzy> i'm afraid that i have to leave for another meeting in a couple of minutes. do you have any further questions of me?
+2015-03-19T14:40:32  * csharp wasn't reading it that way, so glad he was wrong
+2015-03-19T14:40:38  <bbqben> kmlussier: IIRC, its a $50 difference on the whole, so no vote required
+2015-03-19T14:40:43  <csharp> buzzy++ EG2015++
+2015-03-19T14:40:52  <bbqben> buzzy++ let's get that shuttle info on the site and drive reg up!
+2015-03-19T14:40:58  <buzzy> yes indeed!
+2015-03-19T14:40:59  <montgoc1> buzzy++
+2015-03-19T14:40:59  <kmlussier> Oh, was it $50? My math is bad today. Carry on..
+2015-03-19T14:41:30  <buzzy> thanks, folks. happy thursday!
+2015-03-19T14:41:41  *** buzzy has quit IRC
+2015-03-19T14:41:55  <bbqben> kmlussier: its $50 relative the the keynote budget, overall even if the honoraria line item is $500
+2015-03-19T14:42:37  * kmlussier nods
+2015-03-19T14:42:46  <bbqben> ok, so the other #EG2015 bit is scheduling our In person meeting & arrangements
+2015-03-19T14:42:58  <bbqben> otherwise known as ...
+2015-03-19T14:43:07  <bbqben> #topic In person meeting @ EG2015 - scheduling / arrangements
+2015-03-19T14:44:21  <bbqben> so, we need to meet :) Friday? Saturday am?
+2015-03-19T14:44:34  <bshum> Thursday evening.
+2015-03-19T14:44:47  <kmlussier> bshum: Do you know when we're on the schedule?
+2015-03-19T14:44:49  <bshum> Would be my recommendation for that.
+2015-03-19T14:45:04  <bshum> Yes I was just looking at the schedule, and EOB update is Friday morning.
+2015-03-19T14:45:21  <bshum> So if we want to meet before that update to the community, then we should do it on Thursday evening.
+2015-03-19T14:45:28  <bbqben> bhsum++ Thursday eve works for me; hwo about everyone else?
+2015-03-19T14:45:44  <kmlussier> I'll be there
+2015-03-19T14:45:44  <RoganH> Sounds good.
+2015-03-19T14:45:56  <montgoc1> That's fine.
+2015-03-19T14:45:58  <csharp> count me in
+2015-03-19T14:46:26  <bbqben> #action EOB will meet in person on Thursday, May 14 @ 1900 Pacific
+2015-03-19T14:46:26  <abneiman> OK
+2015-03-19T14:46:56  <bbqben> #action secure a meeting space for that time
+2015-03-19T14:47:01  <bbqben> ok, moving on
+2015-03-19T14:47:22  <bbqben> (but looking forward to seeing you all!)
+2015-03-19T14:47:28  <bbqben> #topic Financial Report
+2015-03-19T14:47:46  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-March/000962.html
+2015-03-19T14:47:50  <bbqben> bshum++
+2015-03-19T14:48:29  <bbqben> any q's about the financials?
+2015-03-19T14:49:10  <bbqben> ok, moving on in 10....
+2015-03-19T14:49:39  <bbqben> #topic Evergreen 2.8 Release Manager's Report
+2015-03-19T14:50:10  * csharp nudges berick awake
+2015-03-19T14:51:02  <bbqben> methinks berick has a statnding mtg in this spot
+2015-03-19T14:51:07  <csharp> ah
+2015-03-19T14:51:31  <bbqben> so, 2.8 is in the wild! anyone have anything to add :)
+2015-03-19T14:51:35  <bshum> Well, 2.8.0 RC was released recently.  And 2.8.0 official is coming along soon.
+2015-03-19T14:51:44  <csharp> rock on
+2015-03-19T14:51:51  <bshum> So before month's end, definitely.
+2015-03-19T14:51:51  <bbqben> bshum++ berick++
+2015-03-19T14:52:04  <kmlussier> bshum++ berick++
+2015-03-19T14:52:24  <bbqben> bhsum: you are a mensch
+2015-03-19T14:52:40  <bbqben> #topic 2015 EOB Elections
+2015-03-19T14:52:50  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-March/000958.html
+2015-03-19T14:53:33  <bbqben> graced++ abneiman++
+2015-03-19T14:53:59  <bbqben> so, a few things here...
+2015-03-19T14:54:04  <graced> bbqben++
+2015-03-19T14:54:20  <bbqben> First, a draft call for nominations & announcement re: voting registration
+2015-03-19T14:54:35  <bbqben> Second, a call for colunteers for the nominations committee
+2015-03-19T14:54:52  <bbqben> Third, a recommendation for voting platform / process and timeline
+2015-03-19T14:55:18  <bbqben> Fourth, a proposed revision to our rules re: voting platform / method
+2015-03-19T14:55:53  <bbqben> and finally, I apparently need a typing assistant...
+2015-03-19T14:56:34  <bbqben> with apologies for a multi part message ... q's, comments, concerns?
+2015-03-19T14:56:53  <kmlussier> The draft call for nominations looks good.
+2015-03-19T14:57:12  <abneiman> graced++ for finding opavote, which I like a lot
+2015-03-19T14:58:08  <kmlussier> Are you asking us to choose between SurveyMonkey and opavote?
+2015-03-19T14:58:50  <bbqben> kmlussier: no - we're proposing to register voters with surveymonkey, but vote with opavote
+2015-03-19T14:59:09  <kmlussier> Ah, sorry. I understood that when I read it an hour ago, but soon forgot.
+2015-03-19T14:59:20  <kmlussier> It all looks good to me.
+2015-03-19T14:59:32  <bbqben> kmlussier: pas de probleme
+2015-03-19T15:01:05  <bbqben> anyone care to volunteer for the nominations committee?
+2015-03-19T15:01:43  <RoganH> I'll raise my hand.
+2015-03-19T15:01:45  <montgoc1> Sure.  What does it entail?
+2015-03-19T15:01:49  * csharp volunteers
+2015-03-19T15:01:52  <csharp> heh
+2015-03-19T15:02:00  <kmlussier> Looks like a committee!
+2015-03-19T15:02:13  <bbqben> RoganH++ montgoc1++ csharp++
+2015-03-19T15:02:50  <bbqben> montgoc1: primarily, responding Q&A style to queries from potential nominees/nominators
+2015-03-19T15:03:12  <montgoc1> Alrighty.
+2015-03-19T15:03:33  <bbqben> re: Proposed changes to existing Rules (2.4e) re: STV - this requires a vote with 2/3 support. Any discussion before we call that?
+2015-03-19T15:05:50  <bbqben> ok then...
+2015-03-19T15:05:53  <bbqben> #startvote Modify the EOB's Rules, s 2.4(e) as follows: Each year the Board shall undertake the electronic collection and counting of votes for the Board election using a documented voting platform that is widely accessible to the Evergreen community.? Yes, No, Abstain
+2015-03-19T15:05:53  <pinesol_green> Begin voting on: Modify the EOB's Rules, s 2.4(e) as follows: Each year the Board shall undertake the electronic collection and counting of votes for the Board election using a documented voting platform that is widely accessible to the Evergreen community.? Valid vote options are Yes, No, Abstain.
+2015-03-19T15:05:53  <pinesol_green> Vote using '#vote OPTION'. Only your last vote counts.
+2015-03-19T15:06:12  <bshum> #vote Yes
+2015-03-19T15:06:13  <csharp> #vote Yes
+2015-03-19T15:06:18  <kmlussier> #vote Yes
+2015-03-19T15:06:19  <montgoc1> #vote Yes
+2015-03-19T15:06:23  <abneiman> #vote yes
+2015-03-19T15:06:30  <bbqben> #vote Yes
+2015-03-19T15:06:36  <RoganH> #vote Yes
+2015-03-19T15:06:45  <graced> #vote yes
+2015-03-19T15:07:31  <bbqben> #endvote
+2015-03-19T15:07:32  <pinesol_green> Voted on "Modify the EOB's Rules, s 2.4(e) as follows: Each year the Board shall undertake the electronic collection and counting of votes for the Board election using a documented voting platform that is widely accessible to the Evergreen community.?" Results are
+2015-03-19T15:07:32  <pinesol_green> Yes (8): kmlussier, abneiman, bbqben, graced, RoganH, montgoc1, csharp, bshum
+2015-03-19T15:07:38  <bbqben> thanks all!
+2015-03-19T15:07:49  <csharp> bbqben++ graced++ abneiman++
+2015-03-19T15:08:01  <kmlussier> bbqben++ graced++ abneiman++
+2015-03-19T15:08:10  <bbqben> #action graced abneiman bbqben to coordinate opavote setup and finalization of call for nominations / get the vote out etc
+2015-03-19T15:08:24  <bshum> bbqben: I can help amend the entry in the git repo for EOB.  I'll check with gmcharlt on how that works.
+2015-03-19T15:08:36  <bbqben> how are we all doing - push through despite the time?
+2015-03-19T15:08:42  <bbqben> bshum: awesome
+2015-03-19T15:08:50  <csharp> bbqben: let's do this!
+2015-03-19T15:08:52  <kmlussier> I'm not going anywhere
+2015-03-19T15:09:06  <abneiman> onward
+2015-03-19T15:09:07  <graced> I'm okay for 10 more minutes
+2015-03-19T15:09:17  <montgoc1> I'm good.
+2015-03-19T15:09:22  <bbqben> ok...
+2015-03-19T15:09:26  <bbqben> #topic Public Relations Proposal
+2015-03-19T15:09:31  <bbqben> kmlussier: over to you
+2015-03-19T15:09:55  <kmlussier> #link http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-March/000964.html
+2015-03-19T15:10:24  <kmlussier> I've refined the proposal, added the trial period, and provided a ballpark on costs.
+2015-03-19T15:10:35  <kmlussier> With graced's help, of course.
+2015-03-19T15:10:52  <RoganH> agreed
+2015-03-19T15:11:15  <kmlussier> The one thing I was unsuccessful in was getting some info from the Conservancy on doing some targeted fundraising around this. I'll reach out again tomorrow once I'm done with some local meetings.
+2015-03-19T15:11:33  <kmlussier> But I guess we would need a vote to establish the committee and maybe another one for the budget to exhibit at ALA?
+2015-03-19T15:12:34  <kmlussier> That is, if it looks okay to everyone.
+2015-03-19T15:14:03  <RoganH> +1
+2015-03-19T15:14:23  <RoganH> By the way, we're having network issues, sorry for laggy responses.
+2015-03-19T15:14:53  <bbqben> kmlussier++
+2015-03-19T15:15:21  <bbqben> proposal looks good, and again - kudos to the MassLNC partners
+2015-03-19T15:16:19  <graced> kmlussier++
+2015-03-19T15:18:15  <bbqben> Looks like we need a vote to establish an ALA exhibit budget. Any discussion before we do?
+2015-03-19T15:20:39  <bbqben> #startvote Establish a budget line item for PR at ALA in the amount $5000 per knlussier proposal? Yes, No, Abstain
+2015-03-19T15:20:39  <pinesol_green> Begin voting on: Establish a budget line item for PR at ALA in the amount $5000 per knlussier proposal? Valid vote options are Yes, No, Abstain.
+2015-03-19T15:20:39  <pinesol_green> Vote using '#vote OPTION'. Only your last vote counts.
+2015-03-19T15:20:40  *** sarabee has quit IRC
+2015-03-19T15:20:52  <bshum> #vote Yes
+2015-03-19T15:20:54  <graced> #vote Yes
+2015-03-19T15:20:55  <montgoc1> #vote Yes
+2015-03-19T15:20:56  <bbqben> #vote Yes
+2015-03-19T15:20:59  <abneiman> #vote yes
+2015-03-19T15:21:04  <RoganH> #vote yes
+2015-03-19T15:21:23  <kmlussier> #vote Yes
+2015-03-19T15:21:30  <bbqben> #endvote
+2015-03-19T15:21:30  <pinesol_green> Voted on "Establish a budget line item for PR at ALA in the amount $5000 per knlussier proposal?" Results are
+2015-03-19T15:21:30  <pinesol_green> Yes (7): kmlussier, abneiman, bbqben, graced, RoganH, montgoc1, bshum
+2015-03-19T15:22:07  <bbqben> thanks, and we're ok with kmlussier soliciting membership for the committee?
+2015-03-19T15:22:55  <bbqben> kmlussier: let's interpret the silence as a resounding yes :)
+2015-03-19T15:23:00  <montgoc1> +1
+2015-03-19T15:23:03  <csharp> sorry - stepped away - I was gonna vote yes
+2015-03-19T15:23:05  <abneiman> +1
+2015-03-19T15:23:12  <csharp> +1
+2015-03-19T15:23:21  <graced> +1
+2015-03-19T15:23:23  <RoganH> +1
+2015-03-19T15:24:03  <bbqben> thanks all. #action kmlussier: yet another awesome call for community interest re: PR committee
+2015-03-19T15:24:15  <bbqben> I'm going to suggest we table one piece of new business (will bring to the list) and call this a meeting
+2015-03-19T15:24:18  * graced has to run - sorry!
+2015-03-19T15:24:26  <bbqben> graced++
+2015-03-19T15:24:49  <bbqben> we meet again 16.04.15 same bat time, same bat place. adios all - thanks for your time today
+2015-03-19T15:24:54  <bbqben> #endmeeting
+2015-03-19T15:24:54  <pinesol_green> Meeting ended Thu Mar 19 15:24:54 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-03-19T15:24:54  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-19-14.01.html
+2015-03-19T15:24:54  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-19-14.01.txt
+2015-03-19T15:24:54  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-19-14.01.log.html
+2015-03-19T15:24:58  <kmlussier> bbqben++
+2015-03-19T15:25:02  <montgoc1> bbqben++
+2015-03-19T15:25:07  <abneiman> bbqben++
+2015-03-19T15:25:41  <bshum> bbqben++
+2015-03-19T15:26:26  <bbqben> all y'all++
+2015-03-19T15:27:33  *** krvmga has quit IRC
+2015-03-19T15:28:29  *** RoganH has quit IRC
+2015-03-19T15:28:31  *** afterl has joined #evergreen
+2015-03-19T15:30:11  <csharp> bbqben++
+2015-03-19T15:32:29  *** sarabee has joined #evergreen
+2015-03-19T15:34:57  *** frank___ has joined #evergreen
+2015-03-19T15:38:39  <frank___> Hi all, Id want to know if someone know why if I check the last few circulations for a copy the result said that the due date is "Due date: 3/26/15 10:59" but in database the same id register due_date=2015-03-26 23:59:59-05
+2015-03-19T15:39:13  <Dyrcona> frank___: Daylist savings time or timezone mismatch.
+2015-03-19T15:39:14  *** jihpringle has joined #evergreen
+2015-03-19T15:39:19  <Dyrcona> Daylight...
+2015-03-19T15:40:46  <frank___> where should I check that?
+2015-03-19T15:42:19  <csharp> frank___: just doing 'date' on each server should tell you what time it thinks it is
+2015-03-19T15:42:22  <Dyrcona> frank___: Your desktop, the server. The database looks like it is on America/New_York.
+2015-03-19T15:42:48  <Dyrcona> -05 is the current offset from UTC in that time zone.
+2015-03-19T15:43:02  <Dyrcona> Could be you need to change the time zone on your server.
+2015-03-19T15:43:07  <Dyrcona> database server, I mean.
+2015-03-19T15:43:49  <Dyrcona> Unless, you're in the next time zone over and haven't done DST, yet.....
+2015-03-19T15:43:59  <Dyrcona> Gotta love time.
+2015-03-19T15:44:17  <bshum> Seems like it'd be on the client's point of view.
+2015-03-19T15:44:19  <Dyrcona> Doh! I'm stupid.
+2015-03-19T15:44:28  <Dyrcona> -04 is the current offset.
+2015-03-19T15:44:37  <Dyrcona> for America/New_York.
+2015-03-19T15:44:41  <csharp> date +%z and date +%Z will work too
+2015-03-19T15:44:50  * Dyrcona goes back to spending money on servers.
+2015-03-19T15:45:05  <kmlussier> We should just get rid of daylight savings time and make life easier for everyone.
+2015-03-19T15:45:11  <jonadab> Right, -4 is currently Eastern Daylight.
+2015-03-19T15:45:48  <jonadab> kmlussier: Well, it /would/ be possible for all dates in the database to be in GMT, and have the client convert them for display purposes only...
+2015-03-19T15:45:57  <csharp> bshum: yeah, prolly a client machine that isn't configured to care about DST
+2015-03-19T15:46:20  <csharp> eww
+2015-03-19T15:46:26  <jonadab> ... doing that conversion could be painful, though.
+2015-03-19T15:46:28  <csharp> (to jonadab's suggestion)
+2015-03-19T15:46:29  <kmlussier> jonadab: Yeah, well, my gripes with DST go beyond technology. :)
+2015-03-19T15:46:33  <jeff> hrm. anyone done partial pg_restores with an evergreen database, from the perspective of "restore data for tables in this schema" then at some later point "restore data for tables in this other schema"?
+2015-03-19T15:46:37  <jonadab> kmlussier: Fair.
+2015-03-19T15:46:56  <jeff> not sure i even want to do that right now, but I'm mostly wondering if inter-schema FK/constraints/triggers will complicate things.
+2015-03-19T15:47:03  <jeff> i suspect the answer to be "yes"
+2015-03-19T15:47:06  <jonadab> (I don't mean converting for display would be painful.  I mean converting the database schema to GMT would be painful.)
+2015-03-19T15:47:20  <csharp> jeff: yeah, I've tried to restore just the action schema, for instance - it's ugly ;-)
+2015-03-19T15:47:22  <frank___> CDT=-0500, so I just have to change the time zone to Mexico city right?
+2015-03-19T15:47:54  <bshum> bbqben: The governance page has been updated accordingly.
+2015-03-19T15:48:00  <jeff> csharp: thanks. my usual (other than stripping _replication bits from slony) on a restore is to omit table data and sequences for the auditor schema, but going beyond that will probably get complex fast.
+2015-03-19T15:48:11  <bbqben> bshum: thanks!
+2015-03-19T15:48:21  <csharp> jeff: yep, that's my experience
+2015-03-19T15:48:32  <jeff> csharp++ thanks for the confirmation
+2015-03-19T15:48:37  <jonadab> frank___: The main thing is that the time zone setting on the server and the time zone settings on the client workstations should match -- ideally.
+2015-03-19T15:48:55  <bshum> Thing is, even if they match
+2015-03-19T15:48:56  <jonadab> (Though I don't know what happens when a library system spans timezones...)
+2015-03-19T15:49:02  <bshum> If the circ happened in -05
+2015-03-19T15:49:06  <bshum> It's recorded as such
+2015-03-19T15:49:08  <jeff> jonadab: it's not great. sitka has to deal with that.
+2015-03-19T15:49:13  <bshum> And then displays as -04, which would be off by an hour
+2015-03-19T15:50:06  *** montgoc1 has quit IRC
+2015-03-19T15:54:01  <jeff> pg_restore: restoring data for table "record_entry"
+2015-03-19T15:56:49  <Dyrcona> frank___: Yes, you should set the timezone by the major city in your timezone. That is the preferred method.
+2015-03-19T15:57:14  <Dyrcona> And, the country, 'cause DST is different.
+2015-03-19T16:01:55  <kmlussier> jonadab: I think this is what happens when a library system spans timezones - https://bugs.launchpad.net/evergreen/+bug/1074195
+2015-03-19T16:01:55  <pinesol_green> Launchpad bug 1074195 in Evergreen "due dates rolled past midnight in local time zone" (affected: 2, heat: 12) [Undecided,Confirmed]
+2015-03-19T16:03:02  <jonadab> Oh, ick.
+2015-03-19T16:03:15  <jonadab> Could be worse, I suppose:  somebody could have a library spanning the date line.
+2015-03-19T16:03:38  <jonadab> Although, the rolling-to-midnight thing almost does that.
+2015-03-19T16:05:02  <Dyrcona> The database uses timestamp with timezone for those fields.
+2015-03-19T16:05:47  <Dyrcona> Dates and times are so much fun from a programming stand point, plus all of the different calendars.
+2015-03-19T16:06:14  <Dyrcona> And, don't get me started on first day of the week.....
+2015-03-19T16:12:49  <eeevil> just a head's up, I'm /currently/ working on the TZ issue :)
+2015-03-19T16:17:03  *** afterl has left #evergreen
+2015-03-19T16:20:42  <kmlussier> eeevil++
+2015-03-19T16:20:57  <kmlussier> I knew that when I shared the link to the bug, but I didn't know if it was a sure thing yet. :)
+2015-03-19T16:25:37  *** collum has quit IRC
+2015-03-19T16:27:08  *** bbqben has quit IRC
+2015-03-19T16:28:18  *** maryj has quit IRC
+2015-03-19T16:29:20  *** rjackson_isl has quit IRC
+2015-03-19T16:35:41  *** bbqben has joined #evergreen
+2015-03-19T16:39:46  *** jboyer-isl has quit IRC
+2015-03-19T16:42:06  *** abneiman has quit IRC
+2015-03-19T17:00:04  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-19T17:08:22  *** Dyrcona has quit IRC
+2015-03-19T17:14:09  *** graced has quit IRC
+2015-03-19T17:18:12  *** ericar has quit IRC
+2015-03-19T17:23:17  *** bmills has quit IRC
+2015-03-19T17:23:31  *** mmorgan has quit IRC
+2015-03-19T17:26:23  *** bmills has joined #evergreen
+2015-03-19T17:31:37  *** Shae has quit IRC
+2015-03-19T18:13:03  *** RBecker has quit IRC
+2015-03-19T18:18:50  *** RBecker has joined #evergreen
+2015-03-19T18:34:18  *** bmills has quit IRC
+2015-03-19T18:36:47  *** bmills has joined #evergreen
+2015-03-19T18:46:30  *** bbqben has quit IRC
+2015-03-19T18:59:07  *** bmills has quit IRC
+2015-03-19T18:59:24  *** bmills has joined #evergreen
+2015-03-19T19:01:25  *** vlewis has quit IRC
+2015-03-19T19:01:26  *** vlewis_ has quit IRC
+2015-03-19T19:14:54  *** bmills1 has joined #evergreen
+2015-03-19T19:14:55  *** bmills has quit IRC
+2015-03-19T19:29:31  *** bbqben has joined #evergreen
+2015-03-19T19:38:47  *** mglass has quit IRC
+2015-03-19T20:01:22  *** jwoodard has quit IRC
+2015-03-19T20:26:47  *** jammin has joined #evergreen
+2015-03-19T20:29:16  <jammin> anybody know where in the database to find the most recent patron to check out an item?  there's action.circ of course, but I'm positive I saw a "most recent transactions" field somewhere, just can't remember where, or find it in the schema
+2015-03-19T20:33:36  <berick> action.circulation order by xact_start desc lmit 1
+2015-03-19T20:35:04  <berick> where parent_circ is null  -- if you don't want renewals
+2015-03-19T20:35:22  <jammin> thanks, yes could get it along those lines... that could get interesting to do for a whole bunch of items
+2015-03-19T20:35:29  *** bbqben has quit IRC
+2015-03-19T20:36:16  <jammin> I need to come up with a report on "count of items lost by patron profile, per library"
+2015-03-19T20:37:04  <jammin> count of items lost per library (total, or within time range, or whatever) is no prob
+2015-03-19T20:38:23  <jammin> But I have to group by patron profile... which (I think) means chasing down the most recent checkout for each one for the join.  Eek.
+2015-03-19T20:40:45  <jammin> I thought I saw a table somewhere that had a field with item id, and another with a list of three transaction ids... looked like where the client gets the "recent checkouts" from.  Was thinking I could use that... if I could only find it again.
+2015-03-19T20:41:14  <jammin> ...and I have to bail, will have to check in later, thanks!
+2015-03-19T20:41:21  <jammin> \q
+2015-03-19T20:41:34  <jammin> lol, wrong window. :)
+2015-03-19T20:41:42  *** jammin has quit IRC
+2015-03-19T20:44:30  *** sandbergja has quit IRC
+2015-03-19T20:46:22  *** sarabee has quit IRC
+2015-03-19T20:50:10  *** sarabee has joined #evergreen
+2015-03-19T21:30:23  *** akilsdonk has quit IRC
+2015-03-19T21:33:44  *** sarabee has quit IRC
+2015-03-19T21:36:57  *** sarabee has joined #evergreen
+2015-03-19T21:38:22  *** jihpringle has quit IRC
+2015-03-19T22:14:10  *** bbqben has joined #evergreen
+2015-03-19T22:43:54  *** sarabee has quit IRC
+2015-03-19T22:47:33  *** sarabee has joined #evergreen
+2015-03-19T23:43:39  *** sarabee has quit IRC
+2015-03-19T23:46:57  *** bmills1 has quit IRC
+2015-03-19T23:47:41  *** sarabee has joined #evergreen

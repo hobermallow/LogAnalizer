@@ -1,0 +1,279 @@
+2015-01-29T00:31:38  *** akilsdonk has quit IRC
+2015-01-29T00:36:29  *** Callender has quit IRC
+2015-01-29T00:36:56  *** Callender has joined #evergreen
+2015-01-29T02:41:45  *** Callender has quit IRC
+2015-01-29T02:42:58  *** Callender has joined #evergreen
+2015-01-29T02:48:34  *** sarabee has quit IRC
+2015-01-29T02:59:28  *** BigRig has quit IRC
+2015-01-29T02:59:58  *** Callender_ has joined #evergreen
+2015-01-29T03:00:46  *** BigRig has joined #evergreen
+2015-01-29T03:03:03  *** Callender has quit IRC
+2015-01-29T05:14:25  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-29T06:29:00  *** Callender_ is now known as Callender
+2015-01-29T06:29:02  *** Callender is now known as Callender_
+2015-01-29T06:29:07  *** Callender_ is now known as Callender
+2015-01-29T07:25:05  *** jboyer-isl has joined #evergreen
+2015-01-29T07:42:49  *** dbwells_ has joined #evergreen
+2015-01-29T07:46:15  *** dbwells has quit IRC
+2015-01-29T07:54:56  *** rjackson-isl has joined #evergreen
+2015-01-29T08:13:29  *** akilsdonk has joined #evergreen
+2015-01-29T08:22:15  *** collum has joined #evergreen
+2015-01-29T08:22:53  *** julialima_ has joined #evergreen
+2015-01-29T08:31:33  *** mrpeters has joined #evergreen
+2015-01-29T08:38:09  <tsbere> BMagic: From last night, as a general note, overdue fine dates tend to be the "end" of the billing period, not the start. Never did try and figure out why, though.
+2015-01-29T08:40:24  *** RoganH has joined #evergreen
+2015-01-29T08:46:55  *** Shae has joined #evergreen
+2015-01-29T08:49:54  *** mmorgan has joined #evergreen
+2015-01-29T08:51:52  *** dbwells_ is now known as dbwells
+2015-01-29T08:53:57  *** jwoodard has joined #evergreen
+2015-01-29T08:59:23  *** krvmga has joined #evergreen
+2015-01-29T09:00:57  *** mmorgan has quit IRC
+2015-01-29T09:02:42  *** abowling has joined #evergreen
+2015-01-29T09:06:22  *** mmorgan has joined #evergreen
+2015-01-29T09:15:23  *** Dyrcona has joined #evergreen
+2015-01-29T09:22:52  *** sarabee has joined #evergreen
+2015-01-29T09:41:13  *** jeff__ has quit IRC
+2015-01-29T09:42:26  *** jeff_ has joined #evergreen
+2015-01-29T09:47:16  *** mllewellyn has joined #evergreen
+2015-01-29T09:47:40  *** sarabee has quit IRC
+2015-01-29T09:47:42  <Dyrcona> @blame Boopsie
+2015-01-29T09:47:42  <pinesol_green> Dyrcona: Boopsie caused the white screen of death!
+2015-01-29T09:47:53  <Dyrcona> @blame LibraryBooks
+2015-01-29T09:47:53  <pinesol_green> Dyrcona: everything was going great until LibraryBooks came along
+2015-01-29T09:48:02  <Dyrcona> True dat, on the latter.
+2015-01-29T09:48:54  <RoganH> We've had sales pitches for Boopsie several times.  It's had merit but it's seemed awkward to me.
+2015-01-29T09:50:35  <Dyrcona> GET /eg/opac/myopac/circs HTTP/1.1" 200 39291 "-" "curl/7.22.0 for Boopsie, Inc."
+2015-01-29T09:51:00  <jeff> i was disappointed when they switched to screen scraping, but somewhat understood their motivation.
+2015-01-29T09:51:06  <Dyrcona> That's the URL that triggers lp 1415898
+2015-01-29T09:51:06  <pinesol_green> Launchpad bug 1415898 in Evergreen 2.7 "OPAC Can Cause Proliferation of Connected CStore Drones" (affected: 1, heat: 6) [High,Confirmed] https://launchpad.net/bugs/1415898
+2015-01-29T09:51:30  <Dyrcona> And, hey, several hundred hits from Boopsie in a couple of seconds.
+2015-01-29T09:51:43  <jeff> eesh.
+2015-01-29T09:51:45  <kmlussier> Several hundred hits?
+2015-01-29T09:51:57  <jeff> i doubt that several hundred people fired up the app at the exact moment.
+2015-01-29T09:51:58  <bshum> Ugh
+2015-01-29T09:52:00  <kmlussier> So it's not a case of people looking up their account info while in the Boopsie app?
+2015-01-29T09:52:06  <Dyrcona> Maybe I'm exaggerating, but a large number of hits in a few seconds.
+2015-01-29T09:52:08  <bshum> UGH, I said.
+2015-01-29T09:53:07  <Dyrcona> And something called LibraryBooks which is apparently an app for Android and IOS.
+2015-01-29T09:56:12  *** sarabee has joined #evergreen
+2015-01-29T10:02:38  *** yboston has joined #evergreen
+2015-01-29T10:08:05  <Dyrcona> So before the fix above, we'd probably have between 140 and 200 cstore drones running.
+2015-01-29T10:08:21  <Dyrcona> Right now, we have about 25.
+2015-01-29T10:10:25  <collum> It looks like LibraryBooks is a nearly dead product.  https://itunes.apple.com/us/app/library-books/id365824503?mt=8
+2015-01-29T10:11:20  <Dyrcona> Yes, but it still appears to be available in the app stores.
+2015-01-29T10:11:27  <collum> tep
+2015-01-29T10:11:33  <collum> yep, even.
+2015-01-29T10:13:25  <berick> Dyrcona++
+2015-01-29T10:15:42  <Dyrcona> Apparently, we have access logs going back to last February.
+2015-01-29T10:16:34  <Dyrcona> The Boopsie user agent entries for the circ history show a steady increase to a peak in December when our problems began in earnest.
+2015-01-29T10:17:03  <Dyrcona> Looks like this month will be the second highest, but they still have a couple of days to beat out December.
+2015-01-29T10:17:32  <kmlussier> Have more libraries been signing up for Boopsie during that time period?
+2015-01-29T10:17:41  <Dyrcona> LibraryBooks is a bit less even in the progression, but looks like December was their highest month, too.
+2015-01-29T10:17:49  <eeevil> Dyrcona: does an hourly breakdown show peaks and valleys? I wonder if they just update registered users' data regularly and cache it
+2015-01-29T10:18:10  <Dyrcona> kmlussier: They don't always tell me, 'cause they don't have to. Boopsie is more or less set up consortium wide.
+2015-01-29T10:18:31  <Dyrcona> eeevil: tsbere is looking into that. So far he's just done a month by month break down.
+2015-01-29T10:19:42  <Dyrcona> Could be just more people adopting these apps as well. Not necessarily more libraries signing up.
+2015-01-29T10:20:02  <kmlussier> Yeah, that thought crossed my mind too.
+2015-01-29T10:20:33  <Dyrcona> This makes me think I should revisit an old XML-RPC bug on Launchpad. Half of the code went in. The other half would make using XML-RPC with Evergreen a little more pleasant.
+2015-01-29T10:21:21  <tsbere> If anyone wants to look at the "by hour" output: http://tomtrunk.mvlcstaff.org/boopsie_by_hour.txt and http://tomtrunk.mvlcstaff.org/librarybooks_by_hour.txt
+2015-01-29T10:21:33  <Dyrcona> I was also wondering about the person who mentioned on the dev or general list that he was writing an app for his daughter.
+2015-01-29T10:21:53  <Dyrcona> I know he was asking about backend calls, but he might have resorted to some screen scraping.
+2015-01-29T10:22:08  <Dyrcona> I should email him to see if I can find out what his app does.
+2015-01-29T10:22:35  <kmlussier> From his last email, it sounded like he was waiting until eeevil's code made it in. But that was a month or two ago.
+2015-01-29T10:23:25  <kmlussier> I can't imagine that an app used by one person would be responsible for that many hits.
+2015-01-29T10:24:21  <Dyrcona> You'd be surrpised what one app from one person could do....
+2015-01-29T10:25:18  <Dyrcona> Put something in a loop or make a recursive call that doesn't end....
+2015-01-29T10:30:50  <pinesol_green> [evergreen|Jason Stephenson] LP#1415898 Fix Potential Cstore Starvation in KPAC - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7ecc442>
+2015-01-29T10:30:51  <pinesol_green> [evergreen|Jason Stephenson] LP#1415898 Fix Potential Cstore Starvation in the OPAC - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=8b21c1c>
+2015-01-29T10:31:43  <Dyrcona> See, there was a reason I split that into its own bug. :)
+2015-01-29T10:32:12  <berick> nothing like a nice easy (*cough*) win
+2015-01-29T10:33:52  <Dyrcona> yeah.
+2015-01-29T10:34:04  <Dyrcona> Thought it fells like it took too long to find it.
+2015-01-29T10:34:13  <Dyrcona> feels, even. ;)
+2015-01-29T10:36:10  <berick> definitely
+2015-01-29T10:36:42  <berick> it should have been more obvious in the logs
+2015-01-29T11:00:24  <mmorgan> Has anyone had reports of problems with workstations losing customized receipt templates after upgrades?
+2015-01-29T11:01:16  <Dyrcona> mmorgan: I don't think so, but we've had reports of them disappearing a few times.
+2015-01-29T11:01:29  <Dyrcona> We always assumed someone deleted something by mistake.
+2015-01-29T11:01:35  <mmorgan> Our recent upgrade to 2.7.2 went quite smoothly, except that several libraries reported losing their templates.
+2015-01-29T11:01:49  <Dyrcona> mmorgan: Maybe they installed a new client along side the old one and didn't upgrade?
+2015-01-29T11:02:36  <mmorgan> Dyrcona: I'm pretty sure they all followed the prompts in the self-updating client.
+2015-01-29T11:02:37  <Dyrcona> I should really check the tickets before I say things from "memory." ;)
+2015-01-29T11:03:24  <mmorgan> Even if they did install a new version of the client, shouldn't the receipt templates persist?
+2015-01-29T11:05:03  <Dyrcona> Depends on how your client is setup to store them, I think.
+2015-01-29T11:05:16  <Dyrcona> There's an option to store the data in the program directory.
+2015-01-29T11:05:26  <Dyrcona> Otherwise, it goes in the user's profile.
+2015-01-29T11:05:51  <mmorgan> For us it's in the user's profile. I wasn't aware it was an option.
+2015-01-29T11:06:25  <Dyrcona> Maybe they have more than one profile or more than one user on the PCs.
+2015-01-29T11:07:09  <Dyrcona> Some of our libraries have multiple user account on workstations, so we have the information stored in the program directory, IIRC.
+2015-01-29T11:08:11  <mmorgan> I think for some libraries, there are multiple user profiles, but not for the majority of our users.
+2015-01-29T11:08:57  <mmorgan> To add to the disruption, when they tried to import their saved templates, the import failed with a File Import error:
+2015-01-29T11:09:04  <mmorgan> 	"fileName":"oils://remote/js/dojo/dojo/dojo.js",
+2015-01-29T11:09:04  <mmorgan> 	"lineNumber":24
+2015-01-29T11:12:17  <Dyrcona> Not seen that one before. It sounds like the client or profile may have been corrupted.
+2015-01-29T11:12:51  <Dyrcona> We usually tell folk to do a full install of the client when they get things like that, and it usually fixes the issue.
+2015-01-29T11:14:45  <mmorgan> One library sent me their template file, and I get the same error. I was assuming a problem with the file, but I'll try reinstalling my client.
+2015-01-29T11:19:08  <mmorgan> Hmm, new client, same error :-( Guess I'll wade through the template file a bit.
+2015-01-29T11:31:14  <Dyrcona> Yeah, in that case, it sounds like the template file.
+2015-01-29T11:58:02  *** jwoodard has quit IRC
+2015-01-29T11:58:45  *** jwoodard has joined #evergreen
+2015-01-29T11:59:19  *** bmills has joined #evergreen
+2015-01-29T12:00:18  *** jihpringle has joined #evergreen
+2015-01-29T12:00:22  *** bmills has quit IRC
+2015-01-29T12:00:40  <jeff> mmorgan: does the template file work in the previous version of the client? i don't remember offhand how tricky that might be in your environment to test.
+2015-01-29T12:01:08  <jeff> (i'm wondering if there was a change that broke import of previous-version receipt templates, either in some or all circumstances)
+2015-01-29T12:02:17  *** bmills has joined #evergreen
+2015-01-29T12:04:14  <mmorgan> jeff: Hmm. That's a thought. I'll see if I can find an older client to test it on.
+2015-01-29T12:05:20  <kmlussier> mmorgan: I could try it in a 2.5 client
+2015-01-29T12:05:28  <jeff> could also explain why the new client failed to load the stored templates from disk.
+2015-01-29T12:06:03  <jeff> if you find signs that seem to confirm that theory, the template file that broke could be useful -- especially if it's "only under certain circumstances" kind of thing.
+2015-01-29T12:07:33  * mmorgan needs more coffee. Found the older client, but no server to connect to anymore;-)
+2015-01-29T12:08:35  <mmorgan> kmlussier: I think I'll take you up on your offer. Can I send you a file to try?
+2015-01-29T12:08:44  <kmlussier> mmorgan: Sure!
+2015-01-29T12:09:28  <mmorgan> ok, will send it via email.
+2015-01-29T12:14:39  <kmlussier> mmorgan: They imported fine in the 2.5 client
+2015-01-29T12:14:54  <mmorgan> Hmm. Interesting!
+2015-01-29T12:15:56  <kmlussier> Or I should say, it imported fine. One file.
+2015-01-29T12:16:41  <kmlussier> So did something change with receipt templates in 2.7?
+2015-01-29T12:16:41  <mmorgan> So we have some standard copy and paste code for some templates.
+2015-01-29T12:17:13  <mmorgan> I just pasted that in my 2.7 client and it saved fine.
+2015-01-29T12:17:24  *** krvmga has quit IRC
+2015-01-29T12:17:51  <mmorgan> But when I close and relaunch my client, I get an error.
+2015-01-29T12:18:09  <mmorgan> On login: Could not js-ify the JSON: SyntaxError: JSON.parse: bad character in string literal
+2015-01-29T12:18:41  *** StomproJ has joined #evergreen
+2015-01-29T12:18:43  <mmorgan> And all my custom templates are gone :-(
+2015-01-29T12:18:50  <kmlussier> @coffee mmorgan
+2015-01-29T12:18:50  * pinesol_green brews and pours a cup of Panama La Esmeralda Especial Mario San Jose, and sends it sliding down the bar to mmorgan
+2015-01-29T12:19:11  <mmorgan> Thank you!!!
+2015-01-29T12:20:21  <kmlussier> mmorgan: What are you copying and pasting?
+2015-01-29T12:20:53  <mmorgan> I think the problem in our recommended hold_slip footer.
+2015-01-29T12:21:02  *** Stompro has quit IRC
+2015-01-29T12:22:41  <mmorgan> http://paste.evergreen-ils.org/28
+2015-01-29T12:23:31  <mmorgan> kmlussier: Do you see that in the hold_slip footer in your 2.5 client?
+2015-01-29T12:23:52  <tsbere> mmorgan: The problem is likely more in the background, how it is stored (locally or otherwise) - There is a bad char in there somewhere
+2015-01-29T12:24:24  <mmorgan> tsbere: Yes, a bad char that's only a problem since 2.7
+2015-01-29T12:24:40  <tsbere> (also, &nbsp; < Note the ; on the end, your paste doesn't seem to have it on the two)
+2015-01-29T12:25:10  <kmlussier> mmorgan: Yes
+2015-01-29T12:26:28  <eeevil> hrm... are those files supposed to be JSON to the client?
+2015-01-29T12:26:28  <tsbere> mmorgan: I don't know if you have funky overrides in place or not, but you may want to look at print_list_templates in your profile or install directory (per-machine storage would be install, per-user would be the profile folder) - That may have an issue. Removing it (rename, perhaps) would revert you back to defaults.
+2015-01-29T12:26:47  <tsbere> eeevil: print_list_templates is a json object
+2015-01-29T12:27:20  <eeevil> if so, you may be able to just excise the entities (the '&...;' strings)
+2015-01-29T12:30:06  <mmorgan> The problem is definitely in that footer. As soon as I save that in a template, then login again, I get the error and the templates revert to default. Luckily there aren't too many characters there to examine :)
+2015-01-29T12:35:46  <tsbere> mmorgan: I would check the &nbsp vs &nbsp; part at least (note: You may not need those at all before the <br/> anyway)
+2015-01-29T12:36:41  <mmorgan> Found the problem. That row of dashes at the bottom of the footer ended up being saved as: ^T^T^T^T^T^T^T^T^T in the file. Once I took that out of the file, it imported fine.
+2015-01-29T12:37:54  <mmorgan> I can fix the source our libraries are using, but it's odd that it's suddenly is broken in 2.7.
+2015-01-29T12:37:59  *** buzzy has quit IRC
+2015-01-29T12:38:06  <tsbere> Oh, those are the funky dashes from word or something. Replacing them with - (or just putting a <hr/> in) would probably work.
+2015-01-29T12:38:27  <kmlussier> mmorgan: I don't think I pasted the row of dashed when I tried replicating the problem. :)
+2015-01-29T12:39:10  <mmorgan> I can paste that code in and save it. It works for the session, but logout and in again, and the templates revert to default.
+2015-01-29T12:39:46  <tsbere> mmorgan: I blame a word processor being used at some point. As I said, replace them with a regular - or just remove the row and put a <hr/> in ;)
+2015-01-29T12:40:07  <tsbere> The latter should also adjust properly to whatever width is needed
+2015-01-29T12:41:17  <mmorgan> tsbere: am planning to do just that :)
+2015-01-29T12:41:21  <kmlussier> mmorgan: And I don't see them in the receipt I imported on the 2.5 client I was using. So I lied when I said everything was displaying in the holds slip footer.
+2015-01-29T12:42:24  <mmorgan> ok, thanks.
+2015-01-29T12:44:52  <mmorgan> I can fix things now for our libraries going forward, the extraneous characters shouldn't have been there in the first place. Too bad we ran into this. Aside from that it would have been a flawless upgrade!
+2015-01-29T12:44:52  *** buzzy has joined #evergreen
+2015-01-29T12:45:04  <mmorgan> Thanks, all.
+2015-01-29T12:48:43  <Dyrcona> Following up on the earlier conversation about Boopsie and LibraryBooks....
+2015-01-29T12:49:24  <Dyrcona> Having correlated some of their hourly activity with times that we have crashes shows that we typically have a higher level of Boopsie activity in the logs in the hours leading up to a crash situation.
+2015-01-29T13:19:57  *** buzzy has quit IRC
+2015-01-29T14:43:30  *** akilsdonk_ has joined #evergreen
+2015-01-29T14:45:58  *** akilsdonk has quit IRC
+2015-01-29T14:51:11  *** akilsdonk has joined #evergreen
+2015-01-29T14:51:19  *** akilsdonk_ has quit IRC
+2015-01-29T14:52:17  *** Callender_ has joined #evergreen
+2015-01-29T14:56:25  *** RoganH_ has joined #evergreen
+2015-01-29T14:56:37  *** Callender has quit IRC
+2015-01-29T14:57:02  *** RoganH has quit IRC
+2015-01-29T15:18:16  *** bmills has quit IRC
+2015-01-29T15:20:57  *** collum has quit IRC
+2015-01-29T15:52:53  *** Sato has quit IRC
+2015-01-29T16:03:12  <yboston> Quick question, I am hoping to update the max number of items that patrons can have out. I know I can make changes in Admin > Local Administration > Circulation Limit Sets
+2015-01-29T16:03:15  <yboston> Is there somehwere else I can set max items out, I thought there was, but I could be wrong?
+2015-01-29T16:03:38  *** Sato has joined #evergreen
+2015-01-29T16:03:50  <Dyrcona> yboston: Total number of items out?
+2015-01-29T16:04:04  <Dyrcona> Or total number of a certain kind of item out?
+2015-01-29T16:04:14  <yboston> I guess both
+2015-01-29T16:04:27  <yboston> are there two place for each?
+2015-01-29T16:04:52  *** julialima_ has left #evergreen
+2015-01-29T16:05:08  <Dyrcona> Limits sets matches up with circ matrix and can limit certain items, like DVDs.
+2015-01-29T16:05:19  <Dyrcona> There is another setting for total items out.
+2015-01-29T16:05:58  <yboston> whcih is that other setting?
+2015-01-29T16:05:58  <Dyrcona> I'm looking for it, but had to login again. My session expired.
+2015-01-29T16:06:10  <yboston> thank you very much, this is very helpful
+2015-01-29T16:07:21  <Dyrcona> Local Administration -> Group Penalty Thresholds
+2015-01-29T16:07:51  <Dyrcona> PATRON_EXCEEDS_CHECKOUT_COUNT
+2015-01-29T16:07:59  *** Sato has quit IRC
+2015-01-29T16:08:18  <yboston> ¡muchas gracias! I knew I was nto crazy
+2015-01-29T16:08:29  <yboston> (I just need to spell better)
+2015-01-29T16:08:31  <kmlussier> yboston: Well, maybe just a little bit crazy. ;)
+2015-01-29T16:08:38  <Dyrcona> :)
+2015-01-29T16:08:47  <yboston> kmlussier++
+2015-01-29T16:08:48  *** Sato has joined #evergreen
+2015-01-29T16:15:44  *** Shae has quit IRC
+2015-01-29T16:17:57  *** bmills has joined #evergreen
+2015-01-29T16:24:15  *** bmills has quit IRC
+2015-01-29T16:24:29  *** bmills has joined #evergreen
+2015-01-29T16:24:34  <RoganH_> Quick question - does anyone know off the top of their head if last activity includes SIP activity?
+2015-01-29T16:24:43  <RoganH_> (I can go test it of course but feeling lazy.)
+2015-01-29T16:28:07  *** rjackson-isl has quit IRC
+2015-01-29T16:29:46  *** RoganH_ has quit IRC
+2015-01-29T16:31:37  <kmlussier> I should know the answer to that question.
+2015-01-29T16:32:33  <mmorgan> There are sip2 activity types. One for login and one for verify
+2015-01-29T16:36:34  <jeff> and I think only "verify" is used by current code.
+2015-01-29T16:37:36  <jeff> oh, and RoganH_ is gone anyway.
+2015-01-29T16:47:52  <eeevil> @later tell RhoganH_ it doesn't yet, but I've a branch...
+2015-01-29T16:47:52  <pinesol_green> eeevil: The operation succeeded.
+2015-01-29T16:49:37  <dbwells> eeevil: Not sure "RhoganH_" will ever get that ;)
+2015-01-29T16:49:47  <eeevil> @later tell RoganH_ it doesn't yet, but I've a branch...
+2015-01-29T16:49:47  <pinesol_green> eeevil: The operation succeeded.
+2015-01-29T16:50:09  <eeevil> dbwells: indeed ... but if they do they'll be so confused
+2015-01-29T16:50:15  <dbwells> :D
+2015-01-29T16:50:33  *** Sato has quit IRC
+2015-01-29T16:50:59  <dbwells> just lookin' out
+2015-01-29T16:51:20  *** Sato has joined #evergreen
+2015-01-29T16:51:38  <tsbere> Leaving laters for random nicks, and if they ever show up they go "wtf....when? why?" ;)
+2015-01-29T16:52:15  <Dyrcona> We can delete that later.
+2015-01-29T16:52:17  <gmcharlt> @later tell foo you have been eaten by a grue
+2015-01-29T16:52:17  <pinesol_green> gmcharlt: The operation succeeded.
+2015-01-29T16:52:45  <eeevil> dbwells++
+2015-01-29T16:54:38  *** mrpeters has quit IRC
+2015-01-29T16:55:42  *** akilsdonk has quit IRC
+2015-01-29T16:56:36  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-29T17:03:54  <csharp> @quote random
+2015-01-29T17:03:54  <pinesol_green> csharp: Quote #21: "< Dyrcona> Writing software is more fun than working." (added by csharp at 09:29 AM, November 29, 2011)
+2015-01-29T17:04:26  <Dyrcona> And with that, I'm outta here.
+2015-01-29T17:04:33  *** Dyrcona has quit IRC
+2015-01-29T17:05:39  <csharp> @later tell [someone] you look very nice today!
+2015-01-29T17:05:39  <pinesol_green> The operation succeeded.
+2015-01-29T17:06:52  <kmlussier> Heh
+2015-01-29T17:07:03  <kmlussier> @eightball Will we ever find out who gets that later message?
+2015-01-29T17:07:03  <pinesol_green> kmlussier: What are you asking me for?
+2015-01-29T17:12:02  *** mmorgan has left #evergreen
+2015-01-29T17:13:14  *** bmills has quit IRC
+2015-01-29T17:17:15  *** bmills has joined #evergreen
+2015-01-29T17:18:05  *** yboston has quit IRC
+2015-01-29T17:26:59  *** mllewellyn has quit IRC
+2015-01-29T17:35:30  <kmlussier> @later tell eeevil Can you tell me what the purpose of the status bar is in the web client?
+2015-01-29T17:35:30  <pinesol_green> kmlussier: The operation succeeded.
+2015-01-29T17:38:52  <csharp> kmlussier: you mean the progress indicator bars?
+2015-01-29T18:07:37  <kmlussier> csharp: It doesn't appear to be a progress indicator. Actually, I've answered my own question. It lets you know if you're connected to the network, and I'm guessing the other indicator lets you know if you're connected to hatch.
+2015-01-29T18:08:51  <kmlussier> But it gets in the way. There is now an option to collapse it when it blocks something from view, but I suspect it's going to ultimately annoy users. I'm just wondering if it's necessary.
+2015-01-29T18:28:48  <berick> kmlussier: right, network and hatch.  IIRC, eeevil added a way to hide it
+2015-01-29T18:29:03  <berick> i'd be in favor of hiding it by default, and maybe completely changing it
+2015-01-29T18:29:08  <berick> it does tend to get in the way
+2015-01-29T18:32:27  <berick> oh, heh, i see you noticed the hiding part
+2015-01-29T18:45:53  *** bmills1 has joined #evergreen
+2015-01-29T18:45:54  *** bmills has quit IRC
+2015-01-29T19:18:31  *** jwoodard has quit IRC
+2015-01-29T20:06:26  *** jihpringle has quit IRC
+2015-01-29T20:22:41  *** bmills has joined #evergreen
+2015-01-29T20:24:55  *** akilsdonk has joined #evergreen
+2015-01-29T20:25:42  *** bmills1 has quit IRC
+2015-01-29T21:10:15  *** pmurray is now known as pmurray_away
+2015-01-29T22:10:48  *** rfrasur has joined #evergreen
+2015-01-29T22:14:15  *** rfrasur has quit IRC
+2015-01-29T22:34:37  *** rfrasur has joined #evergreen
+2015-01-29T23:09:44  *** rfrasur has quit IRC
+2015-01-29T23:42:14  *** abowling1 has joined #evergreen
+2015-01-29T23:43:47  *** abowling has quit IRC

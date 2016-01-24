@@ -1,0 +1,225 @@
+2015-01-26T00:25:07  *** abowling has quit IRC
+2015-01-26T01:37:47  *** RBecker has quit IRC
+2015-01-26T01:43:54  *** RBecker has joined #evergreen
+2015-01-26T06:07:23  *** temur has joined #evergreen
+2015-01-26T06:27:52  *** temur has quit IRC
+2015-01-26T06:28:18  *** Temur has joined #evergreen
+2015-01-26T06:31:43  *** Temur has quit IRC
+2015-01-26T06:32:33  *** Temur has joined #evergreen
+2015-01-26T07:00:59  *** jboyer-isl has joined #evergreen
+2015-01-26T07:32:07  *** graced has joined #evergreen
+2015-01-26T07:49:59  *** BigRig has joined #evergreen
+2015-01-26T07:51:48  *** mtate has quit IRC
+2015-01-26T07:51:55  *** jeff has quit IRC
+2015-01-26T07:52:03  *** jeff has joined #evergreen
+2015-01-26T07:52:03  *** jeff has joined #evergreen
+2015-01-26T07:53:01  *** BigRig_ has quit IRC
+2015-01-26T07:53:01  *** mtate has joined #evergreen
+2015-01-26T07:55:50  *** julialima_ has joined #evergreen
+2015-01-26T08:00:12  *** Guest75024 is now known as pmurray
+2015-01-26T08:00:25  *** pmurray has joined #evergreen
+2015-01-26T08:00:27  *** pmurray is now known as pmurray_away
+2015-01-26T08:02:10  *** rjackson-isl has joined #evergreen
+2015-01-26T08:07:32  *** collum has joined #evergreen
+2015-01-26T08:15:34  *** Temur has quit IRC
+2015-01-26T08:23:56  *** akilsdonk has joined #evergreen
+2015-01-26T08:30:31  *** mdriscoll1 has joined #evergreen
+2015-01-26T08:40:00  *** Shae has joined #evergreen
+2015-01-26T08:40:07  *** StomproJ has joined #evergreen
+2015-01-26T08:40:17  *** Dyrcona has joined #evergreen
+2015-01-26T08:41:36  *** Stompro has quit IRC
+2015-01-26T08:41:58  *** StomproJ has quit IRC
+2015-01-26T08:42:15  *** Stompro has joined #evergreen
+2015-01-26T08:43:48  *** mmorgan has joined #evergreen
+2015-01-26T08:43:57  *** abowling has joined #evergreen
+2015-01-26T08:44:36  <Dyrcona> Good morning, #evergreen!
+2015-01-26T08:46:48  <mmorgan> Good Morning!
+2015-01-26T08:58:28  *** rjackson-isl has quit IRC
+2015-01-26T08:59:56  *** yboston has joined #evergreen
+2015-01-26T09:03:13  *** mrpeters has joined #evergreen
+2015-01-26T09:13:58  <Dyrcona> Blizzard warning and for some reason, I'm stoked.
+2015-01-26T09:18:12  <Dyrcona> I'm not usually a fan of snow, but I'm kind of looking forward to it.
+2015-01-26T09:18:21  <Dyrcona> The snow we got this weekend was so pretty.
+2015-01-26T09:19:28  * mmorgan hears that the coming snow will be a lot *prettier* ;-)
+2015-01-26T09:19:47  <dbs> moin
+2015-01-26T09:20:08  <Dyrcona> mmorgan++
+2015-01-26T09:20:19  <Dyrcona> dbs is no stranger to snow, eh?
+2015-01-26T09:20:31  * Dyrcona works on a scrip to shutdown webrick.
+2015-01-26T09:20:37  <Dyrcona> a script even.
+2015-01-26T09:22:01  <dbs> Dyrcona: true true! but haven't had a 2-3 foot dump for quite some time. been skating on the lake and nordic skiing for the past month though; loving it
+2015-01-26T09:29:57  <Dyrcona> Sounds fun! I've never been skiing, and the rivers don't freeze here like they used to.
+2015-01-26T09:30:07  *** RoganH has joined #evergreen
+2015-01-26T09:30:23  <Stompro> Anyone used pg barman with your EG database?  http://www.pgbarman.org/
+2015-01-26T09:30:53  <Dyrcona> And a script to stop webrick is only 7 lines long, including two blank lines and a sanity check that ps -C ruby -o pid= actually found a running process.
+2015-01-26T09:36:10  <Dyrcona> As tsbere points out to me in a private chat, `ps -C ruby -o pid,args | grep edi_webrick | cut -f1 -d\ ` is safer, in case we run more than 1 ruby process.
+2015-01-26T09:38:08  <Dyrcona> No, it's not for an init script.
+2015-01-26T09:47:14  *** rjackson-isl has joined #evergreen
+2015-01-26T09:53:28  *** akilsdonk has quit IRC
+2015-01-26T09:54:16  *** pmurray_away is now known as pmurray
+2015-01-26T10:00:57  *** phasefx__ is now known as phasefx
+2015-01-26T10:26:33  <Dyrcona> This is the theme song for our Evergreen server this morning: https://www.youtube.com/watch?v=a1IyrVeX0W8
+2015-01-26T10:27:01  <Dyrcona> It keeps hitting 200 cstores and then backing down.
+2015-01-26T10:31:35  <dbs> Argh. That's so frustrating :(
+2015-01-26T10:33:05  <berick> Dyrcona:  have you applied any patches?
+2015-01-26T10:33:22  <Dyrcona> berick: Yes.
+2015-01-26T10:34:00  <Dyrcona> When we go down again, we're going apply all of the latest O/S updated and force reinstall/update all CPAN packages as well.
+2015-01-26T10:34:01  *** RoganH has quit IRC
+2015-01-26T10:34:19  <berick> yowza
+2015-01-26T10:34:40  <Dyrcona> Our current thinking is the problem lies with the packages.
+2015-01-26T10:35:17  <Dyrcona> Something from CPAN could be out of sync with a C library that was updated.
+2015-01-26T10:35:35  <Dyrcona> I actually want it to go down, today.
+2015-01-26T10:36:07  <Dyrcona> But, now we're back down to 83 cstore drones total across two servers.
+2015-01-26T10:36:44  <Dyrcona> We're going to get new hardware soon, and we'll configure things very differently.
+2015-01-26T10:38:29  <Dyrcona> Thing is, when the load hits 200, you'd expect to see 16 or so processes in top each 100% or more of CPU.
+2015-01-26T10:38:35  <Dyrcona> That doesn't happen.
+2015-01-26T10:38:37  <berick> Dyrcona: would it possible to share your log files?
+2015-01-26T10:38:56  <berick> well, they donres are probably sitting there waiting for the processes that connected to them to do soemthing
+2015-01-26T10:39:07  <berick> but said process has probably forgotton abou tthem
+2015-01-26T10:39:18  <Dyrcona> berick: I could possibly share them.
+2015-01-26T10:39:23  <berick> so they are just hanging out waitin to time out
+2015-01-26T10:39:48  <Dyrcona> Well, I don't think CStoreEditor is the problem, though we should still probably clean up the code.
+2015-01-26T10:40:24  <Dyrcona> I mentioned last week that I added a warn to the destructor and did some tests on my dev machine and every other line (not quite) in the logs was the destructor being called.
+2015-01-26T10:41:46  <berick> that's great, but doesn't help when the destructor isn't called, like when refs are still in scope
+2015-01-26T10:42:02  <Dyrcona> And now, we're down to 41 cstore drones.
+2015-01-26T10:42:22  <Dyrcona> Thing is, I haven't found anywhere the refs look like they would still be in scope.
+2015-01-26T10:42:50  <Dyrcona> If I do, I'll put that line back in and see if I can trigger that code.
+2015-01-26T10:42:58  <berick> Dyrcona: if you could share the osrfsys and activity logs collected during one of the explosions, that would be great
+2015-01-26T10:59:54  *** akilsdonk has joined #evergreen
+2015-01-26T11:00:42  *** mrpeters has quit IRC
+2015-01-26T11:01:33  *** mrpeters has joined #evergreen
+2015-01-26T11:12:21  <bshum> Ugh, more reingesting.
+2015-01-26T11:12:39  <bshum> gmcharlt++ # patch for LP 1414112
+2015-01-26T11:12:39  <pinesol_green> Launchpad bug 1414112 in Evergreen 2.7 "Audience filter no longer searching blank spaces" (affected: 2, heat: 12) [Medium,Confirmed] https://launchpad.net/bugs/1414112
+2015-01-26T11:13:22  <goood> bshum: we can add audience without a reingest, don't worry.  I'll whip up an update statement
+2015-01-26T11:13:33  <goood> and also,
+2015-01-26T11:13:36  <goood> gmcharlt++
+2015-01-26T11:25:09  <goood> ah, we'll need one more change for that... I'll push a collab branch
+2015-01-26T11:38:51  *** RoganH has joined #evergreen
+2015-01-26T11:47:35  *** vlewis has joined #evergreen
+2015-01-26T11:48:16  *** sandbergja has joined #evergreen
+2015-01-26T11:49:08  *** vlewis_ has joined #evergreen
+2015-01-26T11:54:22  *** vlewis has quit IRC
+2015-01-26T11:54:44  *** dreuther has joined #evergreen
+2015-01-26T12:33:36  *** buzzy has joined #evergreen
+2015-01-26T12:49:38  *** jihpringle has joined #evergreen
+2015-01-26T13:26:29  *** graced has quit IRC
+2015-01-26T13:27:33  *** gdunbar has joined #evergreen
+2015-01-26T13:27:52  *** gdunbar is now known as graced
+2015-01-26T13:34:29  <Bmagic_> Has anyone heard of OpenSRF performing 4 lookups per hold during item checkin? My logs show exactly 4 lookups for every potiential hold on an item during a checkin. It happens via SIP and via staff client (provided that the checkin_lib != call_number.owning_lib)
+2015-01-26T13:36:59  <jeff> i have seen similar, yes.
+2015-01-26T13:37:35  <jeff> it can lead to timeouts in scenarios where there are many (unsuitable due to age protection/etc) holds on the record for a copy.
+2015-01-26T13:38:01  <bshum> Indeed.
+2015-01-26T13:38:58  <jeff> i thought that in some very preliminary digging, signs had pointed to it being exacerbated by "clear shelf expired holds", but of course that wouldn't apply for SIP (or maybe it could be made to in some environments...)
+2015-01-26T13:39:41  <bshum> For us i think it was dealing with large numbers of holds to check through.  Opportunistic capture I think.
+2015-01-26T13:40:17  <bshum> So the more holds there were, the longer it took in general to check in.
+2015-01-26T13:41:38  <Bmagic_> bshum: jeff: yes, however, even if there is only one hold, it still looks 4 times but you don't notice it because it doesn't take very long
+2015-01-26T13:41:47  * jeff nods
+2015-01-26T13:41:58  <bshum> Bmagic_: That doesn't surprise me.  The checking code is weird....
+2015-01-26T13:42:40  <Bmagic_> interestingly enough, it only checks once if you are checking the item in at it's home library
+2015-01-26T13:44:06  <Bmagic_> I have done the work to isolate the cases, and I have log files for each senario, is this a bug?
+2015-01-26T13:45:23  <jeff> i recommend you open a bug (after doing your own check to see if there's one already, but I don't think there is)
+2015-01-26T13:46:08  <jeff> i'll try to give it some eyes also, since we've observed similar.
+2015-01-26T13:47:29  <Bmagic_> jeff: ok, I will check that out. Not sure how to phrase my search terms....
+2015-01-26T13:47:34  * jeff nods
+2015-01-26T13:49:40  <Bmagic_> jeff: I'm creating a new bug
+2015-01-26T13:51:16  <tsbere> jeff: I will point out that "clear shelf expired holds" should only add calls for copies that are flagged as on the hold shelf, so any other situation shouldn't do much more there.
+2015-01-26T13:51:17  <berick> Bmagic_: can you clarify what you mean by "it looks 4 times"
+2015-01-26T13:52:13  <jeff> tsbere: pretty sure what i saw agrees with your statement, yes.
+2015-01-26T13:52:57  <Bmagic_> berick: grep "checking if hold" osrfsys.log  yeilds  [INFO:16784:Holds.pm:3144:1422189177127601] circulator: checking if hold 216012 is permitted for copy PPL60121 x4
+2015-01-26T13:53:49  <tsbere> Bmagic_: Some of those may actually end up being dupes (different pieces logging the same call) though I can't be certain without looking closer.
+2015-01-26T13:54:19  <Bmagic_> tsbere: weird that it only looks once when checkin occurs at circ_lib
+2015-01-26T13:54:47  <Bmagic_> s/looks/logs/
+2015-01-26T13:54:48  * Dyrcona hasn't been this excited about a snow day since he was in primary school.
+2015-01-26T13:55:46  <berick> Bmagic_: and it's checking the same hold ID with every call?
+2015-01-26T13:55:54  <Bmagic_> berick: indeed
+2015-01-26T13:56:00  <Bmagic_> 4 times
+2015-01-26T13:56:06  <Bmagic_> always exactly 4
+2015-01-26T13:56:28  <Dyrcona> Bmagic_: It's being thorough, like checking fines twice on a renewal.
+2015-01-26T13:56:45  <Bmagic_> Dyrcona: lol no doubt
+2015-01-26T13:57:33  <Bmagic_> It's an issue when there are many potential holds. It can take so long in fact, the SIP client will time out. I have logs from SIP that log the response time, clocked at >15 seconds
+2015-01-26T13:58:17  <berick> many potential holds doesn't explain why it would check the same hold more than once
+2015-01-26T13:58:38  <berick> Bmagic_: can you tell if open-ils.storage.action.hold_request.nearest_hold.atomic is called once or multiple times?
+2015-01-26T13:59:08  <Bmagic_> berick: I am not saying that the cause is due to many holds. I think the cause is due to item checkin_lib != item owning_lib
+2015-01-26T13:59:39  <Bmagic_> berick: because it only checks the potential hold once if you are checking the item in at it's circ_lib/owning_lib
+2015-01-26T14:00:20  <tsbere> Bmagic_: Are you using the "if things haven't gone home for interval whatever send them home" features?
+2015-01-26T14:00:59  <Bmagic_> http://pastebin.com/snAW2WkF
+2015-01-26T14:02:24  <Bmagic_> tsbere: "Max foreign-circulation time" ?
+2015-01-26T14:04:17  <Bmagic_> berick:  open-ils.storage.action.hold_request.nearest_hold.atomic is called once
+2015-01-26T14:06:01  <berick> yeah...
+2015-01-26T14:06:28  <berick> that suggests that open-ils.storage.action.hold_request.nearest_hold needs to be unique-ifying its return list
+2015-01-26T14:06:50  <Bmagic_> afk
+2015-01-26T14:06:54  <bshum> Interesting...
+2015-01-26T14:08:19  <RoganH> un_helpful advice: wipe your server, start over
+2015-01-26T14:12:14  <berick> i wonder if "SELECT DISTINCT(h.id)" in action:nearest_hold would do it
+2015-01-26T14:17:46  <tsbere> berick: Just adding DISTINCT before the existing h.id should work (distinct the entire column list....which is one column)
+2015-01-26T14:20:54  <berick> tsbere: yeah, that's what I meant.  just insert DISTINCT
+2015-01-26T14:21:56  * berick wonders if Bmagic_ is up for an experiment
+2015-01-26T14:22:07  <tsbere> Bmagic_: Out of curiosity, does this query result in anything for you?   SELECT count(id), from_org, to_org FROM actor.org_unit_proximity GROUP BY from_org, to_org HAVING count(id) > 1;
+2015-01-26T14:23:58  <Bmagic_> I'll check when I get back. Bout 45 minutes
+2015-01-26T14:24:11  * dbs gets zero rows for that
+2015-01-26T14:24:46  <tsbere> dbs: As far as I know you should get zero rows. Uniqeness of from/to org combinations is not, however, guaranteed at the DB level...
+2015-01-26T14:25:15  * dbs wipes brow in relief
+2015-01-26T14:25:35  <tsbere> Which could result in extra rows when looking up holds, which would result in the need for said DISTINCT addition and the extra lookups.
+2015-01-26T15:00:39  *** kbutler has joined #evergreen
+2015-01-26T15:15:58  <Bmagic_> tsbere: OMG, that query returns 5929 rows, with all counts=4!
+2015-01-26T15:16:57  <berick> tsbere++
+2015-01-26T15:17:15  <tsbere> Bmagic_: You need to fix that. ;) autogen.sh -u may work?
+2015-01-26T15:18:29  <Bmagic_> tsbere: ok, that did fix that
+2015-01-26T15:19:26  <tsbere> Bmagic_: In that case your "4 times" issue is likely fixed
+2015-01-26T15:20:16  <Bmagic_> tsbere: testing
+2015-01-26T15:25:52  <Bmagic_> tsbere: yep, solved
+2015-01-26T15:25:56  <Bmagic_> tsbere++
+2015-01-26T15:26:13  <Bmagic_> tsbere: can you help me understand why the DB returned those rows in that function?
+2015-01-26T15:26:49  <Bmagic_> (I don't think we run autogen with -u switch)
+2015-01-26T15:26:52  <tsbere> Bmagic_: Your org unit proximities were doubled up for some reason. You should only have one row for each from/to combination, you had 4, but likely only one for each org unit to itself.
+2015-01-26T15:27:58  <tsbere> Thus, when checking in at the "home" library you got one back. When checking in anywhere else you got four. Thus, "extra" holds. The autogen.sh script, when run with -u, *empties* the table and re-builds the proximities.
+2015-01-26T15:28:58  <Bmagic_> tsbere: if we pass -u to autogen, does it do everything it does without the -u switch?
+2015-01-26T15:29:30  * berick wonders how they get doubled up
+2015-01-26T15:29:41  <tsbere> Bmagic_: Generally you don't need to pass -u to autogen. Something went wrong for you in the past, creating the extra entries. In this case passing -u to tell it to do that extra bit was a "fix the broken table contents" step.
+2015-01-26T15:31:26  <dbwells> tsbere++
+2015-01-26T15:38:37  <Bmagic_> LOL it turns out the extra look ups didn't contribute much to the total amount of time!! 13.860 down to 10.929 seconds
+2015-01-26T15:38:57  <Bmagic_> DB caching maybe?
+2015-01-26T15:41:57  *** Bmagic_ has quit IRC
+2015-01-26T15:41:58  *** hopkinsju has quit IRC
+2015-01-26T15:42:20  *** hopkinsju has joined #evergreen
+2015-01-26T15:42:20  *** Bmagic has joined #evergreen
+2015-01-26T15:43:11  <Bmagic> jeff: so I guess this is not a bug?
+2015-01-26T15:44:08  <jeff> i'm with berick in wondering how they were doubled up.
+2015-01-26T15:44:29  <Bmagic> that would be nice to know. Perhaps through an upgrade?
+2015-01-26T15:44:54  <jeff> i don't know how worth it it would be to do either/both of 1) preventing the possibility of them being doubledup and/or 2) preventing their doubling-up from impacting that process
+2015-01-26T15:44:55  <Bmagic> Like I said, I don't remember the last time we ran autogen -u - probably 2 years
+2015-01-26T15:46:31  <jeff> bringing settings-tester (or something like it) back in vogue and teaching it things like "hey, your org unit proximities are doubled -- you should run autogen.sh -u" :-)
+2015-01-26T15:48:33  *** doug_evanced has joined #evergreen
+2015-01-26T15:49:31  * jeff senses a SIP question
+2015-01-26T15:58:26  <jeff> ...or possibly not.
+2015-01-26T15:58:29  <jeff> greetings, doug!
+2015-01-26T16:00:57  <doug_evanced> hi, just browsing
+2015-01-26T16:02:40  *** julialima_ has left #evergreen
+2015-01-26T16:03:58  *** RoganH has quit IRC
+2015-01-26T16:11:37  * dbs thought "-u" was turned into a no-op years ago
+2015-01-26T16:12:44  <dbs> guess not!
+2015-01-26T16:12:52  *** eby has quit IRC
+2015-01-26T16:24:33  *** doug_evanced has quit IRC
+2015-01-26T16:28:43  *** rjackson-isl has quit IRC
+2015-01-26T16:34:17  *** eby has joined #evergreen
+2015-01-26T16:40:20  *** collum has quit IRC
+2015-01-26T16:45:08  *** mdriscoll1 has left #evergreen
+2015-01-26T17:00:04  *** kbutler has quit IRC
+2015-01-26T17:00:24  *** Dyrcona has quit IRC
+2015-01-26T17:03:25  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-26T17:07:11  *** mmorgan has left #evergreen
+2015-01-26T17:11:20  *** graced has quit IRC
+2015-01-26T17:20:47  *** Shae has quit IRC
+2015-01-26T18:04:12  *** yboston has quit IRC
+2015-01-26T18:16:40  *** mrpeters has left #evergreen
+2015-01-26T18:44:22  *** buzzy has quit IRC
+2015-01-26T19:00:05  *** vlewis_ has quit IRC
+2015-01-26T19:49:28  *** sarabee has quit IRC
+2015-01-26T20:09:35  *** maryj has joined #evergreen
+2015-01-26T20:21:14  *** maryj has quit IRC
+2015-01-26T20:33:44  *** mnsri is now known as mnsri_away
+2015-01-26T20:34:31  *** dcook has joined #evergreen
+2015-01-26T21:01:46  *** jihpringle has quit IRC
+2015-01-26T21:21:06  *** finnx has joined #evergreen
+2015-01-26T21:59:38  *** sandbergja has quit IRC
+2015-01-26T22:23:59  *** finnx has left #evergreen

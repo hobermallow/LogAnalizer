@@ -1,0 +1,19 @@
+2015-03-14T09:24:22  *** MrMayor has joined #evergreen
+2015-03-14T09:25:32  <MrMayor> Anyone here this morning? And if so, do you know if it is possible to assiang a circ duration rule to a specific permission group instead of an item?
+2015-03-14T10:02:03  *** MrMayor has quit IRC
+2015-03-14T13:18:33  <gsams> @later tell MrMayor I believe that you can do this by creating a circulation policy that leaves the circulation modifier blank.  You would simply set the Org Unit and the Permission Group, and omit item related information.  With that said, I believe anything item related would override if there is anything like that.  Others can certainly correct my logic there.
+2015-03-14T13:18:33  <pinesol_green> gsams: The operation succeeded.
+2015-03-14T13:58:04  *** jcamins has quit IRC
+2015-03-14T13:58:17  *** jcamins has joined #evergreen
+2015-03-14T14:44:33  *** RBecker has quit IRC
+2015-03-14T14:46:36  *** Guest87489 has joined #evergreen
+2015-03-14T15:10:26  *** Guest87489 is now known as RBecker
+2015-03-14T15:10:26  *** RBecker has joined #evergreen
+2015-03-14T16:36:09  *** mglass_ has joined #evergreen
+2015-03-14T16:36:10  *** mglass has quit IRC
+2015-03-14T16:36:46  *** mglass_ has quit IRC
+2015-03-14T16:37:38  *** mglass has joined #evergreen
+2015-03-14T18:06:54  *** gsams has quit IRC
+2015-03-14T18:08:09  *** gsams has joined #evergreen
+2015-03-14T18:23:07  *** Bmagic has quit IRC
+2015-03-14T18:23:20  *** Bmagic has joined #evergreen

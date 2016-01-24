@@ -1,0 +1,283 @@
+2015-04-30T03:11:23  *** tsbere has quit IRC
+2015-04-30T03:11:49  *** tsbere has joined #evergreen
+2015-04-30T03:52:28  * bshum generally agrees with dbs and tries to remind people about said older bugs.
+2015-04-30T04:31:57  *** book`_ has quit IRC
+2015-04-30T04:47:27  *** book` has joined #evergreen
+2015-04-30T04:59:19  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-30T06:36:21  *** Callender is now known as Callender_
+2015-04-30T06:36:24  *** Callender_ is now known as Callender
+2015-04-30T07:06:03  <csharp> bshum: argh - I hate launchpad
+2015-04-30T07:06:39  * csharp remembered that the issue had been discussed before, but didn't remember the bug and it didn't appear in search results
+2015-04-30T07:07:29  <csharp> so in the old bug I suggested the alternative of commenting out the lines in fm_IDL.xml, but I've changed my mind on that, obviously ;-)
+2015-04-30T07:13:52  <csharp> I agree with dbs's point about the newer bug masking the older one, so I marked the new one as a duplicate of the old
+2015-04-30T07:26:28  *** graced has joined #evergreen
+2015-04-30T07:39:23  *** pmurray_away is now known as pmurray
+2015-04-30T07:53:15  *** ericar has joined #evergreen
+2015-04-30T07:58:14  *** rjackson_isl has joined #evergreen
+2015-04-30T08:02:29  *** mrpeters has joined #evergreen
+2015-04-30T08:15:11  *** collum has joined #evergreen
+2015-04-30T08:28:40  *** _bott_1 has quit IRC
+2015-04-30T08:30:34  *** _bott_ has joined #evergreen
+2015-04-30T08:31:45  *** akilsdonk has joined #evergreen
+2015-04-30T08:38:03  *** mmorgan has joined #evergreen
+2015-04-30T08:42:03  *** Dyrcona has joined #evergreen
+2015-04-30T08:42:17  *** TaraC has joined #evergreen
+2015-04-30T08:48:17  *** collum_ has joined #evergreen
+2015-04-30T08:48:19  *** collum has quit IRC
+2015-04-30T08:48:37  *** collum_ has quit IRC
+2015-04-30T08:49:02  *** Dyrcona has quit IRC
+2015-04-30T08:49:03  *** collum has joined #evergreen
+2015-04-30T08:51:46  *** Dyrcona has joined #evergreen
+2015-04-30T08:55:18  *** jwoodard has joined #evergreen
+2015-04-30T09:07:27  *** ericar_ has joined #evergreen
+2015-04-30T09:08:19  *** mrpeters has quit IRC
+2015-04-30T09:09:32  *** remingtron has quit IRC
+2015-04-30T09:10:08  *** krvmga has joined #evergreen
+2015-04-30T09:10:20  *** krvmga has quit IRC
+2015-04-30T09:11:04  *** ericar has quit IRC
+2015-04-30T09:11:05  *** ericar_ is now known as ericar
+2015-04-30T09:12:52  *** krvmga has joined #evergreen
+2015-04-30T09:18:59  *** remingtron has joined #evergreen
+2015-04-30T09:19:08  <mmorgan> Hmm. Having trouble with webby again. I can login, but am getting blank screens. Just the menu bar. Is it just me?
+2015-04-30T09:31:45  <kmlussier> mmorgan: I don't get the home screen (just a flash and then it goes blank), but if I use the menu bar, I'm able to pull up interfaces.
+2015-04-30T09:32:13  <kmlussier> And if I click home, I get the home screen. Just not when I log in.
+2015-04-30T09:32:43  <mmorgan> OK, looks like it's behaving now. I just got the home screen.
+2015-04-30T09:33:34  <mmorgan> Someone hasn't had enough coffee. Maybe me, maybe webby, but looks good now! :)
+2015-04-30T09:34:03  <kmlussier> Whenever that happens, I always assume gmcharlt and eeevil are hard at work, bring us new stuff. :)
+2015-04-30T09:34:37  <kmlussier> @coffee webby
+2015-04-30T09:34:37  * pinesol_green brews and pours a cup of Ethiopia Nekisse Espresso, and sends it sliding down the bar to webby
+2015-04-30T09:34:37  <gmcharlt> :)
+2015-04-30T09:34:48  <kmlussier> I think pinesol_green needs a little coffee too.
+2015-04-30T09:37:36  *** Newziky has joined #evergreen
+2015-04-30T09:38:24  <jeff> oh! coffee!
+2015-04-30T09:38:49  <jeff> @who made coffee then left it sitting across the room
+2015-04-30T09:38:49  <pinesol_green> mmorgan made coffee then left it sitting across the room.
+2015-04-30T09:41:01  *** yboston has joined #evergreen
+2015-04-30T09:43:43  <mmorgan> Hah!
+2015-04-30T09:44:07  * mmorgan actually for real just retrieved that exact cup!
+2015-04-30T09:51:22  *** tsbere has quit IRC
+2015-04-30T09:59:18  *** tsbere has joined #evergreen
+2015-04-30T10:11:44  <krvmga> for copy statuses, we don't show Lost items.in the OPAC. it looks like this is having the unintended consequence of not showing a logged-in patron they have a Lost item on their account. Has anyone else experienced this?
+2015-04-30T10:12:09  <jeff> i have not.
+2015-04-30T10:12:30  <jeff> but have not checked lately.
+2015-04-30T10:12:46  <jeff> what version are you seeing that behavior on?
+2015-04-30T10:12:53  <krvmga> jeff: 2.7.4
+2015-04-30T10:13:06  <jeff> convenient for me to test!
+2015-04-30T10:13:11  <Dyrcona> Hmm. I could check right quick.
+2015-04-30T10:13:32  <jeff> krvmga: i suspect something other than the copy status is to blame, unless you've heavily tweaked your templates.
+2015-04-30T10:13:36  <bshum> I'm pretty sure I remember it displaying when we tested it.  Or rather, it displayed as a bill or something elsewhere.
+2015-04-30T10:13:48  <bshum> And basically that still showed in the same place as items out
+2015-04-30T10:13:54  <krvmga> jeff: our myopac templates are pretty vanilla.
+2015-04-30T10:16:37  <Dyrcona> Well, I just set one of my items to lost on my dev system and it doesn't show up in my list of items out in the OPAC.
+2015-04-30T10:16:39  <jeff> krvmga: tested by checking an item out to a patron and then marking it lost by patron. it is no longer visible under Items Checked Out, but is visible as a bill in the main myopac page at /eg/opac/myopac/main -- under Fines
+2015-04-30T10:17:19  * Dyrcona confirms it shows up under fines.
+2015-04-30T10:17:24  <jeff> I get a Title, Author, Checkout Date, Due Date, Date Returned shows (fines accruing) [er, they aren't actually] and there's a balance owed.
+2015-04-30T10:17:31  <jeff> (under Fines)
+2015-04-30T10:17:34  <Dyrcona> Same here.
+2015-04-30T10:17:52  <jeff> I do wonder if Long Overdue shows differently than Lost in the OPAC recently.
+2015-04-30T10:18:14  <jeff> since "Long Overdue" is in some cases the "correct" automatically-mark-this-gone tool now.
+2015-04-30T10:18:40  <Dyrcona> Well, the question is should lost items show in items out, or just under fines.
+2015-04-30T10:19:09  <Dyrcona> I'd be more likely to say Long Overdue should show up under items out.
+2015-04-30T10:19:42  <Dyrcona> Or more correctly, "Checked Out."
+2015-04-30T10:21:26  <krvmga> i think the issue has been reported to me incorrectly. i just looked at a test account and the Lost items show up but under Returned/Renewed it says (fines accruing) but under Balance Owed it's showing a replacement cost
+2015-04-30T10:21:48  <krvmga> i think the person who reported it might have gotten confused by "(fines accruing)"
+2015-04-30T10:22:16  <Dyrcona> Well it shouldn't say that. It is an error.
+2015-04-30T10:22:52  <Dyrcona> Maybe it should say "Lost" instead?
+2015-04-30T10:22:53  <krvmga> Dyrcona: is it a bug error or a configuration error on our part, do you think?
+2015-04-30T10:23:04  <Dyrcona> I'm guessing a bug.
+2015-04-30T10:23:40  <Dyrcona> I'd have to see how that is populated, but I'm guessing some combination of xact_finish and stop_fines is used.
+2015-04-30T10:23:45  <krvmga> if it's a bug, i'll report it. i just want to make sure it's not anything we're doing wrong.
+2015-04-30T10:24:32  <Dyrcona> I'd say find out from your staff what the real problem is, and then open a bug.
+2015-04-30T10:24:47  <Dyrcona> We can always set it to invalid if it turns out to be configuration. :)
+2015-04-30T10:28:11  <krvmga> staff are saying that the patron's Lost items show up under Fines (as previously mentioned) but, if a patron looks at Items Checked Out, the screen shows "You have no items checked out."
+2015-04-30T10:29:32  <krvmga> a patron's Lost item is still checked out to the patron, no?
+2015-04-30T10:30:10  <krvmga> maybe this is where not showing Lost in the OPAC is having the impact.
+2015-04-30T10:31:48  <krvmga> i'm testing by turning OPAC visibility back on for Lost for a little while
+2015-04-30T10:35:14  <jeff> i think that "(fines accruing)" is based simply on the lack of a checkin time.
+2015-04-30T10:35:34  <jeff> should be a somewhat easy fix to correct/clarify that.
+2015-04-30T10:49:12  *** graced has quit IRC
+2015-04-30T10:49:24  <jeff> hah! there's actually a TODO in the template
+2015-04-30T10:50:15  <krvmga> jeff: lol
+2015-04-30T10:51:17  <Dyrcona> Not surprising. :)
+2015-04-30T11:00:08  <krvmga> ok, i have tested with showing Lost in the OPAC. Lost items are now OPAC visible in our catalog. logging out and logging in again as the test patron. Current Items Checked Out still shows "You have no items checked out". I'm guessing this means OPAC visibility of Lost status has no impact here.
+2015-04-30T11:00:54  <Dyrcona> Sounds like something else is going on.
+2015-04-30T11:10:14  <kmlussier> Although Evergreen considers lost items to still be checked out to the patron, as a patron I don't think I would expect it to show in Items Out. If it is truly lost, it's lost.
+2015-04-30T11:10:24  <kmlussier> I agree with Dyrcona that I would expect long overdue to still display there.
+2015-04-30T11:10:53  <Dyrcona> Yeah, I'm iffy on Lost.
+2015-04-30T11:14:39  <Dyrcona> To me, it kid of depends on if you're using the long overdue status or not.
+2015-04-30T11:14:46  <Dyrcona> s/kid/kind/
+2015-04-30T11:15:44  <krvmga> We are not currently using the Long Overdue status.
+2015-04-30T11:15:59  <kmlussier> Yeah. I think the problem is that, if you are not using long overdue, lost can have two different meanings. There's the case where something automatically goes to lost, in which case it might seem reasonable for it to display in Items Out.
+2015-04-30T11:16:24  <kmlussier> And then you have the case where a patron reports that the item is lost. In those cases, I think they would be annoyed if it continued to display in Items Out.
+2015-04-30T11:17:47  <krvmga> i wonder if there's an issue with Long Overdue and that's why we're not using it?
+2015-04-30T11:18:50  <krvmga> i wonder what would blow up if i turned it on?
+2015-04-30T11:19:02  <krvmga> :)
+2015-04-30T11:19:10  <kmlussier> It's fairly new. And I think there needs to be more discussion before you just turn it on. :)
+2015-04-30T11:19:35  <krvmga> yes, absolutely.
+2015-04-30T11:19:47  <kmlussier> I know it's something that has been discussed there previously.
+2015-04-30T11:20:10  <krvmga> in the meantime, i wonder if it's worthwhile to figure out how to show Lost under Items Checked Out?
+2015-04-30T11:22:06  <kmlussier> Also noting that, as of now, long overdues don't display there either. But maybe the code from bug 1440148 will address that particular issue.
+2015-04-30T11:22:06  <pinesol_green> Launchpad bug 1440148 in Evergreen "Long overdue Items out TPAC OPAC display My Account" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1440148
+2015-04-30T11:28:12  *** dcook has quit IRC
+2015-04-30T11:28:37  *** dcook has joined #evergreen
+2015-04-30T11:31:31  *** buzzy has joined #evergreen
+2015-04-30T11:40:29  *** mrpeters has joined #evergreen
+2015-04-30T11:43:48  *** bmills has joined #evergreen
+2015-04-30T11:46:05  *** graced has joined #evergreen
+2015-04-30T11:56:48  <jeff> my gut instinct is to have LONGOVERDUE show in items checked out (probably ideally with a LONG OVERDUE indicator), and have a config option to have a distinct "Considered Lost" header listing lost-and-not-yet-fully-paid also
+2015-04-30T11:57:05  <jeff> and to fix the TODO on the inaccurate (fines accruing) on the Fines display.
+2015-04-30T11:57:27  <jeff> but I'd be interested in hearing what others think.
+2015-04-30T11:59:26  <kmlussier> That all sounds reasonable to me.
+2015-04-30T12:09:05  <krvmga> kmlussier: in our OPAC, under All Books, i want to exclude Large Print books (which have their own format filter). Other than adding the NOT, do you know if there's anything else we need to do to make that work?
+2015-04-30T12:09:53  <kmlussier> I wouldn't think so.
+2015-04-30T12:11:01  <tsbere> krvmga: I would recommend changing the label. If you exclude one type of book it is no longer "All", right? ;)
+2015-04-30T12:12:22  <kmlussier> I thought we had a "regular" books filter that was distinct from the all books filter. I guess it didn't make it into the seed data.
+2015-04-30T12:12:33  <jeff> "Some Books" should make things perfectly clear.
+2015-04-30T12:12:39  * kmlussier agrees with tsbere on changing the label.
+2015-04-30T12:13:45  <kmlussier> Would krvmga need to reingest too?
+2015-04-30T12:16:16  <Dyrcona> Don't think so.
+2015-04-30T12:16:56  <kmlussier> krvmga: If you look at the definition used for the book format icon, you might have a good definition for your everyday, print book that could be used as a search filter.
+2015-04-30T12:17:45  <Dyrcona> Except that in some cases, search_format and icon_format are different, i.e. come from different MARC fields.
+2015-04-30T12:18:35  *** jihpringle has joined #evergreen
+2015-04-30T12:20:51  <kmlussier> Yeah, I think that's partially because an "All Books" format filter makes sense for people who just want any kind of book, but doesn't make as much sense as an icon, where you want to have a bit more granularity in what kind of book it is.
+2015-04-30T12:24:47  <tsbere> kmlussier: If you change the definition of the search formats you have to reingest. So adding a new one could be seen as just as much of a headache as changing an existing one.
+2015-04-30T12:25:08  *** buzzy has left #evergreen
+2015-04-30T12:25:56  <kmlussier> tsbere: Thanks. krvmga: see what tsbere said above re regingest ^ ^
+2015-04-30T12:28:31  <jeff> search filter groups, on the other hand... do not require a reingest, but may not give you the same precision (not sure yet).
+2015-04-30T12:29:08  <tsbere> search_format:book -search_format:lpbook ;)
+2015-04-30T12:29:30  <tsbere> (or, if you want to go that route, you could probably just do the icon_format:book search....)
+2015-04-30T12:30:39  <kmlussier> jeff: We used to use search filter groups, and I believe they give the same precision. However, I think there may be some differences in search performance.
+2015-04-30T12:30:54  <kmlussier> It's something that we've been trying to evaluate.
+2015-04-30T12:32:24  <kmlussier> To be clear, though, the reingest required isn't a full reingest, is it?
+2015-04-30T12:34:06  <tsbere> Depending on things you can cheat the reingest, if you know what you are doing. >_>
+2015-04-30T12:34:07  * kmlussier thinks it just needs to be done on record attributes.
+2015-04-30T12:34:24  * tsbere knows enough to cheat it in this case ;)
+2015-04-30T12:34:49  <kmlussier> I know how to cheat a reingest when creating new keyword indexes. I'm not so sure how to do it with record attributes. :)
+2015-04-30T12:36:32  <krvmga> about the Lost display in the myopac Items Checked Out, it seems the answer at the moment is there's nothing i can do about it. does that sound right?
+2015-04-30T12:36:37  <tsbere> There are tricks, depending on what you are doing ;)
+2015-04-30T12:36:50  * tsbere doesn't know about said display issue though
+2015-04-30T12:37:29  <krvmga> kmlussier: i'm glad you said that because tim felt sure you had told him we could do stuff without a reingest for search format filters
+2015-04-30T12:37:39  <krvmga> and i had wanted to ask you
+2015-04-30T12:38:06  <tsbere> I could probably add a "nonlpbook" search_format fairly quickly/easily, all things considered, without need to do a full attribute reingest. Not sure why I would want to though. ;)
+2015-04-30T12:38:33  <Dyrcona> krvmga: On the lost not appearing in the checked out list, you are correct. It appears to be a code issue, so nothing you can easily do at this time.
+2015-04-30T12:38:47  <krvmga> Dyrcona: thanks :)
+2015-04-30T12:47:29  *** jjk has joined #evergreen
+2015-04-30T12:52:51  *** buzzy has joined #evergreen
+2015-04-30T12:55:23  *** akilsdonk has quit IRC
+2015-04-30T13:01:03  * kmlussier learned something new from jihpringle's acq documentation today. :)
+2015-04-30T13:01:09  <kmlussier> jihpringle++
+2015-04-30T13:01:27  <jihpringle> :)
+2015-04-30T13:04:53  *** sarabee has quit IRC
+2015-04-30T13:26:16  <kmlussier> jihpringle: Are your around to answer a question about fiscal year close out?
+2015-04-30T13:26:26  <jihpringle> sure
+2015-04-30T13:27:30  <kmlussier> I notice in the sitka docs that you have propagation listed as a separate step from doing a close-out where encumbrances or encumbrances/funds are rolled over.
+2015-04-30T13:27:41  *** sarabee has joined #evergreen
+2015-04-30T13:28:38  <kmlussier> But if the libraries have their funds configured correctly (ie rollover is selected for the ones where you want funds to rollover and not selected for the ones you just want  to proagate), that can all happen in one step. Is that right?
+2015-04-30T13:28:53  <kmlussier> Or do you find that the two do indeed need to be run separately?
+2015-04-30T13:29:31  <jihpringle> yes, it can all be done in one step but for some of our big libraries we found they had to propgate first and then run the rest or the system tied out
+2015-04-30T13:29:39  <kmlussier> Ah, I see.
+2015-04-30T13:29:51  <kmlussier> In this case, I do't think we have any libraries large enough to be a problem.
+2015-04-30T13:29:56  <kmlussier> Famous last words.
+2015-04-30T13:30:08  <kmlussier> jihpringle++ #Thanks for the clarification!
+2015-04-30T13:30:12  <jihpringle> np
+2015-04-30T13:31:30  <jihpringle> one thing to watch for is when you do dry runs, if your libraries do, the encumbrances amounts moved forward are not included in the dry run summary
+2015-04-30T13:37:24  *** dbwells_ has joined #evergreen
+2015-04-30T13:39:47  *** jeff__ has joined #evergreen
+2015-04-30T13:39:57  *** bmills has quit IRC
+2015-04-30T13:43:23  *** Newziky1 has joined #evergreen
+2015-04-30T13:45:46  *** rangi` has joined #evergreen
+2015-04-30T13:45:51  *** RBecker_ has joined #evergreen
+2015-04-30T13:46:59  *** Newziky has quit IRC
+2015-04-30T13:47:01  *** jeff_ has quit IRC
+2015-04-30T13:47:01  *** RBecker has quit IRC
+2015-04-30T13:47:01  *** phasefx has quit IRC
+2015-04-30T13:47:02  *** rangi has quit IRC
+2015-04-30T13:47:05  *** dbwells has quit IRC
+2015-04-30T13:47:08  *** dcook has quit IRC
+2015-04-30T13:47:32  *** phasefx has joined #evergreen
+2015-04-30T13:49:50  *** dcook has joined #evergreen
+2015-04-30T13:57:15  *** bmills has joined #evergreen
+2015-04-30T14:36:31  *** dcook__ has joined #evergreen
+2015-04-30T14:39:36  *** dcook has quit IRC
+2015-04-30T14:52:21  * bshum returns from meeting hell
+2015-04-30T14:52:29  <bshum> Or is it meetings hell?
+2015-04-30T14:52:34  <bshum> Or hell of meetings?
+2015-04-30T14:53:24  <eeevil> bshum: however you label it, it's the 7th circle
+2015-04-30T14:54:07  <bshum> jeff: So csharp wanted to get your opinion on https://bugs.launchpad.net/evergreen/+bug/1446860 prior to merging.  Any last words before I push it along?
+2015-04-30T14:54:07  <pinesol_green> Launchpad bug 1446860 in Evergreen "staff users can edit their own accounts" (affected: 3, heat: 14) [High,Confirmed] - Assigned to Chris Sharp (chrissharp123)
+2015-04-30T14:54:53  <bshum> Personally I'm on the side of begone crazy, so if you want to block it for your reasons noted, then we ought to put some real feedback down and push it off to the next review time
+2015-04-30T14:54:55  <jeff> bshum: ah, i had missed the comment from the bug.
+2015-04-30T14:57:41  <Dyrcona> Web browsers suck.
+2015-04-30T15:00:52  * dbs wonders how well Dojo 1.3 supports Microsoft Edge
+2015-04-30T15:02:44  * jeff is uncertain how best to describe the sound that he just involuntarily made in response to that comment
+2015-04-30T15:02:54  <berick> jeff++ same here
+2015-04-30T15:02:58  <jeff> we'll go with *snerk*
+2015-04-30T15:03:12  <bshum> "chortle"
+2015-04-30T15:03:40  <jeff> a *guffawful*
+2015-04-30T15:06:20  <csharp> I enter meetings hell tomorrow, but mine's worse cuz it's in COLUMBUS, GA
+2015-04-30T15:06:56  * csharp apologizes to all who have ties to that fair city
+2015-04-30T15:07:08  <berick> hah
+2015-04-30T15:09:55  *** RBecker_ is now known as RBecker
+2015-04-30T15:09:56  *** RBecker has joined #evergreen
+2015-04-30T15:16:12  <bshum> Anyone have any strong opinions or eyeballs for https://bugs.launchpad.net/evergreen/+bug/1205061 and https://bugs.launchpad.net/evergreen/+bug/1125270
+2015-04-30T15:16:13  <pinesol_green> Launchpad bug 1205061 in Evergreen "Need more "IF EXISTS" clauses in 2.3-2.4.0-upgrade-db.sql" (affected: 1, heat: 8) [Medium,Triaged]
+2015-04-30T15:16:14  <pinesol_green> Launchpad bug 1125270 in Evergreen "Error updating function in 2.0-2.1-upgrade-db.sql for 2.3" (affected: 1, heat: 6) [Low,Triaged]
+2015-04-30T15:16:40  <bshum> I wrote some minor patches to fix those two and even though I sure hope nobody is still on 2.0 or 2.3, it'd be nice to close out those bugs.
+2015-04-30T15:17:24  *** krvmga has quit IRC
+2015-04-30T15:17:30  * bshum would have probably just pushed those already, but just checking real quick one last time.
+2015-04-30T15:23:09  *** collum has quit IRC
+2015-04-30T15:30:11  <csharp> bshum: so to test bug 1125270, one would need to install 2.0 and run the 2.0 to 2.1 upgrade script?
+2015-04-30T15:30:11  <pinesol_green> Launchpad bug 1125270 in Evergreen "Error updating function in 2.0-2.1-upgrade-db.sql for 2.3" (affected: 1, heat: 6) [Low,Triaged] https://launchpad.net/bugs/1125270
+2015-04-30T15:30:31  <bshum> csharp: If you were being thorough, I suppose yes.
+2015-04-30T15:30:33  <csharp> I mean, it's probably fine to push as-is
+2015-04-30T15:30:49  <bshum> But yeah, it looks good to my eye.  :)
+2015-04-30T15:30:56  <csharp> both branches look good to me as far as what my eyes see too
+2015-04-30T15:32:29  <berick> kmlussier: you mentioned recently something about 2.8.1 release notes.. do you have a branch for that somewhere?
+2015-04-30T15:32:47  <kmlussier> Yes, but it's only up to date as of Tuesday night.
+2015-04-30T15:33:01  <berick> kmlussier: that's fine, i'm mostly curious about the structure
+2015-04-30T15:33:07  <kmlussier> http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/user/kmlussier/2-8-1-release-notes
+2015-04-30T15:33:22  <berick> oh, pff, should have just looked ;)
+2015-04-30T15:33:36  <kmlussier> berick: Let me know if you have thoughts on improving the structure.
+2015-04-30T15:33:43  *** eady has quit IRC
+2015-04-30T15:33:50  *** eady has joined #evergreen
+2015-04-30T15:34:16  <kmlussier> I did find a file in the git repository for 2.2.1 point release notes, and I used some language that was used there.
+2015-04-30T15:34:32  <kmlussier> I don't think they ever made it to the official documentation.
+2015-04-30T15:35:17  <berick> structure looks great to me.
+2015-04-30T15:35:37  <berick> i'd like to merge this before we cut the 2.8.1 release if possible
+2015-04-30T15:36:17  <kmlussier> OK, I think you pushed a commit yesterday that should be added.
+2015-04-30T15:48:06  <kmlussier> berick: All set
+2015-04-30T15:48:19  <berick> kmlussier++
+2015-04-30T15:48:23  <berick> i'll review and merge
+2015-04-30T15:49:04  <pinesol_green> [evergreen|Kathy Lussier] Add 2.8.1 release notes to the 2.8 release note file. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=01f89cf>
+2015-04-30T15:49:35  <berick> oh sweet, you merged.  nevermind :)
+2015-04-30T15:50:04  <kmlussier> berick: Sorry, I have a tendency to do that with doc commits.
+2015-04-30T15:50:16  <berick> +1 to that
+2015-04-30T16:04:30  *** akilsdonk has joined #evergreen
+2015-04-30T16:22:01  <Dyrcona> @karma security_team
+2015-04-30T16:22:01  <pinesol_green> Dyrcona: Karma for "security_team" has been increased 1 time and decreased 0 times for a total karma of 1.
+2015-04-30T16:22:09  <Dyrcona> security_team++
+2015-04-30T16:23:39  *** collum has joined #evergreen
+2015-04-30T16:27:22  *** rjackson_isl has quit IRC
+2015-04-30T16:28:42  *** collum has quit IRC
+2015-04-30T16:30:00  *** maryj has joined #evergreen
+2015-04-30T16:38:29  *** maryj has quit IRC
+2015-04-30T16:42:48  *** ericar has quit IRC
+2015-04-30T16:59:48  *** Dyrcona has quit IRC
+2015-04-30T17:08:19  *** mmorgan has left #evergreen
+2015-04-30T17:08:24  *** yboston has quit IRC
+2015-04-30T17:12:36  *** graced has quit IRC
+2015-04-30T17:19:28  *** abowling has joined #evergreen
+2015-04-30T17:20:58  *** abowling has left #evergreen
+2015-04-30T17:47:45  *** bmills has quit IRC
+2015-04-30T17:52:12  *** mrpeters has quit IRC
+2015-04-30T17:55:02  *** Newziky1 has left #evergreen
+2015-04-30T17:57:05  *** bmills has joined #evergreen
+2015-04-30T18:50:46  *** buzzy has quit IRC
+2015-04-30T18:57:05  *** rangi` is now known as rangi
+2015-04-30T20:05:13  *** jwoodard has quit IRC
+2015-04-30T21:09:23  *** bmills has quit IRC
+2015-04-30T21:22:02  *** jihpringle has quit IRC
+2015-04-30T22:01:38  *** akilsdonk has quit IRC
+2015-04-30T22:18:57  *** akilsdonk has joined #evergreen
+2015-04-30T22:23:27  *** pmurray is now known as pmurray_away
+2015-04-30T22:29:05  *** akilsdonk has quit IRC

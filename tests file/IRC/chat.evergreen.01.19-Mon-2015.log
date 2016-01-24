@@ -1,0 +1,105 @@
+2015-01-19T00:40:29  *** abowling has quit IRC
+2015-01-19T02:22:38  *** nhilton has joined #evergreen
+2015-01-19T02:36:11  *** nhilton has quit IRC
+2015-01-19T07:09:29  *** Callender has joined #evergreen
+2015-01-19T07:55:05  *** ericar has joined #evergreen
+2015-01-19T08:10:41  *** collum has joined #evergreen
+2015-01-19T08:23:26  *** TaraC has joined #evergreen
+2015-01-19T08:26:47  *** mrpeters has joined #evergreen
+2015-01-19T08:32:00  *** mrpeters has joined #evergreen
+2015-01-19T08:44:45  *** abowling has joined #evergreen
+2015-01-19T08:56:05  *** graced has joined #evergreen
+2015-01-19T09:01:18  *** BigRig has joined #evergreen
+2015-01-19T09:12:18  *** mrpeters has quit IRC
+2015-01-19T09:20:30  *** maryj has joined #evergreen
+2015-01-19T09:30:03  *** wsmoak has joined #evergreen
+2015-01-19T09:59:24  <wsmoak> Pines looks different!  I remembered the Firefox search widget and tried to install it... didn't *seem* to work.
+2015-01-19T10:00:29  <wsmoak> Turns out that it did install, it's just using a plain magnifying glass icon that I didn't recognize as Pines. Maybe you could use the little tree icon?
+2015-01-19T10:02:16  <wsmoak> The tree is there next to "Add Evergreen OpenSearch", but isn't used in the 'Search With' options later.
+2015-01-19T10:15:39  <jeff> @later tell csharp wsmoak has some feedback for you on OpenSearch icons -- see logs if you haven't already :-)
+2015-01-19T10:15:39  <pinesol_green> jeff: The operation succeeded.
+2015-01-19T10:16:03  <jeff> wsmoak: on csharp's behalf, since he's probably either still working hard or resting well -- thanks! :-)
+2015-01-19T10:23:23  <wsmoak> sure. :)  Here's a screen shot:  http://wsmoak.net/temp/pines-firefox-search.png
+2015-01-19T10:24:17  <wsmoak> it was confusing because it still says "Add Evergreen OpenSearch" (possibly it always will when you're on the pines site, just because that xml file exists)
+2015-01-19T10:24:57  <wsmoak> I couldn't catch the hover text in the screen shot, but that grey magnifying glass is actually PINES.
+2015-01-19T10:26:19  <dbs> wsmoak: take a look at the "Add opensearch" option for https://laurentian.concat.ca - that's relatively stock for the next version of Evergreen (assuming a patch of mine is accepted)
+2015-01-19T10:27:28  <dbs> I think the icon just comes from /favicon.ico
+2015-01-19T10:27:49  <dbs> (which reminds me, I need to update ours to get away from the stock favicon.ico...)
+2015-01-19T10:28:26  <wsmoak> dbs:  yours works the same way.  (now I have two grey magnifying glasses to choose from)
+2015-01-19T10:29:29  <dbs> wsmoak: strange, sir. when I go to http://gapines.org/eg/opac/home in Firefox 35 and add the opensearch from there, it gives me the pines icon
+2015-01-19T10:29:35  <dbs> what browser are you using?
+2015-01-19T10:30:48  <wsmoak> Firefox 35.0 .  So your search drop down doesn't look like my screen shot above, you get your icon under "Search for xyz with:" ?
+2015-01-19T10:30:49  <dbs> specifically Firefox 35.0 for Linux here.
+2015-01-19T10:30:53  <wsmoak> mac osx
+2015-01-19T10:31:19  *** ningalls has joined #evergreen
+2015-01-19T10:31:20  <dbs> Yep, mine looks quite different. You running a non-stock theme or extension perhaps?
+2015-01-19T10:31:39  <wsmoak> I don't think it's using favicon -- I see the tree up in the browser tab next to the site title.
+2015-01-19T10:31:59  <wsmoak> this is a fairly fresh Yosemite install, and I haven't customized FF at all
+2015-01-19T10:33:12  <wsmoak> will be interesting to see what another osx user sees.  Norton might be to blame, it sticks its nose where it isn't wanted all the time.
+2015-01-19T10:34:57  <wsmoak> anyway... the search works fine now that I know what I'm looking at. :)  minor issue.
+2015-01-19T10:48:03  <dbs> http://i.imgur.com/dbmZDa9.png is what mine looks like
+2015-01-19T10:48:37  <dbs> (highlighting PINES obscures the icon sadly, oh well)
+2015-01-19T10:53:14  *** julialima_ has joined #evergreen
+2015-01-19T10:54:28  * dbs wonders idly why Browse catalog by title works in one library in our instance but not in another
+2015-01-19T10:54:46  <dbs> (returns a server 500 error, yikes)
+2015-01-19T10:58:18  * dbs peers at egweb: Context Loader error: Can't use an undefined value as a HASH reference at WWW/EGCatLoader/Browse.pm line 271.
+2015-01-19T11:00:42  <dbs> suggests its a database error, and the there's no $self->editor->event member that was returned I guess.
+2015-01-19T11:03:28  * dbs opts to stop testing defensive code in production after making every page request return 500 :)
+2015-01-19T11:21:22  *** yboston has joined #evergreen
+2015-01-19T12:00:51  *** Dyrcona has joined #evergreen
+2015-01-19T12:09:09  <dbs> my defensive code is simply offensive
+2015-01-19T12:12:32  <dbs> even weirder, that browse works on our test instance where we haven't reingested all of the records. hrm.
+2015-01-19T12:18:53  *** jihpringle has joined #evergreen
+2015-01-19T12:23:14  <eeevil> dbs: any chance the osrf translator memcache instance is misconfigured in the apache configs?  I've seen that break browse and just a couple other things in the past.  A/T event def editor would also break, for instance
+2015-01-19T12:24:36  <dbs> eeevil: definitely possible
+2015-01-19T12:26:06  <dbs> hmm. matches our opensrf.xml values of 127.0.0.1:11211
+2015-01-19T12:26:28  <dbs> and browse works for one locg value in production but not another
+2015-01-19T12:36:09  <eeevil> well, that rules out one problem, at least
+2015-01-19T12:36:19  <dbs> thanks for the idea - yeah
+2015-01-19T12:36:57  <Dyrcona> I've been seeing this in 2.7.1 and master lately when stopping services: timed out waiting on open-ils.acq pid=8347 to die
+2015-01-19T12:37:05  <Dyrcona> It's always acq.
+2015-01-19T12:37:11  <Dyrcona> But then, I'm "off" today.
+2015-01-19T12:38:36  *** sandbergja has joined #evergreen
+2015-01-19T12:47:02  <julialima_> Hello evergreeners!!! The web client is not working, at least for me. In the patron search I can´t perform any search, I have no feedback so I don´t know what is going on. Anyone know if there is a problem?
+2015-01-19T12:47:14  <bshum> Dyrcona: I've seen that too actually.
+2015-01-19T12:47:22  <bshum> Also "off" :)
+2015-01-19T12:51:56  <bshum> julialima_: I'm probably not the best person to answer you (I'm not sure how many folks have off today in the US). Anywho, which server are you using to test with?
+2015-01-19T12:52:00  *** wsmoak has quit IRC
+2015-01-19T12:52:10  <dbwells> julialima_: Some folks might be at lunch, which is where I am headed.  Also, just to clarify, are you talking about webby.evergreencatalog.com, or some other test site?
+2015-01-19T12:52:15  <bshum> Maybe there might be a hint in the browser console
+2015-01-19T12:53:04  <gmcharlt> julialima_: try webby now; I've restarted services there and it's now working for me
+2015-01-19T12:54:47  <julialima_> gmcharlt: It is working now, thank you very much! :)
+2015-01-19T12:59:03  <jeff> gmcharlt++
+2015-01-19T13:24:43  * dbs looks sideways at the default limit of 64mb being used for memcached. hmmmmm
+2015-01-19T13:27:28  *** mrpeters has joined #evergreen
+2015-01-19T13:37:28  <abowling> hey, all. have another noob question that i think i have the answer to: does search_prefs.xul run on a user's local machine?
+2015-01-19T13:38:09  <abowling> i ask, because i can find no instance of it on the server, which makes me believe it runs client-side
+2015-01-19T13:57:09  <dbs> abowling: rough rule of thumb, stuff under "chrome/" runs client-side
+2015-01-19T13:57:39  <dbs> anyone else care to share what their memcached memory is set to?
+2015-01-19T13:58:41  <abowling> dbs: thanks. i thought so, but wanted to confirm after editing a file in the wrong place last week.
+2015-01-19T14:00:49  <jeffdavis> dbs: our memcached memory is 1024 MB
+2015-01-19T14:01:51  <jeffdavis> (assuming you mean the -m option)
+2015-01-19T14:03:57  *** mrpeters has quit IRC
+2015-01-19T14:08:38  *** sandbergja has quit IRC
+2015-01-19T14:08:51  *** sandbergja has joined #evergreen
+2015-01-19T14:09:26  <dbs> jeffdavis: yeah, that's exactly what I was looking for -- thanks
+2015-01-19T14:09:55  <dbs> might be another "knobs to tune for production systems" bit to add to that mythical section of the documentation
+2015-01-19T14:15:45  <eeevil> dbs: most we have here are 64MB. a few are bigger
+2015-01-19T14:19:09  <dbs> eeevil: huh. so much for that then, maybe. that said we have search engines hungrily crawling our 2+ million record system so perhaps > 64m is warranted (for ~the AC for example)
+2015-01-19T14:32:35  *** sandbergja has quit IRC
+2015-01-19T14:53:06  *** nhilton has joined #evergreen
+2015-01-19T15:17:22  *** nhilton has quit IRC
+2015-01-19T15:47:07  *** collum has quit IRC
+2015-01-19T15:57:31  *** ericar has quit IRC
+2015-01-19T15:58:38  <Dyrcona> Not bad for five hours, I s'pose: 2 files changed, 139 insertions(+), 319 deletions(-)
+2015-01-19T16:20:03  *** julialima_ has left #evergreen
+2015-01-19T16:29:30  <jeff> deletions++
+2015-01-19T17:21:35  *** Dyrcona has quit IRC
+2015-01-19T17:34:32  *** gsams has quit IRC
+2015-01-19T17:35:49  *** gsams has joined #evergreen
+2015-01-19T18:14:08  *** phasefx has joined #evergreen
+2015-01-19T18:39:38  *** yboston has quit IRC
+2015-01-19T19:13:02  *** bradl_ is now known as bradl
+2015-01-19T20:40:14  *** dcook has quit IRC
+2015-01-19T20:50:57  *** dcook has joined #evergreen
+2015-01-19T21:46:42  *** jihpringle has quit IRC

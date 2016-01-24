@@ -1,0 +1,377 @@
+2015-03-27T00:40:30  *** phasefx_ has quit IRC
+2015-03-27T00:40:51  *** phasefx_ has joined #evergreen
+2015-03-27T00:57:07  *** akilsdonk has joined #evergreen
+2015-03-27T01:03:10  *** akilsdonk has quit IRC
+2015-03-27T02:40:52  *** dcook has quit IRC
+2015-03-27T04:49:12  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-27T07:15:39  *** graced has joined #evergreen
+2015-03-27T07:15:55  *** graced is now known as gdunbar
+2015-03-27T07:16:15  *** gdunbar is now known as graced
+2015-03-27T08:00:15  *** Newziky has joined #evergreen
+2015-03-27T08:01:14  *** akilsdonk has joined #evergreen
+2015-03-27T08:15:02  *** ericar has joined #evergreen
+2015-03-27T08:16:00  *** Dyrcona has joined #evergreen
+2015-03-27T08:22:29  *** chatley has quit IRC
+2015-03-27T08:23:36  *** chatley has joined #evergreen
+2015-03-27T08:33:31  *** mmorgan has joined #evergreen
+2015-03-27T08:33:54  *** mrpeters has joined #evergreen
+2015-03-27T08:38:57  *** Shae has joined #evergreen
+2015-03-27T08:39:57  *** rjackson_isl has joined #evergreen
+2015-03-27T08:55:37  * csharp really needs to surrender and learn perl properly rather than trying to make bash do things it really just doesn't do well
+2015-03-27T08:56:17  <csharp> but I *know* bash - it's a language I speak, and trying to translate everything to perl ends up taking way more time than I have
+2015-03-27T08:56:21  <csharp> so it's a loop
+2015-03-27T08:56:43  *** akilsdonk has quit IRC
+2015-03-27T08:57:31  <csharp> today's problem: re-architect my OCLC bibs/holdings export script so that it processes records with too many holdings separately
+2015-03-27T08:58:00  <csharp> and when you get to the point where you want to use arrays in bash, it's probably time to switch to perl
+2015-03-27T08:58:28  <Dyrcona> probably....but I don't know how you're trying to do what you're trying to do.
+2015-03-27T08:59:02  <Dyrcona> perl makes a great replacement for sed, too. :)
+2015-03-27T08:59:10  <csharp> yeah
+2015-03-27T08:59:42  <csharp> well, currently, I use psql to export the bib list, then feed that to marc_export
+2015-03-27T09:00:07  <csharp> but I've been identifying the invalid (too-long) bibs and now exclude those from the bib list
+2015-03-27T09:00:49  <csharp> but I still want to account for additions to those records since the last export, but only for the libraries that have added (with marc_exports "--library" parameter)
+2015-03-27T09:01:37  <csharp> so what I want is a list of libraries that have added holdings to the "bad" bibs, then I want to feed those library names to marc_export
+2015-03-27T09:02:22  <Dyrcona> Why not just dump each library's holding separately and send that mess to OCLC?
+2015-03-27T09:02:36  <Dyrcona> That might make them change their mind about handling "invalid" records.
+2015-03-27T09:04:35  *** maryj has joined #evergreen
+2015-03-27T09:04:48  <csharp> hmm - that's a thought
+2015-03-27T09:05:02  <csharp> @blame OCLC
+2015-03-27T09:05:02  <pinesol_green> csharp: It really IS OCLC's fault!
+2015-03-27T09:11:54  <Dyrcona> It's 2015. You should never trust size values in input data.
+2015-03-27T09:12:13  <Dyrcona> That's a good way to get your system rooted.....
+2015-03-27T09:17:38  <Dyrcona> And, this whole discussion really highlights that fact that a new standard for sharing holdings information is required.
+2015-03-27T09:17:58  <Dyrcona> Heh. I'd be dangerous if I could type. :)
+2015-03-27T09:18:08  <csharp> :-)
+2015-03-27T09:21:15  <Dyrcona> Oh no. I hear one cataloger asking another when was the last time she used "authorities."
+2015-03-27T09:21:25  <Dyrcona> I have a hunch the next stop is my office......
+2015-03-27T09:24:28  *** yboston has joined #evergreen
+2015-03-27T09:38:49  <Dyrcona> And, the hunch was wrong.
+2015-03-27T09:43:15  <jonadab> csharp: I have the opposite problem:  anything more complicated than a simple pipe ends up going in perl -e because I can't be bothered to learn bash control structures and whatnot.  Also, any SQL complicated enough to need a loop gets punted out to Perl.
+2015-03-27T09:49:54  <jboyer-isl> My POV is that when you're messing with IFS in bash you're probably sticking a toe over the line. I've got several scripts that do that...
+2015-03-27T09:50:30  <jboyer-isl> (I do save the current value and restore it as soon as possible, I'm not an animal.)
+2015-03-27T09:57:56  <tsbere> jboyer-isl: If you are 100% in a script file it won't tend to change outside of it anyway, unless you are in the habit of running scripts by sourcing them anyway...
+2015-03-27T10:00:04  <jboyer-isl> tsbere: true, but I may use it to create an array here, but need it to act "normally" somewhere further down. Forgetting to reset it can lead to interesting times later on.
+2015-03-27T10:00:24  <tsbere> heh
+2015-03-27T10:01:02  * tsbere tends to change IFS only when the remaining script after the change, or possibly the entire script after the change, is < ~15 statements.
+2015-03-27T10:04:30  <jonadab> After doing a web search for bash IFS, I am quite certain that if I were doing anything anywhere near that complicated, I would not be doing in in bash.
+2015-03-27T10:04:42  <jonadab> I mean, that's what Perl was *made for*.
+2015-03-27T10:07:54  *** hopkinsju has quit IRC
+2015-03-27T10:08:06  *** hopkinsju has joined #evergreen
+2015-03-27T10:08:15  *** Bmagic has quit IRC
+2015-03-27T10:08:31  *** Bmagic has joined #evergreen
+2015-03-27T10:13:17  *** RoganH has joined #evergreen
+2015-03-27T10:15:46  <csharp> jonadab: exactly - I often hit these sorts of limitations in bash and think "Oh - *this* must be the kind of thing Larry Wall got frustrated by."
+2015-03-27T10:15:57  *** Newziky1 has joined #evergreen
+2015-03-27T10:26:14  <RoganH> I remember once upon a time there being vague chat about an auto renewal function but that never went into any kind implementation did it?
+2015-03-27T10:26:40  <tsbere> The last time I messed with IFS I wanted to break up output only on newlines. >_>
+2015-03-27T10:27:22  <tsbere> As for auto renewal.....I think I recall saying something like "then why are you using renewals at all? Just make your loan duration the current duration * number of allowed renewals"
+2015-03-27T10:28:14  *** RoganH has quit IRC
+2015-03-27T10:28:25  <Dyrcona> Oops....
+2015-03-27T10:28:48  *** RoganH has joined #evergreen
+2015-03-27T10:29:02  <RoganH> tsbere: long story, short version is a combination of collapsing rules and maintaining circs for statistical reasons
+2015-03-27T10:29:23  <Dyrcona> RoganH: There is no autorenewal feature.
+2015-03-27T10:29:42  <RoganH> Dyrcona: that's what I thought, thanks!
+2015-03-27T10:29:46  <Dyrcona> Library Elf might do that.
+2015-03-27T10:30:13  <Dyrcona> It sure loves to hammer patron's items out page in the OPAC.
+2015-03-27T10:31:29  <Dyrcona> oops. That's Boopsie. Library Elf gets it via XML-RPC.
+2015-03-27T10:32:22  *** abowling has joined #evergreen
+2015-03-27T10:33:11  * Dyrcona thinks he might do a little cleanup on NCIPServer this weekend.
+2015-03-27T10:33:50  <Dyrcona> magnuse over in #koha on OFTC did a little rebase of my branch on master, and I've got a potential bug with the configuration to fix.
+2015-03-27T10:34:31  * Dyrcona guesses now is not a good time to bug rangi. :)
+2015-03-27T10:36:14  * Dyrcona almost never messes with IFS. Usually just goes straight to perl for anything more complicated than a couple of if statements and a loop.
+2015-03-27T10:43:22  <jboyer-isl> A Billing Mystery Appears! Can anyone guess how a billing could be added with a billing type name of "Damaged Item Correction" and a note of "SYSTEM GENERATED" when the Billing Type Id is > 100 and has a completely different name?
+2015-03-27T10:43:53  <jboyer-isl> It was not put in via psql, either. (The only way I can see how it could be done)
+2015-03-27T10:44:06  *** Newziky1 has left #evergreen
+2015-03-27T10:45:50  <Dyrcona> PgAdmin? :)
+2015-03-27T10:46:11  <jboyer-isl> Not used here. :P
+2015-03-27T10:46:38  <Dyrcona> I really don't know, but with billing, nearly anything is possible.
+2015-03-27T10:47:45  <Dyrcona> Only think I could think of is an errant SQL update or a Perl script using DBI or Fieldmapper.
+2015-03-27T10:47:56  <jboyer-isl> The annoying thing is that the item was supposedly marked damaged "normally" :-/
+2015-03-27T10:48:08  <Dyrcona> Only think? Really, dude?
+2015-03-27T10:48:34  <Dyrcona> Something like that reeks of human intervention.
+2015-03-27T10:49:11  <Dyrcona> Possibly you changed/added billing types before/after this bill was introduced?
+2015-03-27T10:49:15  <jboyer-isl> That's my thought (especially since the actual billing id is our default Billing Correction code)
+2015-03-27T10:49:27  <jboyer-isl> No changes recently, certainly not in the last 2 weeks.
+2015-03-27T10:49:56  <jboyer-isl> (This bill's lifetime was 3/13 - 3/26, not a lot happening in that timefframe.)
+2015-03-27T10:50:10  <csharp> RoganH: I was thinking about autorenewal last week - the logic I was envisioning was "checkout periods remain the same as they are now - at due_date - 2 days, try to autorenew items, then notify the user with the result"
+2015-03-27T10:51:32  <csharp> the advantage of autorenew vs. longer circ duration would be that it gives the system the opportunity to say "no" if there's a hold on the item, for example
+2015-03-27T10:51:57  <csharp> not that anyone in PINES is asking for that feature, btw
+2015-03-27T10:52:32  <csharp> I was actually desiring as a patron who is often late with his library items from his non-PINES home library
+2015-03-27T10:52:49  <csharp> s/desiring as/desiring it as/
+2015-03-27T10:52:52  <Dyrcona> I think autorenew would be a useful option.
+2015-03-27T10:54:45  <csharp> since I owed $20.00 to the library for my negligence, I was brainstorming ways to avoid it in the future, and since I'm an ILS admin, "turning them in on time" was not the top idea in my head :-D
+2015-03-27T10:54:57  <Dyrcona> heh
+2015-03-27T10:55:37  <Dyrcona> Well, my home library is a member of the consortium and our central office is a pickup location from the staff that work here, so I never have that problem.
+2015-03-27T10:55:48  <Dyrcona> s/from/for/
+2015-03-27T10:55:55  <Dyrcona> Like I said earlier..... ;)
+2015-03-27T10:57:32  <Dyrcona> I can see autorenew working in conjunction with due date notices... Try to autorenew, if that fails, remind the patron that they have to return it, otherwise let them know it autorenewed.
+2015-03-27T10:58:34  <jboyer-isl> That's how I thought it might be useful. No holds - you can have it 6 weeks, holds - you get 2/3/whatever.
+2015-03-27T10:59:54  <Dyrcona> jboyer-isl: Sound almost like you're describing a dynamic due date based on conditions at check out time.
+2015-03-27T11:00:48  <jboyer-isl> Not really. I meant if the auto-renewal failed because there were holds you'd have to return it, but if there are no holds it would auto-renew. (barring any unexpected failures)
+2015-03-27T11:01:13  <jboyer-isl> Which depends on an OUS, so I wasn't being real clear on that point.
+2015-03-27T11:01:46  <Dyrcona> OK
+2015-03-27T11:02:15  <Dyrcona> As for settings, it would probably be an ou setting or two plus a patron preference to turn it on.
+2015-03-27T11:02:30  <Dyrcona> Then an A/T to make it work.
+2015-03-27T11:03:14  <jboyer-isl> I was referring to the existing "block renewals for holds" OUS, not a new one related to auto-renew.
+2015-03-27T11:05:35  <Dyrcona> Sure, but you'd need an ous to turn it on, maybe another to make it coincide with due date notifications, and then patrons ought to have a toggle to indicate if they want it or not.
+2015-03-27T11:06:15  <Dyrcona> I was just extrapolating.
+2015-03-27T11:08:30  <jboyer-isl> OK. My responses were really only related to the "dynamic due date based on conditions at check out time" statement. In my view, each auto-renew would succeed or fail when attempted based on the "block renewals for holds" OU and the presence of holds on the title/copy. You're right though, more would be needed to control auto-renewal in general.
+2015-03-27T11:09:29  <Dyrcona> Right. I think we're on the same page. :)
+2015-03-27T11:09:46  <jboyer-isl> Thumbs-up-emoji.
+2015-03-27T11:10:36  <bshum> 👍 Idly wondering what that might appear as in the logs...
+2015-03-27T11:11:03  <bshum> Ha! Amusing...
+2015-03-27T11:12:42  <jboyer-isl> I get the "unknown character" box with 4 0's in it. I expected at least the proper hex digits, but you know, Windows.
+2015-03-27T11:13:32  <Dyrcona> I get the proper hex digits.
+2015-03-27T11:13:42  <bshum> Well my phone recognized it anyways. :P
+2015-03-27T11:13:59  <csharp> mine's a question mark within a hexagon
+2015-03-27T11:14:09  <bshum> Anywho...
+2015-03-27T11:14:21  <csharp> @blame �
+2015-03-27T11:14:21  <pinesol_green> csharp: � musta been an Apple employee.
+2015-03-27T11:14:33  <RoganH> csharp: essentially autorenew is useful for us where we want longer circ durations but we don't want to sacrifice stats
+2015-03-27T11:15:18  <tsbere> RoganH: So you want longer circ durations, but you also want to boost your stats. Is your goal "set circ durations to 1 day and autorenew every night to get insane numbers of renewals"? ;)
+2015-03-27T11:15:36  <csharp> I think it would be very popular with our patrons as well as with the frontline staff who have daily arguments with people who don't want to pay because they missed the reminder notice
+2015-03-27T11:15:51  <RoganH> tsbere: no, the idea is apples to apples, we have locations like homebound that need long checkouts, sometimes as long as two months
+2015-03-27T11:15:55  <csharp> not sure about directors and boards, though
+2015-03-27T11:16:13  <RoganH> tsbere: when comparing one item out on homebound for two months versus one at our circ desk for two weeks it's not apples to apples
+2015-03-27T11:18:38  *** akilsdonk has joined #evergreen
+2015-03-27T11:18:45  <tsbere> RoganH: You could say the same for items returned well before their circ period ends, though. If you want to compare things you should probably be figuring out how to run stats on the actual time the item was out, not the duration it was allowed to be out.
+2015-03-27T11:19:34  <RoganH> tsbere: that would be fine for in house use but the library world as a hold uses circs as a standard and that goes through the state and then federal reporting
+2015-03-27T11:22:05  *** sarabee has quit IRC
+2015-03-27T11:22:33  <RoganH> So, again if we want stats to be meaningful we have to compare in like ways.
+2015-03-27T11:23:33  * csharp wonders how a single circ's value in funding money compares to the $0.20 per day garnered in fines
+2015-03-27T11:23:45  *** sarabee has joined #evergreen
+2015-03-27T11:24:08  <tsbere> RoganH: I don't see how it would help that much overall.
+2015-03-27T11:25:13  *** Newziky has left #evergreen
+2015-03-27T11:25:40  <RoganH> tsbere: It's a big difference.  Admin, stats, reporting through state agencies, etc... its a different world than just reporting for your own use.
+2015-03-27T11:31:33  *** vlewis has joined #evergreen
+2015-03-27T11:33:11  <jboyer-isl> So much angst. A standard call to open-ils.circ open-ils.circ.mark_item_damaged leads to this: "The system is charging 14.99 [Damaged Item Override] on xact 48951355" and this "CALL: open-ils.cstore open-ils.cstore.direct.money.billing.create {"__c":"mb","__p":["14.99",null,"Damaged Item Override",null,"SYSTEM GENERATED",null,null,null,"48951355","121"]}"
+2015-03-27T11:34:00  <tsbere> RoganH: Well, for a quick check with our data it looks like the difference for us overall would be less than a quarter of a percent (comparing "normal circ duration" and "circs getting counted for each normal circ duration they started when they exceed it" - And that includes "were returned/renewed late and started a new circ")
+2015-03-27T11:34:39  <RoganH> tsbere: it will vary library to library and scenario to scenario, for us as a total it will be small, for showing the impact of our homebound department it will be huge
+2015-03-27T11:35:27  <RoganH> tsbere: I can't just look at a summary of numbers as an abstraction, I have to look at how it affects on a department level bot as a component of my library and when compared to other homebounds when the state stats are gathered.
+2015-03-27T11:36:21  <tsbere> RoganH: Well, if you change your homebounds to do auto-renewal and the rest of the state doesn't you have now broken your comparisons as well, right?
+2015-03-27T11:36:35  <RoganH> tsbere: nope
+2015-03-27T11:37:36  <tsbere> RoganH: So "other libraries in the state do long durations with one circ, you do auto-renewal with several, and then you compare the circ numbers between them" isn't broken by your comparison stats?
+2015-03-27T11:38:08  <RoganH> tsbere: your logic is flawed because you're making an incorrect assumption
+2015-03-27T11:38:49  <tsbere> RoganH: Unless you are saying "the entire state *other than you* is currently using the multiple circs method" I don't see where my assumption is wrong on that one
+2015-03-27T11:39:23  <RoganH> tsbere:  keep looking, its a rather big and obvious mis-assumption
+2015-03-27T11:41:08  <tsbere> RoganH: I suspect we have accidentally moved to "talking about different things" because I don't see anything that you have said that contradicts what I am saying, outside your statements saying I am wrong without telling me where I am wrong anyway.
+2015-03-27T11:42:52  <jboyer-isl> Anyone interested in my ramblings: If you modify the amount billed for marking something damaged you get this new "legacy billing type" value (i.e. just a string) of "Damaged Item Override" but the billing type id is taken from an "override_btype" arg, which was somehow set to 121 in this case, but I think should stay at 7 (Damaged Item)
+2015-03-27T11:43:30  <RoganH> tsbere: you're making the false assumption that I'm trying to convince you of something now :)  It's pretty clear you have a position you're interested in pushing forward as an argument and the facts that are a part of my reality remain the same no matter your opinion.
+2015-03-27T11:43:59  <jboyer-isl> This wouldn't be so annoying if we didn't accept and re-route money all over the state because my scripts look specifically for btypes 3,4,7, and 8 to make sure the libraries that own the items always get that money.
+2015-03-27T11:44:04  <RoganH> tsbere: so, if you want help sharpening logic skills that's fine but I'm not engaged in any kind of debate
+2015-03-27T11:45:09  <tsbere> RoganH: I can't see where auto-renewal significantly benefits stats outside of the "boost the type of circ that, by virtue of the intent of that department, shouldn't be compared to regular circs anyway" - AKA, homebound circs, regardless of durations, do not (in my eyes) compare to non-homebound circs in the first place.
+2015-03-27T11:46:37  <jeff> jboyer-isl: good digging.
+2015-03-27T11:47:36  <RoganH> tsbere: and by virtue of your lack of understanding I can understand that position
+2015-03-27T11:47:44  *** Newziky1 has joined #evergreen
+2015-03-27T11:48:06  <jboyer-isl> Gadzooks. I'm now of the opinion that the "change amount" feature of marking items damaged is just broken. It brings up the normal "add billing" window, allowing you to choose any (manual/grocery/etc.) billing type. This is absolutely wrong, the item was marked Damaged, you use Damaged! (circ billing reasons are unavailable, obviously)
+2015-03-27T11:49:18  *** Newziky1 has quit IRC
+2015-03-27T11:49:48  <tsbere> jboyer-isl: That is a good note. Though perhaps just let the original "Damaged" value be there and the default, in case someone wants to add extra types for how/why it was damaged?
+2015-03-27T11:50:01  <jboyer-isl> And we have 18 of these damned things messing with my reconciler. D:
+2015-03-27T11:52:21  <jboyer-isl> tsbere: I don't mind the " Override" part, that's good to know. It's the choose-your-own billing type id that is causing the issue. It will be whatever >100 billing type is the default on your system. So the text value may say "Damaged Item Override" but the id will be completely unrelated.
+2015-03-27T11:54:39  <jboyer-isl> I'm hard coding ours to 7 and we'll see if there's any opinion about how it works on LaunchPad later. But I've got to clean these almost-certainly-invalid bill adjustments up first. :(
+2015-03-27T11:55:53  <tsbere> jboyer-isl: I was actually saying "make the default 7, even if it doesn't normally show up in the list, by telling the list it can show 7 (or whatever it is told is the <100 default is for what is calling it, if applicable) and make it the default"
+2015-03-27T11:57:56  <jboyer-isl> I see, I wasn't following that. I can't see any reason at all to allow it to be changed though, because there's already a billing type for marking things Damaged and it works perfectly well for that. It seems bizarre to have a list of potential causes of damage in your normal list of manual billing types, just for use with this feature.
+2015-03-27T11:59:40  <tsbere> jboyer-isl: Damaged (owed to owning library) vs Damaged and Locally Repaired (owed to checkin library)? ;)
+2015-03-27T12:03:46  *** buzzy has joined #evergreen
+2015-03-27T12:03:54  <jeffdavis> dbs: thanks for the response on bug 1437069. Interesting that you folks are making such good use of the relator subfields in 710 tags, I wonder if Sitka is just unusually bad in that regard.
+2015-03-27T12:03:54  <pinesol_green> Launchpad bug 1437069 in Evergreen "Make corporate author index less strict" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1437069
+2015-03-27T12:05:08  *** jihpringle has joined #evergreen
+2015-03-27T12:05:26  <jeffdavis> On a related note, it looks like record display is showing any 710 value as an "Added Author" (see parts/record/authors.tt2). That seems undesirable.
+2015-03-27T12:11:38  *** dMiller_ has joined #evergreen
+2015-03-27T12:23:38  *** abowling has quit IRC
+2015-03-27T12:24:14  *** abowling has joined #evergreen
+2015-03-27T12:24:20  <jeffdavis> dbs: hmm, is use of $e and $4 specifically an RDA thing?
+2015-03-27T12:26:56  *** bmills has joined #evergreen
+2015-03-27T12:27:54  *** bmills has joined #evergreen
+2015-03-27T12:35:13  *** bmills has quit IRC
+2015-03-27T12:35:14  *** dreuther_ has joined #evergreen
+2015-03-27T12:37:58  *** dreuther has quit IRC
+2015-03-27T12:43:34  *** bmills has joined #evergreen
+2015-03-27T12:44:37  *** ericar_ has joined #evergreen
+2015-03-27T12:46:19  *** ericar has quit IRC
+2015-03-27T12:49:36  <graced> lunch!
+2015-03-27T12:50:55  *** dreuther has joined #evergreen
+2015-03-27T12:51:00  *** ericar_ has quit IRC
+2015-03-27T12:51:50  *** ericar has joined #evergreen
+2015-03-27T12:52:02  *** ericar has left #evergreen
+2015-03-27T12:52:13  <dbs> jeffdavis: nope, $e / $4 has not specifically been an RDA thing
+2015-03-27T12:53:02  <dbs> In our case we use the $4 pbl a fair bit to identify the electronic platform on which e-books are available (e.g. Springer vs. Wiley vs. EBSCO)
+2015-03-27T12:53:51  *** dreuther_ has quit IRC
+2015-03-27T12:55:34  <jeffdavis> Have you modified your record display so that you don't get "Springer (Added Author)" and so on?
+2015-03-27T12:57:12  <dbs> jeffdavis: I seem to remember that being something that we fixed locally in a rush, failed to get into a proper evergreen bug, then when we upgraded to 2.7 got bit by again
+2015-03-27T12:58:56  <jeffdavis> ah
+2015-03-27T12:59:20  <dbs> well, if there _is_ a $4 pbl it should say "Springer (Publisher)"
+2015-03-27T12:59:37  <jeffdavis> I see there was some discussion about this in IRC recently: http://irc.evergreen-ils.org/evergreen/2015-03-03#i_160617
+2015-03-27T12:59:43  <dbs> it's just if there is no $4 at all that the display doesn't really know what to do about it
+2015-03-27T13:02:49  <jeffdavis> I'm inclined to think that we should treat 710 $ab as an author unless otherwise indicated.  But I'm happy to accept that that should be a Sitka-specific thing, not a general Evergreen thing.
+2015-03-27T13:03:18  <dbs> I'm inclined to continue to think that would be a mistake
+2015-03-27T13:04:45  <dbs> Simple enough to run a script that adds $4 aut to all of your 710s that don't otherwise have $4 or $e if you want to treat them that way
+2015-03-27T13:07:39  <jeffdavis> Well, I see a difference between "assume 710 should be treated as an author for discoverability purposes" and "assert that 710's are authors unless otherwise indicated in the record itself"
+2015-03-27T13:09:21  <jeffdavis> and I still need to run this by our folks with more tech services experience
+2015-03-27T13:35:26  <jeffdavis> What drew our attention to this 710 stuff, is that a librarian was looking at a record that showed "Some Corporate Name (Added Author)" in the authors section, but clicking on the linked name led to an author search that didn't include that record in the search results -- because the corporate name was in a 710 tag with no $e or $4, and therefore was not included in the author index.
+2015-03-27T13:38:15  <jeffdavis> We could modify the added entry display to link to an author search only when 710$e = 'creator' or something along those lines, and something else when the entry wouldn't be in the author index.
+2015-03-27T13:42:04  <jeffdavis> But as it stands, it seems like there is a problematic discrepancy there in terms of how 710's are handled (or maybe I am missing something?)
+2015-03-27T13:42:19  <jeffdavis> (and I hope I'm not beating a dead horse here...)
+2015-03-27T13:47:25  <dbs> it might be a bit of a dead horse given the conversation you linked to earlier
+2015-03-27T13:48:28  <dbs> https://bugs.launchpad.net/evergreen/+bug/1427805 + a little bit more discretion in what is displayed in the case of a 710 would resolve the librarian's concern, right?
+2015-03-27T13:48:28  <pinesol_green> Launchpad bug 1427805 in Evergreen "700 tag $e and the OPAC view." (affected: 1, heat: 6) [Wishlist,New]
+2015-03-27T13:49:17  <dbs> e.g. don't make the 710 a clickable link if it's not searchable, and don't claim it's an added author if we don't know it's a corporate author.
+2015-03-27T13:53:34  <jeffdavis> I'm not sure it was directly addressed previously, but yeah, simply not linking the 710 if it's not known to be an author would be the most straightforward solution.
+2015-03-27T14:01:00  <jeffdavis> Time for me to move on to other stuff. Thanks again for the response, dbs!
+2015-03-27T14:09:03  <dbs> thanks for raising the issue, jeffdavis! I need to get onto actually *fixing* it
+2015-03-27T14:40:38  <remingtron> yboston: Want to help me muster some DIG power soon to finish 2.8 docs? I've been busy with other things, but don't want it to get lost.
+2015-03-27T14:42:05  <yboston> remingtron: finishing has been on my mind. Worse case scenario it could be an easy target for the conference
+2015-03-27T14:42:12  <yboston> remingtron: maybe I can do some this sunday
+2015-03-27T14:42:56  *** Newziky1 has joined #evergreen
+2015-03-27T14:44:15  <remingtron> yboston: okay, I'll try to make time for docs early next week
+2015-03-27T14:44:29  <remingtron> between the two of us, we can regain some momentum
+2015-03-27T14:45:28  *** mrpeters has quit IRC
+2015-03-27T14:52:15  *** sal_ has joined #evergreen
+2015-03-27T14:54:20  <sal_> Built a pretty vanilla 2.7.4 on trusty, and I'm getting the "timed out waiting on open-ils... to die" for acq, actor, auth_proxy, booking, cat, circ, collections on a pretty regular basis when I close down EG.  Anything I can do to fix?
+2015-03-27T14:56:17  <Dyrcona> sal_: Nope. Just wait. I see it, too, mostly just for acq.
+2015-03-27T14:57:03  <sal_> Will it interfere with the startup/shutdown script?
+2015-03-27T14:57:41  <sal_> (I've set up a VM for Marketing to use, and I'm not sure I trust them to shut things down cleanly, or start them up.
+2015-03-27T14:57:59  <sal_> So I'd rather Linux do it for them :-)
+2015-03-27T15:04:31  <Dyrcona> sal_: If your startup or shutdown script calls osrf_control, then no.
+2015-03-27T15:05:26  <Dyrcona> You'll notice it sends another signal, one of the two that can't be ignored or trapped, so the shut down happens.
+2015-03-27T15:05:33  <Dyrcona> It just takes longer.
+2015-03-27T15:06:36  <sal_> Okay, I'll give it a try.  (Hey, it's a VM :-p)
+2015-03-27T15:07:08  <sal_> I've been adapting the script from the 1.6 documentation for a while.
+2015-03-27T15:07:23  <sal_> So the new opensrf commands were fun :-)
+2015-03-27T15:07:27  <Dyrcona> I've not used that one.
+2015-03-27T15:07:35  <Dyrcona> I start and stop manually.
+2015-03-27T15:07:36  <bshum> Good times :)
+2015-03-27T15:08:33  <Dyrcona> If I forget to stop the services when shutting down a VM, it isn't a huge deal.
+2015-03-27T15:08:43  <sal_> Other question.  Current version of SIP had really slow response until I removed the max_spare_servers line from the config file.
+2015-03-27T15:08:55  <sal_> I run into problems with Apache if I do that.
+2015-03-27T15:09:01  <sal_> Not sure why.
+2015-03-27T15:09:24  <sal_> (not shutting down EG, rather than speeding up SIP :-) )
+2015-03-27T15:09:48  <Dyrcona> We run SIP on a server that doesn't run Apache for Evergreen, so I've not seen that.
+2015-03-27T15:09:59  <bshum> I wouldn't expect those two things to even be related.
+2015-03-27T15:10:05  <Dyrcona> Have you tried the new Multiplex SIP?
+2015-03-27T15:10:09  <sal_> No involvement of SIP with Apache, AFAIK :-)
+2015-03-27T15:10:24  <bshum> We make use of the max_spare_servers option, I think
+2015-03-27T15:10:29  <bshum> And have apache too
+2015-03-27T15:10:35  <bshum> But I've not removed that line before, hmm
+2015-03-27T15:10:39  <sal_> I don't think so--I just followed the instructions.
+2015-03-27T15:11:01  <sal_> Was comparing performance establishing connection with 2.4 vs. 2.7.
+2015-03-27T15:11:14  <sal_> And w/ 2.4 it was 5 secs, 2.7 20 secs.
+2015-03-27T15:11:30  <sal_> Removing that line made 2.7 5 secs again.
+2015-03-27T15:11:47  <sal_> (Using EG release #s, since I don't know how SIP is versioned.)
+2015-03-27T15:11:55  <Dyrcona> SIP isn't versioned.
+2015-03-27T15:12:07  <sal_> Wouldn't mind playing with multiplex SIP--is there documentation?
+2015-03-27T15:12:13  <bshum> sal_: Are you using oils_sip.xml.example or SIPconfig.xml?
+2015-03-27T15:12:14  <sal_> Of course not...
+2015-03-27T15:12:23  <sal_> oils_sip.xml.example.
+2015-03-27T15:12:41  <bshum> I know that SIPconfig.xml has newer stuff in it
+2015-03-27T15:12:44  <sal_> Following 2.7.4 documentation, I think.
+2015-03-27T15:12:50  <bshum> And I think oils_sip.xml.example isn't matched to that
+2015-03-27T15:13:00  <sal_> Might be part of the problem.
+2015-03-27T15:13:00  <bshum> There's an open bug to make those work together better.
+2015-03-27T15:13:23  <sal_> Glad to test :-)
+2015-03-27T15:13:25  <bshum> By default, there isn't a "max_spare_servers" line that I see.
+2015-03-27T15:13:44  <bshum> In either example.
+2015-03-27T15:14:19  <sal_> http://docs.evergreen-ils.org/2.7/_sip_server.html#_installing_the_sip_server
+2015-03-27T15:14:26  <bshum> So maybe that's something that got added in.  We use the option, but we pair that with the max_servers, and min_servers and min_spare_servers options.
+2015-03-27T15:14:35  <bshum> Aha
+2015-03-27T15:14:43  <sal_> Well, I used the specs as given.
+2015-03-27T15:14:47  <bshum> Hmm
+2015-03-27T15:14:59  <bshum> As written, I wouldn't expect that to be a problem.  But maybe it is...
+2015-03-27T15:15:20  <Dyrcona> I never set max_spare_servers, it turns out.
+2015-03-27T15:15:38  <Dyrcona> Our config has min_servers, min_spare_servers, and max_servers set.
+2015-03-27T15:16:12  <bshum> We got all four options set.  But admittedly I have not tested the time used to start connections.
+2015-03-27T15:16:26  <sal_> Yeah, it was the only obvious difference (wrt performance) between the 2.4 oils_sip.xml and 2.7
+2015-03-27T15:17:34  <bshum> Maybe there's something else we're not seeing.
+2015-03-27T15:17:47  <bshum> sal_++ for testing, be curious to dig at it more later.
+2015-03-27T15:18:14  <Dyrcona> If you want to try Multiplex, add personality='Multiplex' to your server-params section.
+2015-03-27T15:18:41  <Dyrcona> Also, are you using the same SIPServer as you did with 2.4?
+2015-03-27T15:18:45  <sal_> Will that use the SIPconfig.xml rather than oils_sip.xml?
+2015-03-27T15:18:48  <sal_> No.
+2015-03-27T15:19:03  <sal_> Grabbed the current (as of last week?) SIPServer.
+2015-03-27T15:19:32  <Dyrcona> You can put it in oils_sip.xml
+2015-03-27T15:19:52  <sal_> Ok, I'll give it a try on *my* VM (not the marketing one.)
+2015-03-27T15:20:06  <sal_> Marketing doesn't like it when I mess with their server...
+2015-03-27T15:20:46  <Dyrcona> It is supposed to be better than the prefork version, which is the default.
+2015-03-27T15:21:35  <Dyrcona> The main benefit is it uses less resources.
+2015-03-27T15:23:06  <sal_> Handy, that.
+2015-03-27T15:23:48  <bshum> In theory.
+2015-03-27T15:24:32  <sal_> Linux question.  I'm fuzzy on service shutdowns.  I (used to?) need to stop opensrf completely before I stop ejabberd, or on restart, EG gets confused as to which PIDs are valid.  Is opensrf smarter now?
+2015-03-27T15:25:16  <Dyrcona> IIRC, osrf_control will clean out abandoned PID files.
+2015-03-27T15:25:22  <Dyrcona> On startup.
+2015-03-27T15:25:40  <bshum> Yeah, on bad restarts, it will clear old PIDs and start anew.
+2015-03-27T15:25:58  <Dyrcona> So, yeah, it is smarter.
+2015-03-27T15:26:05  <sal_> Okay.  Need to figure out what priority ejabberd has in trusty, and go from there :-)
+2015-03-27T15:33:09  <sal_> (still 80/20 :-) )
+2015-03-27T15:33:50  <sal_> If the script works, and anyone's interested, I'll attach it.  It's pretty bare-boned.
+2015-03-27T15:36:47  <Dyrcona> Submitting it via Launchpad would be useful. It could go into examples somewhere.
+2015-03-27T15:42:27  <sal_> Shut down nicely, but didn't start up.  So I must be trying to run it too early...
+2015-03-27T16:02:28  *** RoganH has quit IRC
+2015-03-27T16:15:16  <jboyer-isl> sal_, others that might be using ubuntu and would like upstart scripts: This is what we use here. (I meant to do something with these, but I keep forgetting. :( ) http://pastie.org/10058161
+2015-03-27T16:15:37  <jboyer-isl> The apache one is a bit of a hack, but it does the job,
+2015-03-27T16:23:51  <csharp> sal_: and here's an example from us (which I believe is based originally on one moodaepo wrote): http://git.evergreen-ils.org/?p=contrib/pines/genasys.git;a=blob;f=templates/init/eg_opensrf;h=3cb8f5cfe1125fbfa81cf3e6bb6272ffb33202d5;hb=HEAD
+2015-03-27T16:24:17  <csharp> it uses system-v init, not upstart
+2015-03-27T16:24:33  <csharp> @blame too many init systems
+2015-03-27T16:24:33  <pinesol_green> csharp: too many init systems caused the white screen of death!
+2015-03-27T16:25:52  * jeff recompiles openssl and ruby on his Mac
+2015-03-27T16:26:00  <jeff> all this compiling, what is this, BSD?
+2015-03-27T16:26:04  <jeff> oh.
+2015-03-27T16:26:06  <jeff> right!
+2015-03-27T16:26:16  <csharp> jeff++
+2015-03-27T16:26:26  <jboyer-isl> csharp: Just wait until it's time to build systemd units!
+2015-03-27T16:26:57  <csharp> jboyer-isl: yeah, been planning to get into that soon
+2015-03-27T16:28:07  <jboyer-isl> And the reason I have 4-5 different scripts will probably make more sense after the conference.
+2015-03-27T16:29:30  *** rjackson_isl has quit IRC
+2015-03-27T16:30:14  *** jboyer-isl has quit IRC
+2015-03-27T16:31:28  *** maryj has quit IRC
+2015-03-27T16:31:49  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-27T16:41:24  <mmorgan> So I have been trying to install hatch following the instructions at https://raw.githubusercontent.com/phasefx/random/hatch/README.win
+2015-03-27T16:41:39  <mmorgan> After editing the run-win.bat file, I execute the run-win.bat command, but I get errors...
+2015-03-27T16:41:51  <pastebot> "mmorgan" at 64.57.241.14 pasted "Errors installing hatch" (43 lines) at http://paste.evergreen-ils.org/47
+2015-03-27T16:43:46  <mmorgan> Don't have hopes of resolving this today, but will look at it again on Monday.
+2015-03-27T16:44:12  <sal_> thanks jboyer-isl:  I'll give that a try.
+2015-03-27T16:44:13  <jeff> does C:\Program Files\Java\jdk1.8.0_40 exist? is that the version of the JDK that you have installed?
+2015-03-27T16:44:48  <jeff> oh, seems it must exist, as you're calling javac from that later.
+2015-03-27T16:44:54  <jeff> sorry. missed the obvious. :-)
+2015-03-27T16:45:07  <sal_> csharp++ jboyer-isl++
+2015-03-27T16:45:22  *** tsbere_ has joined #evergreen
+2015-03-27T16:45:49  <Dyrcona> mmorgan: It looks like it cannot find the util-ajax jar file. Did you put it in the lib/ directory as instructed?
+2015-03-27T16:47:50  *** Newziky1 has left #evergreen
+2015-03-27T16:48:34  *** tsbere has quit IRC
+2015-03-27T16:51:46  <mmorgan> Think so, looking again
+2015-03-27T16:52:44  <sal_> csharp: yours is still pre opensrf 2.4 (osrf_ctl.sh, rather than opensrf_ctl...)  Looks a lot like the script I started with from 1.6 :-)
+2015-03-27T16:53:38  <csharp> sal_: yeah, I just noticed that
+2015-03-27T16:54:05  <csharp> I know our prod scripts use osrf_control, so we must need to do a git push ;-)
+2015-03-27T16:54:24  *** Shae has quit IRC
+2015-03-27T16:55:21  <sal_> (Also, at what priorities are you set up for?  I used to run 89/11, which worked w/ 2.4...)
+2015-03-27T16:56:51  <mmorgan> Dyrcona: yes, I have the lib directory with a file named "9.2.10.v20150310" from http://mvnrepository.com/artifact/org.eclipse.jetty/jetty-util-ajax
+2015-03-27T16:57:34  <Dyrcona> I don't think that is what you want.
+2015-03-27T16:57:42  <Dyrcona> You want this: http://central.maven.org/maven2/org/eclipse/jetty/jetty-util-ajax/9.2.10.v20150310/jetty-util-ajax-9.2.10.v20150310.jar
+2015-03-27T16:59:55  <mmorgan> Oh, ok, gotcha
+2015-03-27T17:00:29  <Dyrcona> I think what you saved is the download page where what I posted is linked from.
+2015-03-27T17:00:33  *** tsbere_ is now known as tsbere
+2015-03-27T17:01:09  <mmorgan> Yes, I think that is what I did :-[
+2015-03-27T17:01:45  <Dyrcona> If you put that jar file in lib, you should be all right.
+2015-03-27T17:02:00  <mmorgan> OK, no errors now! Thanks!
+2015-03-27T17:02:07  <mmorgan> Dyrcona++
+2015-03-27T17:02:57  <Dyrcona> You're welcome.
+2015-03-27T17:03:08  <Dyrcona> And, now it is time for me to call it a day.
+2015-03-27T17:03:15  <mmorgan> Dyrcona: Take the next couple days off;-)
+2015-03-27T17:03:16  *** Dyrcona has quit IRC
+2015-03-27T17:03:25  *** graced has quit IRC
+2015-03-27T17:10:06  *** abowling has quit IRC
+2015-03-27T17:13:57  *** akilsdonk has quit IRC
+2015-03-27T17:16:34  *** mmorgan has left #evergreen
+2015-03-27T18:06:32  *** dMiller_ has quit IRC
+2015-03-27T18:08:11  *** dMiller_ has joined #evergreen
+2015-03-27T18:49:04  *** sal_ has quit IRC
+2015-03-27T18:50:52  *** sarabee has quit IRC
+2015-03-27T19:04:53  *** vlewis has quit IRC
+2015-03-27T19:22:29  *** dMiller_ has quit IRC
+2015-03-27T19:28:02  *** yboston has quit IRC
+2015-03-27T20:34:45  *** jihpringle has quit IRC
+2015-03-27T21:15:39  *** bmills has quit IRC
+2015-03-27T21:27:06  *** bmills has joined #evergreen
+2015-03-27T21:31:19  *** bmills1 has joined #evergreen
+2015-03-27T21:32:24  *** bmills has quit IRC
+2015-03-27T21:32:30  *** bmills1 has joined #evergreen
+2015-03-27T21:53:18  *** pmurray is now known as pmurray_away
+2015-03-27T22:12:20  *** bmills1 has quit IRC

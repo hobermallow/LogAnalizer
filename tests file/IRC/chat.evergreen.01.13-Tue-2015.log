@@ -1,0 +1,846 @@
+2015-01-13T01:11:25  *** dcook__ has joined #evergreen
+2015-01-13T01:14:58  *** dcook has quit IRC
+2015-01-13T02:49:18  *** akilsdonk has joined #evergreen
+2015-01-13T02:53:36  *** akilsdonk has quit IRC
+2015-01-13T04:20:28  *** mnsri_away is now known as mnsri
+2015-01-13T04:26:02  *** mnsri is now known as mnsri_away
+2015-01-13T06:13:37  *** maryj has quit IRC
+2015-01-13T06:13:45  *** eeevil has quit IRC
+2015-01-13T06:13:45  *** TaraC has quit IRC
+2015-01-13T06:13:45  *** Callender has quit IRC
+2015-01-13T06:13:45  *** mtate has quit IRC
+2015-01-13T06:13:52  *** phasefx has quit IRC
+2015-01-13T06:14:09  *** graced has quit IRC
+2015-01-13T06:14:09  *** BigRig has quit IRC
+2015-01-13T06:15:54  *** mtate has joined #evergreen
+2015-01-13T06:15:54  *** eeevil has joined #evergreen
+2015-01-13T06:16:54  *** phasefx has joined #evergreen
+2015-01-13T06:16:55  *** maryj has joined #evergreen
+2015-01-13T06:16:55  *** TaraC has joined #evergreen
+2015-01-13T06:16:55  *** BigRig has joined #evergreen
+2015-01-13T06:16:55  *** Callender has joined #evergreen
+2015-01-13T06:17:56  *** graced has joined #evergreen
+2015-01-13T07:18:41  *** jboyer-isl has joined #evergreen
+2015-01-13T07:57:46  *** akilsdonk has joined #evergreen
+2015-01-13T08:01:28  *** collum has joined #evergreen
+2015-01-13T08:10:18  *** ericar has joined #evergreen
+2015-01-13T08:11:01  *** julialima_ has joined #evergreen
+2015-01-13T08:35:13  * csharp idly wonders how hard it would be to add regex capabilities to the reporter
+2015-01-13T08:37:43  *** mmorgan has joined #evergreen
+2015-01-13T08:39:30  *** mrpeters has joined #evergreen
+2015-01-13T08:42:51  *** Dyrcona has joined #evergreen
+2015-01-13T08:51:45  *** Shae has joined #evergreen
+2015-01-13T08:51:46  *** Stompro has joined #evergreen
+2015-01-13T08:54:18  *** jwoodard has joined #evergreen
+2015-01-13T08:54:25  *** StomproJ has quit IRC
+2015-01-13T08:56:14  *** Dyrcona has quit IRC
+2015-01-13T08:57:06  *** akilsdonk has quit IRC
+2015-01-13T08:57:53  *** Dyrcona has joined #evergreen
+2015-01-13T09:18:48  *** rjackson-isl has joined #evergreen
+2015-01-13T09:21:56  <jeff> csharp: always helps to have an example or use case...
+2015-01-13T09:27:55  <Dyrcona> Debian package maintainers strike again!
+2015-01-13T09:28:24  <Dyrcona> Pakaging erlang with the distributed features turned off.
+2015-01-13T09:29:08  <Dyrcona> Thereby defeating the whole point of erlang.
+2015-01-13T09:29:10  <tsbere> Supposedly fixed, but not on any version we are running on our end. <_<
+2015-01-13T09:29:21  <tsbere> (which broke me testing stuff with it this weekend)
+2015-01-13T09:30:45  <jeff> "Oh honey, he's teasing you. Nobody has TWO computers."
+2015-01-13T09:36:50  <kmlussier> berick: We're due for another Bug Squashing Day in February. But I don't want it to interfere with 2.8 release activities. Do you have any thoughts on what timing would work best?
+2015-01-13T09:36:58  <kmlussier> Maybe we should put it off until March.
+2015-01-13T09:38:24  <kmlussier> Looking at our August calendar, it looks like our first Bug Squashing Day was held 2-3 weeks after the beta release.
+2015-01-13T09:39:37  <bshum> Bug squashing day was nice for the release imo. Just in that it got more review of things into the release. More bug fixes = good.
+2015-01-13T09:40:22  <kmlussier> bshum: Sure, but I think it's good to do it after the beta release since the weeks leading up to beta are so focused on new features.
+2015-01-13T09:40:33  <bshum> Post beta, it's all about stabilization anyways. Since new features are cut off.
+2015-01-13T09:40:53  <bshum> Precisely
+2015-01-13T09:41:09  <kmlussier> I'm thinking the first 2 weeks of March are good candidates.
+2015-01-13T09:42:00  <kmlussier> Or maybe between beta and RC1?
+2015-01-13T09:44:46  <bshum> Before RC sounds best to me.
+2015-01-13T09:45:23  <bshum> A release candidate is supposed to be as ready to ship as possible. Or so I was told anyways during 2.7.
+2015-01-13T09:56:09  *** RoganH has joined #evergreen
+2015-01-13T10:01:47  <csharp> jeff: oh, just wanted to identify bib records for DVDs that were coded to be "laserdisc" which was throwing off our format icons in 2.7
+2015-01-13T10:02:32  <bshum> Laserdiscs strike again! :)
+2015-01-13T10:02:37  <csharp> specifically, I wanted to be able to have an expression like "^v. .g" be available via the reports interface so our cataloging staff could be more self-sufficient ;-)
+2015-01-13T10:03:09  <csharp> I think I only saw one or two laserdiscs in my life
+2015-01-13T10:03:32  <csharp> had a cousin with a player and maybe two movies for it back in the early 80s
+2015-01-13T10:10:32  <RoganH> I had the original Star Wars trilogy on laser disc, still have the discs but the player died years ago.
+2015-01-13T10:10:35  <berick> kmlussier: bshum: as soon after the beta cut as possible seems ideal to me (consistent w/ what you all are saying)
+2015-01-13T10:11:44  <kmlussier> berick: OK, thanks. I'll put a Doodle poll out shortly.
+2015-01-13T10:22:31  *** jwoodard has quit IRC
+2015-01-13T10:24:42  <jboyer-isl> csharp, It may not be ideal, but can't a report be written now that uses the Fixed Field Entries link from Bib Record to find those? (I'll admit I'm not 100% certain how you differentiate DVD and LD right now.)
+2015-01-13T10:24:56  <jboyer-isl> And now to a meeting...
+2015-01-13T10:29:16  <csharp> jboyer-isl: thanks for the suggestion!  I'll take a look
+2015-01-13T10:32:19  <Dyrcona> csharp: We had hundreds (maybe thousands) of DVDs cataloged as laser discs.
+2015-01-13T10:33:31  <Dyrcona> As for seeing actual laser discs, I've seen hundreds, but I have a friend who is an A/V geek/independent film maker, and collects all kinds of that stuff.
+2015-01-13T10:34:31  <csharp> we have ~7500 records
+2015-01-13T10:34:57  <Dyrcona> csharp: sounds about right, and guess what my next line is going to be.
+2015-01-13T10:35:46  * csharp guesses "marc--"
+2015-01-13T10:38:08  <Dyrcona> Nope, "I have a script."
+2015-01-13T10:38:27  <csharp> Dyrcona: oh? is it in your git repo?
+2015-01-13T10:38:44  <csharp> oh and
+2015-01-13T10:38:46  <csharp> marc--
+2015-01-13T10:38:48  <Dyrcona> This one isn't. I thought it was too specific.
+2015-01-13T10:38:55  <csharp> makes sense
+2015-01-13T10:40:41  <pastebot> "Dyrcona" at 64.57.241.14 pasted "laserdisc_fix.pl" (207 lines) at http://paste.evergreen-ils.org/25
+2015-01-13T10:41:00  <csharp> Dyrcona++ # thanks!
+2015-01-13T10:41:23  <Dyrcona> That was worked out with our central site catalogers. Things it doesn't fix go in a bucket.
+2015-01-13T10:41:35  <csharp> oh - excellent
+2015-01-13T10:41:52  <Dyrcona> It doesn't try to fix records with multiple 007s, for instance, but that was only a handful of our records, IIRC.
+2015-01-13T10:56:34  <jeff> i own a few dozen laserdiscs and CEDs, but own a player for neither.
+2015-01-13T10:56:58  <jeff> this is probably indicative of a larger problem.
+2015-01-13T11:03:28  *** akilsdonk has joined #evergreen
+2015-01-13T11:16:42  <kmlussier> @love coffee
+2015-01-13T11:16:42  <pinesol_green> kmlussier: But kmlussier already loves coffee!
+2015-01-13T11:16:56  <kmlussier> @hate undrinkable coffee
+2015-01-13T11:16:56  <pinesol_green> kmlussier: The operation succeeded.  kmlussier hates undrinkable coffee.
+2015-01-13T11:17:10  <csharp> @coffee kmlussier
+2015-01-13T11:17:10  * pinesol_green brews and pours a cup of Kenya Peaberry Thika Gethumbwini, and sends it sliding down the bar to kmlussier
+2015-01-13T11:18:18  <kmlussier> csharp: Thank you! I'm sure it will be better than the cup I just poured down the drain.
+2015-01-13T11:25:38  <kmlussier> I apparently shouldn't be testing without my usual allotment of caffeine. I just set up a Vandelay match set that says "020 and 022 and 024 and 028" and then couldn't figure out why none of my incoming records were finding matches.
+2015-01-13T11:29:21  *** collum has quit IRC
+2015-01-13T11:33:58  *** jihpringle has joined #evergreen
+2015-01-13T11:35:35  <kmlussier> berick: I'm looking at bug 1350371. In the original description, you say Evergreen will "warn" the user if a duplicate PO name is used. The term "warn" makes me think a user can override the warning, but I don't see a way to override it and use the same PO name.
+2015-01-13T11:35:35  <pinesol_green> Launchpad bug 1350371 in Evergreen "ACQ improved duplicate order detection" (affected: 1, heat: 6) [Wishlist,New] https://launchpad.net/bugs/1350371 - Assigned to Kathy Lussier (klussier)
+2015-01-13T11:36:00  <kmlussier> Should I be able to override it and use the same PO name if I need to? Or is it working as designed?
+2015-01-13T11:36:11  <berick> kmlussier: it should probably say "prevent"
+2015-01-13T11:36:34  <berick> there's no way to override
+2015-01-13T11:36:58  <kmlussier> berick: OK, good. Then it's behaving as designed. Thanks for the clarification.
+2015-01-13T11:37:15  <berick> right back atcha
+2015-01-13T11:43:34  <kmlussier> Nice! I like being able to add the PO name at PO creation time now and the alert that immediately pops up if you use a duplicate name.
+2015-01-13T11:43:47  <kmlussier> I was expecting the alert to not show up until I hit submit.
+2015-01-13T11:43:49  *** nhilton has joined #evergreen
+2015-01-13T11:44:01  <berick> yay
+2015-01-13T11:50:14  <dbs> berick: for the TPAC discoverability enhancement bugs, do you want one omnibus release note bug to cover them all? they seem tiny enough that a separate release notes entry per bug probably doesn't make sense
+2015-01-13T11:50:58  <berick> dbs: omnibus release note bug makes sense to me
+2015-01-13T11:55:05  * dbs still has match_attr in  vandelay.auto_overlay_bib_record() apparently because he was waiting for an actual bug fix
+2015-01-13T12:00:28  <dbs> one less system with that problem now
+2015-01-13T12:01:58  *** ericar_ has joined #evergreen
+2015-01-13T12:04:34  *** ericar has quit IRC
+2015-01-13T12:04:36  *** ericar_ is now known as ericar
+2015-01-13T12:17:09  <berick> phasefx++ # timely LP entries
+2015-01-13T12:17:13  *** akilsdonk has quit IRC
+2015-01-13T12:17:39  *** akilsdonk has joined #evergreen
+2015-01-13T12:18:08  <dbs> Sounds like a cool feature
+2015-01-13T12:19:01  <phasefx> you can thank kmlussier and friends for that one
+2015-01-13T12:24:41  *** mtcarlson has joined #evergreen
+2015-01-13T12:24:56  *** mtcarlson_away is now known as mtcarlson
+2015-01-13T12:33:50  <dbs> kmlussier++
+2015-01-13T12:33:58  <dbs> kmlussier's friends++
+2015-01-13T12:34:25  <bshum> @karma friends
+2015-01-13T12:34:25  <pinesol_green> bshum: Karma for "friends" has been increased 1 time and decreased 0 times for a total karma of 1.
+2015-01-13T12:34:38  <bshum> :D
+2015-01-13T12:36:09  <Dyrcona> friends++
+2015-01-13T12:44:14  <jeff> coffee++
+2015-01-13T12:44:19  <jeff> friends++
+2015-01-13T13:03:12  <kmlussier> my friends++
+2015-01-13T13:03:32  <kmlussier> My friends don't get nearly enough credit for the work they do. :)
+2015-01-13T13:04:45  <kmlussier> And let us not forget Georgia PINES, who partnered with us on that project.
+2015-01-13T13:04:48  <kmlussier> pines++
+2015-01-13T13:08:44  <dbs> Without PINES, none of us would be here. pines++
+2015-01-13T13:14:00  <kmlussier> So true. I wonder where I would be if I weren't here.
+2015-01-13T13:20:49  <jeffdavis> kmlussier: No doubt you would be elsewhere.
+2015-01-13T13:25:04  <kmlussier> When should we move things from a 2.next to a 2.8 target? When we sign off on them?
+2015-01-13T13:25:55  * dbs wasn't clear about the 2.next to 2.8 target thing either
+2015-01-13T13:27:25  <berick> if it's (likely) going into 2.8, target 2.8-beta.
+2015-01-13T13:27:50  <berick> if it's a ticket no one is working on or has no code, leave it in 2.next
+2015-01-13T13:28:09  <berick> s/or has no code//
+2015-01-13T13:29:32  <berick> need to follow up w/ bshum on renaming 2.next to a more generic feature request target
+2015-01-13T13:30:03  <berick> hmm, or just drop 2.next and leave such things un-targeted
+2015-01-13T13:31:39  <kmlussier> My recollection was that cdoe was required to get a 2.next milestone. But I could be misremembering.
+2015-01-13T13:34:54  <csharp> PINES++ # my raison d'etre as well ;-)
+2015-01-13T13:35:42  <csharp> Dyrcona++ # your "fix laserdisc records" script rox
+2015-01-13T13:35:57  <Dyrcona> csharp: Thanks and you are welcome.
+2015-01-13T13:36:06  <Dyrcona> pines++
+2015-01-13T13:36:22  <Dyrcona> I know where I'd be without PINES, but there would be no Evergreen there.
+2015-01-13T13:36:34  <Dyrcona> @karma pines
+2015-01-13T13:36:34  <pinesol_green> Dyrcona: Karma for "pines" has been increased 6 times and decreased 1 time for a total karma of 5.
+2015-01-13T13:36:37  <bshum> kmlussier: berick: I'm not a fan of purely untargeted work, just because we've done that before and lots of bugs got lost in the void
+2015-01-13T13:36:40  <Dyrcona> @karma PINES
+2015-01-13T13:36:40  <pinesol_green> Dyrcona: Karma for "PINES" has been increased 6 times and decreased 1 time for a total karma of 5.
+2015-01-13T13:36:45  <bshum> Till I pulled them out of the void every so often.
+2015-01-13T13:36:56  <Dyrcona> Not case sensitive. I didn't think it was.
+2015-01-13T13:37:32  <bshum> kmlussier: I think in the past, we've also targeted bugs with strong interest (with the expectation of code coming soon) to 2.next
+2015-01-13T13:37:42  <Dyrcona> Targets can always be moved.
+2015-01-13T13:38:47  * csharp is pretty sure he's the one who decremented pines karma ;-)
+2015-01-13T13:41:22  <bshum> And yes, targets can always be moved.  I think people just get tired of shuffling bugs endlessly.
+2015-01-13T13:41:48  <bshum> By people, I really meant that *I* get tired of shuffling bugs endlessly, of course.
+2015-01-13T13:41:59  <bshum> :)
+2015-01-13T13:43:50  <Dyrcona> Well, we can dust off the old python script and see if we can get it to work again.
+2015-01-13T13:45:49  <bshum> Also having a 2.next target was handy for "this is nice, but it's not going to be in 2.now"
+2015-01-13T13:46:10  <bshum> But renaming it something more generic, sure.  It's just a label for the concept :)
+2015-01-13T13:47:48  <berick> would it make more sense to nominate for series only, then set milestones when the code is actually merged?  you'd still know where it's supossed to go, and there'd be much less retargeting.
+2015-01-13T13:48:37  <berick> since milestones for us are less about targeting and more about knowing when it actually got merged.
+2015-01-13T13:50:18  * berick reminds the room of impending meeting
+2015-01-13T13:52:32  <bshum> berick: Actually I use milestone targets to help guide me when I'm thinking through backport work for a given release series :)
+2015-01-13T13:53:02  <berick> bshum: hmm.  what does the milestone tell you that the series doesn't?
+2015-01-13T13:53:03  <bshum> I find that clicking on a milestone and seeing what's there has always been easier than crafting the advanced search to find targets for a series, plus whatever words, etc.
+2015-01-13T13:53:15  <bshum> But I'm lazy :)
+2015-01-13T13:54:42  <berick> bshum: and that justifies the effort for constant retargeting?
+2015-01-13T13:54:56  <bshum> berick: It's why I don't retarget often
+2015-01-13T13:55:06  <bshum> Or assign too many milestones unless I know they're actually going to land.
+2015-01-13T13:55:34  <bshum> But the conceptual effect of 2.next has worked to keep in mind all the new feature stuff that's waiting in the pipeline, while we work on other things.
+2015-01-13T13:55:39  <bshum> For me anyways.
+2015-01-13T13:56:02  <bshum> For bug fixes, 90% of the time, if I target a series, I'll also target a real milestone
+2015-01-13T13:56:19  <bshum> Because it's likely that if I'm going to target it to a series, there's code to work with on it.
+2015-01-13T13:56:48  <bshum> If there's no code, I'll likely just mark it as "confirmed" or "triaged" if I can replicate the issue or otherwise comment on it.
+2015-01-13T13:56:48  <bshum> And leave it untargeted
+2015-01-13T13:56:53  <bshum> Till there's actual code to work with
+2015-01-13T13:57:20  <bshum> But I won't just target a series just because it affects it.
+2015-01-13T13:57:38  <bshum> Because most of those bugs with no code ends up decaying anyways till a fix does come along.
+2015-01-13T13:57:50  <bshum> At which point, we either discard the oldest targeted series (because we no longer support them)
+2015-01-13T13:58:02  <bshum> Or update them to point at new series anyways, with the appropriate milestones.
+2015-01-13T13:58:16  <berick> bshum: what's the difference between something targeting 2.next and something w/ no target?
+2015-01-13T13:58:43  <bshum> berick: Something that's targeted for 2.next was chosen by someone.
+2015-01-13T13:58:57  <bshum> Someone being a member of the bug team or developers
+2015-01-13T13:59:32  <bshum> Untargeted bugs tend to be reports by community members on issues, or by people who just contribute something and then walk away.
+2015-01-13T13:59:50  <bshum> Most devs when they contribute something also assign initial milestones nowadays.
+2015-01-13T14:00:00  <Dyrcona> Or, who don't know they can target milestones.
+2015-01-13T14:00:34  <bshum> Right, but that's less common.
+2015-01-13T14:01:04  <dbwells> I would have expected 2.next to be renamed to 2.8-alpha/beta/whatever once 2.7 was released, but we missed that boat.
+2015-01-13T14:01:35  <bshum> dbwells: I think that we did used to do that.  But during 2.7 I talked with you about it and suggested we leave 2.next as a revolving door.
+2015-01-13T14:01:44  <bshum> To avoid churn
+2015-01-13T14:01:52  <bshum> And milestone shuffling.
+2015-01-13T14:02:34  <dbwells> I recall that conversation now, but not the details or my thought process :)
+2015-01-13T14:02:58  <bshum> Basically, new features should always target 2.next unless they're actually ready for merge with a numbered release.  That way, if a new feature comes into existence on LP in between various dev cycles, it doesn't disappear or get lost forever.
+2015-01-13T14:03:21  <bshum> And devs should periodically look at the 2.next list and pull stuff out to review for inclusion during the alpha/beta phase of each cycle.
+2015-01-13T14:03:41  <bshum> Or others can champion to have their new feature added to a specific milestone, etc.
+2015-01-13T14:04:36  <bshum> As we move into the post-beta/rc time, and new features continue to be created or added, they go to 2.next and are reviewed again after the release of the current primary focus series
+2015-01-13T14:04:51  <bshum> That way, nothing stays untargeted and lost in the void
+2015-01-13T14:05:25  <berick> thanks for talking it through, bshum
+2015-01-13T14:05:25  <kmlussier> Well, here's my question. When berick says we have a deadline for targeting code for 2.8, does it need to be 2.8 or will 2.next be sufficient?
+2015-01-13T14:05:33  <berick> good to understand the rationale for stuff
+2015-01-13T14:05:56  <berick> kmlussier: are you referring to tomorrow's targeting deadline?
+2015-01-13T14:06:05  <kmlussier> Yes
+2015-01-13T14:06:50  <berick> for that, either works IMO.  the point of that is more about getting stuff into LP
+2015-01-13T14:07:01  <bshum> +1
+2015-01-13T14:07:06  <berick> avoiding last minute big feature surprises
+2015-01-13T14:07:10  <kmlussier> Works for me! :)
+2015-01-13T14:07:18  <bshum> And it's 2:07, sorry to have derailed the start of our meeting there.
+2015-01-13T14:07:30  <dbs> Not derailed, just started early :_
+2015-01-13T14:07:34  <berick> exactly
+2015-01-13T14:07:45  <dbs> :_ == slackjawed
+2015-01-13T14:08:01  <dbwells> dbs: I wondered about that
+2015-01-13T14:08:04  <berick> can we get a meeting  DJ?
+2015-01-13T14:08:12  <berick> or, MC
+2015-01-13T14:08:14  * gmcharlt can spin some disks
+2015-01-13T14:08:17  <berick> (sucka MC)
+2015-01-13T14:08:28  <berick> gmcharlt++
+2015-01-13T14:08:28  <gmcharlt> one second
+2015-01-13T14:09:04  <gmcharlt> #startmeeting Evergreen development meeting, 13 January 2014^W2015
+2015-01-13T14:09:04  <pinesol_green> Meeting started Tue Jan 13 14:09:04 2015 US/Eastern.  The chair is gmcharlt. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-01-13T14:09:04  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-01-13T14:09:04  <pinesol_green> The meeting name has been set to 'evergreen_development_meeting__13_january_2014_w2015'
+2015-01-13T14:09:11  <gmcharlt> #info Agenda is http://wiki.evergreen-ils.org/doku.php?id=dev:meetings:2015-01-13
+2015-01-13T14:09:22  <gmcharlt> #topic Introductions
+2015-01-13T14:09:30  <gmcharlt> #info gmcharlt = Galen Charlton, ESI
+2015-01-13T14:09:34  <bshum> #info bshum = Ben Shum, Bibliomation
+2015-01-13T14:09:44  <dbs> #info dbs = Dan Scott, Laurentian University
+2015-01-13T14:09:53  <dbwells> #info dbwells = Dan Wells, Hekman Library (Calvin College)
+2015-01-13T14:09:55  <berick> #info berick = Bill Erickson, KCLS
+2015-01-13T14:10:00  <RoganH> #info RoganH = Rogan Hamby, SCLENDS
+2015-01-13T14:10:09  <phasefx> #info phasefx = Jason Etheridge, ESI
+2015-01-13T14:10:14  <jeffdavis> #info jeffdavis = Jeff Davis, Sitka
+2015-01-13T14:10:21  <eeevil> #info eeevil = Mike Rylander, ESI
+2015-01-13T14:10:40  <kmlussier> #info kmlussier = Kathy Lussier, MassLNC
+2015-01-13T14:10:43  <remingtron> #info remingtron = Remington Steed, Hekman Library (Calvin College)
+2015-01-13T14:10:48  <jeff> #info jeff = Jeff Godin, Traverse Area District Library (TADL)
+2015-01-13T14:12:04  <gmcharlt> ok
+2015-01-13T14:12:11  <gmcharlt> #topic Updates - OpenSRF
+2015-01-13T14:12:18  <gmcharlt> #info OpenSRF 2.4.0 released
+2015-01-13T14:12:20  <gmcharlt> bshum++
+2015-01-13T14:12:59  <gmcharlt> #info current main target for OpenSRF 2.4.1 is adding a configuration option for using ports 80/443 for WS/WSS
+2015-01-13T14:13:27  <eeevil> gmcharlt: is there a timeline that you know of?
+2015-01-13T14:13:28  <gmcharlt> via a proxy put in front of the two Apache instances
+2015-01-13T14:13:47  <eeevil> for the release, I mean
+2015-01-13T14:13:51  <bshum> gmcharlt++
+2015-01-13T14:13:59  <gmcharlt> post-ALA and before 2.8 gets a beta
+2015-01-13T14:14:07  <eeevil> k, thanks
+2015-01-13T14:14:48  <gmcharlt> any other OpenSRF business?
+2015-01-13T14:15:19  <gmcharlt> ok
+2015-01-13T14:15:29  <gmcharlt> #topic Evergreen 2.8 updates
+2015-01-13T14:15:33  <gmcharlt> berick?
+2015-01-13T14:15:42  *** abowling has joined #evergreen
+2015-01-13T14:15:54  <berick> if you have any big features planned for 2.8, please get them into LP as soon as possible
+2015-01-13T14:16:24  <berick> tomorrow is the official deadline, but.. just get them in ;)
+2015-01-13T14:16:54  <berick> target 2.8-beta unless you are unsure it's actually going to happen
+2015-01-13T14:17:21  <berick> and remember the beta merge freeze is Feb 20th.
+2015-01-13T14:17:29  <berick> so we have just over a month for feature development
+2015-01-13T14:17:53  <berick> and that's about it unless anyone has questions
+2015-01-13T14:18:38  <gmcharlt> #info 14 January 2015 is the deadline for targeting new features slated for 2.8; use the 2.8-beta milestone
+2015-01-13T14:19:35  <gmcharlt> ok, hearing no questions, moving on
+2015-01-13T14:19:44  <gmcharlt> #topic New business - quality assurance
+2015-01-13T14:19:46  <gmcharlt> kmlussier?
+2015-01-13T14:20:17  <kmlussier> Sure. The folks at MassLNC were revisiting the QA report done a little over a year ago.
+2015-01-13T14:21:04  <kmlussier> Since the report was issued, the community has come together to agree to do PGTap tests. But there are other recommendations that haven't been implemented yet.
+2015-01-13T14:21:32  <kmlussier> So I thought it would be good to start a discussion among all of you to get a sense of what you think is needed to implement some of those other recommendations.
+2015-01-13T14:22:33  <jeff> especially relevant since we're looking at a soon-to-be era where xulrunner is no more for Evergreen: ``there may be areas where improvements will be limited until Evergreen moves away from XULRunner''
+2015-01-13T14:23:16  <kmlussier> jeff: Are you thinking testing will become easier when we are off XULRunner?
+2015-01-13T14:24:32  <dbs> Even on the PGTap side of things, we haven't really kept up with our commitment to add tests as we change the SQL
+2015-01-13T14:24:33  <jeff> I was just quoting the part of the report that asserted (now I'm paraphrasing) that a move away from xulrunner would open the door for more improvements to QA and testing.
+2015-01-13T14:25:50  <bshum> So, I admittedly haven't read the full report in awhile, but I'm not seeing any specific approaches being suggested.  So the question on the floor is whether we would like to plan on finding some specifics and applying them towards say, the web client (as it's being created)
+2015-01-13T14:25:57  <kmlussier> Is part of the issue the fact that we don't have people with the expertise and/or time to take charge of QA?
+2015-01-13T14:26:36  <eeevil> kmlussier: I think that's The(tm) perpetual challenge ;)
+2015-01-13T14:26:43  <gmcharlt> time in particular
+2015-01-13T14:26:56  <dbs> But we kind of don't have the time to not do QA either
+2015-01-13T14:27:25  <gmcharlt> also true
+2015-01-13T14:27:28  <kmlussier> I also think testing goes beyond the client. For example, there were recommendations for a test suite to test for performance, for example.
+2015-01-13T14:27:37  <dbs> Lacking at least one person with expertise + time, though, yeah, it's a problem.
+2015-01-13T14:28:30  <kmlussier> So, I know there are people in the community who would be willing to put resources into bringing on a person to manage that process if it were needed.
+2015-01-13T14:29:01  <kmlussier> First, I think it would be good to know if that is, indeed, what is needed.
+2015-01-13T14:29:43  <kmlussier> Also, I didn't know if it would be worthwhile to look at other projects to see how QA is done. And, then, maybe pull the best from those projects to see what would work best for Evergreen.
+2015-01-13T14:30:29  <jeffdavis> What would "bringing on a person" entail?
+2015-01-13T14:30:48  <berick> well, there are some things we already have a good handle on (e.g. pgtap tests, perl unit tests, perl live tests).  for those types of things, i think we just have to make ourselves do it.
+2015-01-13T14:31:22  <berick> there's a lot we could do we're just not doing.
+2015-01-13T14:31:30  <dbs> amen
+2015-01-13T14:31:32  <kmlussier> berick: Does everyone contributing code have a good handle on that?
+2015-01-13T14:31:50  <berick> having someone whose job it is to think about it for big picture stuff would be great, but we shouldn't let that slow us down
+2015-01-13T14:32:11  <jeff> berick: during sprint 1 of the web client, you had some unit tests in place (correct me if i'm wrong) -- could you hazard a guess as to what percentage of interfaces have unit tests?
+2015-01-13T14:32:12  <berick> kmlussier: well, no, because we don't do it regularly enough for everyone of have templates to work from
+2015-01-13T14:32:34  <gmcharlt> a somewhat stricter attitude about requiring pgTap tests and Perl unit tests to accompany patches would be a step forward for the 2.8 cycle
+2015-01-13T14:32:49  <berick> jeff: those unit tests were almost entirely focused on the services (i.e. the stuff under the interfaces)
+2015-01-13T14:33:30  <berick> jeff: so, very little UI coverage
+2015-01-13T14:33:40  <berick> gmcharlt: agreed
+2015-01-13T14:34:58  <jeff> berick: got it. thanks.
+2015-01-13T14:35:01  <phasefx> jfyi, one notion I encountered was to not focus on testing "services" through the UI, but the test the UI itself (widgets, etc.) if testing the UI, and test the services more closely to where they live if testing the services
+2015-01-13T14:35:19  <kmlussier> I think my group would be in favor of stricter requirements for tests and whatever else you can do now.
+2015-01-13T14:35:44  <gmcharlt> as far as I'm concerned personally, providing pgTap + perl tests for the stuff I'm slated to do for 2.8 is easy enough
+2015-01-13T14:36:25  <kmlussier> But if the developers, as a group, told me, "we really need somebody to manage this process," I would do what I could to make that happen.
+2015-01-13T14:37:37  <dbs> I imagine the developers are trying to imagine how such a person dropped into our midst could actually manage the process.
+2015-01-13T14:37:38  <kmlussier> I'm mostly concerned that there is still more testing beyond pgTap and perl tests that we need to be doing.
+2015-01-13T14:37:42  <dbs> Buy-in would be tough.
+2015-01-13T14:38:20  <jeff> I consider myself a novice with regard to Perl tests, and moreso with regard to pgTap tests. I'd be willing to extract knowledge and experience from others and formulate something of a reference / set of guidelines for contributors in the hope that it would help myself and others include appropriate tests in contributions.
+2015-01-13T14:38:34  <gmcharlt> on the other hand -- somebody who had an explicit committment to review patches (and who could come up the speed) might be an easier dose of medicine, as it were
+2015-01-13T14:38:39  <kmlussier> Yes, well, that's why I'm raising the questions here.
+2015-01-13T14:39:30  * dbs would like to automatically test the TPAC for basic accessibility compliance, ensuring RDFa comes out right, ensuring data is displayed as expected (which would be hella useful if we move misc_util.tt2 into Perl module land)
+2015-01-13T14:39:44  <jeff> dbs++ good job putting words to what I was thinking ("dropped into our midst" comment above)
+2015-01-13T14:40:22  <kmlussier> Well, any new developer is essentially "dropped into our midst," right?
+2015-01-13T14:40:37  <berick> jeff: i'd be happy to help review/edit any such guidlines
+2015-01-13T14:40:40  <dbs> Unfortunately most of those tests would require python for RDFLib and I'm not keen on introducing more dependencies
+2015-01-13T14:40:43  <gmcharlt> dbs: does that translate to "you are willing to help set up such testing"?  I'd be happy to collaborate with you on that
+2015-01-13T14:41:18  <jeff> berick++ sounds good.
+2015-01-13T14:41:36  <dbs> kmlussier: yes, but the mindset is often such that a new developer == "yay they're helping build this thing" vs "this person is getting in the way"
+2015-01-13T14:41:54  <gmcharlt> vs "this stranger is TELLING US WHAT TO DO. OH NOES!"
+2015-01-13T14:42:11  <dbs>  / "where do they get off..."
+2015-01-13T14:42:19  <kmlussier> Yes, I understand.
+2015-01-13T14:42:33  <kmlussier> At the same time, I haven't seen any current developers say they want to take charge of QA, and I think it's more from lack of time than lack of desire.
+2015-01-13T14:42:36  <dbs> gmcharlt: yeah, I guess basically it's a glorified curl / string processing thing, so yeah
+2015-01-13T14:42:44  <kmlussier> Overall, I think that's what's needed. Somebody who is willing to take charge.
+2015-01-13T14:43:05  <berick> i would welcome someone whose job it was to research and present ideas, proofs-of-concept, etc. on QA stuff.
+2015-01-13T14:43:18  <berick> "manage" and "take charge" may not be the right words
+2015-01-13T14:43:22  <berick> "drive" maybe
+2015-01-13T14:43:39  <jeff> berick: as 2.8 RM how do you feel about gmcharlt's proposal of "a somewhat stricter attitude about requiring" tests?
+2015-01-13T14:43:42  <dbs> "Hey, look at what you can do with a few lines of additional code"
+2015-01-13T14:43:58  <kmlussier> Yes, "drive" is a good word. :) As gmcharlt said, somebody with an explicit commitment.
+2015-01-13T14:44:21  <gmcharlt> berick: and "review patches"... I really think it does need to be grounded
+2015-01-13T14:44:24  <berick> jeff: +1 from me for bumping to strictness level 2
+2015-01-13T14:44:34  <berick> gmcharlt: ah, yes, that would ideal
+2015-01-13T14:45:47  <jeff> gmcharlt: am i correct in thinking that koha has an explicit "QA" signoff? Is that a mostly automatic (tests passed!) signoff, or is that a human signing off with a specific eye toward QA?
+2015-01-13T14:46:02  <jeff> (deja vu -- i may have asked this question before)
+2015-01-13T14:46:13  <gmcharlt> jeff: the Koha process seeks two signoffs
+2015-01-13T14:46:29  <gmcharlt> 1st signoff is from essentially anybody who can install the patch and run it through its paces
+2015-01-13T14:47:06  <dbs> #link One accessibility checking API: http://wave.webaim.org/api/ (costs $$$ but it's an option)
+2015-01-13T14:47:12  <gmcharlt> the 2nd, QA signoff is based on an inspection by a human member of the QA team + the patches passing a set of extra, mostly static source-code level tests
+2015-01-13T14:47:32  <berick> as far as 2.8 goes, we'll need some guidelines for building tests, what the minimal requirements are.  I can build/collaborate on that.  i'll obviously need input, though.
+2015-01-13T14:47:55  <berick> and since it's late in the game, we'll have to be pretty forgiving
+2015-01-13T14:48:46  <jeff> sure. nobody's proposing FESTIVITY^WSTRICTNESS LEVEL 4.
+2015-01-13T14:49:13  <gmcharlt> so we have, to sum up, the following concrete suggestions at th emoment
+2015-01-13T14:49:18  <gmcharlt> 1. incrementing the strictness level
+2015-01-13T14:49:32  <gmcharlt> 2. berick et al writing up some guidelines and templates for pgTAP and perl unit tests
+2015-01-13T14:49:51  <gmcharlt> 3. dbs and galen putting together some automatic testing of TPAC and RDFa output
+2015-01-13T14:50:13  <gmcharlt> and less concretely, some fuzzy input on desiderata for a "QA person"
+2015-01-13T14:50:20  <dbs> #link another accessibility checking API: https://github.com/inclusive-design/AChecker (GPL v2)
+2015-01-13T14:50:43  * gmcharlt has used AChecker in the past, FWIW
+2015-01-13T14:51:11  <kmlussier> gmcharlt: Would it be helpful if someone (I can volunteer) do an environmental scan of other projects and who they handle these issues?
+2015-01-13T14:51:56  <gmcharlt> kmlussier: yes - in particular, if such a scan also looks for people with track records in doing this sort of work
+2015-01-13T14:52:08  <gmcharlt> not just the QA, but the introducdtion of process improvement
+2015-01-13T14:52:34  <kmlussier> OK, I can do that, but I welcome any help if anyone wants to work with me on it. :)
+2015-01-13T14:52:46  <jeff> kmlussier: to clarify-- did you mean "how they handle these issues", or were you focused on a "who"?
+2015-01-13T14:52:58  <gmcharlt> kmlussier: I haz thoughts on the matter and would be interested in working with you on it
+2015-01-13T14:53:47  <kmlussier> jeff: The who is part of it, but the overall process too.
+2015-01-13T14:53:52  <kmlussier> gmcharlt: Thanks!
+2015-01-13T14:55:12  <gmcharlt> so, just to double-check -- are folks (particularly committers) OK with stricter enforcement of providing pgTAP & perl unit tests for the 2.8 cycle?
+2015-01-13T14:55:24  <eeevil> may I as that followups happen on the -dev list? (rather than -general, not to exclude folks, but to avoid pulling in -dev help)
+2015-01-13T14:55:57  <eeevil> the kmlussier + gmcharlt + dbs + berick + others followups, I mean
+2015-01-13T14:56:17  <kmlussier> eeevil: That's fine with me
+2015-01-13T14:56:54  <gmcharlt> agreed
+2015-01-13T14:56:58  <jeff> It will make some things harder, but those things may well be the things that would most benefit from unit tests.
+2015-01-13T14:57:11  <jeff> (or pgTAP tests)
+2015-01-13T14:57:12  <eeevil> gmcharlt: for my part (re agreement), yes, where applicable and reasonable (that is, not useless for lack of context), stricter enforcement of tests
+2015-01-13T14:57:50  * eeevil does not plan to write tests that require a mock env that emulates all of Evergreen ... fwiw ;)
+2015-01-13T14:57:59  <gmcharlt> eeevil: indeed - I can point to some examples in recent memory of cases where some testing-for-the-sake-of-following-the-rules was in play
+2015-01-13T14:58:10  <jeff> eeevil: I don't think that any of our employers have enough time that tests for the sole sake of tests will be a common thing. :-)
+2015-01-13T14:58:11  <phasefx> are we excluding or including integration tests here against live test systems?
+2015-01-13T14:58:14  <gmcharlt> but I will emphasize that at the moment, Evergreen is in no danger of that!
+2015-01-13T14:58:29  <eeevil> gmcharlt: fair ;)
+2015-01-13T14:58:55  <berick> phasefx:  I was hoping to encourage the use of live tests for changes that can't be tested in a vacuum, if that's what you're asking
+2015-01-13T14:58:59  <gmcharlt> OK, I'm going to summarize, then move on to the next agenda item
+2015-01-13T14:59:24  <phasefx> berick: sounds good to me, and I just saw eeevil's desire not to build  huge mock environments :)
+2015-01-13T14:59:27  <gmcharlt> #item There is general agreement that for the 2.8 cycle, we'll be stricter about requiring relevant pgTAP & perl unit tests
+2015-01-13T14:59:43  <gmcharlt> #info There is general agreement that for the 2.8 cycle, we'll be stricter about requiring relevant pgTAP & perl unit tests
+2015-01-13T14:59:55  <gmcharlt> #info berick will write some guidelines on writing Perl and pgTAP tests
+2015-01-13T15:00:13  <gmcharlt> #info dbs and gmcharlt will work on automating accessibility and RDFa tests of TPAC
+2015-01-13T15:00:39  <jeff> berick: see what i did there, how that turned from you reviewing/editing to writing those from scratch? ;-)
+2015-01-13T15:00:43  <gmcharlt> #info kmlussier will do an environement scan of QA practices and experts in other project, with help from gmcharlt and others
+2015-01-13T15:00:48  * jeff ducks
+2015-01-13T15:01:11  * gmcharlt creates a LP project for filing bug reports against the meeting minutes ;)
+2015-01-13T15:01:26  <gmcharlt> #topic Overdrive circulation API code
+2015-01-13T15:01:34  <gmcharlt> #link http://markmail.org/message/cgcrmqdz4nrm5erv
+2015-01-13T15:01:36  <berick> jeff: you must teach me this power
+2015-01-13T15:02:25  <jeff> sitka++
+2015-01-13T15:02:49  <jeffdavis> As that linked email says, we have working code to make use of Overdrive's API in the Evergreen OPAC.
+2015-01-13T15:03:59  <jeffdavis> We'd like this to be adopted by the EG community, so I'm interested in how to help make that happen.
+2015-01-13T15:04:27  <gmcharlt> well, there are various levels
+2015-01-13T15:04:55  <gmcharlt> one approach that woudl require very little work on your part is to set it up as a contrib whose home repository lives on git.evergreen-ils.org
+2015-01-13T15:05:01  <gmcharlt> and supply some documentation
+2015-01-13T15:05:22  <gmcharlt> folding it into Evergreen core would, at minimum, require more work
+2015-01-13T15:05:45  <jeff> I can see this starting as a contrib and potentially becoming core or inspiring core.
+2015-01-13T15:06:15  <kmlussier> Would it only be acceptable if there were no new dependencies required?
+2015-01-13T15:06:27  <dbs> Adding CoffeeScript + Node + jQuery knowledge requirements (for bug-fixing/enhancements) & install/config/maintenance (for just using) is certainly not enticing
+2015-01-13T15:06:33  <jeff> I don't think we have a strong rule about "no new dependencies".
+2015-01-13T15:06:36  <dbs> (not to em, anyway)
+2015-01-13T15:06:44  <jeffdavis> (not to me either, fwiw)
+2015-01-13T15:06:45  <dbs> s/em/me/
+2015-01-13T15:07:01  <dbs> The last new dependency was Ruby for EDI, no?
+2015-01-13T15:07:05  <jeff> But there are approaches that can be taken to services like OverDrive and OneClickdigital that don't involve as many additional dependencies.
+2015-01-13T15:08:01  <jeff> jeffdavis: do you know if the code as it exists supports libraries with different "OverDrive Advantage" subscriptions within an (OverDrive) consortium, or supports more than one specific method of patron authentication?
+2015-01-13T15:08:14  <berick> dbs: yeah, but i'm actively fighting to kill the ruby stuff.
+2015-01-13T15:08:22  <dbs> berick: that's what I mean :)
+2015-01-13T15:08:35  <jeff> Those would be the first things that came to mind when looking over the code in terms of "would be nice to have before consideration of incorportating it into Evergreen"
+2015-01-13T15:08:47  <dbs> And trading XUL for AngularJS
+2015-01-13T15:09:03  <jeff> (please don't take either of those as criticism, by the way)
+2015-01-13T15:09:19  <gmcharlt> berick++ # although to be clear to any Rubyists watching, Ruby per se isn't necessarily a problem; the problem is more "a tiny bit of one language does not mix well in a code base that is predominantly written in another"
+2015-01-13T15:09:35  <jeffdavis> jeff: It can be made to support multiple OD accounts - that is actually my next task vis-a-vis the project. I think making it support multiple methods of patron auth would take more work.
+2015-01-13T15:09:38  <dbs> Is the Overgreen code (I love that neologism) GPL v2 compliant, too?
+2015-01-13T15:09:46  <csharp> overgreen++
+2015-01-13T15:09:57  <jeffdavis> I've been calling it OD API, but Overgreen works :)
+2015-01-13T15:09:58  <eeevil> jeffdavis: 2 questions (since I haven't looked at the code yet) 1) is the coffeescript yours or overdrive's? and if the latter, could the coffeescript be compiled down to a blob we could include in the release, instead of requiring new deps?
+2015-01-13T15:10:08  <jeff> dbs: the repo claims MIT license, and there is no OverDrive code to license, just an API.
+2015-01-13T15:10:35  <berick> gmcharlt: yes, of course.  i'm fighting the added dependency, not the language.
+2015-01-13T15:10:35  <jeff> s/repo/sitka repo/
+2015-01-13T15:10:37  <eeevil> (a la dojo)
+2015-01-13T15:11:00  <jeff> eeevil: the coffeescript is sitka's, and requires nodejs at build time.
+2015-01-13T15:11:35  <dbs> jeff: yeah, I saw the MIT license, but also saw it came after the bulk of the work was done; wanted to ensure it was applied cleanly
+2015-01-13T15:11:52  <jeff> eeevil: so no, it couldn't be reduced to a blob in the repo, but it could live externally as contrib and evergreen could contain hooks that would tie into the blob built from contrib if present.
+2015-01-13T15:11:56  <eeevil> jeffdavis: could post-build code be pulled in to get something in for 2.8?
+2015-01-13T15:11:59  <eeevil> oh, ok
+2015-01-13T15:12:02  *** mrpeters has quit IRC
+2015-01-13T15:12:18  *** mrpeters has joined #evergreen
+2015-01-13T15:12:21  <jeffdavis> Either of those approaches could work really.
+2015-01-13T15:12:39  <jeffdavis> I think jeff's suggestion is probably a bit better for now, though.
+2015-01-13T15:13:36  <gmcharlt> one thing that does bother me about the implementation is that it seems a bit delicate with respect to changes to the TPAC templates
+2015-01-13T15:13:38  <jeffdavis> dbs: The MIT license was added to the source relatively late, but it was originally marked as MIT-licensed when our developer published it on Google Code.
+2015-01-13T15:13:51  <jeff> jeffdavis: with regard to "Steven Chan making 32 commits and then Jeff Davis adding a LICENSE.txt and Copyright statement"... can you clarify for purposes of copyright/license what the  status of the code is? I don't even know enough about Canadian copyright law to ask the right question there.
+2015-01-13T15:14:19  <gmcharlt> e.g., bits like this: http://paste.lisp.org/display/145214
+2015-01-13T15:14:36  <jeffdavis> Steven Chan wrote almost all of the code on contract for Sitka. As mentioned, he had licensed it under MIT but the license wasn't included in his source. I added it once I inherited ownership of the project a few months ago.
+2015-01-13T15:14:54  <jeffdavis> s/added it/added an explicit MIT license in the source/
+2015-01-13T15:15:01  <gmcharlt> jeffdavis: do you know if it was a work-for-hire for Sitka?
+2015-01-13T15:15:25  <RoganH> jeffdavis: was it licensed as MIT as per contract with SITKA?
+2015-01-13T15:15:37  <jeffdavis> gmcharlt: yes, my understanding is that it was work-for-hire for Sitka.
+2015-01-13T15:15:51  <dbs> In Canada, work for hire doesn't apply, IIRC
+2015-01-13T15:16:16  <jeffdavis> dbs: Steven's contract would have assigned copyright in his work for Sitka to Sitka, though.
+2015-01-13T15:16:24  <RoganH> dbs: you are correct
+2015-01-13T15:16:39  <jeffdavis> At least, that was my understanding when I asked about it before adding the license.
+2015-01-13T15:17:04  <jeffdavis> I'm happy to seek any required clarification.
+2015-01-13T15:17:16  <jeff> would having Steven Chan post confirmation of that to open-ils-dev be sufficient to clear things up for everyone?
+2015-01-13T15:17:49  <gmcharlt> let's draw the licensing discusison to a close -- I thnk Sitka should clarify the copyright and license status, but it is reasonable to assume that any loose ends can be tied up
+2015-01-13T15:18:12  * dbs agrees with gmcharlt
+2015-01-13T15:19:02  <jeff> Include in 2.8 with some light work, and known missing aspects, or Not included in 2.8, but an exciting/promising optional contrib/add-on for those interested?
+2015-01-13T15:19:17  <jeff> or are we not looking for a decision on that at this point, and just taking a moment to discuss without action?
+2015-01-13T15:19:56  <gmcharlt> I don't think we need to finalize a decision now -- I think it would suffice for jeffdavis to file a 2.8-beta LP for now
+2015-01-13T15:20:08  <jeff> (and knowing that features don't go in/out based on developer meeting discussion alone)
+2015-01-13T15:20:11  <jeffdavis> I'll do that, and set up this project as a contrib on git.evergreen-ils.org as well.
+2015-01-13T15:20:22  <dbs> jeffdavis++
+2015-01-13T15:20:26  <dbs> sitka++
+2015-01-13T15:20:31  <bshum> jeffdavis++ sitka++
+2015-01-13T15:20:47  <kmlussier> jeffdavis++ sitka++
+2015-01-13T15:20:49  <gmcharlt> and finally
+2015-01-13T15:20:56  <jeffdavis> I should explicitly say that Sitka would prefer not to own this project long-term, so hopefully either the community can take it on or make use of it to develop API integration that works better.
+2015-01-13T15:21:06  <gmcharlt> #topic Negative blances / billing improvements
+2015-01-13T15:21:17  <gmcharlt> #link https://bugs.launchpad.net/evergreen/+bug/1198465
+2015-01-13T15:21:17  <pinesol_green> Launchpad bug 1198465 in Evergreen "Support for Conditional Negative Balances" (affected: 14, heat: 66) [Wishlist,Confirmed]
+2015-01-13T15:21:24  <dbwells> I'm already late for another meeting, so I'll make this quick.
+2015-01-13T15:21:41  <dbwells> Basically, I'm just fishing for help in testing some or all of the billing changes which have grown on that bug.
+2015-01-13T15:22:07  <dbwells> As I stated in the agenda, I think separating out the root-level stuff and getting that tested/committed first would be a good strategy.  Any takers for testing?
+2015-01-13T15:22:13  <berick> dbwells: +1 to the idea of breaking out cstore billing to its own LP.  I would help poke at that.
+2015-01-13T15:22:18  <jeff> I'm interested in testing.
+2015-01-13T15:22:23  <berick> it's much more digestable...
+2015-01-13T15:22:30  <kmlussier> I'm interested in testing too.
+2015-01-13T15:22:45  <dbwells> sweet, thanks all
+2015-01-13T15:22:53  <jeff> I hate to ask, but... are there tests in the root-level stuff at this point in time?
+2015-01-13T15:23:15  <dbwells> I've been working this morning on getting the cstore stuff separated, it wasn't too bad.
+2015-01-13T15:23:52  <dbwells> jeff: Only in that it doesn't (or mightn't) break the existing billing tests.
+2015-01-13T15:24:28  <dbwells> At least that portion isn't meant to do anything new.  Not that we couldn't always use more tests, of course.
+2015-01-13T15:24:32  <jeff> In some ways, that's enough! Always nice when there are existing relevant tests. :-)
+2015-01-13T15:24:58  <gmcharlt> #action dbwells will separate the cstore billing code into a separate bug; jeff and berick will help with testing
+2015-01-13T15:25:16  <gmcharlt> and I suggest follow-up to open-ils-dev
+2015-01-13T15:25:39  <dbwells> I am out for now.  Thanks again to those who volunteered; expect to be bugged by me soon.
+2015-01-13T15:25:44  <jeff> dbwells++
+2015-01-13T15:26:05  <kmlussier> dbwells++
+2015-01-13T15:26:05  <gmcharlt> so, since we're at nearly 1:20 - I will give folks 2.5 seconds to suggest last-minute topics
+2015-01-13T15:26:19  * gmcharlt drops the portcullis
+2015-01-13T15:26:19  <bshum> dbwells++
+2015-01-13T15:26:25  <gmcharlt> #endmeeting
+2015-01-13T15:26:25  <pinesol_green> Meeting ended Tue Jan 13 15:26:25 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-01-13T15:26:25  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-13-14.09.html
+2015-01-13T15:26:25  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-13-14.09.txt
+2015-01-13T15:26:25  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-13-14.09.log.html
+2015-01-13T15:26:27  <bshum> gmcharlt++
+2015-01-13T15:26:59  <berick> gmcharlt++
+2015-01-13T15:27:03  <jeff> gmcharlt++
+2015-01-13T15:27:05  <jeffdavis> gmcharlt++
+2015-01-13T15:27:22  <eeevil> gmcharlt++
+2015-01-13T15:27:36  <kmlussier> gmcharlt++
+2015-01-13T15:27:57  <dbwells> gmcharlt++
+2015-01-13T15:29:05  <jeffdavis> So, how do I go about getting a new contrib repo added to git.evergreen-ils.org? :)
+2015-01-13T15:30:01  <gmcharlt> jeffdavis: contrib/sitka OK as a name for it?
+2015-01-13T15:30:15  <gmcharlt> and anybody besides you who should be allowed to push to it?
+2015-01-13T15:30:49  <jeffdavis> gmcharlt: Would it be better to specify the project rather than Sitka (e.g. contrib/overdrive-evergreen-opac or something)?
+2015-01-13T15:31:08  <gmcharlt> that's also fine
+2015-01-13T15:31:48  * gmcharlt will have to resiist the tempation to name it contrib/overgreen
+2015-01-13T15:31:59  <jeffdavis> :)
+2015-01-13T15:32:31  <kmlussier> +1 to overgree :)
+2015-01-13T15:32:38  <jeffdavis> I'm the only one at Sitka pushing to our local repo currently, so no one specific to add. If other EG developers want that ability that's fine by me.
+2015-01-13T15:32:57  <jcamins> I, for one, welcome our new open source overlords.
+2015-01-13T15:33:39  <jeff> jcamins: their reign shall be for twelve months or 26 checkouts, whichever is shorter.
+2015-01-13T15:34:38  <gmcharlt> jeff++
+2015-01-13T15:36:18  <gmcharlt> jeffdavis: ok, contrib/overdrive-eg-opac now exists, and you can push to it
+2015-01-13T15:45:33  <kmlussier> @dessert
+2015-01-13T15:45:33  * pinesol_green grabs some pineapple chocolate things from New Zealand for kmlussier
+2015-01-13T15:45:49  <kmlussier> Not exactly what I was looking for.
+2015-01-13T15:46:09  <jeffdavis> gmcharlt++ # thanks!
+2015-01-13T15:46:27  <jeffdavis> I've pushed the current Overdrive master branch to that contrib repo.
+2015-01-13T15:50:12  <kmlussier> @dessert search brownie
+2015-01-13T15:50:12  <pinesol_green> kmlussier: 1 found: #6: "Supreme Brownie Sundae"
+2015-01-13T15:51:18  * gmcharlt pounces on the supreme brownie sundae
+2015-01-13T15:52:20  * berick chuckles at 'pineapple chocolate things'
+2015-01-13T15:52:31  <berick> not sure if really a thing or someone got lazy
+2015-01-13T15:53:47  <kmlussier> berick: It's a thing that has a real name.
+2015-01-13T15:54:05  <kmlussier> That is, a name that is not "pineapple chocolate things."
+2015-01-13T15:54:40  <kmlussier> Maybe Pineapple Lumps? http://en.wikipedia.org/wiki/Pineapple_Lumps
+2015-01-13T15:56:34  <berick> having a hard time imagining that flavor combo
+2015-01-13T15:57:41  <kmlussier> berick: They're quite tasty.
+2015-01-13T15:58:44  <Dyrcona> berick: https://www.youtube.com/watch?v=hpj2oVJhYjM
+2015-01-13T16:00:21  <bshum> dbs: Question on the relators.tt2
+2015-01-13T16:00:38  <bshum> At the end of the generated block, there's an extra comma there after the wst entry
+2015-01-13T16:00:51  <berick> Dyrcona++
+2015-01-13T16:00:52  <bshum> Is that "normal"?
+2015-01-13T16:01:12  <bshum> Actually as I look at the original file, there's a comma at the end of that one too, maybe it doesn't do anything weird.
+2015-01-13T16:01:20  <bshum> Just looked strange for a moment to my eye
+2015-01-13T16:12:44  <pinesol_green> [evergreen|Kathy Lussier] LP#1074096: Remove Bib Call Number Search - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=73f5327>
+2015-01-13T16:12:45  <pinesol_green> [evergreen|Dan Scott] LP#1407507: Update relator codes - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=1cfbba3>
+2015-01-13T16:12:58  *** julialima_ has left #evergreen
+2015-01-13T16:13:20  <kmlussier> Yay!
+2015-01-13T16:13:56  <bshum> berick: Any last additions for https://bugs.launchpad.net/evergreen/+bug/1392759 ?  I think it looks fine enough to push ahead.
+2015-01-13T16:13:56  <pinesol_green> Launchpad bug 1392759 in Evergreen "Developer/Packager Makefile.install targets" (affected: 1, heat: 6) [Wishlist,Triaged]
+2015-01-13T16:14:19  * bshum is going to make the tiny alteration for ubuntu-trusty to get rid of that last 'make' in there.
+2015-01-13T16:15:14  <berick> bshum: nothing else from me
+2015-01-13T16:16:34  <bshum> Cool, cool
+2015-01-13T16:16:46  <pinesol_green> [evergreen|Bill Erickson] LP#1392759 developer/packager Makefile.install targets - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=249ea3b>
+2015-01-13T16:16:47  <pinesol_green> [evergreen|Bill Erickson] LP#1392759 dev/packager Makefile.install additions - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=239525e>
+2015-01-13T16:16:48  <pinesol_green> [evergreen|Bill Erickson] LP#1392759 dev/pack makefile.install repairs - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e6ce8fe>
+2015-01-13T16:16:49  <pinesol_green> [evergreen|Bill Erickson] LP#1392759 Add 'bzr' to 'packager' targets - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=615c79d>
+2015-01-13T16:17:20  <berick> bshum++
+2015-01-13T16:19:30  <Dyrcona> While the meeting was going on, we had another incident with the load on the server going over 100, etc.
+2015-01-13T16:19:52  <Dyrcona> On the plus side, I can say that the edit to /etc/pam.d/su suggested by several blog posts works.
+2015-01-13T16:20:04  <Dyrcona> ejabberd can now open 65535 files.
+2015-01-13T16:20:46  <dbs> bshum++
+2015-01-13T16:21:28  * dbs finds that a chunk of TPAC code from 2012 for enabling a "detailed results view" by default slipped in at some point, but not the complete set of code required for that
+2015-01-13T16:21:55  <bshum> dbs: For lack of a better place yet, I did put the relator_map note on berick's new http://wiki.evergreen-ils.org/doku.php?id=dev:release_process:evergreen:2.8#other_notes
+2015-01-13T16:22:15  <jeff> Dyrcona: hooray
+2015-01-13T16:22:18  <bshum> We'll find a suitable place to slot that in for future releases too.
+2015-01-13T16:22:26  <dbs> err, 2013
+2015-01-13T16:22:32  <dbs> bshum++
+2015-01-13T16:22:52  <dbs> commit 8068d3389 was the culprit
+2015-01-13T16:22:52  <pinesol_green> [evergreen|Dan Scott] Just use a format label in results + pubdate - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=8068d33>
+2015-01-13T16:23:15  * dbs will file a bug targeted for 2.8 to add the "show_more_details" config.tt2 parameter
+2015-01-13T16:23:56  <bshum> Nooo netsplits?!
+2015-01-13T16:26:08  <dbs> not fer me
+2015-01-13T16:26:29  *** ericar has quit IRC
+2015-01-13T16:27:37  <bshum> It was just some global notice I just got.... maybe it's nothing :)
+2015-01-13T16:27:56  * bshum loves https://bugs.launchpad.net/evergreen/+bug/1409844
+2015-01-13T16:27:56  <pinesol_green> Launchpad bug 1409844 in Evergreen "TPAC: Towards more meaningful, contextual page titles" (affected: 1, heat: 6) [Undecided,New]
+2015-01-13T16:28:01  <bshum> dbs++
+2015-01-13T16:28:22  <bshum> It works for me, I'll push a signoff, but am holding off merging till the requisite 1 week watch period is over.
+2015-01-13T16:29:27  *** rjackson-isl has quit IRC
+2015-01-13T16:31:54  <dbs> bshum: sounds great to me
+2015-01-13T16:32:06  *** Shae has quit IRC
+2015-01-13T16:32:06  *** phasefx has quit IRC
+2015-01-13T16:32:06  *** mtate has quit IRC
+2015-01-13T16:32:06  *** eeevil has quit IRC
+2015-01-13T16:32:06  *** tsbere has quit IRC
+2015-01-13T16:32:07  *** nhilton has quit IRC
+2015-01-13T16:32:07  *** dcook__ has quit IRC
+2015-01-13T16:32:07  *** mnsri_away has quit IRC
+2015-01-13T16:32:07  *** RoganH has quit IRC
+2015-01-13T16:32:07  *** b_bonner has quit IRC
+2015-01-13T16:32:07  *** pmurray has quit IRC
+2015-01-13T16:32:07  *** rashma has quit IRC
+2015-01-13T16:32:07  *** paxed has quit IRC
+2015-01-13T16:32:07  *** jcamins has quit IRC
+2015-01-13T16:32:37  *** mrpeters has left #evergreen
+2015-01-13T16:33:45  *** nhilton has joined #evergreen
+2015-01-13T16:33:45  *** Shae has joined #evergreen
+2015-01-13T16:33:45  *** phasefx has joined #evergreen
+2015-01-13T16:33:45  *** eeevil has joined #evergreen
+2015-01-13T16:33:45  *** mtate has joined #evergreen
+2015-01-13T16:33:45  *** dcook__ has joined #evergreen
+2015-01-13T16:33:45  *** tsbere has joined #evergreen
+2015-01-13T16:33:45  *** b_bonner has joined #evergreen
+2015-01-13T16:33:45  *** pmurray has joined #evergreen
+2015-01-13T16:33:45  *** rashma has joined #evergreen
+2015-01-13T16:33:45  *** mnsri_away has joined #evergreen
+2015-01-13T16:33:45  *** paxed has joined #evergreen
+2015-01-13T16:33:45  *** jcamins has joined #evergreen
+2015-01-13T16:33:49  *** Dyrcona has quit IRC
+2015-01-13T16:33:50  *** gsams has quit IRC
+2015-01-13T16:33:50  *** dreuther_ has quit IRC
+2015-01-13T16:33:50  *** rangi has quit IRC
+2015-01-13T16:33:50  *** _bott_ has quit IRC
+2015-01-13T16:33:50  *** ldw has quit IRC
+2015-01-13T16:33:50  *** pastebot has quit IRC
+2015-01-13T16:33:50  *** egbuilder has quit IRC
+2015-01-13T16:33:50  *** csharp has quit IRC
+2015-01-13T16:33:50  *** jihpringle has quit IRC
+2015-01-13T16:33:50  *** chatley has quit IRC
+2015-01-13T16:33:50  *** finnx has quit IRC
+2015-01-13T16:33:51  *** graced has quit IRC
+2015-01-13T16:33:51  *** bshum has quit IRC
+2015-01-13T16:33:51  *** kmlussier has quit IRC
+2015-01-13T16:33:51  *** mceraso has quit IRC
+2015-01-13T16:33:51  *** dbs has quit IRC
+2015-01-13T16:33:51  *** eby has quit IRC
+2015-01-13T16:33:51  *** DPearl1 has quit IRC
+2015-01-13T16:33:51  *** bradl_ has quit IRC
+2015-01-13T16:33:52  *** mmorgan has quit IRC
+2015-01-13T16:33:52  *** dbwells has quit IRC
+2015-01-13T16:33:52  *** mtcarlson has quit IRC
+2015-01-13T16:33:52  *** jeff has quit IRC
+2015-01-13T16:33:52  *** abowling has quit IRC
+2015-01-13T16:33:52  *** akilsdonk has quit IRC
+2015-01-13T16:33:52  *** jboyer-isl has quit IRC
+2015-01-13T16:33:52  *** maryj has quit IRC
+2015-01-13T16:33:52  *** TaraC has quit IRC
+2015-01-13T16:33:52  *** BigRig has quit IRC
+2015-01-13T16:33:52  *** Callender has quit IRC
+2015-01-13T16:33:52  *** hopkinsju has quit IRC
+2015-01-13T16:33:52  *** serflog has quit IRC
+2015-01-13T16:33:52  *** Sato has quit IRC
+2015-01-13T16:33:52  *** Stompro has quit IRC
+2015-01-13T16:33:52  *** sarabee has quit IRC
+2015-01-13T16:33:53  *** phasefx__ has quit IRC
+2015-01-13T16:33:53  *** jeffdavis has quit IRC
+2015-01-13T16:33:53  *** book` has quit IRC
+2015-01-13T16:33:53  *** RBecker has quit IRC
+2015-01-13T16:33:53  *** remingtron has quit IRC
+2015-01-13T16:33:54  *** artunit has quit IRC
+2015-01-13T16:33:54  *** dkyle has quit IRC
+2015-01-13T16:33:54  *** mtj_- has quit IRC
+2015-01-13T16:33:54  *** edoceo has quit IRC
+2015-01-13T16:33:54  *** jeff_ has quit IRC
+2015-01-13T16:33:54  *** berick has quit IRC
+2015-01-13T16:33:54  *** Bmagic has quit IRC
+2015-01-13T16:33:54  *** kitteh_ has quit IRC
+2015-01-13T16:34:44  *** abowling has joined #evergreen
+2015-01-13T16:34:44  *** akilsdonk has joined #evergreen
+2015-01-13T16:34:44  *** jihpringle has joined #evergreen
+2015-01-13T16:34:44  *** Dyrcona has joined #evergreen
+2015-01-13T16:34:44  *** Stompro has joined #evergreen
+2015-01-13T16:34:44  *** mmorgan has joined #evergreen
+2015-01-13T16:34:44  *** jboyer-isl has joined #evergreen
+2015-01-13T16:34:44  *** graced has joined #evergreen
+2015-01-13T16:34:44  *** Callender has joined #evergreen
+2015-01-13T16:34:44  *** BigRig has joined #evergreen
+2015-01-13T16:34:44  *** TaraC has joined #evergreen
+2015-01-13T16:34:44  *** maryj has joined #evergreen
+2015-01-13T16:34:44  *** gsams has joined #evergreen
+2015-01-13T16:34:44  *** bshum has joined #evergreen
+2015-01-13T16:34:44  *** sarabee has joined #evergreen
+2015-01-13T16:34:44  *** kmlussier has joined #evergreen
+2015-01-13T16:34:44  *** chatley has joined #evergreen
+2015-01-13T16:34:44  *** dbwells has joined #evergreen
+2015-01-13T16:34:44  *** RBecker has joined #evergreen
+2015-01-13T16:34:44  *** remingtron has joined #evergreen
+2015-01-13T16:34:44  *** finnx has joined #evergreen
+2015-01-13T16:34:44  *** dreuther_ has joined #evergreen
+2015-01-13T16:34:44  *** mceraso has joined #evergreen
+2015-01-13T16:34:44  *** mtcarlson has joined #evergreen
+2015-01-13T16:34:44  *** rangi has joined #evergreen
+2015-01-13T16:34:44  *** csharp has joined #evergreen
+2015-01-13T16:34:44  *** egbuilder has joined #evergreen
+2015-01-13T16:34:44  *** pastebot has joined #evergreen
+2015-01-13T16:34:44  *** ldw has joined #evergreen
+2015-01-13T16:34:44  *** _bott_ has joined #evergreen
+2015-01-13T16:34:44  *** hopkinsju has joined #evergreen
+2015-01-13T16:34:44  *** serflog has joined #evergreen
+2015-01-13T16:34:44  *** dbs has joined #evergreen
+2015-01-13T16:34:44  *** Sato has joined #evergreen
+2015-01-13T16:34:44  *** artunit has joined #evergreen
+2015-01-13T16:34:44  *** eby has joined #evergreen
+2015-01-13T16:34:44  *** phasefx__ has joined #evergreen
+2015-01-13T16:34:44  *** dkyle has joined #evergreen
+2015-01-13T16:34:44  *** DPearl1 has joined #evergreen
+2015-01-13T16:34:44  *** mtj_- has joined #evergreen
+2015-01-13T16:34:44  *** edoceo has joined #evergreen
+2015-01-13T16:34:44  *** kitteh_ has joined #evergreen
+2015-01-13T16:34:44  *** jeffdavis has joined #evergreen
+2015-01-13T16:34:44  *** bradl_ has joined #evergreen
+2015-01-13T16:34:44  *** jeff has joined #evergreen
+2015-01-13T16:34:44  *** book` has joined #evergreen
+2015-01-13T16:34:44  *** jeff_ has joined #evergreen
+2015-01-13T16:34:44  *** Bmagic has joined #evergreen
+2015-01-13T16:34:44  *** berick has joined #evergreen
+2015-01-13T16:35:08  *** phasefx__ is now known as phasefx_
+2015-01-13T16:36:34  *** Dyrcona has quit IRC
+2015-01-13T16:36:34  *** gsams has quit IRC
+2015-01-13T16:37:32  *** Dyrcona has joined #evergreen
+2015-01-13T16:37:32  *** gsams has joined #evergreen
+2015-01-13T16:38:14  *** sarabee has quit IRC
+2015-01-13T16:38:35  *** dreuther_ has quit IRC
+2015-01-13T16:38:35  *** rangi has quit IRC
+2015-01-13T16:38:35  *** _bott_ has quit IRC
+2015-01-13T16:38:35  *** ldw has quit IRC
+2015-01-13T16:38:35  *** pastebot has quit IRC
+2015-01-13T16:38:35  *** egbuilder has quit IRC
+2015-01-13T16:38:35  *** csharp has quit IRC
+2015-01-13T16:39:24  *** RoganH has joined #evergreen
+2015-01-13T16:39:33  <jeffdavis> I've created bug 1410537 - can someone with the necessary perms target it for 2.8-beta?
+2015-01-13T16:39:33  <pinesol_green> Launchpad bug 1410537 in Evergreen "Overdrive API integration" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1410537
+2015-01-13T16:39:49  <bshum> jeffdavis: Sure.
+2015-01-13T16:40:39  *** dreuther_ has joined #evergreen
+2015-01-13T16:40:39  *** rangi has joined #evergreen
+2015-01-13T16:40:39  *** _bott_ has joined #evergreen
+2015-01-13T16:40:39  *** ldw has joined #evergreen
+2015-01-13T16:40:39  *** pastebot has joined #evergreen
+2015-01-13T16:40:39  *** egbuilder has joined #evergreen
+2015-01-13T16:40:39  *** csharp has joined #evergreen
+2015-01-13T16:40:57  <bshum> All set.
+2015-01-13T16:41:35  <jeffdavis> bshum++ # thank you!
+2015-01-13T16:43:09  *** jihpringle has quit IRC
+2015-01-13T16:43:09  *** chatley has quit IRC
+2015-01-13T16:43:09  *** finnx has quit IRC
+2015-01-13T16:43:30  *** jihpringle has joined #evergreen
+2015-01-13T16:43:30  *** chatley has joined #evergreen
+2015-01-13T16:43:30  *** finnx has joined #evergreen
+2015-01-13T16:44:08  *** graced has quit IRC
+2015-01-13T16:44:08  *** bshum has quit IRC
+2015-01-13T16:44:08  *** kmlussier has quit IRC
+2015-01-13T16:44:09  *** mceraso has quit IRC
+2015-01-13T16:44:09  *** dbs has quit IRC
+2015-01-13T16:44:09  *** eby has quit IRC
+2015-01-13T16:44:09  *** DPearl1 has quit IRC
+2015-01-13T16:44:09  *** bradl_ has quit IRC
+2015-01-13T16:44:55  <Dyrcona> Grr... What are they running? ejabberd?
+2015-01-13T16:45:33  <jeffdavis> 13:22 [freenode] -mquin(~mquin@freenode/staff/mquin)- [Global Notice] We are about to start rehubbing the network ahead of planned maintenance work. This will cause some netsplits, but should be completed shortly.
+2015-01-13T16:46:39  <Dyrcona> Still doesn't answer my question. :)
+2015-01-13T16:48:10  *** mmorgan has quit IRC
+2015-01-13T16:48:10  *** dbwells has quit IRC
+2015-01-13T16:48:10  *** mtcarlson has quit IRC
+2015-01-13T16:48:10  *** jeff has quit IRC
+2015-01-13T16:48:18  *** vlewis has joined #evergreen
+2015-01-13T16:49:22  <jeffdavis> true.
+2015-01-13T16:50:32  *** graced has joined #evergreen
+2015-01-13T16:50:32  *** bshum has joined #evergreen
+2015-01-13T16:50:32  *** kmlussier has joined #evergreen
+2015-01-13T16:50:32  *** mceraso has joined #evergreen
+2015-01-13T16:50:32  *** dbs has joined #evergreen
+2015-01-13T16:50:32  *** eby has joined #evergreen
+2015-01-13T16:50:32  *** DPearl1 has joined #evergreen
+2015-01-13T16:50:32  *** bradl_ has joined #evergreen
+2015-01-13T16:52:42  *** RoganH has quit IRC
+2015-01-13T16:53:11  *** Stompro has quit IRC
+2015-01-13T16:53:11  *** phasefx_ has quit IRC
+2015-01-13T16:53:50  *** Stompro has joined #evergreen
+2015-01-13T16:53:50  *** phasefx_ has joined #evergreen
+2015-01-13T16:53:57  *** mmorgan has joined #evergreen
+2015-01-13T16:53:57  *** dbwells has joined #evergreen
+2015-01-13T16:53:57  *** mtcarlson has joined #evergreen
+2015-01-13T16:53:57  *** jeff has joined #evergreen
+2015-01-13T16:54:08  *** jeffdavis has quit IRC
+2015-01-13T16:54:08  *** book` has quit IRC
+2015-01-13T16:54:37  *** jeffdavis has joined #evergreen
+2015-01-13T16:54:37  *** book` has joined #evergreen
+2015-01-13T16:54:51  *** RBecker has quit IRC
+2015-01-13T16:54:52  *** remingtron has quit IRC
+2015-01-13T16:54:52  *** artunit has quit IRC
+2015-01-13T16:54:52  *** dkyle has quit IRC
+2015-01-13T16:54:52  *** mtj_- has quit IRC
+2015-01-13T16:54:52  *** edoceo has quit IRC
+2015-01-13T16:54:52  *** jeff_ has quit IRC
+2015-01-13T16:54:52  *** berick has quit IRC
+2015-01-13T16:54:52  *** Bmagic has quit IRC
+2015-01-13T16:55:13  <Dyrcona> Well, I'm taking off anyway.
+2015-01-13T16:55:31  *** Dyrcona has quit IRC
+2015-01-13T16:57:25  *** kitteh_ has quit IRC
+2015-01-13T16:57:34  *** kitteh_ has joined #evergreen
+2015-01-13T16:59:27  *** RBecker has joined #evergreen
+2015-01-13T16:59:27  *** remingtron has joined #evergreen
+2015-01-13T16:59:27  *** artunit has joined #evergreen
+2015-01-13T16:59:27  *** dkyle has joined #evergreen
+2015-01-13T16:59:27  *** mtj_- has joined #evergreen
+2015-01-13T16:59:27  *** edoceo has joined #evergreen
+2015-01-13T16:59:27  *** jeff_ has joined #evergreen
+2015-01-13T16:59:27  *** berick has joined #evergreen
+2015-01-13T16:59:27  *** Bmagic has joined #evergreen
+2015-01-13T16:59:37  <bshum> Calling 0903
+2015-01-13T17:02:17  *** graced has quit IRC
+2015-01-13T17:02:17  *** bshum has quit IRC
+2015-01-13T17:02:17  *** kmlussier has quit IRC
+2015-01-13T17:02:17  *** mceraso has quit IRC
+2015-01-13T17:02:17  *** dbs has quit IRC
+2015-01-13T17:02:17  *** eby has quit IRC
+2015-01-13T17:02:17  *** DPearl1 has quit IRC
+2015-01-13T17:02:17  *** bradl_ has quit IRC
+2015-01-13T17:03:00  <pinesol_green> Showing latest 5 of 6 commits to Evergreen...
+2015-01-13T17:03:01  <pinesol_green> [evergreen|Jason Stephenson] LP#980296: Add void of lost processing fee on claims returned. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=806ecaa>
+2015-01-13T17:03:02  <pinesol_green> [evergreen|Jason Stephenson] LP#980296: Update void on claims returned for longoverdue status. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=fc361aa>
+2015-01-13T17:03:03  <pinesol_green> [evergreen|Jason Stephenson] LP#980296: pgtap tests for the void on claims returned org settings. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a98eac1>
+2015-01-13T17:03:04  <pinesol_green> [evergreen|Kathy Lussier] LP#980296: Release notes entry for voiding lost on Claims Return - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=db91d15>
+2015-01-13T17:03:05  <pinesol_green> [evergreen|Ben Shum] LP#980296: Stamping upgrade script for void lost on claims returned, etc. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e75501d>
+2015-01-13T17:06:14  *** graced has joined #evergreen
+2015-01-13T17:06:14  *** bshum has joined #evergreen
+2015-01-13T17:06:14  *** kmlussier has joined #evergreen
+2015-01-13T17:06:14  *** mceraso has joined #evergreen
+2015-01-13T17:06:14  *** dbs has joined #evergreen
+2015-01-13T17:06:14  *** eby has joined #evergreen
+2015-01-13T17:06:14  *** DPearl1 has joined #evergreen
+2015-01-13T17:06:14  *** bradl_ has joined #evergreen
+2015-01-13T17:14:59  *** mmorgan has left #evergreen
+2015-01-13T17:17:03  <eeevil> berick: since you've been fiddling with make bits recently, do you know of a way to keep make from dereferencing every freaking symlink between / and a file it's compiling?
+2015-01-13T17:17:24  <eeevil> IOW, "just use the path I gave you, stop trying to be so clever!"
+2015-01-13T17:19:22  <berick> hm, i'm not familiar with that problem.
+2015-01-13T17:20:53  <eeevil> it's probably only a problem for me, TBH, but it's a painful problem
+2015-01-13T17:21:06  <bshum> Fancy
+2015-01-13T17:21:19  <bshum> I got the IRC logs to link to bug numbers in LP based on the git commit messages
+2015-01-13T17:21:25  <bshum> Like for: http://irc.evergreen-ils.org/evergreen/2015-01-13#i_149761
+2015-01-13T17:22:01  <bshum> I noticed it was doing it for RT links back to rt.perl.org, so I changed it to LP and asked it to link any 2-7 digit string to LP.  We'll see how that goes...
+2015-01-13T17:22:25  * bshum should probably make that only match on 5-7 digit strings
+2015-01-13T17:22:31  <bshum> Well, maybe 6-7
+2015-01-13T17:22:37  <eeevil> berick: if you have a symlink at, say, ~/source/eg pointing to one of several tarball extracts, the build system under make's control will use (the equiv of) bash's readlink to dereference the path and go there
+2015-01-13T17:22:52  <bshum> 5 and we'd have all these zip codes when people do weather...
+2015-01-13T17:23:09  <eeevil> and I so don't want it to do that :)
+2015-01-13T17:23:48  <eeevil> (so `pwd` thinks its somewhere under /home/miker/source/eg/... and not the "real" location)
+2015-01-13T17:24:14  <bshum> Aha, it only does that on #prefixed numbers.  That's nice :)
+2015-01-13T17:24:52  * bshum should learn more regex
+2015-01-13T17:28:30  <berick> eeevil: no idea :( sorry
+2015-01-13T17:29:13  <eeevil> np, thanks
+2015-01-13T17:31:25  *** eby has quit IRC
+2015-01-13T17:33:09  *** eby has joined #evergreen
+2015-01-13T17:38:56  *** Shae has quit IRC
+2015-01-13T17:42:18  *** nhilton_ has joined #evergreen
+2015-01-13T17:44:07  *** vlewis_ has joined #evergreen
+2015-01-13T18:18:45  *** nhilton has quit IRC
+2015-01-13T18:33:57  *** eby has quit IRC
+2015-01-13T18:44:07  *** akilsdonk has quit IRC
+2015-01-13T18:47:27  *** nhilton_ has quit IRC
+2015-01-13T19:01:03  *** vlewis has quit IRC
+2015-01-13T19:01:05  *** vlewis_ has quit IRC
+2015-01-13T19:02:57  *** geoffsams has joined #evergreen
+2015-01-13T19:09:20  *** gsams has quit IRC
+2015-01-13T19:36:36  *** eby has joined #evergreen
+2015-01-13T20:26:50  *** kitteh_ has quit IRC
+2015-01-13T20:27:43  *** jihpringle has quit IRC
+2015-01-13T20:45:22  *** finnx has quit IRC
+2015-01-13T21:29:36  *** sarabee has joined #evergreen
+2015-01-13T21:59:26  *** pmurray is now known as pmurray_away
+2015-01-13T22:01:35  *** sbrylander has joined #evergreen
+2015-01-13T22:03:11  *** sarabee has quit IRC
+2015-01-13T22:10:56  *** mtcarlson is now known as mtcarlson_away
+2015-01-13T23:57:25  *** abowling has quit IRC

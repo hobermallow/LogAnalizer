@@ -1,0 +1,281 @@
+2015-01-06T00:24:23  *** abowling has quit IRC
+2015-01-06T06:33:13  *** Callender has quit IRC
+2015-01-06T06:33:22  *** graced has quit IRC
+2015-01-06T06:33:44  *** maryj has quit IRC
+2015-01-06T06:33:44  *** phasefx has quit IRC
+2015-01-06T06:33:44  *** mtate has quit IRC
+2015-01-06T06:33:44  *** eeevil has quit IRC
+2015-01-06T06:33:46  *** BigRig has quit IRC
+2015-01-06T06:33:52  *** TaraC has quit IRC
+2015-01-06T06:36:40  *** eeevil has joined #evergreen
+2015-01-06T06:36:40  *** mtate has joined #evergreen
+2015-01-06T06:36:41  *** phasefx has joined #evergreen
+2015-01-06T06:37:40  *** maryj has joined #evergreen
+2015-01-06T06:37:40  *** Callender has joined #evergreen
+2015-01-06T06:37:41  *** BigRig has joined #evergreen
+2015-01-06T06:37:41  *** TaraC has joined #evergreen
+2015-01-06T06:38:42  *** graced has joined #evergreen
+2015-01-06T07:34:18  *** julialima_ has joined #evergreen
+2015-01-06T07:48:39  *** pmurray is now known as pmurray_away
+2015-01-06T07:55:57  *** rjackson-isl has joined #evergreen
+2015-01-06T08:08:05  *** akilsdonk has joined #evergreen
+2015-01-06T08:11:38  *** collum has joined #evergreen
+2015-01-06T08:12:06  *** ericar has joined #evergreen
+2015-01-06T08:16:35  <csharp> tests++
+2015-01-06T08:17:24  <csharp> I made a wrong choice when manually merging a conflicted file and the perl test suite found it when building
+2015-01-06T08:29:51  *** mrpeters has joined #evergreen
+2015-01-06T08:32:50  <dbs> csharp++ # for running tests!
+2015-01-06T08:33:57  *** mdriscoll has joined #evergreen
+2015-01-06T08:36:57  *** Dyrcona has joined #evergreen
+2015-01-06T08:39:23  *** Shae has joined #evergreen
+2015-01-06T08:44:02  *** abowling has joined #evergreen
+2015-01-06T08:54:15  *** jwoodard has joined #evergreen
+2015-01-06T08:58:05  *** mmorgan has joined #evergreen
+2015-01-06T09:11:39  <Dyrcona> Maybe I should say this in the #postgres channel, but PGAdminIII needs a threaded UI with 1 thread per window.
+2015-01-06T09:12:08  <Dyrcona> Cause it is very frustrating to try writing a query in the SQL window while server status updates in the background.
+2015-01-06T09:41:48  <jeff> i'll bet.
+2015-01-06T09:45:03  <Dyrcona> It's fun when you type "where" but get "wre" instead, or "nll" for "null".
+2015-01-06T09:45:14  <Dyrcona> So, I use psql instead.
+2015-01-06T10:11:33  *** remingtron__ is now known as remingtron
+2015-01-06T10:14:47  *** artunit has quit IRC
+2015-01-06T10:16:08  <jboyer-isl> I'm late to this party, but I'd argue nothing should ever be doing any IO on the main (UI) thread, network or otherwise. Maybe that's because I really liked BeOS, that whole thing was threads here, threads there; but lo, it became threadbare. :(
+2015-01-06T10:16:12  *** artunit has joined #evergreen
+2015-01-06T10:16:35  <jboyer-isl> (And I lost my 5.0 CD, apparently. >:(  )
+2015-01-06T10:23:00  * dbs loves psql
+2015-01-06T10:23:03  <dbs> @love psql
+2015-01-06T10:23:03  <pinesol_green> dbs: The operation succeeded.  dbs loves psql.
+2015-01-06T10:25:32  <Dyrcona> jboyer-isl++
+2015-01-06T10:26:19  <Dyrcona> I tinkered with BeOS on an old PowerPC machine back in the day. Still have the BeOS programming book on a shelf at home.
+2015-01-06T10:30:45  <jboyer-isl> Dominic Giampaolo's Practical FileSystem Design book was pretty good too; it's available for free these days: http://www.nobius.org/~dbg/
+2015-01-06T10:31:39  <Dyrcona> jboyer-isl: https://www.haiku-os.org/
+2015-01-06T10:33:10  <jboyer-isl> I've not looked at Haiku in a while, but it may have to do for that passing phase where I want to play around in an antique VM.
+2015-01-06T10:33:11  <Dyrcona> jboyer-isl: Heh. I already downloaded a copy of the book. Haven't read it, yet.
+2015-01-06T10:35:02  <jboyer-isl> The FS Construction Kit that goes with it is pretty neat too. The only thing I really did with it though was fix the makefile to build under Windows/SFU.
+2015-01-06T10:41:19  <Dyrcona> Too many operating systems and too little time.
+2015-01-06T11:29:22  *** nhilton has joined #evergreen
+2015-01-06T11:54:06  *** pinesol_green` has joined #evergreen
+2015-01-06T11:54:06  *** pinesol_green has quit IRC
+2015-01-06T12:17:18  <csharp> @quote random
+2015-01-06T12:17:18  <pinesol_green`> csharp: Quote #24: "<denials> when git doesn't kill you, it makes you smarter" (added by gmcharlt at 03:58 PM, May 03, 2012)
+2015-01-06T12:24:31  *** buzzy has joined #evergreen
+2015-01-06T12:36:15  *** buzzy has quit IRC
+2015-01-06T12:45:28  *** jihpringle has joined #evergreen
+2015-01-06T12:50:41  *** buzzy has joined #evergreen
+2015-01-06T12:55:03  <bshum> buzzy: Did you see this question about the conference on the general mailing list? http://markmail.org/message/ukmsmw3dlqwmq4f2
+2015-01-06T13:29:54  *** dreuther_ has joined #evergreen
+2015-01-06T13:32:21  *** dreuther has quit IRC
+2015-01-06T13:40:48  <gmcharlt> bshum: that's been dealt with, BTW
+2015-01-06T13:43:59  <bshum> gmcharlt: Cool, just checking.  Thanks :)
+2015-01-06T13:47:17  *** nhilton_ has joined #evergreen
+2015-01-06T13:47:51  *** julialima_ has quit IRC
+2015-01-06T13:49:51  *** nhilton has quit IRC
+2015-01-06T13:51:02  <csharp> so... is there a plan in the works to move opensrf 2.4 alpha to an actual release?
+2015-01-06T13:51:34  <csharp> feels kinda wrong moving to an alpha in production
+2015-01-06T13:51:43  <bshum> Eh, it's just a label.
+2015-01-06T13:51:44  * csharp is willing to assist
+2015-01-06T13:51:51  <bshum> Go with opensrf master, join us!
+2015-01-06T13:51:53  <bshum> :D
+2015-01-06T13:53:25  <bshum> I'd be curious how much of http://wiki.evergreen-ils.org/doku.php?id=dev:release_process:opensrf:2.0 still applies
+2015-01-06T13:53:29  <csharp> so is it the websockets stuff that keeps it in alpha status?
+2015-01-06T13:53:58  <bshum> At the last dev meeting, gmcharlt took an action item to cut 2.4.0 official, but I assume he was sidetracked with moving / holidays.
+2015-01-06T13:54:18  <bshum> OpenSRF master hasn't moved since August, other than mainly doc updates
+2015-01-06T13:54:28  <bshum> So pretty much, it's as ready as it's going to be.
+2015-01-06T13:54:40  <bshum> Dyrcona and I are running the stuff since August in production anyways.
+2015-01-06T13:55:07  <bshum> Though admittedly I am not actively using the websockets stuff since we're still figuring out what bits we're going to deploy and how for our web staff client.
+2015-01-06T13:55:27  *** rjackson-isl has quit IRC
+2015-01-06T13:55:30  <csharp> yeah, we're not going to use websockets (in production anyway)
+2015-01-06T13:56:09  <bshum> So, like I said, a label :)
+2015-01-06T13:56:28  <bshum> But now I'm curious to see if I can build a tarball anyways
+2015-01-06T13:56:40  <csharp> well, I would understand the "it's just a label" idea if it wasn't labled alpha :-)
+2015-01-06T13:56:56  <csharp> "alpha" means "pre-release, test at your own risk"
+2015-01-06T13:59:28  <jeff> pay no attention to that sign that says "EXTREMELY DANGEROUS"
+2015-01-06T13:59:38  <jeff> </obSidReference>
+2015-01-06T14:00:06  *** nhilton has joined #evergreen
+2015-01-06T14:00:31  <bshum> Eh, alpha to me just means first cut at this date and time :)
+2015-01-06T14:00:35  <bshum> But I get what you're saying csharp
+2015-01-06T14:01:06  <bshum> From a cursory glance, I think those wiki steps I linked above ought to work actually.
+2015-01-06T14:01:12  <csharp> well, I think we should agree on the definitions of alpha, beta, RC, and release, even if we're going to get existential and say that they're all the same
+2015-01-06T14:02:53  *** nhilton_ has quit IRC
+2015-01-06T14:06:49  <bshum> Hmm
+2015-01-06T14:06:54  <bshum> I've never tagged anything before.
+2015-01-06T14:07:02  * bshum goes to read more about this
+2015-01-06T14:09:39  <dbs> bshum: we're running opensrf master too (minus the one commit that broke script-based circulation)
+2015-01-06T14:09:44  <bshum> csharp: fwiw, the only difference between 2.4.0-alpha and master seems to be the additional commits I added for websockets documentation and some changes to the apache files.
+2015-01-06T14:09:52  <dbs> tagging is easy enogh
+2015-01-06T14:09:53  <dbs> enough
+2015-01-06T14:10:19  <bshum> So essentially, if you've tested alpha and it's not broken, then good odds that'll be the only thing we see for 2.4.0 real
+2015-01-06T14:10:40  <bshum> Unless there's more stuff waiting to get pulled in for OpenSRF.
+2015-01-06T14:10:47  <bshum> Which I haven't looked at lately actually.
+2015-01-06T14:11:00  <dbs> http://evergreen-ils.org/dokuwiki/doku.php?id=dev:release_process:opensrf:2.0 includes the git tag command
+2015-01-06T14:11:16  <bshum> dbs: Right, I just have to remember where my keys are
+2015-01-06T14:13:07  * dbs thinks he probably lost his GPG key too
+2015-01-06T14:13:25  <Dyrcona> You can borrow mine. :p
+2015-01-06T14:13:25  <bshum> I had it once upon a time, it was the only way to sign up properly for my Ubuntu account.
+2015-01-06T14:13:41  <bshum> So I'm sure it's in some backup folder somewhere on some hard drive.
+2015-01-06T14:13:41  *** dreuther has joined #evergreen
+2015-01-06T14:13:52  <Dyrcona> I didn't think we actually tagged releases. Do we do that for OpenSRF?
+2015-01-06T14:14:10  <bshum> OpenSRF apparently does.
+2015-01-06T14:15:12  <bshum> Fwiw, https://launchpad.net/opensrf/+milestone/2.4.0 notes the stuff targeting 2.4.0
+2015-01-06T14:15:37  <bshum> Of those, the only one I'd be ready to sign today would be berick's fix for jessie/trusty mpm_event
+2015-01-06T14:15:49  <bshum> But that's documented in the Evergreen 2.7 README too
+2015-01-06T14:16:00  <bshum> It's nice to have it automated though
+2015-01-06T14:16:10  <bshum> And then we could drop that from the extra steps
+2015-01-06T14:16:40  *** dreuther_ has quit IRC
+2015-01-06T14:17:35  * bshum decides he likes that idea
+2015-01-06T14:21:04  <Dyrcona> I've taken care of that with our branch that handles our local apache config, but it would be good to just have it there for everyone.
+2015-01-06T14:21:58  <pinesol_green`> [opensrf|Bill Erickson] LP#1383828 Jessie/Trusty installer Apache "mpm" repairs - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=0c31fd3>
+2015-01-06T14:22:38  *** pinesol_green` is now known as pinesol_green
+2015-01-06T14:22:57  <bshum> Indeed :)
+2015-01-06T14:25:06  <kmlussier> csharp: When are you upgrading?
+2015-01-06T14:26:58  <csharp> kmlussier: next weekend (MLK)
+2015-01-06T14:30:04  <Dyrcona> I misspoke: I take care of it in a setup script for trusty, not in our local apache config branch.
+2015-01-06T14:30:17  <Dyrcona> That makes it easier to test!
+2015-01-06T14:31:18  *** mrpeters has quit IRC
+2015-01-06T14:33:32  *** mrpeters has joined #evergreen
+2015-01-06T14:35:51  * bshum decides to take a crack at making an OpenSRF release
+2015-01-06T14:38:45  <jeff> kmlussier++
+2015-01-06T14:38:55  * dbs wishes we tagged Evergreen releases too
+2015-01-06T14:42:20  <berick> bshum++
+2015-01-06T14:42:43  <berick> dbs: i'd be happy to start w/ 2.8...
+2015-01-06T14:43:23  <csharp> berick++
+2015-01-06T14:44:07  * berick should probably add that to the dev mtg agenda
+2015-01-06T14:48:41  *** akilsdonk_ has joined #evergreen
+2015-01-06T14:51:28  <jboyer-isl> Is there a short description of why it's better to use "real" tags vs. the tags/rel_x_y(_z) branches that we do? My understanding is that a tag is static (points to a single commit, forever) while the tags/rel_ branches can have bugfixes added later.
+2015-01-06T14:51:36  *** akilsdonk has quit IRC
+2015-01-06T14:51:58  <jboyer-isl> Though I'll admit that my understanding may be mis-understood.
+2015-01-06T14:52:12  <berick> jboyer-isl: bug fixes are merged into the parent branch
+2015-01-06T14:52:21  <berick> rel_x_y
+2015-01-06T14:52:24  <berick> not the release branch
+2015-01-06T14:52:56  <jboyer-isl> I see.
+2015-01-06T14:52:58  <berick> so, there's no benefit to being able to merge stuff into the release branch and it could, in fact, cause confusion
+2015-01-06T14:53:28  <bshum> Well, making the tarball doesn't seem so bad.
+2015-01-06T14:53:35  * bshum keeps slowly hammering away
+2015-01-06T14:53:49  <jboyer-isl> So we treat those branches like tags, but only in so far as everyone just leaves them alone?
+2015-01-06T14:53:57  <berick> jboyer-isl: exactly
+2015-01-06T14:54:35  <jboyer-isl> I see. I'm starting to come around on the tagging front.
+2015-01-06T14:55:20  *** akilsdonk_ is now known as akilsdonk
+2015-01-06T15:17:04  <bshum> Alright, I have to poke at my GPG key setup more before I can push the tagged release.
+2015-01-06T15:17:09  <bshum> But the generated files do appear to be set
+2015-01-06T15:17:18  <bshum> I'll get those moved over to Lupin
+2015-01-06T15:25:34  <bshum> Alright, files uploaded
+2015-01-06T15:25:40  <bshum> For brave souls:  http://evergreen-ils.org/downloads/opensrf-2.4.0.tar.gz
+2015-01-06T15:26:00  <bshum> I'm doing a quick test to make sure it isn't borked and then I'll update the downloads page properly.
+2015-01-06T15:30:42  *** vlewis has joined #evergreen
+2015-01-06T15:37:01  <bshum> Success, figured out my GPG situation.
+2015-01-06T15:37:05  <bshum> Getting the git tag set
+2015-01-06T15:39:19  *** edoceo_ has joined #evergreen
+2015-01-06T15:39:29  <bshum> Cool, it worked!  :D
+2015-01-06T15:39:31  * bshum is happy
+2015-01-06T15:39:50  <Dyrcona> bshum++
+2015-01-06T15:40:16  <Dyrcona> I've tagged releases on a couple of my github repos where I think it makes sense.
+2015-01-06T15:45:07  <dbs> bshum++
+2015-01-06T15:55:04  <kmlussier> @seen yboston
+2015-01-06T15:55:04  <pinesol_green> kmlussier: yboston was last seen in #evergreen 2 weeks, 4 days, 3 hours, 22 minutes, and 17 seconds ago: <yboston> will keep you posted in janaury
+2015-01-06T16:02:43  *** ericar has quit IRC
+2015-01-06T16:07:39  *** collum has quit IRC
+2015-01-06T16:11:51  *** buzzy has quit IRC
+2015-01-06T16:30:15  *** dreuther_ has joined #evergreen
+2015-01-06T16:32:36  *** jboyer-isl has quit IRC
+2015-01-06T16:32:47  *** dreuther has quit IRC
+2015-01-06T16:36:52  *** vlewis_ has joined #evergreen
+2015-01-06T16:39:09  <mceraso> bshum: Just finished testing the OpenSRF 2.4 tarball on Ubuntu 14.04 LTS. Works like a charm!
+2015-01-06T16:39:36  * dbs needs to look deeper into this SIP pattern of OILS bootstrap loaded, login w/ 941, INPUT MSG: '9900302.00', followed immediately by another OILS bootstrap loaded, login w/98.... pattern that happens every 90 seconds
+2015-01-06T16:40:10  <bshum> mceraso++ # thanks :)
+2015-01-06T16:40:20  *** Shae has quit IRC
+2015-01-06T16:43:05  <eeevil> dbs: are you using Multiplex (not to be confused with comment's claim of "Mulitplex" -- business in the front, lots of parties in the back?) mode?
+2015-01-06T16:46:27  <dbs> eeevil: I haven't specified it in oils_sip.xml, so whatever the default it
+2015-01-06T16:46:28  <dbs> is
+2015-01-06T16:46:47  <eeevil> dbs: ah. prefork is the default still
+2015-01-06T16:46:47  <dbs> SIPConfig.xml seems to suggest that it would be prefork
+2015-01-06T16:47:25  <dbs> Might be some setting from our self-check that dates back 3 years that doesn't play well with current SIPServer I guess
+2015-01-06T16:48:37  <dbs> eeevil: is "make test" supposed to currently work on SIPServer master?
+2015-01-06T16:50:33  <eeevil> dbs: I've no idea, I don't think I've ever tried.  the SIPServer code itself has not been made "package-friendly", I don't think.  I don't rightly recall if there's even a dummy "ils" implementation module, which I think would be needed for 'make test'
+2015-01-06T16:50:37  <dbs> (assuming of course that you've run "PERL5LIB=. ./sip_run.sh" to get the dummy sipserver running)
+2015-01-06T16:51:01  * dbs answered the second recollection at least :)
+2015-01-06T16:51:30  <eeevil> (and I'll bet that it hasn't been kept up to date with stuff we've added to the evergreen "driver")
+2015-01-06T16:55:40  *** dreuther has joined #evergreen
+2015-01-06T16:59:02  *** dreuther_ has quit IRC
+2015-01-06T17:00:27  *** Dyrcona has quit IRC
+2015-01-06T17:01:51  *** mdriscoll has left #evergreen
+2015-01-06T17:04:31  <pinesol_green> [evergreen|Dan Wells] Forward-port 2.6.4 upgrade script - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=5e65e30>
+2015-01-06T17:08:28  <csharp> @who used pg_terminate_backend() on the wrong process?
+2015-01-06T17:08:28  <pinesol_green> pinesol_green used pg_terminate_backend() on the wrong process.
+2015-01-06T17:08:42  <csharp> wheee!
+2015-01-06T17:08:58  <csharp> all calm now, though ;-)
+2015-01-06T17:09:01  <bshum> Ha
+2015-01-06T17:10:07  * csharp rides off into the sunset
+2015-01-06T17:11:05  *** mmorgan has left #evergreen
+2015-01-06T17:13:01  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-06T17:16:47  <phasefx> that Archive::Zip failure also impacts the Excel Writer module that the reporting system uses
+2015-01-06T17:17:23  <bshum> phasefx: What debian are we using for that server?
+2015-01-06T17:17:28  <phasefx> wheezy
+2015-01-06T17:20:31  <phasefx> there is a libarchive-zip-perl package we could pull in
+2015-01-06T17:20:52  <phasefx> I'll try reproducing the error and then see if installing that package helps
+2015-01-06T17:21:36  <phasefx> there's also libexcel-writer-xlsx-perl
+2015-01-06T17:21:52  <phasefx> that sounds even better
+2015-01-06T17:22:12  <eeevil> phasefx: I thought we'd moved to that package, actually, to get around the 64k limit... I might be misremembering, though
+2015-01-06T17:22:37  <phasefx> eeevil: e19d29a3
+2015-01-06T17:22:37  <pinesol_green> [evergreen|Mike Rylander] LP#1351355: Switch to XLSX format for Excel report output - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e19d29a>
+2015-01-06T17:22:44  <bshum> I know we changed to using the packaged deb for Ubuntu, but thought eeevil wanted to keep Debian with the CPAN version because of Squeeze issues?
+2015-01-06T17:22:49  <bshum> But you're saying Wheezy, so :)
+2015-01-06T17:23:59  <eeevil> bshum: I don't recall the details now, but could look again.  squeeze is now EOL'd, I think?
+2015-01-06T17:24:03  <bshum> Ah maybe only for Ubuntu 14.04.  Doesn't look like Precise was updated to use a package either.
+2015-01-06T17:25:19  <phasefx> cpan has version .81, and wheezy package is .47
+2015-01-06T17:26:38  * bshum refers back to: http://irc.evergreen-ils.org/evergreen/2014-08-04#i_115000
+2015-01-06T17:26:47  <bshum> Where we last talked about packaged vs. CPAN
+2015-01-06T17:27:08  <bshum> But yeah, the packaged version is a bit dated
+2015-01-06T17:30:19  <eeevil> yeah ... I'd fear 0.47, I think ... there was something specific we use that older versions lacked
+2015-01-06T17:33:11  <eeevil> well, it looks like it /should/ work ... anyone have tuits for testing that?
+2015-01-06T17:34:20  <eeevil> did precise even have the module? squeeze does not
+2015-01-06T17:35:10  *** dreuther_ has joined #evergreen
+2015-01-06T17:35:25  <bshum> eeevil: I don't see it listed, so I'm guessing no.
+2015-01-06T17:36:31  *** dreuther__ has joined #evergreen
+2015-01-06T17:37:04  * phasefx can give it a poke next week
+2015-01-06T17:37:38  *** dreuther has quit IRC
+2015-01-06T17:39:43  *** dreuther_ has quit IRC
+2015-01-06T17:57:27  *** dreuther has joined #evergreen
+2015-01-06T17:59:40  *** dreuther__ has quit IRC
+2015-01-06T18:20:55  *** vlewis_ has quit IRC
+2015-01-06T18:20:55  *** edoceo_ has quit IRC
+2015-01-06T18:20:55  *** RBecker has quit IRC
+2015-01-06T18:20:55  *** hopkinsju has quit IRC
+2015-01-06T18:20:55  *** rangi has quit IRC
+2015-01-06T18:20:55  *** serflog has quit IRC
+2015-01-06T18:20:55  *** Sato has quit IRC
+2015-01-06T18:20:55  *** dbs has quit IRC
+2015-01-06T18:20:55  *** phasefx has quit IRC
+2015-01-06T18:20:55  *** _bott_ has quit IRC
+2015-01-06T18:20:55  *** ldw has quit IRC
+2015-01-06T18:20:55  *** pastebot has quit IRC
+2015-01-06T18:20:55  *** egbuilder has quit IRC
+2015-01-06T18:20:55  *** csharp has quit IRC
+2015-01-06T18:21:20  *** Sato has joined #evergreen
+2015-01-06T18:21:38  *** dbs has joined #evergreen
+2015-01-06T18:21:45  *** edoceo_ has joined #evergreen
+2015-01-06T18:22:02  *** serflog has joined #evergreen
+2015-01-06T18:22:08  *** vlewis_ has joined #evergreen
+2015-01-06T18:22:15  *** hopkinsju has joined #evergreen
+2015-01-06T18:22:52  *** phasefx has joined #evergreen
+2015-01-06T18:22:52  *** _bott_ has joined #evergreen
+2015-01-06T18:22:52  *** ldw has joined #evergreen
+2015-01-06T18:22:52  *** pastebot has joined #evergreen
+2015-01-06T18:22:52  *** egbuilder has joined #evergreen
+2015-01-06T18:22:52  *** csharp has joined #evergreen
+2015-01-06T18:22:58  *** rangi has joined #evergreen
+2015-01-06T18:23:43  *** dreuther_ has joined #evergreen
+2015-01-06T18:24:51  *** akilsdonk_ has joined #evergreen
+2015-01-06T18:24:59  *** RBecker has joined #evergreen
+2015-01-06T18:26:49  *** dreuther has quit IRC
+2015-01-06T18:27:34  *** akilsdonk has quit IRC
+2015-01-06T18:56:45  *** buzzy has joined #evergreen
+2015-01-06T18:57:00  *** vlewis_ has quit IRC
+2015-01-06T18:57:01  *** vlewis has quit IRC
+2015-01-06T19:01:52  *** nhilton has quit IRC
+2015-01-06T20:09:21  *** mrpeters has quit IRC
+2015-01-06T20:22:01  *** jihpringle has quit IRC
+2015-01-06T20:40:28  *** mnsri_away is now known as mnsri
+2015-01-06T21:01:02  *** mnsri is now known as mnsri_away
+2015-01-06T21:05:07  *** jwoodard has quit IRC
+2015-01-06T23:13:15  *** mnsri_away is now known as mnsri
+2015-01-06T23:15:16  *** mnsri is now known as mnsri_away
+2015-01-06T23:28:13  *** nhilton has joined #evergreen

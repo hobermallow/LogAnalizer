@@ -1,0 +1,349 @@
+2015-01-12T06:11:44  *** maryj has quit IRC
+2015-01-12T06:11:44  *** phasefx has quit IRC
+2015-01-12T06:13:05  *** phasefx has joined #evergreen
+2015-01-12T06:14:04  *** maryj has joined #evergreen
+2015-01-12T07:44:40  *** jboyer-isl has joined #evergreen
+2015-01-12T07:57:02  *** rjackson-isl has joined #evergreen
+2015-01-12T08:08:15  *** mrpeters has joined #evergreen
+2015-01-12T08:10:35  *** ericar has joined #evergreen
+2015-01-12T08:23:09  *** akilsdonk has joined #evergreen
+2015-01-12T08:23:17  *** abowling has joined #evergreen
+2015-01-12T08:37:28  *** Dyrcona has joined #evergreen
+2015-01-12T08:42:32  *** mmorgan has joined #evergreen
+2015-01-12T08:50:52  *** julialima_ has joined #evergreen
+2015-01-12T08:51:16  *** dbwells has joined #evergreen
+2015-01-12T08:51:42  *** Shae has joined #evergreen
+2015-01-12T08:53:00  *** mmorgan has left #evergreen
+2015-01-12T09:04:31  *** mmorgan has joined #evergreen
+2015-01-12T09:12:31  *** pmurray is now known as pmurray_away
+2015-01-12T09:15:27  *** pmurray_away is now known as pmurray
+2015-01-12T09:17:56  <Dyrcona> Well, I'm on the guest wireless at work, but don't feel like correcting that right now.
+2015-01-12T09:18:13  <Dyrcona> One thing I can tell you is that spreading cstore around didn't help in and of itself.
+2015-01-12T09:18:34  <Dyrcona> Apparently, tsbere did that over the weekend and we had trouble again yesterday morning.
+2015-01-12T09:18:56  <Dyrcona> Here's what I think is our real problem with the load on the server and it becoming unresponsive.
+2015-01-12T09:19:28  <Dyrcona> After some digging, I did determine that ejabberd is being limited to 1024/4096 file handles because of how it is started.
+2015-01-12T09:20:05  <Dyrcona> Typically, when things are "normal" it uses betwee 500 and 650 file handles.
+2015-01-12T09:20:31  <Dyrcona> However, when we hit 200 cstore drones and things are busy, I believe it goes over the 1024 soft limit.
+2015-01-12T09:21:06  <Dyrcona> (I can't find it, but I believe I recall seeing it using somewhere around 3000 file handles during one of these episodes last week.)
+2015-01-12T09:22:08  <Dyrcona> So, what I think happens ejabberd tries to keep up with incoming requests but can't, as it runs out of file handles.
+2015-01-12T09:22:10  <kmlussier> Thanks csharp for the info on reports!
+2015-01-12T09:22:33  <Dyrcona> This is where I think the load spikes are coming from, 'cause ejabberd usually looks like it has gone berserk in top.
+2015-01-12T09:23:58  <Dyrcona> So, I've made the changes suggested by eeevil and a couple of blog posts so that ejabberd should get the settings from limits.conf when restarted.
+2015-01-12T09:24:17  <Dyrcona> When this happens today, I'll not only restart services, but clobber ejabberd as well.
+2015-01-12T09:24:55  <Dyrcona> If ejabberd doesn't get the settings when restarted manually, I'll reboot the server.
+2015-01-12T09:25:12  <Dyrcona> Hopefully, it won't take a reboot for the settings to take effect.
+2015-01-12T09:25:22  <Dyrcona> After all, this isn't Windows. :)
+2015-01-12T09:28:30  <Dyrcona> Where this seems to help our situation or not, we're going ahead with our plans to experiment with clustered ejabberd.
+2015-01-12T09:28:44  <Dyrcona> s/Where/Whether/
+2015-01-12T09:31:03  *** gsams has quit IRC
+2015-01-12T09:32:18  *** gsams has joined #evergreen
+2015-01-12T09:38:08  <Dyrcona> @monologue
+2015-01-12T09:38:08  <pinesol_green> Dyrcona: Your current monologue is at least 9 lines long.
+2015-01-12T09:41:30  <csharp> Dyrcona: I'm glad you're recounting your experience here, FWIW ;-)
+2015-01-12T09:41:38  <csharp> kmlussier: happy to help!
+2015-01-12T09:42:18  *** akilsdonk_ has joined #evergreen
+2015-01-12T09:42:32  *** StomproJ has joined #evergreen
+2015-01-12T09:42:41  <Dyrcona> csharp: I thought I'd follow up for those who might search the logs at least.
+2015-01-12T09:43:20  *** chatley has joined #evergreen
+2015-01-12T09:43:24  <Dyrcona> It's so frustrating when you Google your problem and all you are forum posts and IRC logs where questions are asked but no answers given.
+2015-01-12T09:43:35  <Dyrcona> Meh..... missing the word find in there.
+2015-01-12T09:43:43  *** chatley_ has quit IRC
+2015-01-12T09:43:43  *** Stompro has quit IRC
+2015-01-12T09:43:58  <Dyrcona> Yes, there's a XKCD about that. ;)
+2015-01-12T09:45:50  *** akilsdonk has quit IRC
+2015-01-12T09:47:32  *** akilsdonk_ is now known as akilsdonk
+2015-01-12T09:53:52  *** krvmga has joined #evergreen
+2015-01-12T09:53:52  <dbs> Dyrcona++
+2015-01-12T09:54:13  <dbs> that google symptom happens a lot with ejabberd :)
+2015-01-12T09:55:18  <Dyrcona> So, here's a fun thing.
+2015-01-12T09:55:43  <Dyrcona> dbs: Yep, it does.
+2015-01-12T09:55:54  <Dyrcona> I requested a DVD back in early Decemeber.
+2015-01-12T09:56:02  <Dyrcona> It had been in transit for 4 weeks.
+2015-01-12T09:56:44  <Dyrcona> I aborted the transit, set the copy to missing, and targeted the hold at a new copy.
+2015-01-12T09:56:58  <Dyrcona> An hour later, the original DVD shows up in delivery.
+2015-01-12T09:58:38  <Dyrcona> And, yay for "Checkout fills related hold."
+2015-01-12T09:59:02  <Dyrcona> I find that Google symptom happens a lot with erlang.
+2015-01-12T09:59:26  <Dyrcona> I think I should go to some of these erlang seminars/training that I keep seeing in the G+ erlang community.
+2015-01-12T09:59:45  <Dyrcona> I read the O'Reilly book a couple of years ago, but know I'm missing the best stuff about erlang.
+2015-01-12T10:02:56  *** sarabee has joined #evergreen
+2015-01-12T11:01:38  *** vlewis has joined #evergreen
+2015-01-12T11:16:25  *** krvmga has quit IRC
+2015-01-12T11:40:44  <abowling> i'm looking to map a field in a perl module through json_query. i'm finding aliases such as "bre" for biblio.record_entry. Can someone point me to where those aliases are set?
+2015-01-12T11:43:59  <berick> abowling: /openils/conf/fm_IDL.xml
+2015-01-12T11:44:09  <berick> class="bre"
+2015-01-12T11:44:22  <jeff> they originate in the fieldmapper fm_IDL.xml file. there are some ways to programmatically map between things, but we'd probably need more context.
+2015-01-12T11:44:42  * berick grabs 0901
+2015-01-12T11:45:30  <abowling> ++berick., hef thanks. i figured it was an xml conifg somewhere. saved me some time.
+2015-01-12T11:47:50  <berick> hm, looks like the version # in 002.schema.config.sql got out of sync somewhere.  it's one ahead of upgrade/*
+2015-01-12T11:49:06  <bshum> Ugh
+2015-01-12T11:49:16  <bshum> It looks like maybe the last file didn't make it across
+2015-01-12T11:49:26  <bshum> I must have done something wrong in git there berick
+2015-01-12T11:49:28  <bshum> It's missing
+2015-01-12T11:49:31  <bshum> http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3424b298bdc7a347aa70587939190f7d53c60a01
+2015-01-12T11:49:31  <pinesol_green> [evergreen|Ben Shum] LP#1394356: Stamping upgrade script for patron purge post code fix - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3424b29>
+2015-01-12T11:49:55  <berick> bshum: ahh
+2015-01-12T11:49:57  <berick> file is missing
+2015-01-12T11:50:09  <bshum> Doh.  And that got lost in 2.7 series too :(
+2015-01-12T11:50:16  <bshum> I must have typo'd a git command
+2015-01-12T11:50:25  <bshum> Normally I do a git mv, maybe I did a git rm :\
+2015-01-12T11:50:45  <bshum> There should be a 0901 already
+2015-01-12T11:50:52  <bshum> Sigh
+2015-01-12T11:51:18  <bshum> berick: I can fix it if you give me a sec, unless you're already on it
+2015-01-12T11:51:33  <berick> bshum: go for it.  i'm still reviewing this patch i'm about to commit
+2015-01-12T11:55:41  <bshum> berick: All set now.  Thanks for spotting that mistake.  I'll fix up the LP targets.
+2015-01-12T11:56:32  <berick> bshum++
+2015-01-12T11:56:33  <bshum> Course then I typo the commit too
+2015-01-12T11:56:39  <bshum> With teh wrong LP number
+2015-01-12T11:56:43  <bshum> Sigh......
+2015-01-12T11:57:10  <pinesol_green> [evergreen|Ben Shum] LP#1395456: (Fixing) Add back missing 0901 upgrade script - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4d81d26>
+2015-01-12T11:57:15  * berick calls 0902 now :)
+2015-01-12T12:03:12  <pinesol_green> [evergreen|Mike Rylander] LP#1386347: Clear hold-copy-map efficiently - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=13ca7ff>
+2015-01-12T12:03:13  <pinesol_green> [evergreen|Bill Erickson] LP#1386347 Remove more unneeded map deleters - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a047017>
+2015-01-12T12:03:14  <pinesol_green> [evergreen|Bill Erickson] LP#1386347 clear maps at fulfillment time - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=c6ff6f0>
+2015-01-12T12:03:15  <pinesol_green> [evergreen|Bill Erickson] LP#1386347 stamping upgrade for hold clear copy maps - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=523ac8e>
+2015-01-12T12:17:30  <kmlussier> berick: In regards to your latest comment on bug 1386347.
+2015-01-12T12:17:30  <pinesol_green> Launchpad bug 1386347 in Evergreen 2.6 "Speed up hold copy map deletion for clear shelf process, etc." (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1386347
+2015-01-12T12:17:50  <kmlussier> berick: Is that code likely to fix problems like the one identified in bug 1167979?
+2015-01-12T12:17:50  <pinesol_green> Launchpad bug 1167979 in Evergreen "Circulation > Clear Shelf-Expired Holds fails " (affected: 6, heat: 28) [Medium,Confirmed] https://launchpad.net/bugs/1167979
+2015-01-12T12:18:04  <kmlussier> If so, I was consider it worthwhile to backport it.
+2015-01-12T12:18:19  * berick looks
+2015-01-12T12:18:59  <kmlussier> s/was/would
+2015-01-12T12:20:28  <bshum> Bleh
+2015-01-12T12:20:40  <bshum> Isn't that the "feature" that I was reluctant to have backported?  :D
+2015-01-12T12:21:12  <kmlussier> bshum: Maybe?
+2015-01-12T12:22:10  <kmlussier> I always consider elimination of ugly error messages as falling within the bug category. :)
+2015-01-12T12:22:58  <bshum> I like bug squashing, but I'm also wary of backporting new approaches to things to existing series.
+2015-01-12T12:23:25  <berick> kmlussier: commented in bug 1167979
+2015-01-12T12:23:25  <pinesol_green> Launchpad bug 1167979 in Evergreen "Circulation > Clear Shelf-Expired Holds fails " (affected: 6, heat: 28) [Medium,Confirmed] https://launchpad.net/bugs/1167979
+2015-01-12T12:26:12  <berick> to recap, the big ugly error has already been fixed.  occasional timeouts in the client would happen less often w/ bug 1386347, though it's not guaranteed to resolve all timeouts
+2015-01-12T12:26:12  <pinesol_green> Launchpad bug 1386347 in Evergreen 2.6 "Speed up hold copy map deletion for clear shelf process, etc." (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1386347
+2015-01-12T12:32:46  <kmlussier> berick: Thanks! Given that info, I don't know how I feel about bug vs. feature. I know our libraries would love to see the improvment sooner rather than later, but the same could be said for a lot of features too.
+2015-01-12T12:33:49  <bshum> kmlussier: "sooner" is only two months away, if 2.8 arrives on time.
+2015-01-12T12:33:55  <bshum> :D
+2015-01-12T12:34:12  <berick> challenge accepted
+2015-01-12T12:34:21  <bshum> berick++
+2015-01-12T12:34:22  <kmlussier> bshum: You're making an assumption that the consortia I work with upgrade to a release as soon as it's out.
+2015-01-12T12:34:49  <bshum> kmlussier: I'm also making the same assumption that your consortia will actually use a point release upgrade for a current series.
+2015-01-12T12:35:03  <bshum> If they really want it, they can also port the changeset themselves and see if it doesn't break them.
+2015-01-12T12:35:07  <bshum> And then lobby me to add it
+2015-01-12T12:35:20  <bshum> Well, sign off, then lobby me to add it to rel_2_7
+2015-01-12T12:36:34  <berick> fwiw, we're running it locally on 2.4 :)
+2015-01-12T12:36:36  * bshum is not putting his foot down on 2.7 though.  If anyone else on the committers wants to champion it as a fix, they are welcome to do so.
+2015-01-12T12:39:03  *** sbrylander has joined #evergreen
+2015-01-12T12:41:37  *** sarabee has quit IRC
+2015-01-12T13:04:56  *** Dyrcona has quit IRC
+2015-01-12T13:06:59  *** Dyrcona has joined #evergreen
+2015-01-12T13:10:59  *** jihpringle has joined #evergreen
+2015-01-12T13:23:08  * dbs continues to churn out tiny little HTML / discoverability enhancement branches
+2015-01-12T13:26:27  <bshum> dbs: Sweet :D
+2015-01-12T13:27:12  *** buzzy has joined #evergreen
+2015-01-12T13:32:07  <bshum> Oooh, bug 1409844 sounds fun :)
+2015-01-12T13:32:07  <pinesol_green> Launchpad bug 1409844 in Evergreen "TPAC: Towards more meaningful, contextual page titles" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1409844
+2015-01-12T14:38:30  * dbs finally remembers to hit "Save" on the comment he had written up an hour ago
+2015-01-12T14:44:24  *** mtcarlson_away is now known as mtcarlson
+2015-01-12T14:44:43  <berick> hm, is it wrong of me to remove 'pullrequest' tags if a bug is not actually ready to be merged (based on ticket comments)?
+2015-01-12T14:44:53  <berick> or am I being too literal about that?
+2015-01-12T14:45:10  <dbs> You might want to talk to the contributor first?
+2015-01-12T14:45:30  <berick> does pullrequest mean "it's ready now" or "help me finish this thing and get it merged"?
+2015-01-12T14:45:50  <dbs> it's supposed to mean "it's ready now"
+2015-01-12T14:45:51  <bshum> berick: To me, I would feel that pullrequest is supposed to indicate it is as ready as possible for merge.
+2015-01-12T14:45:53  <berick> dbs: and if there are comments in the ticket the contrinbutor has not responded to?
+2015-01-12T14:46:23  <bshum> If commentors are stating issues, then I think it's fair to remove the pullrequest and mark the bug with status "incomplete" pending further action by the original contributor.
+2015-01-12T14:46:34  <bshum> or action by a kind developer who helps out to get it back into ship-shape
+2015-01-12T14:47:02  <berick> bshum: k, thanks.  that's consistent w/ what I was thinking.
+2015-01-12T14:47:30  <bshum> berick: Out of curiosity though, which bug are you poking at in particular?
+2015-01-12T14:47:31  <bshum> :D
+2015-01-12T14:49:27  <berick> currently 1184009
+2015-01-12T14:49:38  <berick> and I just changd another one (which i need to go back and mark imcomplete..)
+2015-01-12T14:51:00  <bshum> Regarding bug 1184009 then, I'm somewhat tempted to let that one die on the vine actually.  Since it affects XUL interfaces and we ought to be aiming for web client stuff?
+2015-01-12T14:51:00  <pinesol_green> Launchpad bug 1184009 in Evergreen "Staff client patron interface/Display overdue items in red" (affected: 2, heat: 12) [Wishlist,Incomplete] https://launchpad.net/bugs/1184009 - Assigned to Dan Wells (dbw2)
+2015-01-12T14:52:22  <bshum> Maybe better as a "won't fix" as no longer matching project plans to move ahead with web client interface instead.
+2015-01-12T14:52:38  <bshum> But that's just my opinion.
+2015-01-12T14:54:09  <jeffdavis> FWIW, Steven (who submitted the bug) is no longer working for Sitka. We've had his patch applied since he submitted it and aren't likely to revisit it anytime soon.
+2015-01-12T14:55:18  <berick> jeffdavis: thanks
+2015-01-12T14:55:43  <berick> in that case, i'm inclined to let it die, too.
+2015-01-12T14:55:49  <Dyrcona> With heat of 12, a couple of people have said it affects them, too, but I don't we can see who.
+2015-01-12T14:56:23  <Dyrcona> I'm inclined to agree with bshum.
+2015-01-12T15:00:30  <kitteh_> has anyone been successful in putting evergreen into docker
+2015-01-12T15:02:32  <bshum> kitteh_: I'm not sure actually.  I know there was some talk about it awhile back.
+2015-01-12T15:03:34  <bshum> One of my quick googling tells me it was talked about on this day in Evergreen IRC:  http://irc.evergreen-ils.org/evergreen/2013-09-13
+2015-01-12T15:03:42  <bshum> jbfink was asking questions about it.
+2015-01-12T15:04:17  <jeffdavis> kitteh_: not docker, but possibly of interest - I was working on automating EG install with Vagrant: https://github.com/twirlip/c4lbc-vagrant-docs
+2015-01-12T15:04:20  <kitteh_> i saw the logs from then, thanks. nothing enw since?
+2015-01-12T15:04:28  <kitteh_> oh tell me more jeffdavis
+2015-01-12T15:05:04  <kitteh_> looks like you got it working?
+2015-01-12T15:05:44  <jeffdavis> Almost. I was getting internal server errors trying to start up the "installed" EG system on the vagrant VM.
+2015-01-12T15:05:51  <jeffdavis> I haven't had a chance to go back and investigate that more.
+2015-01-12T15:06:42  <bshum> Wasn't jboyer-isl playing with other automated installations?  Ansible was it?
+2015-01-12T15:07:04  <jboyer-isl> Yes.
+2015-01-12T15:07:27  <jboyer-isl> Though I need to read some scrollback.
+2015-01-12T15:08:41  <kitteh_> thanks. will take a look
+2015-01-12T15:10:07  <jboyer-isl> I’ve tried to shoe-horn a little too much into my ansible playbook for evergreen. It currently tries to manage everything from the vhmosts to the DNS servers. I need to break it up into more managable pieces.
+2015-01-12T15:12:07  <jboyer-isl> But Ansible as a system is very nice to work with. The entire VM build and install software step took only a single command and a pizza.
+2015-01-12T15:18:47  *** buzzy has joined #evergreen
+2015-01-12T15:19:52  <buzzy> do you have anything else for the registration form?
+2015-01-12T15:21:15  *** sbrylander has quit IRC
+2015-01-12T15:21:22  <kitteh_> cool, jboyer
+2015-01-12T15:21:32  <buzzy> mt
+2015-01-12T15:22:08  *** sarabee has joined #evergreen
+2015-01-12T15:24:07  *** kmlussier has quit IRC
+2015-01-12T15:24:12  * bshum is on the edge of his seat :)
+2015-01-12T15:24:12  *** bshum has quit IRC
+2015-01-12T15:25:03  <berick> heh, i think bshum fell off his seat
+2015-01-12T15:26:05  *** wjr has quit IRC
+2015-01-12T15:26:10  *** bshum has joined #evergreen
+2015-01-12T15:26:16  *** kmlussier has joined #evergreen
+2015-01-12T15:26:43  <bshum> berick: I blame freenode for that little hiccup, but my excitement knows no bounds!
+2015-01-12T15:27:10  <berick> :)
+2015-01-12T15:33:09  <buzzy> conference registration is open! https://www.eventbrite.com/e/evergreen-2015-international-conference-tickets-15029293020
+2015-01-12T15:33:21  <bshum> buzzy++
+2015-01-12T15:35:47  <bshum> conference_folks++
+2015-01-12T15:37:24  <buzzy> gmcharlt was the rockstar that worked on the registration form
+2015-01-12T15:38:19  <gmcharlt> I just made last minute-changes; kmlussier was the rockstar who did most of hte work :)
+2015-01-12T15:38:50  <bshum> gmcharlt++ kmlussier++
+2015-01-12T15:39:04  *** mtcarlson is now known as mtcarlson_away
+2015-01-12T15:39:12  <buzzy> hear hear. kmlussier is amazing
+2015-01-12T15:40:39  <kmlussier> Awww, thanks! I always assumed I was the thorn in everyone's side. ;)
+2015-01-12T15:41:14  <kmlussier> buzzy: Do you have credentials to add an announcement to the Evergreen blog or do you want somebody else to do that?
+2015-01-12T15:42:06  <buzzy> hmm, that's a good question. let me check
+2015-01-12T15:43:03  <berick> bshum: i'm curious if anything came from your testing of bug 1261777
+2015-01-12T15:43:03  <pinesol_green> Launchpad bug 1261777 in Evergreen "User editor cloned address owner link fails to load new tab" (affected: 1, heat: 6) [Medium,Incomplete] https://launchpad.net/bugs/1261777
+2015-01-12T15:43:32  <buzzy> i do, in fact. i'll do that now.
+2015-01-12T15:43:48  <bshum> berick: I probably got side tracked and didn't finish testing from a clean install.  I can try it again though.
+2015-01-12T15:44:28  <bshum> It looks straightforward enough....
+2015-01-12T15:45:22  <berick> bshum: well, i'm just doing some bug wrangling.  it's not urgent.
+2015-01-12T15:45:47  <bshum> berick: It's fine, wrangle away.  I'll add it to my list of things to take a look over though for you.
+2015-01-12T15:46:12  <berick> thanks, bshum
+2015-01-12T15:46:16  <bshum> berick: Speaking of which, I think the dev/packager makefile stuff looks pretty ready to me.
+2015-01-12T15:46:31  <bshum> Only one missed repair for ubuntu-trusty still calls for make
+2015-01-12T15:46:38  *** sarabee has quit IRC
+2015-01-12T15:46:41  <bshum> Otherwise, everything else in the files looks to be in order.
+2015-01-12T15:48:35  *** sarabee has joined #evergreen
+2015-01-12T15:52:34  <kmlussier> buzzy++
+2015-01-12T15:57:27  *** mtcarlson_away is now known as mtcarlson
+2015-01-12T15:59:16  <Bmagic> Im having trouble with EDI, I have verified that the action trigger has worked, and parsed the template, the output is there in event_output. The EDI pusher software works, finds the AT and translates it with the ruby service, but fails. On the surface it looks like an FTP issue, but the logs suggest something else. http://pastebin.com/wWWnBrwY
+2015-01-12T15:59:49  <Bmagic>  /usr/local/share/perl/5.14.2/OpenILS/Utils/CStoreEditor.pm:453 <500>  Severe query error -- see error log for more details
+2015-01-12T16:03:08  <gmcharlt> jeffdavis: do you have a cloneable URL for that repo?
+2015-01-12T16:03:27  <gmcharlt> git clone git://git.sitka.bclibraries.ca/sitka/overdrive-overgreen-opac.git does not work for me
+2015-01-12T16:05:04  *** julialima_ has left #evergreen
+2015-01-12T16:06:46  <Bmagic> gmcharlt: We used this http://docs.evergreen-ils.org/2.3/_installation.html
+2015-01-12T16:08:05  <Bmagic> it was subversion
+2015-01-12T16:08:26  <kmlussier> Bmagic: Did you see https://bugs.launchpad.net/evergreen/+bug/1297967?
+2015-01-12T16:08:26  <pinesol_green> Launchpad bug 1297967 in Evergreen "document openils-mapper code for enriched EDI" (affected: 1, heat: 6) [Undecided,New]
+2015-01-12T16:09:08  <Bmagic> no, let me take a look
+2015-01-12T16:09:25  <kmlussier> Bmagic: We had trouble with EDI until that branch was loaded.
+2015-01-12T16:09:26  <bshum> gmcharlt: Hmm, it cloned okay for me.
+2015-01-12T16:10:45  <Bmagic> well, now I am confused, what IS the routine for installing EDI?
+2015-01-12T16:11:07  <csharp> Bmagic: it does look like an FTP error
+2015-01-12T16:11:24  <csharp> [2015-01-12 14:47:49] ./edi_pusher.pl [ERR :52126:EDI.pm:331:] (S)FTP put to EDI send to edi_account 1 (ftp://ftp.baker-taylor.com) FAILED: put to ftp.baker-taylor.com failed with error:
+2015-01-12T16:11:32  <Bmagic> csharp: I agree but it's weird that it creates the file on the ftp server with 0 bytes
+2015-01-12T16:11:43  <csharp> there may be more wrong, but that's one problem ;-)
+2015-01-12T16:12:52  <jeffdavis> That git clone command fails for me too.  We've had ongoing issues with perms etc on our gitweb, I've poked our sysadmin about this one.
+2015-01-12T16:12:56  <mrpeters> csharp: is there more to that error, or does it cut off there?
+2015-01-12T16:13:37  <csharp> mrpeters: it cuts off (reading from http://pastebin.com/wWWnBrwY)
+2015-01-12T16:13:58  <mrpeters> heh, well shoot that error message isn't so helpful :P
+2015-01-12T16:16:42  <mrpeters> i was hoping it might have given a normal FTP error code
+2015-01-12T16:16:44  <csharp> Bmagic: try removing the "Account" field in Admin -> Server Administration -> Acquisitions -> EDI Accounts for B&T - Scenic
+2015-01-12T16:17:04  <Bmagic> csharp: ill try that
+2015-01-12T16:17:20  <csharp> Bmagic: if there's something in that field, it sends it as a third parameter when FTP-ing (iirc)
+2015-01-12T16:17:32  <Bmagic> csharp: aha! I bet that is it
+2015-01-12T16:18:18  * csharp heads out for now
+2015-01-12T16:20:35  <gmcharlt> buzzy: just got a question from somebody asking whether there was a hotel block rate
+2015-01-12T16:22:28  <bshum> buzzy: Is it possible to add the boxed lunch later on?  (some folks curious if this is a hard requirement vs. finding food in the area, and also not knowing the area).
+2015-01-12T16:26:11  *** ericar has quit IRC
+2015-01-12T16:26:45  <Bmagic> csharp: mrpeters:  removing the contents of the "Account"  didn't see to fix it. Log: http://pastebin.com/dVk8TJxS  FTP error: "put FAILED: put to ftp.baker-taylor.com failed with error: "
+2015-01-12T16:27:00  <mrpeters> heh wish we knew that what error was :P
+2015-01-12T16:27:01  <bshum> Are you sure your credentials are good?
+2015-01-12T16:27:05  <bshum> :)
+2015-01-12T16:27:19  <bshum> Or that you're putting to the right place?  Maybe it needs to be a specific folder.
+2015-01-12T16:27:25  <bshum> or maybe it doesn't really have write permissions
+2015-01-12T16:27:49  <jeffdavis> gmcharlt: there's a typo in your git clone command ("overgreen"), is that the issue?
+2015-01-12T16:29:30  *** rjackson-isl has quit IRC
+2015-01-12T16:31:11  <kmlussier> Heh
+2015-01-12T16:33:06  <berick> I, for one, welcome our Overgreen
+2015-01-12T16:33:19  <bshum> Hahaha
+2015-01-12T16:33:41  <mrpeters> i think someone told me I was "Overgreen" when I did some TPAC skinning :P
+2015-01-12T16:34:06  *** jboyer-isl has quit IRC
+2015-01-12T16:34:53  <bshum> @quote add <berick> I, for one, welcome our Overgreen
+2015-01-12T16:34:53  <pinesol_green> bshum: Error: You must be registered to use this command. If you are already registered, you must either identify (using the identify command) or add a hostmask matching your current hostmask (using the "hostmask add" command).
+2015-01-12T16:34:56  <bshum> Oh come on
+2015-01-12T16:35:08  <berick> heh, never fails to happen
+2015-01-12T16:36:07  <gmcharlt> jeffdavis: as opposed to that ILS that we must never speak of, Undergreen...
+2015-01-12T16:37:28  <jeffdavis> :)
+2015-01-12T16:39:35  *** bshum has quit IRC
+2015-01-12T16:39:48  *** bshum has joined #evergreen
+2015-01-12T16:39:51  <Bmagic> bshum: it creates a 0 byte file on the ftp server! It's freaky. I can login with the same creds and put files in the folder no problem
+2015-01-12T16:40:26  <bshum> pinesol_green: obey me, slave!
+2015-01-12T16:40:26  <pinesol_green> bshum: http://wonder-tonic.com/geocitiesizer/content.php?theme=2&music=6&url=evergreen-ils.org
+2015-01-12T16:43:01  <Bmagic> bshum: it also writes to /tmp/blablabla file, while the edi process is running, I can snag that file and read it. It has stuff in it! weird
+2015-01-12T16:43:09  <kmlussier> bshum/buzzy: I could be wrong, but I believe we allow attendees to edit their registrations in Eventbrite. If so, that might be a way to add on the lunches at a later date.
+2015-01-12T16:43:18  <kmlussier> But I can test that further after I register.
+2015-01-12T16:48:26  * kmlussier thinks she will add the conference to http://opensource.com/resources/conferences-and-events-monthly
+2015-01-12T16:48:29  <bshum> @whoami
+2015-01-12T16:48:29  <pinesol_green> bshum: bshum
+2015-01-12T16:48:33  <bshum> Good.
+2015-01-12T16:55:43  *** dcook has quit IRC
+2015-01-12T16:56:08  *** dcook__ has quit IRC
+2015-01-12T16:56:43  <Dyrcona> @whoareyou
+2015-01-12T16:56:44  <pinesol_green> Dyrcona: have you tried local mean solar time for the named city as the reference point?
+2015-01-12T16:56:58  <Dyrcona> No, but I shall.
+2015-01-12T16:59:59  *** Dyrcona has quit IRC
+2015-01-12T17:03:04  <mrpeters> jeffdavis does your branch support checkout of items?
+2015-01-12T17:03:14  <mrpeters> with less than 14 second responses
+2015-01-12T17:03:53  <mrpeters> we had something in place, but it was taking almost 15 seconds to check out an item from Overdrive.  Curious how your performance is.
+2015-01-12T17:05:13  *** dcook has joined #evergreen
+2015-01-12T17:05:31  <kmlussier> Have a nice night everyone!
+2015-01-12T17:05:45  *** mmorgan has left #evergreen
+2015-01-12T17:06:57  <Bmagic> bshum: I setup a ftp server and tested edi against that, it worked! So it is the FTP..... off to contact their server admin. Thanks everyone!
+2015-01-12T17:07:41  <bshum> Bmagic: Good luck!
+2015-01-12T17:08:43  <jeffdavis> mrpeters: It supports checkout. I don't recall seeing that kind of lag, but I'll ask folks who have done more of the testing.
+2015-01-12T17:09:45  <mrpeters> that would be great, i'd love to hear how long it takes.  We didn't have as good of results as it seems you have had.
+2015-01-12T17:11:24  *** dcook has quit IRC
+2015-01-12T17:12:31  <jeffdavis> mrpeters: I do know grabbing availability details is usually quite fast. Getting a list of a patron's current holds/checkouts can be a little slow, but still only a few seconds (not as much as 15). I'll let you know what I hear back.
+2015-01-12T17:13:31  <mrpeters> thats great to hear
+2015-01-12T17:13:48  <mrpeters> i didnt work on the dev for it, so i dont know what might be different but that is great news
+2015-01-12T17:16:54  *** dcook has joined #evergreen
+2015-01-12T17:21:51  *** Shae has quit IRC
+2015-01-12T17:21:56  <Bmagic> bshum: kmlussier: I'm concerned that my installation is bunk, http://docs.evergreen-ils.org/2.3/_installation.html not accurate? However, it does seem to be working
+2015-01-12T17:23:18  <bshum> Bmagic: So is your question that the steps in the docs is wrong and not working? Or that they're working?
+2015-01-12T17:23:32  * bshum is just double checking your actual question. 
+2015-01-12T17:25:47  <Bmagic> bshum: the install that I am working with right now, was installed using those instructions. My confidence was shaken with https://bugs.launchpad.net/evergreen/+bug/1297967
+2015-01-12T17:25:47  <pinesol_green> Launchpad bug 1297967 in Evergreen "document openils-mapper code for enriched EDI" (affected: 1, heat: 6) [Undecided,New]
+2015-01-12T17:25:52  <bshum> The bug kmlussier referred to previously is dealing with additional EDI functionality that isn't present by following stock instructions.
+2015-01-12T17:26:04  <bshum> For GIR copy data.
+2015-01-12T17:26:14  <bshum> That some EDI vendors require.
+2015-01-12T17:26:27  <Bmagic> I misunderstood, ok then, I guess I am good then
+2015-01-12T17:26:40  <bshum> The actual install process as described in the docs should be fine in general.
+2015-01-12T17:27:17  <bshum> It's just that you will probably want enriched EDI eventually.
+2015-01-12T17:27:17  <Bmagic> bshum++
+2015-01-12T17:27:23  <Bmagic>  kmlussier++
+2015-01-12T17:27:31  <Bmagic>  csharp++
+2015-01-12T17:27:35  <bshum> I know we ended up doing a mix of it with B&T
+2015-01-12T17:29:27  <bshum> buzzy: FYI, someone mentioned a problem with the link from the blog to registration. I just made a minor tweak to the blog post and things look like they work better now.
+2015-01-12T17:43:52  *** vlewis has quit IRC
+2015-01-12T17:46:42  *** buzzy has quit IRC
+2015-01-12T17:50:11  *** mrpeters has quit IRC
+2015-01-12T18:25:16  <jeffdavis> @later tell mrpeters Our main tester confirms my impression that we aren't seeing Overdrive API checkout lag on the order of 15s.
+2015-01-12T18:25:16  <pinesol_green> jeffdavis: The operation succeeded.
+2015-01-12T18:25:44  <kmlussier> bshum / Bmagic: I'm going to disagree with bshum. When we set up acq for MVLC, we needed to follow the install instructions from that bug. They aren't using enriched EDI.
+2015-01-12T18:26:07  * kmlussier will hunt down the relevant IRC discussion where I may have posted actual error messages we were seeing.
+2015-01-12T18:29:14  <kmlussier> bshum / Bmagic: Never mind. I'm going to take back what I said. I came across the problem when trying to accurately receive the PO name in an order. The typical sending and receiving did indeed work until that point.
+2015-01-12T18:29:40  <kmlussier> http://irc.evergreen-ils.org/evergreen/2014-07-22#i_112525
+2015-01-12T18:29:57  <kmlussier> This is why kmlussier shouldn't work past 5 p.m.
+2015-01-12T18:33:29  <bshum> :)
+2015-01-12T19:22:31  *** mtcarlson is now known as mtcarlson_away
+2015-01-12T20:02:04  *** Howdo has joined #evergreen
+2015-01-12T20:02:42  <Howdo> Hello is this for question answer for evergreen state college?
+2015-01-12T20:05:43  *** gsams has quit IRC
+2015-01-12T20:06:06  <Howdo> Hello?
+2015-01-12T20:06:58  *** gsams has joined #evergreen
+2015-01-12T20:09:48  <bshum> Howdo: Hi, this IRC channel is for the Evergreen integrated library system software project.
+2015-01-12T20:10:12  <bshum> I do not believe that college is associated with us.
+2015-01-12T20:10:16  *** Howdo has quit IRC
+2015-01-12T20:10:23  <bshum> Yep.
+2015-01-12T20:55:27  *** jihpringle has quit IRC
+2015-01-12T22:16:35  *** mtcarlson has joined #evergreen
+2015-01-12T22:31:17  *** gsams has quit IRC
+2015-01-12T22:32:34  *** gsams has joined #evergreen
+2015-01-12T22:33:03  *** akilsdonk has quit IRC
+2015-01-12T23:33:35  *** abowling has quit IRC

@@ -1,0 +1,359 @@
+2015-01-09T00:23:32  *** abowling has quit IRC
+2015-01-09T06:12:09  *** maryj has quit IRC
+2015-01-09T06:12:25  *** phasefx has quit IRC
+2015-01-09T06:13:26  *** mtate has quit IRC
+2015-01-09T06:13:26  *** eeevil has quit IRC
+2015-01-09T06:14:05  *** graced has quit IRC
+2015-01-09T06:14:05  *** Callender has quit IRC
+2015-01-09T06:14:05  *** BigRig has quit IRC
+2015-01-09T06:14:05  *** TaraC has quit IRC
+2015-01-09T06:14:17  *** mtate has joined #evergreen
+2015-01-09T06:14:17  *** eeevil has joined #evergreen
+2015-01-09T06:15:17  *** maryj has joined #evergreen
+2015-01-09T06:15:17  *** phasefx has joined #evergreen
+2015-01-09T06:15:17  *** BigRig has joined #evergreen
+2015-01-09T06:15:17  *** Callender has joined #evergreen
+2015-01-09T06:15:18  *** TaraC has joined #evergreen
+2015-01-09T06:16:17  *** graced has joined #evergreen
+2015-01-09T07:57:01  *** rjackson-isl has joined #evergreen
+2015-01-09T08:18:10  *** akilsdonk has joined #evergreen
+2015-01-09T08:20:19  *** Shae has joined #evergreen
+2015-01-09T08:22:09  *** ericar has joined #evergreen
+2015-01-09T08:26:50  *** mrpeters has joined #evergreen
+2015-01-09T08:31:34  <kmlussier> Happy Friday #evergreen!
+2015-01-09T08:36:24  *** sbrylander has joined #evergreen
+2015-01-09T08:37:05  *** abowling has joined #evergreen
+2015-01-09T08:39:34  *** sarabee has quit IRC
+2015-01-09T08:40:31  *** mmorgan has joined #evergreen
+2015-01-09T08:45:00  *** collum has joined #evergreen
+2015-01-09T08:59:39  *** ericar_ has joined #evergreen
+2015-01-09T09:01:37  *** ericar has quit IRC
+2015-01-09T09:01:47  *** ericar_ is now known as ericar
+2015-01-09T09:08:19  *** Dyrcona has joined #evergreen
+2015-01-09T09:11:38  * Dyrcona switches hot spots. Wifi on my laptop is all messed up.
+2015-01-09T09:12:53  *** Dyrcona1 has joined #evergreen
+2015-01-09T09:15:49  *** Dyrcona has quit IRC
+2015-01-09T09:24:20  <jeff> kmlussier: happy Friday!
+2015-01-09T09:25:47  *** Dyrcona1 is now known as Dyrcona
+2015-01-09T09:38:29  <bshum> @hates
+2015-01-09T09:38:29  <pinesol_green> bshum hates metarecord holds; acquisitions; questions about acquisitions; z39.50; acq; notices; action triggers; marc_export; hold pull lists; drupal; holds; RDA; edi; parts holds; kpac; SIP; parts; marc; RAID; Launchpad; edi troubleshooting; reports; serials; apostrophes in search; server power failures; zimbra; office printer; weird barcodes; PO JEDI; B&T; using the phone; horizontal summary (1 more message)
+2015-01-09T09:38:40  <bshum> @more
+2015-01-09T09:38:40  <pinesol_green> bshum: display; vertical summary display; backporting; A/T; custom reporter stuff; dojo; and snow
+2015-01-09T09:38:54  <bshum> Oh good it's there already.
+2015-01-09T09:38:59  <kmlussier> @loves bshum
+2015-01-09T09:38:59  <pinesol_green> bshum loves Evergreen; chocolate chip cookies; git; tpac; yaous; rain; piwik; lunch; Fridays; cake; pizza; Star Trek; pgadmin; donuts; autoupdate; quassel; kvm; roulette; and PostgreSQL magic
+2015-01-09T09:39:00  <bshum> snow--
+2015-01-09T09:39:34  <kmlussier> bshum: you need more love and less hate in your life. ;)
+2015-01-09T09:39:47  <bshum> @love snow days
+2015-01-09T09:39:47  <pinesol_green> bshum: The operation succeeded.  bshum loves snow days.
+2015-01-09T09:40:16  <kmlussier> @loves
+2015-01-09T09:40:16  <pinesol_green> kmlussier loves parts; YAOUS; Fridays; clam chowder; coffee; new fanged email thing; quassel; magic eightball; trivia; Evergreeners; BBQ; spell check; mobile catalog; new edit links in the catalog; vim; and pizza
+2015-01-09T09:40:52  <kmlussier> @hates
+2015-01-09T09:40:52  <pinesol_green> kmlussier hates git; Launchpad search; Internet Explorer; snow; scheduling meetings; and Starbucks
+2015-01-09T09:41:21  <jeff> i get a chuckle out of "new fanged"
+2015-01-09T09:41:23  <kmlussier> @hate negative balances
+2015-01-09T09:41:23  <pinesol_green> kmlussier: The operation succeeded.  kmlussier hates negative balances.
+2015-01-09T09:41:34  <jeff> seems to imply that the email has grown teeth or something.
+2015-01-09T09:41:49  <kmlussier> I've received email with teeth.
+2015-01-09T09:42:17  <Dyrcona> heh
+2015-01-09T09:44:08  <jeff> Content-Type: teeth/fangs
+2015-01-09T09:44:19  <kmlussier> I was trying to remember the context under which I had added that love. Apparently, it came from RoganH http://irc.evergreen-ils.org/evergreen/2014-02-03#i_65979
+2015-01-09T09:45:52  *** remingtron has quit IRC
+2015-01-09T09:49:54  <bshum> @dontcare server power failures
+2015-01-09T09:49:54  <pinesol_green> bshum: The operation succeeded.  bshum no longer hates server power failures.
+2015-01-09T09:50:30  *** julialima_ has joined #evergreen
+2015-01-09T09:50:51  *** Stompro has joined #evergreen
+2015-01-09T09:54:49  <bshum> @sarcasticlove parts
+2015-01-09T09:54:49  <pinesol_green> bshum: But bshum already hates parts!
+2015-01-09T09:57:12  <kmlussier> bshum: You don't hate server power failures?
+2015-01-09T09:58:14  <bshum> Not today anyways.
+2015-01-09T09:58:46  *** remingtron has joined #evergreen
+2015-01-09T10:15:11  *** pmurray_away is now known as pmurray
+2015-01-09T10:32:16  <csharp> wow - so postgres replication is not at all scary to setup - nowhere near as complicated as slony
+2015-01-09T10:32:50  <csharp> I'm running it in some test VMs - so far so good
+2015-01-09T10:33:16  <kmlussier> csharp: Is that something you're thinking of doing in production?
+2015-01-09T10:33:31  <bshum> csharp: It is pretty awesome.
+2015-01-09T10:33:41  <kmlussier> I know it's something that OmniTI recommended in their report.
+2015-01-09T10:36:52  <csharp> kmlussier: yes, beginning next weekend
+2015-01-09T10:37:13  <csharp> slony is such a PITA, I'm happy to see a straightforward setup
+2015-01-09T10:37:30  <csharp> *and* there's automatic failover, which is not possible with slony
+2015-01-09T10:38:02  <csharp> still learning, but it's nice to start the day with a success ;-)
+2015-01-09T10:38:15  <bshum> It was always my understanding that Slony's big deal was that it allowed you to pick and choose which bits to replicate?
+2015-01-09T10:38:29  <bshum> vs. innate replication which seems to just do the whole thing
+2015-01-09T10:38:32  <csharp> yes, that's the *remaining* advantage of slony
+2015-01-09T10:38:55  <csharp> that mattered before we had three identical servers with lots of disk space
+2015-01-09T10:39:18  <bshum> @love new hardware
+2015-01-09T10:39:18  <pinesol_green> bshum: The operation succeeded.  bshum loves new hardware.
+2015-01-09T10:39:22  <bshum> @love new toys
+2015-01-09T10:39:22  <pinesol_green> bshum: The operation succeeded.  bshum loves new toys.
+2015-01-09T10:39:26  <kmlussier> csharp: Keep us posted on how things go.
+2015-01-09T10:39:42  <berick> hm, just occured to me we need to add bzr to the packager prereqs
+2015-01-09T10:39:52  <bshum> Hmm
+2015-01-09T10:40:00  <kmlussier> bshum: I'm happy to see you're following up on my advice from earlier. :)
+2015-01-09T10:40:05  <eeevil> csharp: that, and the fact that long-running queries with either be killed or stall replication (and risk filling disk with WAL)
+2015-01-09T10:40:09  <bshum> berick: For translation sync right?
+2015-01-09T10:40:25  <eeevil> where "that" is "the remaining advantage of slony"
+2015-01-09T10:40:53  <berick> bshum: yah
+2015-01-09T10:42:36  <csharp> eeevil: oh - good to know
+2015-01-09T10:42:53  * csharp wonders how often that will be an issue
+2015-01-09T10:44:28  <csharp> eeevil: on the ESI-administered locations, are you using slony or built-in?
+2015-01-09T10:44:59  <eeevil> csharp: killing queries? any long running report is at risk
+2015-01-09T10:45:12  <eeevil> and, both, for different purposes
+2015-01-09T10:45:13  <csharp> oh - hmm
+2015-01-09T10:45:41  <eeevil> there are good reasons (and use cases) for both
+2015-01-09T10:45:42  <csharp> we regularly have reports that run 2+ hours, even on the new hardwar
+2015-01-09T10:45:43  <csharp> e
+2015-01-09T10:46:14  <eeevil> the timeout is configurable, and probably infinite by default
+2015-01-09T10:46:42  <eeevil> but a long running query also keeps the master from doing some cleanup
+2015-01-09T10:47:13  <eeevil> or did, at least ... not sure if that is fixed in a release yet or now
+2015-01-09T10:47:48  <dbs> pretty sure those early issues were fixed relatively early too
+2015-01-09T10:47:50  * csharp is doing more rtfm work
+2015-01-09T10:48:54  <eeevil> dbs: I hope so :)
+2015-01-09T10:49:47  <eeevil> there were a spate of bad replication-related data-loss bugs, IIRC, about 9-12 months ago, too ... those were scarier, but fixed relatively rapidly
+2015-01-09T10:53:45  <dbs> yep
+2015-01-09T10:54:01  <csharp> dbs: so you're running native PG replication?
+2015-01-09T10:55:25  <kmlussier> @marc 024
+2015-01-09T10:55:25  <pinesol_green> kmlussier: A standard number or code published on an item which cannot be accommodated in another field (e.g., field 020 (International Standard Book Number), 022 (International Standard Serial Number) , and 027 (Standard Technical Report Number)). The type of standard number or code is identified in the first indicator position or in subfield $2 (Source of number or code). (Repeatable) (1 more message)
+2015-01-09T10:55:51  <csharp> marc--
+2015-01-09T10:56:11  <kmlussier> @karma marc
+2015-01-09T10:56:11  <pinesol_green> kmlussier: Karma for "marc" has been increased 0 times and decreased 26 times for a total karma of -26.
+2015-01-09T11:01:34  <jboyer-isl> I missed all of the Postgres replication talk, but what version of Pg are you running csharp?
+2015-01-09T11:01:50  <csharp> jboyer-isl: 9.3
+2015-01-09T11:02:28  <csharp> reading up on cascading replication (asynchronous only) vs. synchronous replication
+2015-01-09T11:04:07  <jboyer-isl> That's probably for the best. We're on 9.1 and after having one of our 2 replicants fall off the end for a second time I'm going back to Slony until at least 9.3 or 9.4. :/ (in 9.1 you had to guess how many WAL segments your replicants might lag; I think in 9.3 or .4 the master won't through away files that slaves still need)
+2015-01-09T11:04:28  <berick> bshum: dbwells: FYI started on http://wiki.evergreen-ils.org/doku.php?id=dev:release_process:evergreen:2.8
+2015-01-09T11:05:05  <csharp> jboyer-isl: wow - well that's the kind of real-world-usage information I'm after
+2015-01-09T11:06:12  <bshum> berick++ # sweet
+2015-01-09T11:06:30  <jboyer-isl> There is a lot of traffic along the link that this replicant was using, but even with 6000+ WAL segments being kept it didn't make it 2 weeks. Identical hardware that sits on the same switch is still keeping up with a much faster master.
+2015-01-09T11:06:30  * berick is done editing for now
+2015-01-09T11:09:09  <csharp> jboyer-isl: interesting
+2015-01-09T11:09:29  <dbs> csharp: yes, we were when we were hosted by UoGuelph, for years. always asynchronous, and primarily for disaster recovery and offline reads.
+2015-01-09T11:09:42  <dbs> You really don't want to do synchronous.
+2015-01-09T11:09:58  <csharp> dbs: ok - good to know
+2015-01-09T11:10:11  <csharp> our ideal setup would be cascading
+2015-01-09T11:10:16  <csharp> 1 to 2 to 3
+2015-01-09T11:10:23  * dbs likes marc 024 for URIs
+2015-01-09T11:11:42  <jboyer-isl> csharp, I didn't think you could do that. If there's a recovery.conf in place I didn't think the server would start any wal_senders. Is that something new in 9.2 or .3?
+2015-01-09T11:12:04  <dbs> hey berick, here's a fun old one: python oils.utils is hardcoded to speak http, so you can't talk to an https-only server
+2015-01-09T11:12:20  <dbs> 9.2 IIRC is where cascading started to be introduced
+2015-01-09T11:12:52  <jboyer-isl> Ah, I see. Never mind then, I'm just living in the past.
+2015-01-09T11:13:22  <csharp> jboyer-isl: http://www.postgresql.org/docs/current/interactive/warm-standby.html#CASCADING-REPLICATION
+2015-01-09T11:13:40  * csharp is actually reading the 9.3 version of that page
+2015-01-09T11:13:57  <berick> dbs: ah, osrf/gateway.py.  yeah, that's dumb
+2015-01-09T11:14:45  <dbs> bingo :)
+2015-01-09T11:14:55  <bshum> berick: Cool, I'm poking a bit to add in some bits from the google doc
+2015-01-09T11:15:02  <berick> bshum++
+2015-01-09T11:16:02  <jboyer-isl> csharp, I was going to say, careful reading current; you might make yourself sad when $NEW_HOTNESS isn't actually available on your version. :D (happened to me recently. :/ )
+2015-01-09T11:16:10  <csharp> heh
+2015-01-09T11:17:09  *** julialima_ has quit IRC
+2015-01-09T11:17:21  *** vlewis has joined #evergreen
+2015-01-09T11:26:21  * Stompro slowly eats popcorn as postgres replication discussion goes on.  Better than the hobbit movies.
+2015-01-09T11:29:42  <kmlussier> Stompro: You and I have different ideas of what entertainment is. :)
+2015-01-09T11:29:51  <kmlussier> @weather 02771
+2015-01-09T11:29:52  <pinesol_green> kmlussier: The current temperature in Rumford, East Providence, Rhode Island is 24.6°F (11:25 AM EST on January 09, 2015). Conditions: Light Snow. Humidity: 91%. Dew Point: 23.0°F. Windchill: 17.6°F. Pressure: 29.99 in 1016 hPa (Steady). 
+2015-01-09T11:30:40  * kmlussier enjoys watching the snow lightly fall from her front window. Very pretty.
+2015-01-09T11:31:01  <Stompro> @weather 58102
+2015-01-09T11:31:02  <pinesol_green> Stompro: The current temperature in Fargo, North Dakota is -0.4°F (9:53 AM CST on January 09, 2015). Conditions: Clear. Humidity: 63%. Dew Point: -9.4°F. Windchill: -18.4°F. Pressure: 30.42 in 1030 hPa (Rising).  Wind Chill Advisory in effect until noon CST today... 
+2015-01-09T11:31:12  <csharp> weather 30033
+2015-01-09T11:31:19  <csharp> @weather 30033
+2015-01-09T11:31:20  <pinesol_green> csharp: The current temperature in Leafmore, Decatur, Georgia is 33.1°F (11:31 AM EST on January 09, 2015). Conditions: Clear. Humidity: 43%. Dew Point: 12.2°F. Windchill: 33.8°F. Pressure: 30.41 in 1030 hPa (Rising). 
+2015-01-09T11:31:40  *** ericar_ has joined #evergreen
+2015-01-09T11:33:39  *** ericar has quit IRC
+2015-01-09T11:33:48  *** ericar_ is now known as ericar
+2015-01-09T11:39:33  <Dyrcona> ooh load is 100.
+2015-01-09T11:45:11  <csharp> yowza
+2015-01-09T11:45:16  <mrpeters> @weather 46060
+2015-01-09T11:45:17  <pinesol_green> mrpeters: The current temperature in Downtown Noblesville, Noblesville, Indiana is 12.7°F (11:45 AM EST on January 09, 2015). Conditions: Scattered Clouds. Humidity: 38%. Dew Point: -7.6°F. Windchill: 1.4°F. Pressure: 30.32 in 1027 hPa (Rising).  Wind Chill Advisory in effect until 7 am EST Saturday... 
+2015-01-09T11:45:19  <mrpeters> so cold it wont even tell you :)
+2015-01-09T11:45:48  <Dyrcona> load is back down to 10 or so, but ejabberd is using 200% cpu.
+2015-01-09T11:46:23  <bshum> Man, you guys cannot seem to catch a break :(
+2015-01-09T11:46:27  <Dyrcona> And, giving me this: I(<0.9788.0>:ejabberd_listener:293) : (#Port<0.2785>) Failed TCP accept: emfile
+2015-01-09T11:46:32  <mrpeters> oh man this winter has been kind
+2015-01-09T11:46:34  <Dyrcona> Which means it can't open new files.
+2015-01-09T11:46:39  <mrpeters> we have only had 2 snows, and this is the first bitter cold
+2015-01-09T11:47:19  <mrpeters> this time last year we were close to breaking snowfall records, so im not complaining too much
+2015-01-09T11:48:19  <Dyrcona> mrpeters: similar here.
+2015-01-09T11:48:53  <Dyrcona> though maybe not record snow fall last year, but we had over a week of bitter cold right around new year last year.
+2015-01-09T11:49:51  <mrpeters> im staying on the positive side, we're only about 6 weeks from 50's being the norm
+2015-01-09T11:50:07  <mrpeters> we usually start having warm days and tornadoes by the time march madness is wrapping up
+2015-01-09T11:50:27  <Dyrcona> I don't get whey ejabberd says it can't open files.
+2015-01-09T11:50:45  <Dyrcona> We only have 61662 open file handles.
+2015-01-09T11:50:53  <Dyrcona> On the whole system.
+2015-01-09T11:51:00  <Dyrcona> ejabberd only has 601 open.
+2015-01-09T11:51:24  <Dyrcona> opensrf has 52587
+2015-01-09T11:51:31  <Dyrcona> And the number of open files is dropping.
+2015-01-09T11:52:49  <Dyrcona> We didn't hit 200 cstore drones this time, either.
+2015-01-09T12:05:00  <Dyrcona> Don't suppose I could just restart ejabberd and no one would notice. ;)
+2015-01-09T12:05:19  *** AliceR has joined #evergreen
+2015-01-09T12:11:26  <jboyer-isl> Dyrcona, If it really did hit the max file limit something would probably have died and caused potentially tons of file handles to close. Have you looked in that machine's syslog for 'Too many open files' ?
+2015-01-09T12:11:52  <jboyer-isl> The best part about hitting that limit is that you never know who's going to win the shutdown lottery!
+2015-01-09T12:14:37  *** mtcarlson_away is now known as mtcarlson
+2015-01-09T12:25:27  <Dyrcona> jboyer-isl: No "Too many open files" messages in syslog and kern.log is dated yesterday sometime.
+2015-01-09T12:26:17  <jboyer-isl> I suppose that would have been too easy. :/
+2015-01-09T12:27:51  <Dyrcona> Most of syslog are messages from postfix that ought to just be in mail.log, but I'm not gonna fix that right now.
+2015-01-09T12:34:34  <Dyrcona> Weird: at 11:35:26 I have ejabberd accepted a connection.
+2015-01-09T12:38:18  <Dyrcona> After that all ejabberd log messages are the emfile error.
+2015-01-09T12:38:40  <Dyrcona> Despite ejabberd not accepting new connections things seem to be working for now.
+2015-01-09T12:43:24  *** juneo has joined #evergreen
+2015-01-09T12:43:35  <Dyrcona> I think I should really learn more about erlang.
+2015-01-09T12:44:19  *** jihpringle has joined #evergreen
+2015-01-09T12:47:02  *** juneo has quit IRC
+2015-01-09T12:48:58  <Dyrcona> The typical answer of increasing ulimit can't be correct, since ulimit -n for ejabberd is 65535 and ejabberd only has 624 files open.
+2015-01-09T12:50:05  <Dyrcona> Looks like we changed it across the board, not just on a user by user basis.
+2015-01-09T13:00:18  *** julialima has joined #evergreen
+2015-01-09T13:19:34  *** AliceR has quit IRC
+2015-01-09T13:28:53  <eeevil> Dyrcona: is pam respecting configured limits for both login and su? the latter is needed when startup scripts su to the ejabberd user, I believe (see: http://metajack.im/2008/09/23/file-descriptors-are-yummy-or-common-pitfalls-of-ejabberd/ )
+2015-01-09T13:31:28  <Dyrcona> eeevil: Thanks. I skipped that one, because I saw something about ERL_MAX_PORTS.
+2015-01-09T13:32:15  <Dyrcona> eeevil: After looking at pam, login does respect limits, but su doesn't, and that could be our problem since the startup script does su when starting ejabberd.
+2015-01-09T13:32:21  <Dyrcona> eeevil++
+2015-01-09T13:32:54  <Dyrcona> I used to like pam, but now I don't. :)
+2015-01-09T13:33:22  <eeevil> heh
+2015-01-09T13:39:32  <Dyrcona> What I'm not finding is what happens if the limits for all uses is set to 65535 and the line is commented out in su. Will pam use some built-in limit?
+2015-01-09T13:42:24  <jeff> even if i thought i knew the answer, i'd test by doing something like echoing the output of uname -a into a file from within an init script that uses su
+2015-01-09T13:42:39  <jeff> (from a command run with su from an init script, that is)
+2015-01-09T13:48:20  <Dyrcona> Here's a little something from the Debian wiki: Note that pam_limits is not used in /etc/pam.d/common-session and /etc/pam.d/common-session-noninteractive, so it won't be active for daemons
+2015-01-09T13:51:33  <Dyrcona> Dunno if that applies here for certain, since the init script does use su.
+2015-01-09T13:51:50  <Dyrcona> Dunno if setting in either of those files would do anything.
+2015-01-09T13:54:55  * dbs wonders if we have a version of reporter.super_simple_record with non-normalized author / title / etc yet
+2015-01-09T13:55:24  * Dyrcona doesn't.
+2015-01-09T13:56:14  * dbs should probably just create a view based on a MODS-ified version of a record for adhoc query/report purposes
+2015-01-09T13:56:19  <csharp> dbs: we don't, that I know of.  our libraries want that, though
+2015-01-09T13:56:32  <csharp> it would be very welcome
+2015-01-09T13:56:35  * dbs hatesesss the normalization :)
+2015-01-09T13:56:48  <dbs> (I understand why it's there, but yeah, need an alternative)
+2015-01-09T13:57:01  <berick> *cough* metabib display fields
+2015-01-09T13:57:01  <dbs> okay. will see what I can put together for the humans
+2015-01-09T13:57:07  <csharp> it's been a pet peeve - nothing to rise to the top of anyone's wish list
+2015-01-09T13:57:11  <dbs> yet
+2015-01-09T13:57:12  <dbs> yeah
+2015-01-09T13:58:34  <Dyrcona> Now, after having all this conversation about pam and limits, I swear that I did see ejabberd have more than 1024 files open earlier today.
+2015-01-09T13:58:47  <Dyrcona> However, using tmux, I don't have any console scroll back.
+2015-01-09T14:00:25  <kmlussier> dbs: We would love to see non-normalized fields.
+2015-01-09T14:01:30  *** finnx has joined #evergreen
+2015-01-09T14:02:11  <kmlussier> It's why I was so excited for display fields, but I guess that's not ready yet.
+2015-01-09T14:06:08  <Dyrcona> su doesn't appear to be the problem.
+2015-01-09T14:06:34  <Dyrcona> Without or without pam_limits.so enabled, I get the right limit with just su.
+2015-01-09T14:13:57  <bshum> Does anyone use clark-kent.pl with concurrency other than 1?  I'm trying to remember how to have clark handle multiple report running at once, but it's been too many years since I last tried it out.
+2015-01-09T14:16:24  <berick> bshum: pretty sure changing the concurrency value is all you have to do
+2015-01-09T14:20:26  <bshum> Okay, so something like... "clark-kent.pl --concurrency=3 --daemon" should keep around up to 3 reports at once
+2015-01-09T14:20:34  * bshum tries it and sees what explodes 
+2015-01-09T14:21:51  <dbs> bshum: we've been doing concurrency 2 for years
+2015-01-09T14:22:50  <csharp> PINES uses '-c 12' nowadays
+2015-01-09T14:27:33  * jeff idly wonders if anyone has run a report in the last year other than a few legacy ones he's run by hand
+2015-01-09T14:32:37  *** Tracy has joined #evergreen
+2015-01-09T14:36:12  *** Tracy_ has joined #evergreen
+2015-01-09T14:37:55  <Tracy_> Hello.  I don't have much experience with chat rooms, but am very pleased to be here and attending this MARC training.
+2015-01-09T14:38:50  <dbs> Welcome Tracy_
+2015-01-09T14:38:57  <jeff> Tracy_: greetings!
+2015-01-09T14:39:27  <jeff> Tracy_: are you in a training session where someone mentioned this channel?
+2015-01-09T14:40:24  <Tracy> Yes. I'm from the Lake County Library and am a new hire for Technical Services Assistant.
+2015-01-09T14:42:40  <jeff> congratulations!
+2015-01-09T14:43:36  <Tracy_> I don't have any questions for the homework this week.  But am logging in for the first time to get acquainted with the chat room and to fulfill my assignment of logging in at least once per week!
+2015-01-09T14:44:03  <Tracy_> Thank you, Jeff.
+2015-01-09T14:47:14  <Tracy_> Looking forward to learning much and getting acquainted with everyone.  Have a good weekend!
+2015-01-09T14:48:04  <bshum> Tracy_: Welcome aboard!  In case it interests you, there's a cataloger discussion mailing list that some Evergreeners use
+2015-01-09T14:48:46  <Tracy_> Yes, please.  That would be helpful.
+2015-01-09T14:48:54  <bshum> Occasionally some of them are in IRC here too, but you may find more interesting topics discussed on those email threads
+2015-01-09T14:48:55  <bshum> http://list.evergreen-ils.org/cgi-bin/mailman/listinfo/evergreen-catalogers
+2015-01-09T14:50:37  <Tracy_> Got it.  Thanks!
+2015-01-09T14:52:00  *** Tracy_ has quit IRC
+2015-01-09T14:53:51  *** Tracy has quit IRC
+2015-01-09T15:07:04  <kmlussier> I don't know anything about the MARC class, but I love the instructor who asked her students to get acquainted with #evergreen.
+2015-01-09T15:07:46  *** Sally has joined #evergreen
+2015-01-09T15:09:24  <bshum> It does give you that warm fuzzy feeling inside doesn't it?
+2015-01-09T15:09:52  * dbs suspects that the display_field approach may benefit significantly from postgresql 9.3 and LATERAL
+2015-01-09T15:10:06  <kmlussier> #evergreen often gives me a warm fuzzy feeling inside.
+2015-01-09T15:11:00  <bshum> dbs: Does that mean that we should make a hard requirement to use PG 9.3 for 2.8+ ?  (I already feel like PG 9.3 should have been the base version for 2.7, but anyways....)
+2015-01-09T15:11:24  <dbs> otherwise, pre-9.3 approach seems likely to be another materialized table populated by triggers. could be just my little brain not dealing well with attempts to harness biblio.extract_metabib_field_entry(bibid)  for the powers of good
+2015-01-09T15:12:41  <dbs> bshum: 9.1 end of life is September 2016
+2015-01-09T15:13:36  <bshum> Oh, that'll line up nicely with 3.0 then ;)
+2015-01-09T15:13:37  <dbs> (per http://www.postgresql.org/support/versioning/) - 9.3 minimum + dropping script-based circ + newfangled websocketry all sounds like a good thing to get in place for an upcoming release
+2015-01-09T15:13:58  <dbs> 2.10? :)
+2015-01-09T15:14:04  <bshum> Nooooooo
+2015-01-09T15:14:05  <bshum> :)
+2015-01-09T15:15:00  <bshum> I imagine that 3.0 would be a good marketing concept for the day we can officially cut the cord between the XUL and web based staff clients.
+2015-01-09T15:15:20  * bshum would buy that t-shirt
+2015-01-09T15:16:13  * dbs would buy that t-shirt, wear it, then give a lightning talk where he rips it off Hulk Hogan-style to reveal a "XUL FOREVER" shirt underneath.
+2015-01-09T15:16:29  <dbs> Then rip that one off to reveal "I kid, I kid" under that
+2015-01-09T15:16:34  <bshum> dbs++
+2015-01-09T15:16:35  <bshum> Haha
+2015-01-09T15:18:30  * bshum would go to that lightning talk :)
+2015-01-09T15:19:54  <mtate> dbs++
+2015-01-09T15:24:00  <kmlussier> dbs++
+2015-01-09T15:24:42  <kmlussier> Are display fields doable for 2.8?
+2015-01-09T15:32:35  <dbs> kmlussier: some elements of them would be. not sure what the whole desired scope is
+2015-01-09T15:33:30  <kmlussier> dbs: Nor do I.
+2015-01-09T15:36:20  *** Sally has quit IRC
+2015-01-09T15:48:52  <eeevil> dbs / kmlussier: re display fields, the full scope would be TPAC + replace MVR + reporting (and likely more), so probably not all for 2.8, but I think TPAC and reporting might be
+2015-01-09T15:50:20  <eeevil> dbs: and, IIRC, I think display fields could (is planned to?) reuse browse_entry, since the data in there is focused on patron display normalization already, to avoid another copy of /all/ the data
+2015-01-09T15:50:33  <eeevil> but, going from memory on that second part
+2015-01-09T15:51:01  <kmlussier> eeevil: What would display fields do for TPAC? I think I've asked this question before, but I don't remember the answer now.
+2015-01-09T15:52:02  <jeff> for one thing, they could eliminate the need for tpac to parse the MARCXML blob for every item on every search result page.
+2015-01-09T15:53:02  <berick> kmlussier: remove all the xpath cruft from the templates and just display pre-cacluated values from the DB for record fields
+2015-01-09T15:53:35  <kmlussier> berick: Gotcha! Thanks
+2015-01-09T15:53:36  <jeff> (unless you wanted to override without re-ingest, in which case the marcxml would still be available to you)
+2015-01-09T15:53:39  <berick> what jeff said, in an ideal world, but completetly getting rid of all xpath/parsing would be a significant job, i think
+2015-01-09T15:53:46  <berick> jeff: that, too
+2015-01-09T15:58:19  <kmlussier> I wish I understood reports better.
+2015-01-09T15:58:42  <bshum> kmlussier: Be careful what you wish for.
+2015-01-09T15:59:15  <kmlussier> When you use the "in list" operator on a filter, why is it that you sometimes are presented with a list of defined values when you create the report, but other times you have to enter the text?
+2015-01-09T16:01:46  <bshum> Maybe it's a goof in the fieldmapper?
+2015-01-09T16:01:54  <bshum> And it doesn't know where to get the list from
+2015-01-09T16:02:01  <kmlussier> For example, I can get a nice list of org unit IDS to choose from or a list of fund codes to choose from. But if I want to filter by PO state, I need to manually enter the text.
+2015-01-09T16:02:43  <Stompro> Should there be a post on evergreen-ils.org and something to the list serves about EG 2.7.2, 2.6.5 and Opensrf 2.4.0?  The last release post is for 2.7.1, 2.6.4 and 2.5.8.  I've been out for a month and I'm just trying to caught up.
+2015-01-09T16:03:06  <jeff> back when we used to run reports that way (okay, I'll stop), I seem to recall two common causes: a lack of proper linkage in the fieldmapper, or selecting the "wrong" element in the report template editor.
+2015-01-09T16:03:06  <bshum> Stompro: In theory, we should probably blog more.  In practice, that isn't always the case.
+2015-01-09T16:04:15  <berick> eeevil: IIRC, there was talk of using browse_entry for display fields, but no action.
+2015-01-09T16:04:17  <berick> all talk, no walk
+2015-01-09T16:04:46  <kmlussier> jeff: OK, so maybe I need to find the "right" element.
+2015-01-09T16:05:01  <bshum> kmlussier: What is PO State related to?  (is that an actual state, like CT?)
+2015-01-09T16:05:09  <berick> kmlussier: PO states do not come from a list maintained in the DB.
+2015-01-09T16:05:14  <eeevil> sorry, looked away ... /me reads up
+2015-01-09T16:05:22  <kmlussier> I'm copying a report from a reports guru where the same thing happens, so I suspect the cause is the former not the latter.
+2015-01-09T16:05:24  <jeff> ah, then there'd you go. berick has the true reason in this case.
+2015-01-09T16:05:29  *** julialima has left #evergreen
+2015-01-09T16:06:02  <kmlussier> berick: Really? I always assumed there was because there was a limited number of states that could be used.
+2015-01-09T16:06:13  <kmlussier> berick: And the same is true for lineitem states?
+2015-01-09T16:06:40  <kmlussier> bshum: State as in pending, on order, complete, etc.
+2015-01-09T16:06:41  <bshum> Oh state, got it now...
+2015-01-09T16:06:44  <bshum> :)
+2015-01-09T16:07:05  <berick> kmlussier: same for lineitems.
+2015-01-09T16:07:22  <kmlussier> OK, then. I won't worry about it and move on. At least I now know the answer to a question that has been bugging me for a while. :)
+2015-01-09T16:08:16  <kmlussier> Actually, I lied about moving on.
+2015-01-09T16:08:22  <berick> kmlussier++
+2015-01-09T16:08:45  <kmlussier> berick: So that would explain why, when you do an acquisitions search, you can't select a state from a nice dropdown box? That's something that's been on our wishlist for a while.
+2015-01-09T16:09:04  <berick> kmlussier: yep
+2015-01-09T16:09:40  <berick> should be possible to put a custom state-picker widget into the search form, though
+2015-01-09T16:10:18  <kmlussier> berick: Possible as in hours and hours of development or possible as in an easy tweak?
+2015-01-09T16:10:36  <berick> hm, somewhere in the middle
+2015-01-09T16:10:51  <kmlussier> berick: Good to know for the next time it comes up. Thanks!
+2015-01-09T16:12:32  *** collum has quit IRC
+2015-01-09T16:15:25  *** mtcarlson is now known as mtcarlson_away
+2015-01-09T16:20:11  <bshum> Stompro++ # proactive :D
+2015-01-09T16:21:05  *** ericar has quit IRC
+2015-01-09T16:21:50  *** mtcarlson_away is now known as mtcarlson
+2015-01-09T16:22:10  <kmlussier> Stompro++
+2015-01-09T16:24:32  <jboyer-isl> kmlussier, depends on if the field is a primary key or not.
+2015-01-09T16:24:45  <jboyer-isl> HEY look who can't scroll.
+2015-01-09T16:26:29  <kmlussier> :)
+2015-01-09T16:27:20  <dbs> Fruits of labor: http://goo.gl/CEj1F7 (no non-normalized publisher info yet, config.metabib_field is likely to grow if we really want to centralize this stuff)
+2015-01-09T16:27:29  <dbs> and then we'll get to try and deal with RDA :)
+2015-01-09T16:28:21  <dbs> Next stop, BIBFRAME
+2015-01-09T16:29:11  *** rjackson-isl has quit IRC
+2015-01-09T16:30:07  <kmlussier> dbs++
+2015-01-09T16:34:00  *** jboyer-isl has quit IRC
+2015-01-09T16:45:37  *** Shae has quit IRC
+2015-01-09T16:56:54  *** Dyrcona has quit IRC
+2015-01-09T17:04:53  *** sbrylander has quit IRC
+2015-01-09T17:05:49  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-09T17:12:58  <dbs> Archive::Zip--
+2015-01-09T17:13:14  <dbs> We've been living with broken windows and ugly graffitti too long
+2015-01-09T17:32:31  *** mmorgan has left #evergreen
+2015-01-09T18:35:18  *** mrpeters has quit IRC
+2015-01-09T18:55:44  *** vlewis has quit IRC
+2015-01-09T19:46:31  *** mtcarlson is now known as mtcarlson_away
+2015-01-09T20:16:48  *** jihpringle has quit IRC
+2015-01-09T20:45:47  *** akilsdonk has quit IRC
+2015-01-09T22:27:34  *** mnsri_away is now known as mnsri
+2015-01-09T22:38:12  *** mnsri is now known as mnsri_away
+2015-01-09T23:13:09  *** abowling has quit IRC

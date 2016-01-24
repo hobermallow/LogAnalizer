@@ -1,0 +1,206 @@
+2015-01-02T02:01:36  *** NikolaMachiavell has joined #evergreen
+2015-01-02T02:03:48  *** NikolaMachiavell has quit IRC
+2015-01-02T06:44:25  *** pie_ has joined #evergreen
+2015-01-02T06:44:28  *** pie_ has joined #evergreen
+2015-01-02T07:33:37  *** collum has joined #evergreen
+2015-01-02T07:33:51  *** rjackson-isl has joined #evergreen
+2015-01-02T07:55:28  *** collum has quit IRC
+2015-01-02T08:01:48  *** remingtron has joined #evergreen
+2015-01-02T08:34:06  *** abowling has joined #evergreen
+2015-01-02T08:34:25  *** mmorgan has joined #evergreen
+2015-01-02T08:36:23  *** sarabee has joined #evergreen
+2015-01-02T08:49:03  *** jboyer-isl has joined #evergreen
+2015-01-02T09:02:23  *** Dyrcona has joined #evergreen
+2015-01-02T09:02:43  <Dyrcona> jeff++
+2015-01-02T09:03:31  *** ericar has joined #evergreen
+2015-01-02T09:03:50  *** ericar has left #evergreen
+2015-01-02T09:04:44  <Dyrcona> jeff saved me a debugging session with Venkman.
+2015-01-02T09:19:10  *** BigRig has quit IRC
+2015-01-02T09:19:16  *** BigRig has joined #evergreen
+2015-01-02T09:20:17  *** pie_ has quit IRC
+2015-01-02T09:21:17  *** pie_ has joined #evergreen
+2015-01-02T09:37:45  *** RoganH has joined #evergreen
+2015-01-02T10:20:46  <Dyrcona> When looking at running queries in an Evergreen database, ones that have hash values for table names are run by the reporter, correct?
+2015-01-02T10:21:47  <jeff> i can't remember without looking if QP uses that trick anywhere
+2015-01-02T10:22:10  <jeff> but i can confirm that the reporter does generate those kinds of table aliases -- that probably doesn't help you much :-)
+2015-01-02T10:22:21  <Dyrcona> OK. I've got one of the queries running for about 5 minutes now, and there are two clark kents going, one says reporting.
+2015-01-02T10:22:35  <Dyrcona> I'll assume this is the report.
+2015-01-02T10:27:05  <Dyrcona> Yep. The query finished and the reporting clark kent vanished.
+2015-01-02T10:33:11  <Dyrcona> jeff++ again
+2015-01-02T11:25:25  *** RoganH has quit IRC
+2015-01-02T11:39:24  *** mllewellyn has joined #evergreen
+2015-01-02T12:47:10  <jeff> you are too kind.
+2015-01-02T12:50:00  <Dyrcona> jeff: you have been too helpful. :)
+2015-01-02T12:50:57  <jeff> drat. so much for THAT new year's resolution.
+2015-01-02T12:53:54  *** mmorgan has quit IRC
+2015-01-02T12:54:06  *** buzzy has joined #evergreen
+2015-01-02T12:55:41  *** nhilton has joined #evergreen
+2015-01-02T12:56:40  *** buzzy has quit IRC
+2015-01-02T12:59:39  *** mmorgan has joined #evergreen
+2015-01-02T13:01:07  *** nhilton has quit IRC
+2015-01-02T13:11:15  <berick> gmcharlt++ # Koha CATalog
+2015-01-02T13:15:15  <jeff> that's it. we're all switching to koha, right meow.
+2015-01-02T13:15:54  *** sandbergja has joined #evergreen
+2015-01-02T13:16:40  * gmcharlt cannot resist
+2015-01-02T13:16:48  <gmcharlt> @quote add <jeff> that's it. we're all switching to koha, right meow.
+2015-01-02T13:16:48  <pinesol_green> gmcharlt: The operation succeeded.  Quote #104 added.
+2015-01-02T13:18:28  <Dyrcona> heh
+2015-01-02T13:20:24  <remingtron> berick: bshum: I'm looking to install the web client. Is the staff/README.install file in master the latest? I recall bshum trying to flesh it out, but don't see that in the history.
+2015-01-02T13:21:19  <gmcharlt> remingtron: it's the latest AFAIK; what bshum had been working on IIRC was the OpenSRF websockets README
+2015-01-02T13:21:40  <gmcharlt> in any event, the process described in staff/README.install works
+2015-01-02T13:21:56  <remingtron> gmcharlt: ah, thanks, that sounds right
+2015-01-02T13:22:18  <bshum> i did start a branch for the main README too
+2015-01-02T13:23:19  <berick> see also bug 1392759 for automating the prereq installs
+2015-01-02T13:23:19  <pinesol_green> Launchpad bug 1392759 in Evergreen "Developer/Packager Makefile.install targets" (affected: 1, heat: 6) [Wishlist,New] https://launchpad.net/bugs/1392759
+2015-01-02T13:24:53  <berick> though, it's probably easier just to use the README.install for now
+2015-01-02T13:25:09  <bshum> remingtron: Yeah looks like I didn't push a git branch yet, but I apparently did create a generated version at http://evergreen-ils.org/~bshum/Evergreen-README.html#_optional_extra_steps_for_browser_based_staff_client
+2015-01-02T13:25:21  <bshum> I'll look around on my laptops, one of them probably has the working branch
+2015-01-02T13:25:30  <bshum> I think I wanted to flesh out the position of the instructions better
+2015-01-02T13:25:43  <bshum> Since it only pertains to developers who use the git installs
+2015-01-02T13:25:53  <bshum> The tarballs already compile things.  Now, anyways.
+2015-01-02T13:28:54  <remingtron> bshum: thanks for the info!
+2015-01-02T13:32:23  <remingtron> bshum: did you you also push a branch for opensrf install instructions w/ websockets? or is that the missing branch you mentioned?
+2015-01-02T13:32:29  <berick> remingtron: it's in opensrf master
+2015-01-02T13:32:29  <bshum> remingtron: That was definitely already done, and is part of OpenSRF master
+2015-01-02T13:32:41  <bshum> It's only a matter of when gmcharlt cuts 2.4.0 official :)
+2015-01-02T13:32:49  <remingtron> berick++ bshum++
+2015-01-02T13:33:11  <bshum> I can't find my working branch for Evergreen... maybe it got lost in my VM shuffles :(
+2015-01-02T13:33:29  <bshum> So yeah, the staff/README.install is the main thing to follow for the moment.
+2015-01-02T13:33:45  <remingtron> thanks, that's what I'll do then
+2015-01-02T13:39:23  <bshum> remingtron: On a different note, I have it on my very long list of to-do to finish looking over the changes you and Stompro were poking at for 2.7 upgrade doc changes in https://bugs.launchpad.net/evergreen/+bug/1390138
+2015-01-02T13:39:23  <pinesol_green> Launchpad bug 1390138 in Evergreen "Documentation: 2.7 upgrade docs need to be updated" (affected: 1, heat: 6) [Medium,Confirmed] - Assigned to Josh Stompro (u-launchpad-stompro-org)
+2015-01-02T13:39:50  <bshum> Or wait, maybe I was thinking of another bug you were working on with Stompro :\
+2015-01-02T13:40:15  <bshum> Oy.
+2015-01-02T13:40:15  <berick> bshum: this is where I would add the '2.8' series?  https://launchpad.net/evergreen/+addseries
+2015-01-02T13:40:24  <bshum> I think so
+2015-01-02T13:40:33  <bshum> Looks right anyways
+2015-01-02T13:40:43  <berick> k
+2015-01-02T13:40:52  <bshum> Yes.
+2015-01-02T13:41:21  <bshum> berick++
+2015-01-02T13:41:54  <berick> bshum: do you have a tool for updating bugs from targeting 2.next to 2.8?
+2015-01-02T13:42:24  <bshum> berick: What I did during the last dev cycle was to only move bugs from 2.next to 2.8 as they were actually merged / worked on.
+2015-01-02T13:42:34  <bshum> That way, we didn't churn unnecessarily to move everything back from 2.8 to 2.next if we missed them
+2015-01-02T13:42:44  <bshum> So 2.next is a perpetual milestone.
+2015-01-02T13:43:02  <bshum> As far as moving things, no, I've always just manually changed things in LP.
+2015-01-02T13:43:35  <berick> gotha
+2015-01-02T13:45:45  <Dyrcona> I used to have a script, but it quit working after a LP udgrade a couple of years ago.
+2015-01-02T13:45:50  <bshum> Based on that interpretation, I might suggest changing some bugs to no longer target 2.next (since they were bug fixes that have been released in 2.7 series) and just mark them as fix released with no milestone shuffle to 2.8.x
+2015-01-02T13:46:07  <bshum> If it would help, I'd be happy to do some bug triage for you berick.
+2015-01-02T13:46:56  * berick wonders if we should just have a milestone called "pullrequest" 
+2015-01-02T13:47:08  <berick> bshum: i would not say no to that :)
+2015-01-02T13:47:12  <bshum> Maybe "newfeature"
+2015-01-02T13:47:13  <bshum> :)
+2015-01-02T13:47:24  <bshum> pullrequest for bugs vs. newfeatures are different to me
+2015-01-02T13:47:52  <berick> oh, right, because 2.next would only be features
+2015-01-02T13:49:10  <berick> bshum: regarding the 2.7 vs 2.next bugs, if they were merged into 2.7, wouldn't they be marked as 'fix committed' for 2.next anyway?
+2015-01-02T13:49:24  <bshum> berick: Correct.
+2015-01-02T13:49:38  <bshum> But for LP purposes then, you'd have lingering bugs that never close cause 2.next will never release
+2015-01-02T13:49:56  <bshum> So we end up moving those bugs from 2.next to an actual release milestone 90% of the time anyways
+2015-01-02T13:50:39  <berick> i see.  just wondering what makes more sense.. marking 'released' on a virtual milestone (2.next) seems kind of odd, no?
+2015-01-02T13:50:52  <bshum> It's pretty pointless.
+2015-01-02T13:51:14  <berick> haha
+2015-01-02T13:51:14  <bshum> What I am doing right now is removing the milestone link for the main line
+2015-01-02T13:51:14  <bshum> And marking the bug as fix released
+2015-01-02T13:51:15  <bshum> Which will hide it from active listed bugs
+2015-01-02T13:51:15  <berick> ah, ok
+2015-01-02T13:51:18  <bshum> And not have it linked to the 2.next milestone anymore
+2015-01-02T13:51:57  <bshum> This is my general interpretation of a way to use LP.  We can discuss it further at the January dev meeting maybe.
+2015-01-02T13:51:59  <berick> another possibilty.. rename '2.next' to 'master'.  equally as pointless, but more flexible going forward
+2015-01-02T13:52:02  <bshum> And solidify our approaches
+2015-01-02T13:52:08  <berick> sure
+2015-01-02T13:52:50  <berick> and thanks, bshum
+2015-01-02T13:53:30  <bshum> berick: Once you have a 2.8.0-alpha milestone (or beta?) let me know
+2015-01-02T13:53:41  <bshum> I can shuffle along bugs that are fix committed in 2.next to the proper place for 2.8
+2015-01-02T13:53:52  <berick> k, doing so now
+2015-01-02T13:55:39  <berick> bshum: do you know what "date targeted" means in the milestone creation form?
+2015-01-02T13:55:47  <berick> release date, perhaps
+2015-01-02T13:55:53  <bshum> berick: That's sort of an estimated date for when you release, yes.
+2015-01-02T13:56:11  <berick> cook
+2015-01-02T13:56:11  <berick> er, cool
+2015-01-02T13:56:11  <berick> we're cookin!
+2015-01-02T13:56:11  <bshum> I tend to target those to the date I plan to cut, or maybe +1 day
+2015-01-02T13:56:29  <bshum> I think some people use +1 day (gmcharlt seems to have?) and it seems smart to do so since LP seems to live in a different timezone.
+2015-01-02T13:56:49  <bshum> Close enough though :)
+2015-01-02T13:56:59  <gmcharlt> bshum: uh... yeah... that's why I seized on that date... that's right...
+2015-01-02T13:57:00  <gmcharlt> :)
+2015-01-02T13:57:16  <bshum> gmcharlt++ # you're just that cool ;)
+2015-01-02T13:57:54  <berick> heh
+2015-01-02T13:57:59  <berick> ok, created 2.8-beta
+2015-01-02T13:58:08  <bshum> berick++ #cool, retargeting
+2015-01-02T13:58:23  <berick> bshum++
+2015-01-02T14:00:11  <bshum> Okay, all settled.
+2015-01-02T14:00:13  <bshum> For now.
+2015-01-02T14:00:19  <bshum> The real work begins though ;)
+2015-01-02T14:03:58  <berick> indeed
+2015-01-02T14:06:43  * berick wonders if 78 pullrequest bugs is high
+2015-01-02T14:07:29  <bshum> That sounds like a lot.
+2015-01-02T14:09:56  <bshum> But eh, no problemo :)
+2015-01-02T14:17:29  *** jboyer-isl has joined #evergreen
+2015-01-02T14:40:33  *** RoganH has joined #evergreen
+2015-01-02T15:23:44  *** RoganH has quit IRC
+2015-01-02T15:44:45  <pinesol_green> [evergreen|Pasi Kallinen] Make Vandelay merge profile names translatable. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e66d78b>
+2015-01-02T16:32:29  *** rjackson-isl has quit IRC
+2015-01-02T16:32:36  *** jboyer-isl has quit IRC
+2015-01-02T16:53:29  *** mllewellyn has quit IRC
+2015-01-02T16:57:04  *** Dyrcona has quit IRC
+2015-01-02T17:01:47  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-02T17:04:36  *** mmorgan has left #evergreen
+2015-01-02T17:07:07  <berick> ugh.  on more than one box (ubuntu 14.04), retrieving file /reports/fm_IDL.xml via browser craps out w/ an IDLCHUNK parse error.
+2015-01-02T17:07:33  <berick> it reads "\x1f\x8b\b" as the first few bytes..  (which is of course not in the IDL).
+2015-01-02T17:07:53  <berick> mod_idlchunk.c might need a once-over.
+2015-01-02T17:07:59  <berick> cofirmed same with mod_xmlent
+2015-01-02T17:08:08  <berick> wonder if anyone is having the same problem...
+2015-01-02T17:15:51  <jeffdavis> berick: we saw that error during our 2.4 and 2.6 upgrades, let me see if I can dig up details
+2015-01-02T17:16:20  <berick> jeffdavis++
+2015-01-02T17:16:28  <berick> good... hope i'm just missing something
+2015-01-02T17:20:10  <dbs> berick: usually that's a sign that the translation is not complete
+2015-01-02T17:20:34  <berick> dbs: the fm_IDL.xml file itself is fine.  xmllint linkes it OK
+2015-01-02T17:20:40  <berick> er, likes it
+2015-01-02T17:20:59  <jeffdavis> yeah, just confirmed that our issue was translation related so probably not the same problem
+2015-01-02T17:21:01  <dbs> berick: sure, but if there's a new type (like 'aou') that doesn't exist in the entity-ized version, then crap out
+2015-01-02T17:21:12  <jeffdavis> in our case we had added an entry to the IDL (to add a link from holds to hold_copy_map in the reporter) but hadn't done the proper localization stuff; our workaround was to overwrite reports/fm_IDL.xml with the version at /openils/conf/fm_IDL.xml which is hardcoded in English
+2015-01-02T17:21:47  <berick> more to the point.. on my system, /openils/var/web/reports/fm_IDL.xml was copied directly from /openils/conf/fm_IDL.xml
+2015-01-02T17:21:53  <berick> IOW, it has no entities
+2015-01-02T17:22:07  <dbs> berick: oh, that's certainly a different matter then.
+2015-01-02T17:22:18  <berick> dang
+2015-01-02T17:23:09  <dbs> proper localization stuff == 'cd build/i18n; make LOCALE=xx-YY newpot updatepo; make install' before doing the regular build and install
+2015-01-02T17:23:41  <dbs> otherwise, you have to copy the updated i18n files into place manually
+2015-01-02T17:25:43  <berick> dbs: thanks.  been meaning to figure out how to do that when installing from source.
+2015-01-02T17:25:54  * dbs would love to get rid of mod_xmlent and all of the .properties bits of i18n
+2015-01-02T17:26:25  <dbs> Interesting, https://laurentian.concat.ca/reports/fm_IDL.xml works fine but http://laurentian.concat.ca/reports/fm_IDL.xml gives a heinous error on our SSL-everywhere-ish instance
+2015-01-02T17:27:28  <dbs> "unable to include "/opac/locale/${locale}/fm_IDL.dtd" in parsed file /openils/var/web/reports/fm_IDL.xml" the error log says (ubuntu 12.04 here)
+2015-01-02T17:28:21  <berick> yeah, that's definitely different
+2015-01-02T17:29:32  <jeffdavis> berick: is your fm_IDL.xml being gzipped by apache?
+2015-01-02T17:29:53  <jeffdavis> apache deflate or whatever
+2015-01-02T17:29:54  <berick> jeffdavis: ooh.. i like that
+2015-01-02T17:29:57  <berick> lemme see
+2015-01-02T17:30:07  <dbs> jeffdavis++ # that rings a bell too
+2015-01-02T17:31:21  <dbs> We had disabled that combination way back when in the apache 2.2 config because of that problem, but I think the compression config might have been touched recently?
+2015-01-02T17:32:24  <berick> jeffdavis++
+2015-01-02T17:32:26  <berick> that's it
+2015-01-02T17:32:47  <jeffdavis> :)
+2015-01-02T17:34:56  <jeff> jeffdavis++
+2015-01-02T17:35:07  <jeff> (since i'm here anyway... ;-)
+2015-01-02T17:36:39  <dbs> Looks like the OOB compression config is still the same
+2015-01-02T17:37:06  <berick> had to change /etc/apache2/mods-enabled/deflate.conf to get it to work w/ deflate enabled
+2015-01-02T17:37:48  <berick>  ->  AddOutputFilterByType DEFLATE application/xml
+2015-01-02T17:40:31  * berick will open LP
+2015-01-02T17:42:26  <berick> cool, 'SetEnv no-gzip' also fixes it
+2015-01-02T17:48:34  *** b_bonner has quit IRC
+2015-01-02T17:49:24  *** mnsri has quit IRC
+2015-01-02T17:49:49  *** mtcarlson_away has quit IRC
+2015-01-02T17:49:55  *** rashma has quit IRC
+2015-01-02T18:19:59  *** b_bonner has joined #evergreen
+2015-01-02T18:20:15  *** mnsri_away has joined #evergreen
+2015-01-02T18:20:15  *** rashma_away has joined #evergreen
+2015-01-02T18:20:28  *** rashma_away is now known as rashma
+2015-01-02T18:20:35  *** mnsri_away is now known as mnsri
+2015-01-02T19:30:50  *** sarabee has quit IRC
+2015-01-02T19:32:49  *** sarabee has joined #evergreen
+2015-01-02T20:13:22  *** pie_ has quit IRC
+2015-01-02T20:31:57  *** nhilton has joined #evergreen
+2015-01-02T20:33:37  *** Griff`Lebron has quit IRC
+2015-01-02T20:43:06  *** sandbergja has quit IRC
+2015-01-02T20:56:17  *** nhilton has quit IRC
+2015-01-02T21:36:02  *** remingtron_ has joined #evergreen
+2015-01-02T21:38:57  *** remingtron has quit IRC

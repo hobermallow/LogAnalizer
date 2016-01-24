@@ -1,0 +1,133 @@
+2015-04-21T01:35:21  *** geoffsams has joined #evergreen
+2015-04-21T01:37:35  *** gsams has quit IRC
+2015-04-21T03:07:33  *** dcook has quit IRC
+2015-04-21T05:13:48  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-21T07:00:55  *** 17SACD1KE has joined #evergreen
+2015-04-21T07:01:45  *** 17SACD1KE has left #evergreen
+2015-04-21T07:02:15  *** 17SACD1KE has joined #evergreen
+2015-04-21T07:03:36  *** 17SACD1KE has left #evergreen
+2015-04-21T07:03:56  *** 17SACD1KE has joined #evergreen
+2015-04-21T07:23:19  *** graced has joined #evergreen
+2015-04-21T07:24:04  *** akilsdonk has joined #evergreen
+2015-04-21T07:54:48  *** rjackson_isl has joined #evergreen
+2015-04-21T08:00:24  *** pmurray_away is now known as pmurray
+2015-04-21T08:06:34  *** mrpeters has joined #evergreen
+2015-04-21T08:28:59  *** mmorgan has joined #evergreen
+2015-04-21T08:29:56  *** collum has joined #evergreen
+2015-04-21T08:39:56  *** RoganH has joined #evergreen
+2015-04-21T08:40:13  *** mrpeters has quit IRC
+2015-04-21T08:43:41  *** mrpeters has joined #evergreen
+2015-04-21T08:45:22  *** Dyrcona has joined #evergreen
+2015-04-21T09:00:27  *** 17SACD1KE has left #evergreen
+2015-04-21T09:04:01  *** jwoodard has joined #evergreen
+2015-04-21T09:09:37  *** Shae has joined #evergreen
+2015-04-21T09:37:02  *** yboston has joined #evergreen
+2015-04-21T10:07:35  *** collum has quit IRC
+2015-04-21T10:26:15  *** maryj has joined #evergreen
+2015-04-21T10:30:04  *** BigRig has joined #evergreen
+2015-04-21T10:36:53  *** collum has joined #evergreen
+2015-04-21T11:02:47  *** akilsdonk has quit IRC
+2015-04-21T11:04:29  *** sandbergja has joined #evergreen
+2015-04-21T11:28:49  *** bmills has joined #evergreen
+2015-04-21T11:29:39  <mmorgan> So quiet today! Hate to disturb the silence, but...
+2015-04-21T11:29:51  <mmorgan> I have a question about managing report templates.
+2015-04-21T11:30:06  <mmorgan> We have some template folders with too many templates.
+2015-04-21T11:30:21  <mmorgan> We can't load them all so we can't get to the older ones to select and delete some.
+2015-04-21T11:30:33  <mmorgan> Any harm in deleting them from the reporter.template table directly in the db?
+2015-04-21T11:31:56  <tsbere> mmorgan: It can be complicated to do so, but not dangerous persay
+2015-04-21T11:32:36  <tsbere> mmorgan: You have to remove reporter.report rows that reference the template(s), and reporter.schedule rows that reference the reports. Watch out for still-running recurring reports using old templates ;)
+2015-04-21T11:32:56  <tsbere> mmorgan: If you want help with some of that I have dealt with some of that kind of thing recently
+2015-04-21T11:33:40  *** bbqben has joined #evergreen
+2015-04-21T11:34:05  <mmorgan> So if I attempt to delete a template that has reports and output linked, it will fail?
+2015-04-21T11:34:27  <tsbere> Probably. Which is probably going to be most of the templates because nobody likes to clean up their reports and output, so it seems.
+2015-04-21T11:35:02  <jboyer-isl> mmorgan: do you really want to delete them if they can't be loaded? You could shift them to a new folder directly in the db
+2015-04-21T11:35:13  <jboyer-isl> Or do you know they're "bad?"
+2015-04-21T11:36:01  <tsbere> That is a good point. New folder, move them over, and they are still there, reports and output untouched, etc
+2015-04-21T11:36:39  <jboyer-isl> Or shift a few at a time, I suppose, so they could be kept/cleaned up later.
+2015-04-21T11:36:39  <mmorgan> Hmm. Didn't think about shifting them into different folders. That's probably the best solution!
+2015-04-21T11:36:57  <mmorgan> jboyer-isl++
+2015-04-21T11:37:25  <mmorgan> So the user can select and delete from the client the ones they no longer need.
+2015-04-21T11:37:40  * jboyer-isl would also point out that having an automated cleanup policy in place is very nice. ;)
+2015-04-21T11:37:40  *** akilsdonk has joined #evergreen
+2015-04-21T11:38:22  <jboyer-isl> mmorgan: yes, so long as you can get the number down to a reasonable level staff can just delete the templates themselves and the system will take care of the reports/outputs.
+2015-04-21T11:38:29  <tsbere> mmorgan: If you want a quick query to say "does anyone have these templates scheduled to run later" I can throw one your way
+2015-04-21T11:39:35  * tsbere finds that deleting *shared* templates is a PITA, but otherwise deleting from the client is fine.....but MVLC mainly runs with shared templates....
+2015-04-21T11:43:36  *** bmills has quit IRC
+2015-04-21T11:45:23  *** Dyrcona has quit IRC
+2015-04-21T11:45:42  *** Dyrcona has joined #evergreen
+2015-04-21T11:45:45  *** bmills has joined #evergreen
+2015-04-21T11:46:40  <mmorgan> tsbere: Thanks for the query offer, but I think I'm set for now.
+2015-04-21T12:19:23  *** jihpringle has joined #evergreen
+2015-04-21T12:44:46  *** DPearl has joined #evergreen
+2015-04-21T12:48:18  <DPearl> I understand that use of iframes in the web client for inclusion of the catalog is problematic.  I stumbled across this page http://www.webdeveasy.com/back-button-behavior-on-a-page-with-an-iframe/ which describes some JS code that edits the history stack of a browser to make the browser BACK button do the right thing when iframes are present.  Has anyone looked into this sort of thing?
+2015-04-21T13:02:42  *** bmills has quit IRC
+2015-04-21T13:03:08  *** bmills has joined #evergreen
+2015-04-21T13:16:18  *** akilsdonk has quit IRC
+2015-04-21T13:30:52  *** b_bonner has quit IRC
+2015-04-21T13:32:19  *** rashma has quit IRC
+2015-04-21T13:35:55  *** b_bonner has joined #evergreen
+2015-04-21T13:37:56  *** rashma has joined #evergreen
+2015-04-21T13:43:12  *** akilsdonk has joined #evergreen
+2015-04-21T14:37:39  *** krvmga has joined #evergreen
+2015-04-21T14:37:59  <krvmga> i thought the splash page for the staff client was /openils/var/web/index.xhtml - am i wrong?
+2015-04-21T14:39:46  <csharp> krvmga: /openils/var/web/xul/server/index.xhtml
+2015-04-21T14:40:27  <krvmga> csharp: thx :)
+2015-04-21T14:41:36  <krvmga> when i look at that file, though, it doesn't contain some of the text currently showing in my staff client splash page :(
+2015-04-21T14:41:55  <krvmga> i thought i remembered there was a way to look at the page through a web browser
+2015-04-21T14:42:02  <krvmga> am i misremembering?
+2015-04-21T14:42:16  <krvmga> you can't do anything but you can see the page
+2015-04-21T14:42:19  <krvmga> i thought
+2015-04-21T14:42:41  <eeevil> krvmga: https://example.com/xul/server/index.xhtml
+2015-04-21T14:43:32  <krvmga> eeevil: thanks :)
+2015-04-21T15:32:15  *** krvmga has quit IRC
+2015-04-21T16:00:28  *** collum has quit IRC
+2015-04-21T16:04:50  *** geoffsams has quit IRC
+2015-04-21T16:06:05  *** gsams has joined #evergreen
+2015-04-21T16:06:25  *** Shae has quit IRC
+2015-04-21T16:13:59  <Dyrcona> @wunder 01845
+2015-04-21T16:14:01  <pinesol_green> Dyrcona: The current temperature in WB1CHU, Lawrence, Massachusetts is 64.0°F (4:13 PM EDT on April 21, 2015). Conditions: Overcast. Humidity: 50%. Dew Point: 44.6°F. Pressure: 29.60 in 1002 hPa (Rising). 
+2015-04-21T16:17:46  *** maryj has quit IRC
+2015-04-21T16:19:14  *** RoganH has quit IRC
+2015-04-21T16:27:53  *** vlewis has joined #evergreen
+2015-04-21T16:29:39  *** rjackson_isl has quit IRC
+2015-04-21T16:31:56  *** jboyer-isl has quit IRC
+2015-04-21T16:43:15  <Bmagic> Is there a reason that we/I cannot glue the COPY ID from asset::copy in fm_IDL.xml to acq::lineitem_detail.eg_copy_id ?
+2015-04-21T16:44:36  <Bmagic> It's connected from acq but not the other way around. This came up when I was wanting a report on circulations of items generated by acq. I can use the lineitem_detail as my source table, but I get thousands of rows for items that were not created from a PO
+2015-04-21T16:46:12  <tsbere> Bmagic: Not 100% sure what you are doing, but it may just be an issue of enabling the nullability selection in the template builder.
+2015-04-21T16:46:22  *** Dyrcona has quit IRC
+2015-04-21T16:54:22  <Bmagic> tsbere: I tried adding those filters, not NULL etc
+2015-04-21T16:55:21  <Bmagic> tsbere: The issue is that it's simply not linked. lineitem_detail->eg_copy_id->circulations->count
+2015-04-21T16:56:18  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-21T16:56:20  <Bmagic> so, eg_copy_id doesn't always have a link to circulations. Without a link, it just shows ALL of the eg_copy_id's associated with lineitem_detail. Even when I say lineitem_detail->eg_copy_id->circulations->circ_id is not null etc
+2015-04-21T16:57:52  <tsbere> Bmagic: You would need to ensure that each piece of the entire chain was NOT NULL, I think. Not 100% sure, and it is basically time for me to pack up for the day.
+2015-04-21T16:58:13  <Bmagic> tsbere: thanks! I will look at that
+2015-04-21T16:58:26  <tsbere> Bmagic: I may be able to help you more tomorrow, though.
+2015-04-21T16:58:38  <Bmagic> tsbere: thanks, I might hit you up. Have a good evening!
+2015-04-21T17:08:23  *** mglass has joined #evergreen
+2015-04-21T17:10:31  *** mmorgan has left #evergreen
+2015-04-21T17:10:57  *** graced has quit IRC
+2015-04-21T17:16:26  *** yboston has quit IRC
+2015-04-21T17:20:22  <csharp> 0fba8175
+2015-04-21T17:20:22  <pinesol_green> [evergreen|erickson] if this user does not have permission to edit an existing user, disable the save and clone buttons - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=0fba817>
+2015-04-21T17:22:28  <jeff> iirc, that's problematic in that it can prevent otherwise-permissable self-edits.
+2015-04-21T17:22:38  <jeff> i thought i had bugged that, but possibly not.
+2015-04-21T17:32:17  <Bmagic> http://evergreen-ils.org/ down?
+2015-04-21T17:32:50  <Bmagic> nope, just slow I guess
+2015-04-21T17:35:56  *** sandbergja has quit IRC
+2015-04-21T18:46:36  *** dcook has joined #evergreen
+2015-04-21T18:50:30  *** sandbergja has joined #evergreen
+2015-04-21T18:58:49  *** vlewis has quit IRC
+2015-04-21T19:10:23  *** buzzy has joined #evergreen
+2015-04-21T19:34:09  *** buzzy has quit IRC
+2015-04-21T19:37:34  *** mrpeters has left #evergreen
+2015-04-21T19:42:12  *** bbqben has quit IRC
+2015-04-21T19:53:16  *** mglass has quit IRC
+2015-04-21T19:57:26  *** dcook has quit IRC
+2015-04-21T19:59:49  *** jwoodard has quit IRC
+2015-04-21T20:07:24  *** dcook has joined #evergreen
+2015-04-21T20:07:41  *** akilsdonk has quit IRC
+2015-04-21T20:10:57  *** jihpringle has quit IRC
+2015-04-21T21:18:08  <csharp> jeff: I just did a cursory bug search and didn't find it, so I created bug 1446860 - it might be a dupe ;-)
+2015-04-21T21:18:08  <pinesol_green> Launchpad bug 1446860 in Evergreen "staff users can edit their own accounts" (affected: 1, heat: 6) [High,New] https://launchpad.net/bugs/1446860 - Assigned to Chris Sharp (chrissharp123)
+2015-04-21T21:28:41  *** bmills has quit IRC
+2015-04-21T23:56:12  *** bmills has joined #evergreen

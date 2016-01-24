@@ -1,0 +1,113 @@
+2015-05-08T00:19:55  *** akilsdonk has quit IRC
+2015-05-08T00:58:55  <bshum> @later tell nuentoter If you're encountering that issue with PG 9.4, I'm sure it's cause Debian Jessie support for Evergreen is incomplete presently. It'll be better during the next round of maintenance releases next month.
+2015-05-08T00:58:55  <pinesol_green> bshum: The operation succeeded.
+2015-05-08T01:21:01  *** Stompro has quit IRC
+2015-05-08T01:21:27  *** Stompro has joined #evergreen
+2015-05-08T01:39:56  *** nuentoter has joined #evergreen
+2015-05-08T02:57:56  *** nuentoter has quit IRC
+2015-05-08T03:37:40  *** dcook has quit IRC
+2015-05-08T07:16:49  *** graced has joined #evergreen
+2015-05-08T08:19:04  *** akilsdonk has joined #evergreen
+2015-05-08T08:29:08  *** Dyrcona has joined #evergreen
+2015-05-08T08:32:27  *** collum has joined #evergreen
+2015-05-08T08:50:27  *** Shae has joined #evergreen
+2015-05-08T08:53:55  <kmlussier> Good morning #evergreen. Happy Friday!
+2015-05-08T09:09:51  <gmcharlt> applying a security update to the eg-ils.org WP instance
+2015-05-08T09:22:19  *** dbwells_ is now known as dbwells
+2015-05-08T09:26:54  <jeff> kmlussier: good morning!
+2015-05-08T09:30:31  *** maryj has joined #evergreen
+2015-05-08T09:37:33  *** Stompro has quit IRC
+2015-05-08T09:37:58  *** Stompro has joined #evergreen
+2015-05-08T09:40:55  *** krvmga_ has joined #evergreen
+2015-05-08T09:48:57  *** krvmga has quit IRC
+2015-05-08T09:49:04  *** krvmga_ has quit IRC
+2015-05-08T09:49:38  *** krvmga has joined #evergreen
+2015-05-08T09:59:56  *** Stompro_home has joined #evergreen
+2015-05-08T10:04:22  *** Stompro_home has quit IRC
+2015-05-08T10:19:01  *** rjackson_isl has joined #evergreen
+2015-05-08T10:29:58  <bshum> Construction again?
+2015-05-08T10:30:18  <bshum> kmlussier: mllewellyn's post on Facebook for the conference.
+2015-05-08T10:30:19  *** Shae has quit IRC
+2015-05-08T10:32:01  <kmlussier> Ugh.
+2015-05-08T10:32:53  <kmlussier> Well, we actually got a benefit from the hotel last year due to the unexpected construction. So maybe we can ask for something like that again. :)
+2015-05-08T10:33:22  <kmlussier> And it looks like it will be outside this time, so maybe not so much noise.
+2015-05-08T10:34:05  <bshum> Could be interesting though, walking from Gorge room to the other part and vice versa
+2015-05-08T10:34:25  <bshum> Since the main room is separate building outside. I think.
+2015-05-08T10:34:48  <bshum> We just have great timing :)
+2015-05-08T10:37:33  * Dyrcona shouts "YAOUS!" and runs for the exit.
+2015-05-08T10:39:53  <kmlussier> @love YAOUS
+2015-05-08T10:39:53  <pinesol_green> kmlussier: But kmlussier already loves YAOUS!
+2015-05-08T10:40:09  *** Shae has joined #evergreen
+2015-05-08T10:44:21  <Dyrcona> @karma YAOUS
+2015-05-08T10:44:21  <pinesol_green> Dyrcona: Karma for "YAOUS" has been increased 5 times and decreased 4 times for a total karma of 1.
+2015-05-08T10:47:14  <kmlussier> YAOUS++
+2015-05-08T10:59:21  *** Shae has quit IRC
+2015-05-08T11:00:26  *** Shae has joined #evergreen
+2015-05-08T11:29:15  *** bmills has quit IRC
+2015-05-08T11:33:02  <dbs> gmcharlt: you could make that IRC message a daily cron job, given WP's record recently
+2015-05-08T11:33:27  <gmcharlt> dbs: I've been tempted to do exactly that :/
+2015-05-08T11:38:36  <Dyrcona> Only recently?
+2015-05-08T11:40:38  <jeff> moreso recently.
+2015-05-08T11:40:51  <dbs> Dyrcona: the frequency seems a little bit more intense recently
+2015-05-08T11:41:56  *** bmills has joined #evergreen
+2015-05-08T11:45:27  *** bbqben has joined #evergreen
+2015-05-08T12:13:10  *** sandbergja has joined #evergreen
+2015-05-08T12:14:26  <kmlussier> @weather 02771
+2015-05-08T12:14:28  <pinesol_green> kmlussier: The current temperature in Rumford, East Providence, Rhode Island is 78.8°F (12:10 PM EDT on May 08, 2015). Conditions: Partly Cloudy. Humidity: 47%. Dew Point: 57.2°F. Pressure: 30.13 in 1020 hPa (Falling). 
+2015-05-08T12:15:14  <kmlussier> I think I might eat my lunch on the back step today. Instead of my usual eat-while-still-working-at-my-computer routine.
+2015-05-08T12:15:41  <kmlussier> @weather 97031
+2015-05-08T12:15:42  <pinesol_green> kmlussier: The current temperature in Rockford, Hood River, Oregon is 62.4°F (9:02 AM PDT on May 08, 2015). Conditions: Clear. Humidity: 53%. Dew Point: 44.6°F. Pressure: 30.02 in 1016 hPa (Steady). 
+2015-05-08T12:21:44  <jboyer-isl> But soft, what light through yonder window breaks, it's a CVE and it is Wordpress that is effected. Uh, look, maybe it's time we started to see other people.
+2015-05-08T12:24:16  <berick> jboyer-isl++
+2015-05-08T12:29:10  <jeff> @weather ktvc
+2015-05-08T12:29:12  <pinesol_green> jeff: The current temperature in Traverse City, Michigan is 80.6°F (11:53 AM EDT on May 08, 2015). Conditions: Mostly Cloudy. Humidity: 48%. Dew Point: 59.0°F. Pressure: 29.88 in 1012 hPa (Steady). 
+2015-05-08T12:29:29  <jeff> it was 89°F yesterday.
+2015-05-08T12:29:42  <jeff> we skipped spring, apparently
+2015-05-08T12:29:56  <berick> @weather 27712
+2015-05-08T12:29:58  <pinesol_green> berick: The current temperature in Heritage Heights, Durham, North Carolina is 79.5°F (12:21 PM EDT on May 08, 2015). Conditions: Clear. Humidity: 49%. Dew Point: 59.0°F. Pressure: 30.12 in 1020 hPa (Steady). 
+2015-05-08T12:30:12  <berick> how is it cooler here?
+2015-05-08T12:30:20  <berick> well, ok, the same
+2015-05-08T12:33:14  <Dyrcona> @weather 01845
+2015-05-08T12:33:16  <pinesol_green> Dyrcona: The current temperature in WB1CHU, Lawrence, Massachusetts is 57.9°F (12:33 PM EDT on May 08, 2015). Conditions: Clear. Humidity: 55%. Dew Point: 42.8°F. Pressure: 30.21 in 1023 hPa (Rising). 
+2015-05-08T12:33:31  <kmlussier> jeff: We rarely ever have spring here.
+2015-05-08T12:52:39  *** krvmga has quit IRC
+2015-05-08T12:53:44  *** krvmga has joined #evergreen
+2015-05-08T12:54:32  <rjackson_isl> jeff I will be up your way next week on a short vacation. It is supposed to be more seasonable then. Sleeping Bear Dunes here we come! :-)
+2015-05-08T12:54:56  <jeff> excellent.
+2015-05-08T12:55:12  <rjackson_isl> can't wait - beautiful country there
+2015-05-08T12:55:56  <jeff> i will be at the conference next week
+2015-05-08T12:56:15  <rjackson_isl> and some nice scenery there as well!
+2015-05-08T12:57:33  <rjackson_isl> probably have to stop by Sleder's while I am up north!
+2015-05-08T12:58:27  *** mmorgan has joined #evergreen
+2015-05-08T13:05:34  *** bbqben_ has joined #evergreen
+2015-05-08T13:06:33  *** bbqben has quit IRC
+2015-05-08T13:06:43  *** bbqben_ is now known as bbqben
+2015-05-08T13:08:53  *** buzzy has joined #evergreen
+2015-05-08T13:11:41  *** jihpringle has joined #evergreen
+2015-05-08T13:15:38  <mmorgan> electricity++
+2015-05-08T13:16:22  <Dyrcona> heh
+2015-05-08T13:16:24  <mmorgan> Never more appreciated than when you don't have it :-(
+2015-05-08T13:21:57  <kmlussier> mmorgan: You're back up!
+2015-05-08T13:22:15  <Bmagic> im getting a weird error when checking out some items. I have ruled permissions out. Does this log entry mean anything? No active transaction -- required for CREATE
+2015-05-08T13:23:12  <tsbere> That....seems odd. Only for some items?
+2015-05-08T13:23:22  <mmorgan> kmlussier: No, sadly. We fled when the ups ran out.
+2015-05-08T13:23:42  <kmlussier> mmorgan: Ah. So you're working from home now?
+2015-05-08T13:24:23  <mmorgan> Trying to.
+2015-05-08T13:24:25  <Bmagic> tsbere: yeah, items from one location
+2015-05-08T13:24:39  <tsbere> One copy location or one org unit?
+2015-05-08T13:24:54  <tsbere> Or, I suppose, "one workstation" where others are fine?
+2015-05-08T13:24:54  <Bmagic> I register my workstation at this location, grab a book from the database circ_lib is equal
+2015-05-08T13:25:10  <Bmagic> fail
+2015-05-08T13:26:17  <Dyrcona> Bmagic: Is this a report that you got from the library, or does it only happen for you when registered at the location?
+2015-05-08T13:26:33  <Bmagic> I am able to replicate it
+2015-05-08T13:27:19  <Bmagic> http://pastebin.com/hRYxN0qg
+2015-05-08T13:27:46  <Bmagic> circ due data / close date overlap ?
+2015-05-08T13:29:44  <tsbere> "No request was received in 6 seconds, exiting stateful session" - I assume your session is timing out, causing your cstoreeditor to no longer have a transaction, which is causing the error
+2015-05-08T13:30:44  <Bmagic> what's with the timeout?
+2015-05-08T13:31:08  * bshum has never seen a timeout for checkout. 
+2015-05-08T13:31:15  <bshum> Checkin on the other hand...
+2015-05-08T13:32:10  <tsbere> excessive overlapping closed dates?
+2015-05-08T13:33:29  <Bmagic> hmmm, libarary hours? actor.org_unit_closed?
+2015-05-08T13:33:35  <tsbere> Both?
+2015-05-08T13:33:44  <Dyrcona> Bmagic: Is it taking over 6 seconds to process the transaction?
+2015-05-08T13:33:56  <Dyrcona> The logs make it appear so.

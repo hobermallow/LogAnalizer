@@ -1,0 +1,24 @@
+2015-01-11T01:18:56  *** AliceR has quit IRC
+2015-01-11T01:28:44  *** RBecker has quit IRC
+2015-01-11T01:33:58  *** RBecker has joined #evergreen
+2015-01-11T03:03:23  *** vrani_ has joined #evergreen
+2015-01-11T03:16:06  *** vrani_ has quit IRC
+2015-01-11T03:16:38  *** vrani_ has joined #evergreen
+2015-01-11T03:18:25  *** vrani_ has quit IRC
+2015-01-11T05:01:43  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-11T09:06:18  *** dbwells has quit IRC
+2015-01-11T12:49:32  *** gmcharlt has quit IRC
+2015-01-11T12:49:38  *** gmcharlt has joined #evergreen
+2015-01-11T12:50:27  *** gmcharlt has quit IRC
+2015-01-11T12:50:27  *** gmcharlt has joined #evergreen
+2015-01-11T13:07:11  *** buzzy has joined #evergreen
+2015-01-11T14:04:03  *** AliceR has joined #evergreen
+2015-01-11T14:30:11  *** AliceR has quit IRC
+2015-01-11T14:34:09  *** RBecker has quit IRC
+2015-01-11T14:35:51  *** AliceR has joined #evergreen
+2015-01-11T14:39:59  *** RBecker has joined #evergreen
+2015-01-11T15:58:41  *** AliceR has quit IRC
+2015-01-11T16:35:26  *** AliceR has joined #evergreen
+2015-01-11T17:10:02  *** AliceR_ has joined #evergreen
+2015-01-11T17:10:02  *** AliceR has quit IRC
+2015-01-11T17:18:14  *** AliceR_ has quit IRC

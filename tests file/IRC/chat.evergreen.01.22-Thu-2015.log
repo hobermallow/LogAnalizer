@@ -1,0 +1,373 @@
+2015-01-22T00:00:48  *** akilsdonk has quit IRC
+2015-01-22T02:58:24  * dbs going a bit nuts trying to use Acq; funds show up in Batch Update fund picker scoped to our OU, but won't show up in the line item details fund picker when I try to add a copy.
+2015-01-22T03:00:24  <dbs> http://i.imgur.com/tqfTD4Q.png?1
+2015-01-22T03:01:37  * dbs wonders if maybe everyone using acquisitions is using funds at the Consortium level
+2015-01-22T03:11:24  <dbs> If I create a purchase order from the selection list, however, then I can select the Fund at the individual copy level
+2015-01-22T03:11:47  <dbs> which makes me think that the selector isn't expected to actually select the fund. hmm.
+2015-01-22T03:15:20  <dbs> Interesting. So in our workflow, the selectors generally say what they want to order, and what fund to apply that order to, but the acq people figure out the provider (Amazon, B&T, whatever)
+2015-01-22T03:17:23  <dbs> Looks like you have to choose the provider when you create the PO, then you can choose the fund, but that's the opposite of our workflow.
+2015-01-22T03:17:46  <dbs> And looks like there's no way to change the provider after the PO is created but before it is activated.
+2015-01-22T03:19:29  <dbs> I guesss for Coutts at least we can try to make Load MARC Order Records work; then focus on the one-offs for the non-Coutts orders
+2015-01-22T03:19:42  <dbs> Should be a fun session with our acq people tomorrow
+2015-01-22T07:17:35  <csharp> dbs: yeah - the OU scoping for different acq things is confusing to our libraries too
+2015-01-22T07:18:24  <csharp> the funds are owned by individual branches, but the orders are all placed at the system level (iirc) and that creates confusion for everyone (including vendors)
+2015-01-22T07:25:30  *** graced has joined #evergreen
+2015-01-22T07:36:47  *** jboyer-isl has joined #evergreen
+2015-01-22T07:56:58  *** collum has joined #evergreen
+2015-01-22T07:59:03  *** pmurray_away is now known as pmurray
+2015-01-22T08:11:10  *** akilsdonk has joined #evergreen
+2015-01-22T08:15:08  *** ericar has joined #evergreen
+2015-01-22T08:19:57  *** mrpeters has joined #evergreen
+2015-01-22T08:33:20  *** Shae has joined #evergreen
+2015-01-22T08:33:40  <dbs> sitka++ # http://docs.sitka.bclibraries.ca/Acq/current/pdf/Sitka_Acquisitions_Manual.pdf - some pretty thorough docs there
+2015-01-22T08:35:18  <dbs> One of the main things that was really confusing me was the presence of the Fund field on the Selection List - copies line, even though you can't do anything with it.
+2015-01-22T08:37:53  <csharp> dbs: we have a part-time person here who has been diving deep into acq... if you're interested in connecting with her, please let me know
+2015-01-22T08:38:59  *** mmorgan1 has joined #evergreen
+2015-01-22T08:39:09  <dbs> thanks csharp!
+2015-01-22T08:39:18  *** mmorgan1 has left #evergreen
+2015-01-22T08:40:00  <dbs> I went over acq admin with our admin people last week, am introducing ordering to our technicians this morning
+2015-01-22T08:40:15  <csharp> cool
+2015-01-22T08:40:22  <csharp> I'll be interested in how it all goes
+2015-01-22T08:40:52  <dbs> Bar should be low: make ordering less painful than updating a big old spreadsheet + local fields in each MARC record along with the actual provider site
+2015-01-22T08:40:55  <dbs> we'll see.
+2015-01-22T08:40:55  <csharp> we're piloting one (maybe two) libraries for acquisitions in the coming months
+2015-01-22T08:42:04  <csharp> the biggest headache I've had to deal with is EDI setup (and specifically FTP) because when it fails there's not a straightforward way to re-do things
+2015-01-22T08:42:44  <csharp> and of course, the Ruby bits
+2015-01-22T08:45:02  <dbs> no plans for EDI here in the near future. Loading MARC Order Records is likely though.
+2015-01-22T08:45:32  <csharp> that has been an adventure for us too, having little practical vandelay experience
+2015-01-22T08:46:09  <bshum> Better than it used to be anyways ;)
+2015-01-22T08:47:38  <bshum> Unrelated, I didn't get to cutting a new maintenance release of 2.7 yesterday by the calendar.  The day ended up a bit more exciting in other areas.
+2015-01-22T08:48:01  <bshum> Hoping to take a look at pulling a few fixes in before the next cut.
+2015-01-22T08:49:31  <bshum> I'll likely aim to put together a 2.7.3 this evening.
+2015-01-22T08:49:50  <bshum> So fix, fix away
+2015-01-22T08:51:45  <dbs> highly critical fixes like <table> <table> ? :)
+2015-01-22T08:52:48  <bshum> dbs: super important! :D
+2015-01-22T08:54:57  *** jwoodard has joined #evergreen
+2015-01-22T08:55:19  * csharp only sees 4 new commits in rel_2_7, one of which he's already applied to 2.7.2
+2015-01-22T08:56:12  *** julialima_ has joined #evergreen
+2015-01-22T08:56:39  <bshum> csharp: Like I said, need to merge more stuff.
+2015-01-22T08:56:53  <csharp> ah, gotcha
+2015-01-22T08:57:45  <bshum> If you look at the actual milestone, there's a lot of targeted bugs. I need to go through them all and decide if they continue to remain targeted, push fixes, or leave for next milestone.
+2015-01-22T08:58:32  <bshum> https://launchpad.net/evergreen/+milestone/2.7.3
+2015-01-22T08:58:53  <bshum> And that's not including any wildcards that have yet to be targeted for backports
+2015-01-22T08:59:34  *** mmorgan has joined #evergreen
+2015-01-22T09:00:11  * csharp agrees with berick: https://bugs.launchpad.net/evergreen/+bug/1386347/comments/13
+2015-01-22T09:00:11  <pinesol_green> Launchpad bug 1386347 in Evergreen 2.6 "Speed up hold copy map deletion for clear shelf process, etc." (affected: 1, heat: 6) [Undecided,New]
+2015-01-22T09:05:05  <csharp> dbs: or eeevil: for bug 1206936, does the suggested change in comment #7 supercede my "use window functions" branch and solve the original problem?
+2015-01-22T09:05:05  <pinesol_green> Launchpad bug 1206936 in Evergreen "money.transaction_billing_summary view displays incorrect billing_type and billing_note for the actual last transaction" (affected: 1, heat: 6) [High,Triaged] https://launchpad.net/bugs/1206936
+2015-01-22T09:05:14  * csharp hasn't tested, jsyk
+2015-01-22T09:07:58  <tsbere> jeff: Regarding differences in default notification formats: TPac (pipe, prefers email, then phone, then sms) vs old JSPac entries (dunno) vs Patron Editor (colon, prefers phone, then email, then sms)
+2015-01-22T09:10:54  <jeff> tsbere: thanks. i had suspected as such, and started to compare new/old patron editors vs tpac -- thought i saw in tpac that it was colon-delimited, just with a different order. guess i'll have to re-look.
+2015-01-22T09:14:14  <bshum> csharp: On bug 1386347, I was leaning towards removing the milestone from that, since nobody seems to be championing it for backport presently.
+2015-01-22T09:14:14  <pinesol_green> Launchpad bug 1386347 in Evergreen 2.6 "Speed up hold copy map deletion for clear shelf process, etc." (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1386347
+2015-01-22T09:14:57  <csharp> bshum: +1
+2015-01-22T09:21:37  *** Dyrcona has joined #evergreen
+2015-01-22T09:23:34  <Dyrcona> Well the first commit on the collab branch has been running in production since about 8:00 pm last night.
+2015-01-22T09:24:39  <Dyrcona> If anyone else wants to jump in, just say what service you're looking at.
+2015-01-22T09:28:58  <jboyer-isl> I had a question about the various services. Is the intention for there to always be pcrud and cstore (and qstore? I don't know what uses that off hand) or is this the middle of a transition where pcrud is old and broken and cstore is the new hotness?
+2015-01-22T09:30:55  <tsbere> jboyer-isl: As I understand it, cstore is "backend, no auth needed" and pcrud is "frontend, auth needed". rstore is a reporting(?) version of cstore. qstore is unrelated.
+2015-01-22T09:31:48  <jboyer-isl> ok, so likely they're all going to be around long-term. Thanks tsbere.
+2015-01-22T09:32:11  *** maryj has joined #evergreen
+2015-01-22T09:41:06  *** yboston has joined #evergreen
+2015-01-22T09:45:26  <dbs> csharp: we're using the #7 recommendation in production here
+2015-01-22T09:46:29  <csharp> dbs: excellent - thanks
+2015-01-22T09:49:15  <dbs> I guess we should really go ahead and create a whole new set of views that way
+2015-01-22T09:50:54  <dbs> jboyer-isl: on qstore: https://bugs.launchpad.net/evergreen/+bug/1077212
+2015-01-22T09:50:54  <pinesol_green> Launchpad bug 1077212 in Evergreen "add qstore to eg_db_config.pl --update-config list" (affected: 1, heat: 6) [Undecided,Incomplete]
+2015-01-22T09:51:11  <dbs> (the discussion goes decidedly in a different direction from the bug title)
+2015-01-22T09:51:35  <bshum> I thought qstore was dead?
+2015-01-22T09:51:55  <bshum> I guess I already thought we started ripping it out.  But I guess maybe I was wrong on that.
+2015-01-22T09:52:11  <tsbere> Wait, was it ever in use to begin with?
+2015-01-22T09:52:29  <dbs> was never in use in Evergreen
+2015-01-22T09:53:22  <dbs> It's just an extra attack vector / resource consumer if turned on. Kind of like an appendix.
+2015-01-22T09:54:32  <bshum> Right, it's not an activeapp anymore right?
+2015-01-22T09:54:49  *** graced has quit IRC
+2015-01-22T09:54:50  <bshum> Or ever
+2015-01-22T09:54:52  <bshum> I guess
+2015-01-22T09:55:22  <bshum> Oh, I see, I'm mixing it up with the ingest thing that we also yanked out.  Nevermind, my confusion has ended.  :(
+2015-01-22T09:55:29  *** BigRig has joined #evergreen
+2015-01-22T09:56:48  <jeff> heh
+2015-01-22T09:59:02  <jboyer-isl> It appears my confusion on the qstore front is because it's still in opensrf.xml, but it's not in any of the service lists in opensrf_core.xml. So it's not on, but it's not really gone, either.
+2015-01-22T10:01:40  <Dyrcona> jboyer-isl: AFAIK, nothing at all uses qstore.
+2015-01-22T10:02:10  <Dyrcona> The code code be removed, but no one has bothered.
+2015-01-22T10:02:30  <Dyrcona> If you have it still configured to start, you should turn it off.
+2015-01-22T10:03:13  <Dyrcona> And I should have read what everyone else said before replying.
+2015-01-22T10:04:25  <Dyrcona> Too bad we can't set a bug's status to deprecated.... I'd be inclined to set that bug to invalid and create a new one to rip qstore out.
+2015-01-22T10:05:02  <bshum> "won't fix"
+2015-01-22T10:05:09  <bshum> i.e. not in project plans
+2015-01-22T10:05:54  <jboyer-isl> Invalid + new bug sounds like a fine plan to me. Maybe a comment could be dropped in the bug before it's closed for software archaeologists.
+2015-01-22T10:06:13  <jboyer-isl> O, what bshum said. :)
+2015-01-22T10:08:27  <Dyrcona> Yeah, +1 to won't fix.
+2015-01-22T10:09:08  <Dyrcona> I'll do it later and file a bug for ripping out qstore, but I've got some other things I should do, first.
+2015-01-22T10:19:45  * eeevil would hate to see qstore go away ... it's meant to support batch operations. but if it gets ripped out, it should be done in one fell swoop (please), so the commit can be reverted if it's needed later
+2015-01-22T10:22:27  <Dyrcona> Hmm. Then maybe we should make use of qstore for batch operations instead of what we do now?
+2015-01-22T10:22:43  *** rjackson-isl has joined #evergreen
+2015-01-22T10:22:51  <Dyrcona> Would it be efficient enough to stop timeouts when doing things from large copy and bib buckets?
+2015-01-22T10:35:34  <Dyrcona> Grr. GoogleDrive/Docs/whatever-they-call-it-this-month is interfering the behavior of select and middle click in X.
+2015-01-22T10:36:08  <Dyrcona> I select something in the document, and middle click in another document and it does not paste what I selected.
+2015-01-22T10:39:36  *** mllewellyn has joined #evergreen
+2015-01-22T10:41:16  <eeevil> Dyrcona: I noticed the selection change in gdocs too... I had to start ctl-c'ing , which is dumb
+2015-01-22T10:42:45  <Dyrcona> Yep.
+2015-01-22T10:43:54  <eeevil> and, re qstore, it's just part of the puzzle, but yes. the idea was to let it manage batch change setup and supply completion state information for a polling UI to refresh regularly.  it also has a "remember old state" feature, IIRC, so you can say "hey, that named changeset that I ran a month ago to move copies to another branch? yeah, undo that now."
+2015-01-22T10:46:07  * eeevil looks under the couch cushions for tuits
+2015-01-22T10:47:50  <Dyrcona> eeevil: That sounds pretty cool. We already set a table up to store temporary copy changes, like moving stuff to/from Summer Reading copy locs and so on.
+2015-01-22T11:03:09  <csharp> since upgrading, we are no longer able to place "unfillable holds" - it gets to the screen where it says " You have permission to override some of the failed holds. Click Submit to override and place your hold on the selected items.", but clicking submit returns us to the bib record page with no further information
+2015-01-22T11:03:28  <csharp> we can't seem to track what that "submit" button is supposed to be doing
+2015-01-22T11:03:32  <csharp> we're on 2.7.2
+2015-01-22T11:05:32  <mmorgan> Hmm. Haven't heard that from our libraries - and I think we would have if it were a problem here.
+2015-01-22T11:06:12  <csharp> nevermind - it was a local commit that was keeping it from working
+2015-01-22T11:16:45  <eeevil> csharp: was it something others might run into?
+2015-01-22T11:44:58  <kmlussier> It's odd. I've never come across the problem where some users can't log into webby using Firefox, but I still hear reports of it from our users.
+2015-01-22T11:45:13  <kmlussier> I thought I might run into it when I switched to a new laptop.
+2015-01-22T11:49:43  *** nhilton has joined #evergreen
+2015-01-22T11:52:25  <eeevil> kmlussier: could it be noscript or the like, or an old version?
+2015-01-22T11:53:34  <kmlussier> The person who reported it said she was using Firefox 35. She enters the login information, but it just sits there.
+2015-01-22T11:53:49  <kmlussier> I know it was a known problem at one point.
+2015-01-22T11:54:01  <bshum> kmlussier: Is it a websocket problem maybe
+2015-01-22T11:54:05  <bshum> Like the ports aren't open on their end
+2015-01-22T11:54:24  * bshum is not sure how far gmcharlt has gotten with websocket configuration on webby or elsewhere
+2015-01-22T11:56:36  <bshum> kmlussier: If they open their web console
+2015-01-22T11:56:38  <bshum> They can check for errors
+2015-01-22T11:57:03  <bshum> Ignoring of course the check for 8443/hatch
+2015-01-22T11:57:29  <bshum> But if they were getting blocked on the websocket port, it might show up there as an unresponsive, or failure to connect
+2015-01-22T11:59:04  <tsbere> eeevil++ # Pointing out space delimination in the WWW::Proxy modules and causing me to notice I had missed a bug in the version of my code I had pushed to working
+2015-01-22T11:59:27  <eeevil> tsbere++ # fixin' stuffs
+2015-01-22T11:59:35  <eeevil> and that auth module looks good
+2015-01-22T12:00:36  <kmlussier> bshum: If it were an issue where the port is blocked, wouldn't they have come across it in Chrome too?
+2015-01-22T12:01:15  <tsbere> eeevil: Tis a combination of "basic auth that only accepts usernames is bad for patron access" and "WWW::Proxy::Authen may be broken in newer versions of Apache due to them changing the API a bit, so I needed to figure out how to do things differently"
+2015-01-22T12:02:07  *** graced has joined #evergreen
+2015-01-22T12:04:03  <bshum> kmlussier: Probably right.
+2015-01-22T12:04:09  <bshum> Maybe their firefox is configured differently.
+2015-01-22T12:05:47  <tsbere> uneducated user of adblock or noscript?
+2015-01-22T12:07:56  <kmlussier> berick: I was talking to some folks at NOBLE yesterday, and they have some minor catalog customizations we were thinking would be nice additions to the core code
+2015-01-22T12:08:00  <kmlussier> berick: I know we're passed the milestone targeting deadline, but if they created the LP bugs now, would they still have a chance of making it into 2.8?
+2015-01-22T12:08:15  <kmlussier> I was planning to work with them next week to get the code into a git branch.
+2015-01-22T12:08:57  <berick> kmlussier: yes, that's fine.
+2015-01-22T12:09:08  <kmlussier> berick: Thanks! I'll let them know.
+2015-01-22T12:21:18  *** nhilton_ has joined #evergreen
+2015-01-22T12:25:32  *** sandbergja has joined #evergreen
+2015-01-22T12:29:14  *** jihpringle has joined #evergreen
+2015-01-22T12:37:16  *** buzzy has joined #evergreen
+2015-01-22T12:54:06  <csharp> eeevil: nope - it happened because we commented out the code for the checkbox in place_hold_result.tt2
+2015-01-22T12:54:19  <csharp> @who would be fool enough to do that?
+2015-01-22T12:54:19  <pinesol_green> dbwells would be fool enough to do that.
+2015-01-22T12:55:01  <dbwells> sounds about right
+2015-01-22T12:55:07  <csharp> heh
+2015-01-22T12:58:03  *** nhilton__ has joined #evergreen
+2015-01-22T13:00:41  *** nhilton has quit IRC
+2015-01-22T13:05:04  *** nhilton_ has quit IRC
+2015-01-22T13:18:53  <phasefx_> hrmm, just noticed the live tester has been broken since the 12th.. skeletal output
+2015-01-22T13:22:19  <Dyrcona> Just thought I'd follow up on yesterday's conversation about CStoreEditor.
+2015-01-22T13:22:51  <Dyrcona> I loaded a branch on my development vm that has the CStoreEditor DESTROY method issue a warning.
+2015-01-22T13:23:18  <Dyrcona> I then did some stuff, like run action_trigger_runner.
+2015-01-22T13:25:17  <Dyrcona> The destructor is getting called.
+2015-01-22T13:25:44  <Dyrcona> So, theoretically, CStoreEditor should not really be causing issues.
+2015-01-22T13:29:59  *** nhilton has joined #evergreen
+2015-01-22T13:32:28  *** nhilton__ has quit IRC
+2015-01-22T13:39:16  *** mtcarlson_away is now known as mtcarlson
+2015-01-22T13:43:32  *** mnsri_away has quit IRC
+2015-01-22T13:43:32  *** rashma has quit IRC
+2015-01-22T13:43:32  *** b_bonner has quit IRC
+2015-01-22T13:43:32  *** mtcarlson has quit IRC
+2015-01-22T13:43:48  *** b_bonner has joined #evergreen
+2015-01-22T13:44:02  *** mnsri_away has joined #evergreen
+2015-01-22T13:44:02  *** rashma has joined #evergreen
+2015-01-22T13:44:23  *** mnsri_away is now known as mnsri
+2015-01-22T13:51:25  <dbs> so much for removing timeout=60 from the SIP config. now the self-check randomly hangs while accessing patron records
+2015-01-22T13:51:39  * dbs is going to roll back to a 2009-era version of SIPServer
+2015-01-22T13:51:58  <bshum> :(
+2015-01-22T13:53:47  <csharp> dbs: that's what we did pre-emptively after hearing about some of your trouble
+2015-01-22T13:54:32  * csharp *cough* we need SIPServer versioned releases *cough* *cough*
+2015-01-22T13:59:58  <bshum> @gitrehash
+2015-01-22T13:59:59  <pinesol_green> bshum: The operation succeeded.
+2015-01-22T14:00:25  <bshum> @git repolist
+2015-01-22T14:00:26  <pinesol_green> bshum: evergreen (Evergreen, branch: master)
+2015-01-22T14:00:27  <pinesol_green> bshum: opensrf (OpenSRF, branch: master)
+2015-01-22T14:00:28  <pinesol_green> bshum: evergreen_website (Evergreen Website, branch: master)
+2015-01-22T14:00:29  <pinesol_green> bshum: sipserver (SIPServer, branch: master)
+2015-01-22T14:00:41  <bshum> And now we have SIPServer :)
+2015-01-22T14:00:48  <bshum> So that I can do something like cd4551366fba4c30ad434b0c58432f2d6ff081cc
+2015-01-22T14:00:48  <pinesol_green> [sipserver|Thomas Berezansky] LP#1227273: Clear account info at start and end of connection - <http://git.evergreen-ils.org/?p=SIPServer.git;a=commit;h=cd45513>
+2015-01-22T14:01:01  <bshum> That's the last commit our SIPServer is up to running apparently.
+2015-01-22T14:01:10  <bshum> It was before the timeout stuff and the multiplex stuff
+2015-01-22T14:17:18  *** julialima_ has quit IRC
+2015-01-22T14:25:22  *** buzzy has quit IRC
+2015-01-22T14:25:31  *** akilsdonk has quit IRC
+2015-01-22T14:25:32  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-22T14:46:15  <Stompro> Is creating read only postgres access really as difficult as it seems to be?  Needing to run a command for every schema individually?
+2015-01-22T14:50:32  <bshum> Stompro: I believe that's how we had to do it in the past.
+2015-01-22T14:50:48  <bshum> And actually I think we even went further and specified it table by table in some cases.
+2015-01-22T14:51:19  <bshum> So we had to grant usage for the schemas
+2015-01-22T14:51:24  <bshum> And then grant select on each table
+2015-01-22T14:51:35  *** krvmga has joined #evergreen
+2015-01-22T14:52:12  <bshum> But it's been awhile since we toyed with that whole thing.  Awhile, meaning, that's the way we rolled back in PG 8.3 days
+2015-01-22T14:53:01  *** nhilton_ has joined #evergreen
+2015-01-22T14:53:36  <jeffdavis> Stompro: http://pastebin.com/aGqNKUYU <- you can "automate" the grant usage/grant select commands
+2015-01-22T14:54:15  <bshum> jeffdavis++
+2015-01-22T14:54:28  <Stompro> Thanks Jeff, jeffdavis++
+2015-01-22T14:55:26  <jeffdavis> You may wish to adjust the WHERE clauses if there are other tables you don't want your read-only user to have access to, of course.
+2015-01-22T14:58:20  <kmlussier> dbwells: We loaded collab/dbwells/1198465_cstore_fines_gen in our dev environment (we being Dyrcona). However, we're getting the following when starting up the client: Method [open-ils.circ.circ_modifier.retrieve.all] not found for OpenILS::Application::Circ
+2015-01-22T14:58:22  <jeffdavis> Oh, and to be clear that just outputs the commands that you need to run, it doesn't actually run them. You can put the output in a script and run that.
+2015-01-22T15:04:41  <collum> Stompro: here's a quick way to find out what schema.tables a user has the 'select' privilege on.  http://pastebin.com/PmSKmM7k  Just change 'username' in the script to the user.
+2015-01-22T15:05:14  <jeff> kmlussier: first thing I check in that scenario is for syntax errors in OpenILS/Application/Circ.pm
+2015-01-22T15:07:13  <Dyrcona> jeff: We did that, and if there were syntax errors that bublle up to Circ.pm, circ would not start.
+2015-01-22T15:07:23  <Dyrcona> open-ils.circ started.
+2015-01-22T15:07:27  <jeff> got it.
+2015-01-22T15:16:49  <Stompro> collum++ thanks for code.
+2015-01-22T15:20:32  *** krvmga has quit IRC
+2015-01-22T15:24:40  <kmlussier> bshum: For bug 1078593, I actually have been meaning to take a look at that again and probably sign off on it.
+2015-01-22T15:24:40  <pinesol_green> Launchpad bug 1078593 in Evergreen "serials: deleting an issuance does not update the basic summary statement" (affected: 4, heat: 22) [Medium,In progress] https://launchpad.net/bugs/1078593 - Assigned to Dan Wells (dbw2)
+2015-01-22T15:25:04  <bshum> kmlussier: Sure, whatever you guys decide :)  I was just moving it out of my way on 2.7.3 work
+2015-01-22T15:25:24  <kmlussier> So I could make a comment on the bug saying just that and assign it to myself. :)
+2015-01-22T15:25:24  <bshum> If it is actually ready, we can always add it in there before I cut.
+2015-01-22T15:25:48  <kmlussier> You're cutting today?
+2015-01-22T15:26:15  <bshum> I was hoping to cut this evening, but can wait a bit if needed.
+2015-01-22T15:26:27  <bshum> We're already a day behind the scheduled date, but that hasn't stopped us before :\
+2015-01-22T15:28:05  <kmlussier> bshum: It shouldn't take me long to look at it again. The problem is all of the other stuff I have on my plate today.
+2015-01-22T15:30:42  <kmlussier> But if you wait until tomorrow, I can also look at that Lost and Paid bug too.
+2015-01-22T15:31:13  <Dyrcona> kmlussier: I've loaded the branch on my dev system already, so feel free to toggle settings on there if you want.
+2015-01-22T15:31:22  <dbwells> kmlussier: rats, sorry.  Probably a merge error I made of some kind when getting it into the branch.  I loaded the branch earlier on my test box, but haven't gotten back to it yet.  I'll get it fixed.
+2015-01-22T15:31:24  <Dyrcona> The lost and paid fix branch, that is.
+2015-01-22T15:31:38  <kmlussier> dbwells++ Great, thanks!
+2015-01-22T15:32:16  <bshum> kmlussier: That's fine, I can wait to cut tomorrow.
+2015-01-22T15:32:18  <pinesol_green> [evergreen|Chris Sharp] LP#1310619: Add links in reporter.classic_item_list to legacy_cat1 and legacy_cat2 views. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=9b2ec17>
+2015-01-22T15:32:19  <pinesol_green> [evergreen|Chris Sharp] LP#1310619: Changing relationship between rcil and legacy stat cats to "might_have". - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4ffe7d6>
+2015-01-22T15:32:36  <bshum> That'll give me more time to slack off, err...... I mean review and commit more fixes.
+2015-01-22T15:32:38  <bshum> :D
+2015-01-22T15:32:53  *** nhilton has quit IRC
+2015-01-22T15:33:30  <Dyrcona> heh
+2015-01-22T15:34:04  <kmlussier> For some reason, the words "slack off" don't come to mind when I think of bshum.
+2015-01-22T15:34:21  *** akilsdonk has joined #evergreen
+2015-01-22T15:34:52  <Dyrcona> bshum: Do you want me to back port lp 1398926 to 2.7 when I push it?
+2015-01-22T15:34:52  <pinesol_green> Launchpad bug 1398926 in Evergreen "Symbol Overlay only works on pre-existing entry fields" (affected: 1, heat: 6) [Medium,Confirmed] https://launchpad.net/bugs/1398926
+2015-01-22T15:35:16  <bshum> Dyrcona: Sure, I don't see why not.
+2015-01-22T15:35:32  <Dyrcona> It could probably go to 2.6 also.
+2015-01-22T15:35:32  <bshum> Do me a favor though and edit the commit message to include the LP#
+2015-01-22T15:35:40  <Dyrcona> OK. I'll do that.
+2015-01-22T15:35:49  <bshum> Thanks :)
+2015-01-22T15:35:51  <Dyrcona> I think he made the branch before the LP bug.
+2015-01-22T15:36:19  <pinesol_green> [evergreen|Josh Stompro] LP 1373197: fixed default "Get Help With Evergreen" link. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=05f86c8>
+2015-01-22T15:36:20  <pinesol_green> [evergreen|Josh Stompro] LP 1372197: Fixed another link to evergreen-ils.org that changed. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3a5aa33>
+2015-01-22T15:37:52  <bshum> Dyrcona: Yeah that's no problem.  I just like to try including the LP# in the commit for tracking purposes now.
+2015-01-22T15:38:07  <bshum> It has been surprisingly useful when learning more about a given changeset.
+2015-01-22T15:38:29  <Dyrcona> Any particular format?
+2015-01-22T15:38:34  <jeff> heh
+2015-01-22T15:39:28  * jeff is partial to "LP#number Commit short msg here"
+2015-01-22T15:40:02  <Dyrcona> Yep, that's what I did, since most commits follow that pattern.
+2015-01-22T15:40:04  <jeff> but that might just be because most of my terminals select the digits and not the LP# when i double-click the digits.
+2015-01-22T15:40:14  <bshum> What jeff said works.  Sometimes people do LP#number: (with a colon at the end)
+2015-01-22T15:40:19  <pinesol_green> [evergreen|Thomas Berezansky] LP#1398926: Allow symbol popup to trigger on new marc fields - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=8196546>
+2015-01-22T15:40:22  <Dyrcona> I added the colon.
+2015-01-22T15:40:28  <jeff> and a trailing colon wastes a precious character :-)
+2015-01-22T15:40:28  <Dyrcona> Well, there, you can see.
+2015-01-22T15:40:40  <jeff> heh
+2015-01-22T15:40:55  <Dyrcona> A trailing colon sounds painful.
+2015-01-22T15:41:05  <bshum> Damn, missed the # in the previous commits
+2015-01-22T15:41:06  <jeff> but not as many wasted characters as LP#number - Commit description here
+2015-01-22T15:41:31  <bshum> I need to finish poking at the ilbot config
+2015-01-22T15:43:52  <Dyrcona> I need to test phasefx_'s marc_export changes. Probably won't get to it today.
+2015-01-22T15:44:04  <Dyrcona> They won't go into 2.7 anyway.
+2015-01-22T15:48:21  <pinesol_green> [evergreen|Bill Erickson] LP#1407171 Avoid DEFLATEing fm_IDL.xml - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=112b270>
+2015-01-22T15:50:21  <pinesol_green> [evergreen|Ben Shum] LP#1373594: Also ignore subfield 7 in get_graphics_880s - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=67999a6>
+2015-01-22T15:52:03  *** collum has quit IRC
+2015-01-22T15:52:22  <pinesol_green> [evergreen|Dan Scott] LP#1413490 Fix <table><table> markup - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=9436b7c>
+2015-01-22T15:57:37  <bshum> remingtron: I was looking at your final changes in https://bugs.launchpad.net/evergreen/+bug/1396161 and just checking on the thinking for removal of osrf-config from the example entries
+2015-01-22T15:57:37  <pinesol_green> Launchpad bug 1396161 in Evergreen "action_trigger_runner.pl documentation update" (affected: 1, heat: 8) [Undecided,Confirmed]
+2015-01-22T15:57:55  <bshum> It's cause that's already the default, but should we keep that in the help info for people who might have it live elsewhere for some reason?
+2015-01-22T15:59:13  *** nhilton_ has quit IRC
+2015-01-22T16:06:23  *** ericar has quit IRC
+2015-01-22T16:12:09  *** mrpeters has left #evergreen
+2015-01-22T16:12:34  *** mrpeters has joined #evergreen
+2015-01-22T16:14:28  <dbwells> kmlussier: Dyrcona: I missed one added and two deleted lines in my merging (or unmerging, as the case may be).  It seems happier now at my end, so I force pushed over the same branch (collab/dbwells/1198465_cstore_fines_gen).  Thanks for the early testing!
+2015-01-22T16:14:55  <kmlussier> dbwells++
+2015-01-22T16:18:09  <Dyrcona> kmlussier: I can load the revised branch if you want to look at it tomorrow.
+2015-01-22T16:18:12  <remingtron> bshum: I think the help info should be enough as is, since the config setting is the first option listed. But I don't have strong feelings either way.
+2015-01-22T16:18:25  <Dyrcona> I'm off tomorrow, so otherwise it would have to wait until Saturday.
+2015-01-22T16:18:41  <kmlussier> Dyrcona: Yes, I think I'll have time to look at it after my meeting tomorrow, so that will be great if you could load it now.
+2015-01-22T16:18:58  <Dyrcona> Will do.
+2015-01-22T16:19:33  <bshum> remingtron: Works for me, I'll go ahead and push all that on through momentarily then :)
+2015-01-22T16:20:14  <tsbere> berick: I am told that I should check with you about including https://bugs.launchpad.net/evergreen/+bug/1413624 in 2.8 before I mark it as 2.next instead. Any thoughts one way or the other?
+2015-01-22T16:20:14  <pinesol_green> Launchpad bug 1413624 in Evergreen "New AccessHandler Module" (affected: 1, heat: 8) [Undecided,New]
+2015-01-22T16:20:16  <bshum> remingtron++
+2015-01-22T16:20:25  <remingtron> bshum++ #thanks for keeping things moving!
+2015-01-22T16:23:18  <kmlussier> Does anyone recall off the top of their heads when the WCAG work was incorporated in Evergreen?
+2015-01-22T16:24:28  <pinesol_green> [evergreen|Josh Stompro] LP#1396161: action_trigger_runner.pl documentation update - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=82bb117>
+2015-01-22T16:24:29  <pinesol_green> [evergreen|Remington Steed] LP#1396161: Improve public docs and change osrf-config default from script help - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=d445150>
+2015-01-22T16:24:52  <bshum> kmlussier: I want to say 2.6
+2015-01-22T16:24:56  <jeff> kmlussier: commit 598267d contains the release notes -- i think it was 2.6
+2015-01-22T16:24:56  <pinesol_green> [evergreen|Dan Scott] Release notes for WCAG compliance for the TPAC - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=598267d>
+2015-01-22T16:25:14  <bshum> And http://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_6.html agrees with me
+2015-01-22T16:25:18  <kmlussier> bshum++ jeff++ Thanks!
+2015-01-22T16:26:12  <Dyrcona> kmlussier: The branch has been installed and services restarted.
+2015-01-22T16:26:16  <jeff> are the -developer and -packager makefile targets intended to never be both installed?
+2015-01-22T16:28:10  <bshum> jeff: I thought developer was a subunit of packager.  Meaning if you ask for packager, it'll also call the stuff in developer.
+2015-01-22T16:28:25  <bshum> Something weird going on?
+2015-01-22T16:28:27  <jeff> i suppose that would have been the obvious thing for me to check.
+2015-01-22T16:28:42  *** rjackson-isl has quit IRC
+2015-01-22T16:29:28  <Dyrcona> bshum: I notice you're pushing a lot of stuff to 2.6 also. Should I push the symbols popup fix branch to 2.6? I guess it is also a question for dbwells.
+2015-01-22T16:29:29  <bshum> So I wouldn't expect a problem to call either or
+2015-01-22T16:30:22  <jeff> bshum: install_packager calls install_developer, you are correct.
+2015-01-22T16:30:51  <bshum> Dyrcona: Most of the things I end up pushing to 2.7 tend to be either tiny or broken things.  I usually save dbwells the trouble of pushing it to rel_2_6 on his behalf, but I could change that if he'd prefer to push it himself :)
+2015-01-22T16:31:04  <kmlussier> Dyrcona++ Thank you!
+2015-01-22T16:31:44  <jeff> bshum: so trying to install debian-wheezy-packager target after installing debian-wheezy-developer results in an error because it tries to clone the node git repo a second time.
+2015-01-22T16:31:46  <bshum> If it was me, I wouldn't hold off on backporting if it's indeed a bug fix.
+2015-01-22T16:32:15  <bshum> jeff: Ahh..... I primarily tested the Ubuntu side of things, and those are all packages.
+2015-01-22T16:32:41  <bshum> So it doesn't usually clobber itself, it'll just add whatever packages it's still missing.
+2015-01-22T16:32:53  * jeff nods
+2015-01-22T16:32:53  *** maryj has quit IRC
+2015-01-22T16:32:58  <bshum> jeff++ # may want to file that a new bug then for 2.8 series.
+2015-01-22T16:33:05  <bshum> Darn Wheezy
+2015-01-22T16:33:06  <bshum> :)
+2015-01-22T16:33:53  <jeff> might be as simple as clarifying the README (assuming it isn't already clear and I misread) to point out that it's either-or, not both.
+2015-01-22T16:35:28  <bshum> jeff: Ideally I think it ought to handle both.
+2015-01-22T16:35:47  <bshum> Meaning if I start off with the developer package, but want to grow up to be a packager on behalf of the project, it shouldn't blow up on me.
+2015-01-22T16:35:57  * jeff nods
+2015-01-22T16:43:06  <bshum> jeff: I wonder if we added some sort of check to see if the node directory was already cloned
+2015-01-22T16:43:10  <bshum> Or existing I mean
+2015-01-22T16:43:15  <bshum> And if so, move on
+2015-01-22T16:43:49  <dbwells> Dyrcona: If a fix for 2.7 also applies to 2.6, please feel free to push it in.  Does that answer your question, or did I misunderstand?
+2015-01-22T16:44:11  <Dyrcona> dbwells; That answers the question. I didn't want to step on RM toes.
+2015-01-22T16:44:16  <bshum> jeff: Course then the next step after that to checkout the branch would fail too, cause the branch would already be checked out...
+2015-01-22T16:44:17  <bshum> Hmm
+2015-01-22T16:45:14  <bshum> Maybe like the install_libdbi thing before install_nodejs_from_source
+2015-01-22T16:45:28  <bshum> Where we look for the folder, if not present, get it, etc.
+2015-01-22T16:45:38  <dbwells> I think whoever does the testing should go ahead and push to all applicable branches.  The fact that bshum is an RM and also tests a bunch of things just confuses the situation ;)
+2015-01-22T16:46:00  * bshum either has lots of hats or lots of heads.
+2015-01-22T16:46:12  <bshum> Possibly both.
+2015-01-22T16:47:54  <bshum> jeff: That's of course all from Makefile.common I'm curiously looking at.
+2015-01-22T16:49:00  <Dyrcona> dbwells kmlussier: I'm still getting the error with the branch installed. I even made sure to git fetch before making a new branch.
+2015-01-22T16:49:14  <Dyrcona> I don't have time to mess with it much today.
+2015-01-22T16:50:36  <pinesol_green> [evergreen|Dan Scott] LP#1409844: Towards more meaningful catalogue <title> elements - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=eda58b7>
+2015-01-22T16:53:24  <dbwells> Dyrcona: I'm sorry it's probably still some problem on my end.  Or maybe you just did a 'git fetch' and not 'git fetch working'?  Again, the problem is probably my fault, so just a suggestion.
+2015-01-22T16:53:41  <Dyrcona> No, it's me. I fucked my git branches.
+2015-01-22T16:54:27  <bshum> "Closing time, James."
+2015-01-22T16:54:47  <Dyrcona> Yep, it's too late in the day to fix this now.
+2015-01-22T16:55:02  <Dyrcona> I'll just build a new vm on Saturday or Monday.
+2015-01-22T16:55:13  <kmlussier> Dyrcona: Thanks for trying!
+2015-01-22T16:55:24  * kmlussier calls it a day
+2015-01-22T16:56:07  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-22T17:00:00  *** Dyrcona has quit IRC
+2015-01-22T17:01:36  <berick> tsbere: re: bug 1413624, if you hope to get it merged into 2.8, go ahead and target 2.8-beta
+2015-01-22T17:01:36  <pinesol_green> Launchpad bug 1413624 in Evergreen "New AccessHandler Module" (affected: 1, heat: 8) [Undecided,New] https://launchpad.net/bugs/1413624
+2015-01-22T17:02:54  <eeevil> dbwells: I've been terribly remiss in not looking at your cstore-fine-gen code ... I'm wondering what the reason for that is? (the use of cstore instead of dbi in the storage app, in particular) ... but, I think I've found a problem in any case. it looks like penalty calculation is being called before the cstore->commit is called
+2015-01-22T17:03:11  <eeevil> so, fine-oriented penalties won't have fresh data...
+2015-01-22T17:04:15  *** graced has quit IRC
+2015-01-22T17:06:16  <eeevil> dbwells: well, you can ignore the first part, really
+2015-01-22T17:10:02  *** mrpeters has left #evergreen
+2015-01-22T17:10:32  <dbwells> eeevil: Thanks for looking at it.  I'll check out what your saying about the penalty calc, and thank goodness I don't have to relive how I arrived at this path.
+2015-01-22T17:10:39  *** mmorgan has left #evergreen
+2015-01-22T17:12:33  *** mllewellyn has quit IRC
+2015-01-22T17:12:52  <berick> dbwells: in a nutshell, "make it possible to run the whole circ shebang, including fine generation, in a single transaction" ?
+2015-01-22T17:15:39  <dbwells> berick: yep, that's the gist.  Just don't ask me why, at least not this late in the day :)
+2015-01-22T17:16:05  <dbwells> although, it's starting to come back to me
+2015-01-22T17:16:59  <berick> i have a pretty good idea why, at least in part.. I won't ask you to re-live it :)
+2015-01-22T17:23:14  <dbwells> eeevil: yep, I see what you mean.  I think it'll be easy enough to fix for the backwards compat calls, but penalty generation will have to become responsibility of any code passing in their own transaction.
+2015-01-22T17:26:52  <dbwells> eeevil++
+2015-01-22T17:45:57  *** yboston has quit IRC
+2015-01-22T18:09:51  *** Shae has quit IRC
+2015-01-22T18:51:51  *** abowling has quit IRC
+2015-01-22T19:03:49  *** jwoodard has quit IRC
+2015-01-22T20:52:26  *** jihpringle has quit IRC
+2015-01-22T22:51:07  *** abowling has joined #evergreen
+2015-01-22T23:38:18  *** akilsdonk has quit IRC
+2015-01-22T23:47:24  *** goood has joined #evergreen

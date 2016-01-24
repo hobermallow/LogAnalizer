@@ -1,0 +1,313 @@
+2015-01-27T00:37:22  *** abowling has quit IRC
+2015-01-27T00:42:28  *** abowling has joined #evergreen
+2015-01-27T00:55:48  *** abowling has quit IRC
+2015-01-27T01:21:21  *** dcook__ has joined #evergreen
+2015-01-27T01:24:37  *** dcook has quit IRC
+2015-01-27T02:45:55  *** remingtron has quit IRC
+2015-01-27T02:46:15  *** remingtron has joined #evergreen
+2015-01-27T05:32:12  *** dat_ has joined #evergreen
+2015-01-27T07:26:40  *** graced has joined #evergreen
+2015-01-27T07:38:26  *** sarabee has joined #evergreen
+2015-01-27T07:46:37  *** rjackson-isl has joined #evergreen
+2015-01-27T07:55:58  *** collum has joined #evergreen
+2015-01-27T08:09:56  *** graced is now known as gdunbar
+2015-01-27T08:09:57  *** gdunbar is now known as graced
+2015-01-27T08:15:33  *** julialima_ has joined #evergreen
+2015-01-27T08:33:06  *** abowling has joined #evergreen
+2015-01-27T08:36:54  *** mrpeters has joined #evergreen
+2015-01-27T08:54:20  *** jwoodard has joined #evergreen
+2015-01-27T09:09:54  *** Shae has joined #evergreen
+2015-01-27T09:43:21  <csharp> eeevil++ # https://bugs.launchpad.net/evergreen/+bug/1414112
+2015-01-27T09:43:21  <pinesol_green> Launchpad bug 1414112 in Evergreen 2.7 "Audience filter no longer searching blank spaces" (affected: 2, heat: 12) [Medium,Confirmed]
+2015-01-27T09:43:39  <csharp> https://bugs.launchpad.net/evergreen/+bug/1414112/comments/2 is actually what I meant to link to ;-)
+2015-01-27T09:44:00  <csharp> in any case - reingest-free solutions are always welcome the week after an upgrade!
+2015-01-27T09:44:26  <csharp> gmcharlt++ # also ;-)
+2015-01-27T10:14:13  <csharp> ok, quick report after using PG 9.3 built-in replication for a week.  Everything works okay, except we're having to deal with some cancelled reports queries due to conflicts between the master and the reports replica.
+2015-01-27T10:14:44  <csharp> currently running with a max_standby_streaming_delay of 2 hours and that seems to have resolved most cancellations
+2015-01-27T10:20:24  <jboyer-isl> csharp, are you using the option that allows slaves to send feedback to the master to get around some of that? I forget what it's called, but feedback is in the name (at least in 9.1)
+2015-01-27T10:38:48  <dbs> csharp++
+2015-01-27T10:40:11  <gmcharlt> jboyer-isl: csharp: hot_standby_feedback
+2015-01-27T10:41:21  <jboyer-isl> Yeah, that sounds right. We're using that here and I haven't noticed many reports canceled because of it. (We've canceled a few by hand, but that's nothing new...)
+2015-01-27T10:42:30  <gmcharlt> jboyer-isl: csharp: also, tweaking max_standby_streaming_delay can be in order
+2015-01-27T10:42:58  * dbs looks forward to eventual 9.4 upgrade
+2015-01-27T10:47:55  *** graced has quit IRC
+2015-01-27T10:50:40  <csharp> jboyer-isl: we have two replicas - one is meant to be the actual hot standby so isn't receiving reports queries (feedback on with a short streaming delay) - the other is meant to do reports, so is set with feedback off (to prevent bloating of the master -- from what I've read that's a real concern) and higher streaming delay
+2015-01-27T10:51:40  <csharp> the dying reports are querying asset.copy (weeding, etc.)
+2015-01-27T10:52:02  <csharp> I've asked them to try running after business hours to see if that lets them complete
+2015-01-27T10:59:15  *** Dyrcona has joined #evergreen
+2015-01-27T11:04:09  *** graced has joined #evergreen
+2015-01-27T11:04:09  *** jboyer-isl has quit IRC
+2015-01-27T11:04:40  *** jboyer-isl has joined #evergreen
+2015-01-27T11:10:42  *** collum|2 has joined #evergreen
+2015-01-27T11:13:12  *** vlewis has joined #evergreen
+2015-01-27T11:17:52  *** 77CAAG1BE has joined #evergreen
+2015-01-27T11:18:00  *** vlewis is now known as 64MABV8OA
+2015-01-27T11:18:00  *** collum has quit IRC
+2015-01-27T11:18:01  *** vlewis has joined #evergreen
+2015-01-27T11:26:39  <abowling> is there a way to identify the user agent in a TT2 under the current configuration without importing a new module or plugin?
+2015-01-27T11:28:31  <abowling> disregard. i found it. ResolverResolver
+2015-01-27T11:33:46  <dbwells> that sounds... not right.  Or at least I don't understand the answer.  ResolverResolver is for OpenURL holdings stuff.
+2015-01-27T11:34:05  * dbwells scratches his head
+2015-01-27T11:37:00  <Dyrcona> abowling: I think your module that calls the TT2 would have to provide the HTTP headers in the data variable to the templates.
+2015-01-27T11:37:18  <Dyrcona> As far as I know, EGWeb doesn't do that.
+2015-01-27T11:42:34  <csharp> huh - I have a request from our Acq person to add/remove fields from the "name" options available in the acq.provider_holding_subfield_map table, and they appear to be set up in Open-ILS/src/templates/conify/global/acq/provider.tt2...
+2015-01-27T11:43:11  <csharp> but I don't know where they go from there - are the "name" values used by the edi fetcher and pusher scripts from that point?
+2015-01-27T11:43:54  <abowling> Dyrcona: ResolverResolver seems to use LWP::UserAgent, which is where I was going with it, but I think there might be a simpler way to get there as you mention in obtaining the HTTP headers
+2015-01-27T11:45:09  <csharp> berick: do you remember much about http://git.evergreen-ils.org/?p=Evergreen.git;a=commitdiff;h=76976c7fd09e47ca71ebb8c2311b690f11dac594?
+2015-01-27T11:45:09  <pinesol_green> [evergreen|Bill Erickson] ACQ Provider holding subfield field name options - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=76976c7>
+2015-01-27T11:46:08  <berick> csharp: more or less, yeah
+2015-01-27T11:46:09  <Dyrcona> abowling, what are you trying to do?
+2015-01-27T11:46:40  <Dyrcona> Or, rather, why do you want to pass the user agent to a template?
+2015-01-27T11:46:43  <csharp> berick: so if I wanted to edit that list, do you have any hints about what else besides the tt2 file would need to be changed?
+2015-01-27T11:47:33  *** nhilton has joined #evergreen
+2015-01-27T11:47:39  <Stompro> Hello, Upgrade question.  There is a note in the 2.7.1-2.7.2 db upgrade script that says you need to run 2.6.2-2.6.3 script to grab a missing update.  Does that mean that the upgrade path for 2.5 would be 2.5.3--2.6.0 -> 2.6.2--2.6.3 -> 2.6--2.7.0 -> 2.7.0-2.7.1.   So you run the 2.6.2-2.6.3 before the 2.6-2.7.0?  I'm just updating the ugprade docs for 2.7.3 and want that to be clear.
+2015-01-27T11:48:04  <csharp> Stompro: that's what I did and all is working okay
+2015-01-27T11:48:40  <berick> csharp: unless I missed a field, the backend Perl code only understands that exact list of fields.  to extract/import more fields from provider records, you'd also have to add support to the Perl code.
+2015-01-27T11:48:52  <Stompro> csharp, thanks.
+2015-01-27T11:49:00  <berick> as far as the UI goes, though, the TT2 is all you'd have to change.
+2015-01-27T11:49:06  <bshum> Stompro: Correct, that was a missed upgrade script in the path, and running it before or after shouldn't be a problem.
+2015-01-27T11:49:07  <csharp> berick: okay - is it Order.pm?
+2015-01-27T11:49:49  *** sandbergja has joined #evergreen
+2015-01-27T11:50:46  <Dyrcona> Seriously? We have 200 cstores going across two servers and load is 0.75!
+2015-01-27T11:51:45  <bshum> o.O
+2015-01-27T11:51:45  <csharp> berick: found it (yes, it's Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm)
+2015-01-27T11:51:45  <csharp> berick: thanks for the info
+2015-01-27T11:51:45  <Dyrcona> Everyone is closed, but still....
+2015-01-27T11:52:54  <berick> csharp: indeed, cool
+2015-01-27T11:53:35  <berick> Dyrcona: also note that, unlike Perl opensrf, which supports max/min spare children, C opensrf does not clean up idle drones until they have hit max requests
+2015-01-27T11:54:05  <berick> so it takes a lot longer for C service drone counts to come back down
+2015-01-27T11:55:18  <berick> ...and most of them will just be sitting there doing nothing
+2015-01-27T11:56:20  <Dyrcona> Yes, but I've got tons of these: "No request was received in 6 seconds, exiting stateful session"
+2015-01-27T11:56:37  <Dyrcona> Something in the OPAC must be keeping a cstore connected.
+2015-01-27T11:57:49  <Dyrcona> I think I'll take a deeper look, even though I'm "off." I can always get comp. time. :)
+2015-01-27T12:02:13  <Dyrcona> Maybe it is something in our of our customizations, but I didn't think we customized the OPAC code so much, just the templates.
+2015-01-27T12:02:39  <Dyrcona> Think I'll start by diffing our production branch with master.
+2015-01-27T12:03:07  <Dyrcona> Hmm.. Wonder if I can limit it to certain directories to skip all of our templates and stuff?
+2015-01-27T12:05:38  <Dyrcona> To answer my question for the logs: git diff works if the path is a directory. I'd only ever used it on individual files before.
+2015-01-27T12:06:12  <goood> boo... the bottom of c3c8b74d5169 breaks authority validation (STABLE is Right(tm) for the functions, but the planner makes a bad choice). we should run the function first and then use the value in the query...
+2015-01-27T12:06:12  <pinesol_green> [evergreen|Dan Wells] Remove unwanted index recreation - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=c3c8b74>
+2015-01-27T12:07:46  <goood> make that 4ffa62207
+2015-01-27T12:07:46  <pinesol_green> [evergreen|Ben Shum] LP#1253163: stamping upgrade for authority.in-line-headings - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4ffa622>
+2015-01-27T12:09:20  <bshum> Honestly, I don't remember what I was testing that day when I merged that.  Wasn't that related to the PG 9.3 weirdness and function breakage?
+2015-01-27T12:11:01  *** jihpringle has joined #evergreen
+2015-01-27T12:11:11  <bshum> Wait, I'm confused by those two commits you linked now.
+2015-01-27T12:11:41  <bshum> Are you saying the index should be there or shouldn't be there?
+2015-01-27T12:11:49  <pastebot> "Dyrcona" at 64.57.241.14 pasted "MVLC WWW diff with master" (40 lines) at http://paste.evergreen-ils.org/27
+2015-01-27T12:12:18  <bshum> Dyrcona: That doesn't look too unusual to me.
+2015-01-27T12:18:14  <bshum> Or to put it another way, what did I break now?  10+ months later :(
+2015-01-27T12:21:59  * bshum dangles off the edge of sanity
+2015-01-27T12:32:53  *** dreuther_ has joined #evergreen
+2015-01-27T12:33:23  <goood> berick: is http://git.evergreen-ils.org/?p=working/random.git;a=shortlog;h=refs/heads/collab/berick/hatch2 still the newest hatch branch?
+2015-01-27T12:35:31  *** dreuther has quit IRC
+2015-01-27T12:36:32  <berick> goood: yes
+2015-01-27T12:41:15  <goood> berick: thanks. are there any instructions for installing on windows or mac?
+2015-01-27T12:45:45  <berick> goood: no instructions.  same concepts for both, though, just different commands
+2015-01-27T12:55:42  *** nhilton has quit IRC
+2015-01-27T13:03:50  *** bmills has joined #evergreen
+2015-01-27T13:05:02  <csharp> goood: I'm attempting to apply the fix for bug 1414112 on a test server and getting this error: http://pastie.org/9865951 ... it looks like it should work, though :-/
+2015-01-27T13:05:02  <pinesol_green> Launchpad bug 1414112 in Evergreen 2.7 "Audience filter no longer searching blank spaces" (affected: 2, heat: 12) [Medium,Confirmed] https://launchpad.net/bugs/1414112
+2015-01-27T13:09:28  <Dyrcona> berick: After comparing notes wth bshum, I really think it is something under EGCatloader, probably doing xact_begin followed by xact_commit or xact_rollback, but no disconnect.
+2015-01-27T13:09:41  <Dyrcona> He sees the messages in his logs, also, just not as many.
+2015-01-27T13:10:07  <Dyrcona> They also only come from his two main app servers that also run Apache, not from the utility server or other servers.
+2015-01-27T13:10:48  <Dyrcona> That is, the no request received messages.
+2015-01-27T13:11:51  <Dyrcona> Anyway, I'm going to see what I find and patch it for our server. If that works, I'll make a branch in a few days.
+2015-01-27T13:13:02  <csharp> Dyrcona: we aren't seeing performance problems (yet), but I'm seeing many many such messages in our logs last hour
+2015-01-27T13:13:33  <Dyrcona> csharp: Thanks for the corroboration.
+2015-01-27T13:13:37  <csharp> No request was received in 6 seconds, exiting stateful session
+2015-01-27T13:14:02  *** Shae has quit IRC
+2015-01-27T13:14:06  <Dyrcona> bshum's timeout is 8 seconds, but other than that he got about 1300 in the last hour.
+2015-01-27T13:14:18  <Dyrcona> I get over 17,000!
+2015-01-27T13:14:56  <Dyrcona> I only have about 1/3 more entries in Apache access.log for that hour than bshum has, so the problem could be exponential rather than linear.
+2015-01-27T13:15:33  <Dyrcona> He also runs drones on 3x as many servers as I do.... Bingo!
+2015-01-27T13:15:43  <jeff> heh
+2015-01-27T13:15:44  <Dyrcona> I think we have a winner, folks.
+2015-01-27T13:15:50  <bshum> Heh
+2015-01-27T13:17:46  <Dyrcona> I'll make myself another tea, and then I'll see if I can find the culprit(s).
+2015-01-27T13:19:36  <csharp> Dyrcona++
+2015-01-27T13:23:04  <dbwells> Hey all.  Just a quick double-check: is PG 9.1 still the minimum version for EG 2.7?
+2015-01-27T13:23:36  <csharp> dbwells: from my understanding, 9.1 has not been deprecated yet for any EG version
+2015-01-27T13:24:25  <bshum> dbwells: PG 9.1 is the minimum version, but personally I only tested with PG 9.3 and recommend that to everyone who goes up to EG 2.7 :)
+2015-01-27T13:24:42  <dbwells> csharp++ Thanks.  I thought that to be true, but didn't want to find out mid-upgrade that I was wrong :)
+2015-01-27T13:25:21  <csharp> dbwells: I'll mention that we're on 9.3, so I can speak from experience upgrading to 2.7 on 9.1 ;-)
+2015-01-27T13:25:58  <dbwells> bshum: That's probably good advice, but my upgrade window is a little tight this time around.  We'll get there eventually.
+2015-01-27T13:26:38  <Dyrcona> We're still running Pg 9.1 with 2.7
+2015-01-27T13:27:02  *** yboston has joined #evergreen
+2015-01-27T13:28:56  <dbwells> Thanks again, all.
+2015-01-27T13:29:14  <berick> Dyrcona: good find, re: util vs. app server
+2015-01-27T13:29:23  <berick> opac could definitely be it
+2015-01-27T13:36:39  <csharp> goood: FYI - I found the problem and submitted a signed-off branch to correct it: https://bugs.launchpad.net/evergreen/+bug/1414112/comments/4
+2015-01-27T13:36:39  <pinesol_green> Launchpad bug 1414112 in Evergreen 2.7 "Audience filter no longer searching blank spaces" (affected: 2, heat: 12) [Medium,Confirmed]
+2015-01-27T13:44:45  *** julialima_ has quit IRC
+2015-01-27T13:49:06  <Dyrcona> Well, I found one problem in fetch_user_circs from EGCatLoader/Account.pm.
+2015-01-27T13:49:29  <Dyrcona> It does xact_rollback instead of rollback, so that would leave a connection open.
+2015-01-27T13:50:44  <berick> indeed
+2015-01-27T13:52:06  <Dyrcona> That's all I can find under EGCatLoader that looks like a problem.
+2015-01-27T13:52:30  <Dyrcona> Some others do at first glance, but there is always a commit or rollback before a return.
+2015-01-27T13:52:57  <Dyrcona> Think I'll just look under WWW for completeness-sake.
+2015-01-27T13:55:52  <berick> ugh, I did that?  lame!
+2015-01-27T13:57:28  <Dyrcona> KPACLoader, has a similar situation on line 225.
+2015-01-27T13:57:37  <csharp> @who is to blame?
+2015-01-27T13:57:37  <pinesol_green> graced is to blame.
+2015-01-27T13:58:03  <Dyrcona> I'm going to skim the other files my grep turns up, but they only show up because the explicitly disconnect.
+2015-01-27T13:58:51  <Dyrcona> I did this to find things that look troublesome: grep -n -R -P '(?:disconnect|xact_(?:begin|commit|rollback))' ./
+2015-01-27T14:01:11  <Dyrcona> Nifty. BadDebt.pm actually calls open-ils.cstore.transaction.begin. I don't see that very often in the code.
+2015-01-27T14:02:09  <Dyrcona> Ditto TemplateBatchBibUpdate.pm
+2015-01-27T14:03:42  <Dyrcona> ->gather(1) disconnects doesn't it? Does it not work if the connect was done explicitly?
+2015-01-27T14:04:31  <berick> no, gather only calls recv()
+2015-01-27T14:04:52  <csharp> Dyrcona: BadDebt.pm is basically cruft from a PINES wishlist feature from ages back
+2015-01-27T14:06:37  *** yboston_ has joined #evergreen
+2015-01-27T14:07:02  *** yboston has quit IRC
+2015-01-27T14:07:03  *** yboston_ is now known as yboston
+2015-01-27T14:07:04  <Dyrcona> berick: Yeah, I just looked through OpenSRF::AppSession again, and was about to say it doesn't disconnect.
+2015-01-27T14:07:27  <Dyrcona> That's OK. The lines that prompted the question had a gather(1) followed by a disconnect.
+2015-01-27T14:08:46  *** dreuther has joined #evergreen
+2015-01-27T14:09:16  <Dyrcona> And, AutoSuggest.pm apparently disconnects when it doesn't have to.
+2015-01-27T14:09:25  <Dyrcona> Which should be harmless.
+2015-01-27T14:09:58  <Dyrcona> So, I wonder if fetch_user_circs is causing us all this trouble.
+2015-01-27T14:10:06  <Dyrcona> We don't use KPAC.
+2015-01-27T14:10:56  <berick> it's called every time some one views their circ list and a few other places
+2015-01-27T14:11:24  <berick> renewals, circ history
+2015-01-27T14:11:38  <berick> in any event, it's adding to the problem
+2015-01-27T14:11:46  <berick> and def. needs to be cleaned up
+2015-01-27T14:12:00  *** dreuther_ has quit IRC
+2015-01-27T14:15:09  <Dyrcona> Yep.
+2015-01-27T14:15:50  <Dyrcona> I just realized that I'm using my personal laptop and don't have a copy of my development branch on it, and can't get it without messing with my git repos.....
+2015-01-27T14:16:03  <Dyrcona> Or firing up my work laptop.
+2015-01-27T14:16:44  <Dyrcona> I should put this in my existing CStoreEditor branch anyway.
+2015-01-27T14:24:11  <Dyrcona> Wow.
+2015-01-27T14:24:48  <Dyrcona> We've been consistently hovering around 200 cstore drones over two servers, with the load on the main Evergreen server currently at 0.51.
+2015-01-27T14:24:58  <Dyrcona> This has been going on for 3 hours.
+2015-01-27T14:25:10  <Dyrcona> It has to be fetch_user_circs....
+2015-01-27T14:25:29  <Dyrcona> Only the OPAC should be in use today, everyone is closed.
+2015-01-27T14:31:51  <Dyrcona> Ah ha!
+2015-01-27T14:32:05  <Dyrcona> fetch_user_circs runs any time a patron tries to renew.
+2015-01-27T14:32:18  <berick> yeah, or even view their items out
+2015-01-27T14:32:38  <Dyrcona> Guess what I saw in the logs during one of episodes that occurred at night on the weekends....
+2015-01-27T14:32:47  <Dyrcona> Library Elf renewing stuff for a number of patrons.
+2015-01-27T14:33:03  <berick> Library Elf renews through the tpac?
+2015-01-27T14:33:20  <Dyrcona> Oop.. never mind. they go through xml-rpc...
+2015-01-27T14:33:48  <goood> csharp: doh! thanks
+2015-01-27T14:33:52  <Dyrcona> I bet a lot of people are renewing today.
+2015-01-27T14:33:57  <goood> (he said an hour later)
+2015-01-27T14:34:01  <Dyrcona> Since the libraries are closed.
+2015-01-27T14:34:06  <Dyrcona> goood++
+2015-01-27T14:34:15  <Dyrcona> Just 'cause eeevil gets all the karma. ;)
+2015-01-27T14:41:16  *** dreuther_ has joined #evergreen
+2015-01-27T14:43:18  *** dreuther has quit IRC
+2015-01-27T14:52:58  *** dreuther has joined #evergreen
+2015-01-27T14:56:17  *** dreuther_ has quit IRC
+2015-01-27T14:58:35  <Dyrcona> So, I load my checkouts in the OPAC.
+2015-01-27T14:58:40  <Dyrcona> I renew a couple.
+2015-01-27T14:58:47  <Dyrcona> I reload the list of checkouts.
+2015-01-27T14:59:18  <Dyrcona> I just potentially talked to 3 drones, and each one has a connection dangling if I did all of that in < {timeout} seconds.
+2015-01-27T15:07:34  <Stompro> I just tried to get a better Qualys SSL score and managed to break the staff clients ability to connect.  Anyone remember what the staff client needs in reguards to ssl versions/cyphers that doesn't work with a modern locked down ssl setup?
+2015-01-27T15:09:33  <csharp> hmm - can you get to Admin -> For developers... -> about:config when you can't connect?
+2015-01-27T15:10:24  <csharp> doesn't look like it
+2015-01-27T15:12:01  <Stompro> Wireshark says it is trying to use tls1.0, which is enabled, so maybe the problem is with the ciphers enabled.  Apache logs show nothing so it is't getting past the ssl negotiation phase.
+2015-01-27T15:12:09  <dbs> Stompro: umm. works pretty great for me
+2015-01-27T15:12:27  <dbs> https://www.ssllabs.com/ssltest/analyze.html?d=laurentian.concat.ca&latest anyways
+2015-01-27T15:13:38  <Stompro> dbs: would you mind sharing your SSLCipherSuite line?  I also just loaded a non self signed cert.. I should probably not change too many things at once before testing :)
+2015-01-27T15:13:49  * dbs using https://wiki.mozilla.org/Security/Server_Side_TLS (intermediate support)
+2015-01-27T15:14:12  *** Shae has joined #evergreen
+2015-01-27T15:14:16  <dbs> SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RS
+2015-01-27T15:14:19  <jeff> Stompro: i'd be interested in your config and in your failure mode / errors, but purely for selfish reasons -- i'd like to know how it can break. doesn't help you fix it right now.
+2015-01-27T15:14:35  <Stompro> Firefox can connect just fine to the catalog... just not the staff client.
+2015-01-27T15:14:57  * dbs also redirecting everything from HTTP to HTTPS
+2015-01-27T15:19:12  <Stompro> jeff: The error mode is that the server status check fails with a red "There was an error testing this hostname".  The other issue that could be related is that the cert is so new that the OCSP info hasn't been updated, so maybe the staff client is trying to validate the cert against the OCSP list and failing because of that?
+2015-01-27T15:19:42  <Stompro> And it has nothing to do with the cipher suites.
+2015-01-27T15:19:55  <jeff> What OCSP issue do you think you're running into?
+2015-01-27T15:22:17  <Stompro> I think I was supposed to wait an hour or two before using the new cert for the OCSP info to get added.  I think a negative reply is cached now on the OCSP server so I have to wait for 24 hours for it to time out.  ssllabs does give me an "OCSP ERROR" so they are seeing it also.
+2015-01-27T15:27:51  <Stompro> That was it.  I disabled OCSP checking in the staff client and now I can connect.  Added user_pref("security.OCSP.enabled", 0); to the prefs.js.
+2015-01-27T15:35:44  *** bmills has quit IRC
+2015-01-27T15:45:27  <gmcharlt> because, apparently, we collectively don't have enough to do: https://security-tracker.debian.org/tracker/CVE-2015-0235
+2015-01-27T15:45:27  <pinesol_green> ** RESERVED ** This candidate has been reserved by an organization or individual that will use it when announcing a new security problem.  When the candidate has been publicized, the details for this candidate will be provided. (http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-0235)
+2015-01-27T15:45:52  *** bmills has joined #evergreen
+2015-01-27T15:46:39  * bshum grumbles
+2015-01-27T15:50:02  <Dyrcona> Does pinesol pickup commits from the working repo?
+2015-01-27T15:50:28  <jeff> commit a65e1ad
+2015-01-27T15:50:37  <jeff> apparently not.
+2015-01-27T15:50:48  <bshum> No it does not
+2015-01-27T15:50:49  <Dyrcona> OK, I'll paste the URL from gitweb.
+2015-01-27T15:51:02  <Dyrcona> http://git.evergreen-ils.org/?p=working/Evergreen.git;a=commitdiff;h=ad5a29d2dd887e29dabbf733813294f58ce66752
+2015-01-27T15:51:06  <bshum> We could track the working repo, but it would only be tracking the main branch and spitting dupes to the channel I think.
+2015-01-27T15:51:19  <bshum> Since master there is the same as master in the other place.
+2015-01-27T15:51:23  <Dyrcona> I applied that in production (after checking that it didn't break the OPAC in development).
+2015-01-27T15:51:27  <bshum> But I wonder, hmm
+2015-01-27T15:51:50  <Dyrcona> Since I applied that, the number of cstore drones in use on our server has been steadily going downward, if slowly.
+2015-01-27T15:52:02  <Dyrcona> It was going down a little and then back up to 200.
+2015-01-27T15:52:28  <Dyrcona> We're currently down to about 55 on one and 82 on the other.
+2015-01-27T15:52:44  <Dyrcona> I think I'm gonna go shovel some snow.
+2015-01-27T15:54:44  <goood> Dyrcona: hrm... doesn't that break the contract with callers to not destroy their editor?
+2015-01-27T15:55:19  <goood> (obviously, if there are only a few callers, and they're not using the editor after, they should be disconnecting it, but ...)
+2015-01-27T15:56:49  <Dyrcona> goood: If you look at the rest of the code, those rollbacks come after explicit xact_begin calls.
+2015-01-27T15:57:25  <Dyrcona> Everywhere else in EGCatLoader and family that happens, an explicit commit or rollback is done.
+2015-01-27T15:57:59  <goood> Dyrcona: right, but xact_commit doesn't make the editor unusable, where rollback does, unless I'm misremembering (which is totally possible
+2015-01-27T15:58:12  <csharp> for Ubuntu users, the same alert as gmcharlt posted for Debian: http://www.ubuntu.com/usn/usn-2485-1/
+2015-01-27T15:59:11  <goood> the xact_begin/xact_commit pairs leave the editor intact, I mean, where rollback doesn't
+2015-01-27T15:59:38  <goood> so a theoretical caller doesn't have an editor now, after fetching circs
+2015-01-27T15:59:49  <berick> rollback causes a disconnect, but it does not destroy the editor
+2015-01-27T15:59:56  <goood> but, if that's the last thing that any caller does,
+2015-01-27T16:00:05  <goood> berick: will it magically reconnect?
+2015-01-27T16:00:22  <goood> sorry, I shouldn't have used "destroy"
+2015-01-27T16:00:23  <berick> goood: if you call xact_begin, yes
+2015-01-27T16:00:32  <berick> but it won't just reconnect with any new request
+2015-01-27T16:00:51  <Dyrcona> And, it looks like xact_begin is used everywhere.
+2015-01-27T16:01:00  <Dyrcona> in the OPAC anyway.
+2015-01-27T16:01:13  <berick> agreed if the caller connected the editor before passing it down to the user-circs function, the user-circs function should not disconnect it
+2015-01-27T16:01:30  <berick> but I think in this case it was just a mistake
+2015-01-27T16:01:36  <berick> the caller never connected it
+2015-01-27T16:01:49  <berick> user-circs did, by virtue of calling xact_begin, then left it connected
+2015-01-27T16:01:58  <berick> and since the caller never connected, it never disconnected
+2015-01-27T16:02:21  <goood> ack says only EGCatLoader/Account.pm calls that sub, so there are few callers to check
+2015-01-27T16:02:34  <goood> which it sounds like Dyrcona had done ;)
+2015-01-27T16:03:08  <goood> so, I'll lower my red flag to a yellow for "hypothetical future callers" :)
+2015-01-27T16:03:55  <berick> goood++
+2015-01-27T16:03:57  <berick> all valid points
+2015-01-27T16:04:02  <goood> well
+2015-01-27T16:04:32  <goood> handle_circ_renew looks like it uses the editor ... ah! but only to pull values off it, not to make requests
+2015-01-27T16:05:26  <goood> so, every use of fetch_user_circs is the last (remote) use of the editor in each code path
+2015-01-27T16:05:40  <dbwells> Dyrcona++ # 'cause I'm feeling hopeful you've cracked it
+2015-01-27T16:06:44  <berick> at minimum, a comment in the function warning the caller
+2015-01-27T16:07:05  * csharp schedules maintenance window to apply the glibc updates for PINES :-/
+2015-01-27T16:07:34  <goood> Dyrcona++
+2015-01-27T16:12:48  *** collum|2 has quit IRC
+2015-01-27T16:12:58  *** Shae has quit IRC
+2015-01-27T16:22:52  *** nhilton has joined #evergreen
+2015-01-27T16:29:03  *** rjackson-isl has quit IRC
+2015-01-27T16:31:35  *** jboyer-isl has quit IRC
+2015-01-27T16:33:29  <Dyrcona> While I shoveled snow, I figured we should add a connection_count to CStoreEditor like a reference count.
+2015-01-27T16:33:51  <Dyrcona> It gets incremented every time connect is called and decremented each time disconnect is called.
+2015-01-27T16:34:07  <Dyrcona> When the count reaches 0, disconnect actually disconnects.
+2015-01-27T16:34:20  <Dyrcona> reset would set count to 0 before calling disconnect.
+2015-01-27T16:34:33  <Dyrcona> That's the OO way to fix it, anyway.
+2015-01-27T16:34:53  <Dyrcona> Fortunately, my neighbor plows my driveway.
+2015-01-27T16:35:18  <Dyrcona> We're down to 14 cstore drones, 7 on each server!
+2015-01-27T16:36:55  <Dyrcona> I'll do that in a branch tomorrow.
+2015-01-27T16:36:57  *** vlewis_ has joined #evergreen
+2015-01-27T16:37:06  <bshum> Huzzah
+2015-01-27T16:40:20  <Dyrcona> I'd Huzzah, too, but I'm tired from shoveling my walk and shoveling out my car.
+2015-01-27T16:40:33  <Dyrcona> We got two feet plus, all right.
+2015-01-27T16:52:56  <Dyrcona> Well, I'm signing off.
+2015-01-27T16:53:06  <Dyrcona> TTYL, #evergreen!
+2015-01-27T16:53:15  *** Dyrcona has quit IRC
+2015-01-27T17:15:00  *** graced has quit IRC
+2015-01-27T17:17:54  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-27T17:21:32  <gmcharlt> goood: bug 1415234
+2015-01-27T17:21:32  <pinesol_green> Launchpad bug 1415234 in Evergreen "uncontrolled attribute values that consistent only of spaces are normalized away" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1415234
+2015-01-27T17:26:33  *** nhilton has quit IRC
+2015-01-27T17:28:17  *** vlewis_ has quit IRC
+2015-01-27T17:28:20  *** 64MABV8OA has quit IRC
+2015-01-27T17:28:21  *** vlewis has quit IRC
+2015-01-27T17:40:36  *** pmurray is now known as pmurray_away
+2015-01-27T17:45:49  *** mrpeters has quit IRC
+2015-01-27T18:12:46  *** yboston has quit IRC
+2015-01-27T20:02:07  *** jwoodard has quit IRC
+2015-01-27T20:07:38  *** jihpringle has quit IRC
+2015-01-27T20:40:25  *** csharp has quit IRC
+2015-01-27T20:50:02  *** sandbergja has quit IRC
+2015-01-27T21:10:28  *** edoceo has quit IRC
+2015-01-27T21:26:28  *** csharp has joined #evergreen
+2015-01-27T21:57:42  *** bmills has quit IRC
+2015-01-27T23:15:16  *** b_bonner has quit IRC
+2015-01-27T23:15:27  *** mnsri_away has quit IRC
+2015-01-27T23:16:37  *** rashma has quit IRC

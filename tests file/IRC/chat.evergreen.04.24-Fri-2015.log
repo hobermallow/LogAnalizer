@@ -1,0 +1,131 @@
+2015-04-24T05:08:49  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-24T06:24:51  *** paxed has left #evergreen
+2015-04-24T07:43:08  *** graced has joined #evergreen
+2015-04-24T07:48:19  *** rjackson_isl has joined #evergreen
+2015-04-24T08:12:17  *** akilsdonk has joined #evergreen
+2015-04-24T08:32:05  *** mmorgan has joined #evergreen
+2015-04-24T08:38:55  *** Dyrcona has joined #evergreen
+2015-04-24T08:41:04  *** jboyer-isl has joined #evergreen
+2015-04-24T08:54:09  *** maryj has joined #evergreen
+2015-04-24T08:54:14  *** maryj_ has joined #evergreen
+2015-04-24T08:57:16  *** jboyer-isl has quit IRC
+2015-04-24T09:00:33  *** akilsdonk has quit IRC
+2015-04-24T09:03:53  *** maryj_ has quit IRC
+2015-04-24T09:16:41  *** Newziky has joined #evergreen
+2015-04-24T09:28:58  *** yboston has joined #evergreen
+2015-04-24T09:44:07  *** Shae has joined #evergreen
+2015-04-24T09:47:40  *** akilsdonk has joined #evergreen
+2015-04-24T10:00:48  *** BigRig has joined #evergreen
+2015-04-24T10:24:07  *** sarabee has joined #evergreen
+2015-04-24T10:25:08  *** Newziky has left #evergreen
+2015-04-24T11:07:36  *** grharry has joined #evergreen
+2015-04-24T11:16:44  *** mrpeters has left #evergreen
+2015-04-24T11:34:14  *** rashma is now known as rashma_away
+2015-04-24T11:35:06  *** rashma_away is now known as rashma
+2015-04-24T11:38:29  *** mrpeters has joined #evergreen
+2015-04-24T11:38:37  *** bmills has joined #evergreen
+2015-04-24T12:02:21  *** sandbergja has joined #evergreen
+2015-04-24T12:04:37  *** bbqben has joined #evergreen
+2015-04-24T12:05:59  *** mglass has quit IRC
+2015-04-24T12:16:23  *** buzzy has joined #evergreen
+2015-04-24T12:20:23  *** tsbere has quit IRC
+2015-04-24T12:20:32  *** tsbere_ has joined #evergreen
+2015-04-24T12:23:34  *** tsbere_ is now known as tsbere
+2015-04-24T12:50:38  *** mrpeters has quit IRC
+2015-04-24T13:52:05  <buzzy> space planning question for the conference: how many people typically show up at the dev hackfest?
+2015-04-24T13:53:12  <berick> buzzy: curious what others say, but I'd guess 20-30 ?
+2015-04-24T13:56:14  <bshum> That might be about right.
+2015-04-24T13:57:03  <bshum> Some years I think we got as low as 12.
+2015-04-24T13:57:09  <bshum> But other years, it got as high as 25-30
+2015-04-24T13:57:24  <bshum> So I guess I would venture my guess based more on who's getting rooms on Tuesday :)
+2015-04-24T13:58:06  <bshum> Is there a bar we can hang out in? That worked for Vancouver :)
+2015-04-24T13:58:13  <bshum> We took over a bar and did hacking there or something
+2015-04-24T14:00:09  <csharp> there's a lot of coming and going for some of us in the hackfest
+2015-04-24T14:00:22  <buzzy> is there a bar, he asks. <snort>
+2015-04-24T14:00:29  <buzzy> yes, yes there are
+2015-04-24T14:01:37  <Dyrcona> There is at least the Cebu Lounge. :)
+2015-04-24T14:02:12  <buzzy> yeah, and if you head into town, there are innumerable ones.
+2015-04-24T14:02:23  <Dyrcona> And, a business center.
+2015-04-24T14:02:30  <Dyrcona> bshum meant at the hotel itself.
+2015-04-24T14:02:39  <buzzy> but we'll have a room for you guys; we're just trying to figure out which one.
+2015-04-24T14:03:05  <buzzy> actually, there's also a starbucks near the hotel
+2015-04-24T14:03:08  <Dyrcona> In Vancouver we basically commandeered the hotel bar on a couple of evenings for hacking and other discussions.
+2015-04-24T14:05:21  <Dyrcona> In Cambridge we did some late night hacking in the lobby.
+2015-04-24T14:05:33  <Dyrcona> But that was outside the context of the hackfest itself.
+2015-04-24T14:05:41  <bshum> In Indiana I think we stole a sideroom or something.
+2015-04-24T14:06:03  <Dyrcona> Yeah, we did and a hotel employee even entered, said "Excuse me" and left.
+2015-04-24T14:06:09  <bshum> Hehe
+2015-04-24T14:06:18  <bshum> So any which way, we can be resourceful :)
+2015-04-24T14:06:24  <buzzy> yeah, if you include the lounge and lobby, there should be plenty of places where you can do impromptu hacking. we just want to make sure you have a dedicated room on wednesday
+2015-04-24T14:06:46  <Dyrcona> But, yeah, I think 20 is a good number to plan for the hackfest.
+2015-04-24T14:06:54  <bshum> Sounds good
+2015-04-24T14:07:00  <bshum> buzzy++
+2015-04-24T14:07:10  <Dyrcona> buzzy++
+2015-04-24T14:08:42  <buzzy> mountainview room it is!
+2015-04-24T14:39:37  <berick> any particular reason we don't let anything crawl?  http://libmail.georgialibraries.org/robots.txt
+2015-04-24T14:41:17  * bshum pushes csharp into the hot seat
+2015-04-24T14:42:08  <kmlussier> buzzy: On a related topic, you asked me about the DIG hackfest. Last year was the first year we did the DIG event, and it was in a separate room.
+2015-04-24T14:43:46  <kmlussier> But DIG is pretty good at working wherever we can. In past years, yboston and I have worked from the dev hackfest room if we needed to. But, in those cases, then, you wouldn't really advertise it as a separate hackfest.
+2015-04-24T14:44:56  <kmlussier> Prior to last year, DIG only had a standard 45-minute meeting, as is done with other interest groups. If we couldn't do a DIG hackfest, then I think we would need meeting space at some other time.
+2015-04-24T14:45:08  * kmlussier really liked having a separate hackfest, though.
+2015-04-24T14:46:33  <buzzy> we've got the dig hackfest covered, i think. in the morning, it's going to be in the room where the sql class will be held in the afternoon. when the sql class is going on, it'll move to the lounge
+2015-04-24T14:54:44  <kmlussier> A questions about the setup at the hackfest. In previous years, I've found that multiple tables work well so that people can work in groups. With the focus on QA, do you think another setup might be warranted?.
+2015-04-24T14:55:36  <buzzy> we currently have the room setup "classroom" style, so that should work, but we can ask them to set it up however you want
+2015-04-24T15:13:22  *** Newziky has joined #evergreen
+2015-04-24T15:15:49  <dkyle> dev mtg yesterday mentioned berick's QA page, where is it?
+2015-04-24T15:17:48  <kmlussier> dkyle: http://wiki.evergreen-ils.org/doku.php?id=dev:contributing:qa
+2015-04-24T15:18:35  <Dyrcona> I was about to say I've got a link to phasefx 's qa report.
+2015-04-24T15:18:36  <dkyle> thanks
+2015-04-24T15:20:32  <dkyle> buzzy: would you happen to be a mountain biker?
+2015-04-24T15:20:34  <Dyrcona> But, I see something else was wanted. :)
+2015-04-24T15:21:18  <buzzy> nope, sorry. hiker and kayaker. there are plenty of mountain bike trails around here, though
+2015-04-24T15:22:24  <dkyle> Drycona: link would be appreciated too
+2015-04-24T15:25:20  <Dyrcona> http://nox.esilibrary.com/~jason/qareport/qa.html
+2015-04-24T15:28:09  *** dkyle has quit IRC
+2015-04-24T15:28:17  *** dkyle has joined #evergreen
+2015-04-24T15:28:52  *** _bott_1 has joined #evergreen
+2015-04-24T15:29:36  *** _bott_ has quit IRC
+2015-04-24T15:30:43  * Dyrcona has a Gary Fisher bike that he never gets to ride any more.
+2015-04-24T15:31:13  <dkyle> Dyrcona++
+2015-04-24T15:31:24  <dkyle> link, not not getting to ride
+2015-04-24T15:31:30  <Dyrcona> Heh.
+2015-04-24T15:32:42  *** dkyle1 has joined #evergreen
+2015-04-24T15:36:12  *** dkyle has quit IRC
+2015-04-24T15:44:04  *** buzzy has quit IRC
+2015-04-24T15:58:37  *** Shae has quit IRC
+2015-04-24T16:00:50  *** yboston has quit IRC
+2015-04-24T16:11:53  *** yboston has joined #evergreen
+2015-04-24T16:15:11  *** jboyer-isl has joined #evergreen
+2015-04-24T16:23:02  *** grharry has left #evergreen
+2015-04-24T16:23:46  *** maryj has quit IRC
+2015-04-24T16:30:04  *** rjackson_isl has quit IRC
+2015-04-24T16:31:31  <jboyer-isl> berick: re: your earlier Q about robots.txt, I've changed ours to only disallow images and myopac stuff and submitted a sitemap to Google's Webmaster Tools, but I'm not certain they think our list of 1+M pages without any incoming links are crawl-worthy.
+2015-04-24T16:32:21  <jboyer-isl> We're up to 19 crawled pages, last I looked. (only 1M+ to go!)
+2015-04-24T16:32:38  <berick> jboyer-isl: i was actually asking about the list archives
+2015-04-24T16:33:12  <jboyer-isl> Oh, hey, look at me not paying attention. That is a good question, I tend to go to Google before thinking about MarkMail.
+2015-04-24T16:34:05  <berick> yeah, especially useful after an email address change, too
+2015-04-24T16:42:09  *** buzzy has joined #evergreen
+2015-04-24T16:46:40  <csharp> berick: hmm - I don't know why that choice was made there - we don't have a robots.txt on the EG community mail server
+2015-04-24T16:50:51  *** Dyrcona has quit IRC
+2015-04-24T16:51:21  <berick> csharp: better safe than sorry, i'm guessing
+2015-04-24T16:51:22  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-24T17:07:53  *** graced has quit IRC
+2015-04-24T17:16:15  *** mmorgan has left #evergreen
+2015-04-24T17:17:37  *** jboyer-isl has quit IRC
+2015-04-24T17:22:13  *** buzzy has quit IRC
+2015-04-24T17:25:49  *** yboston has quit IRC
+2015-04-24T17:56:58  *** RBecker has quit IRC
+2015-04-24T18:00:20  *** RBecker has joined #evergreen
+2015-04-24T18:12:07  *** chatley has quit IRC
+2015-04-24T18:12:07  *** dreuther has quit IRC
+2015-04-24T18:18:25  *** dbwells has quit IRC
+2015-04-24T18:19:38  *** sarabee has quit IRC
+2015-04-24T18:48:29  *** akilsdonk has quit IRC
+2015-04-24T19:03:43  *** bbqben has quit IRC
+2015-04-24T19:19:05  *** Newziky has left #evergreen
+2015-04-24T20:18:24  *** RBecker has quit IRC
+2015-04-24T20:19:50  *** RBecker has joined #evergreen
+2015-04-24T20:32:17  *** sandbergja has quit IRC
+2015-04-24T21:14:42  *** bmills has quit IRC
+2015-04-24T21:56:05  *** bmills has joined #evergreen
+2015-04-24T23:19:47  *** bbqben has joined #evergreen

@@ -1,0 +1,372 @@
+2015-04-15T01:11:38  *** bmills has quit IRC
+2015-04-15T01:12:18  *** bmills has joined #evergreen
+2015-04-15T01:19:13  *** RBecker has quit IRC
+2015-04-15T01:20:03  *** RBecker has joined #evergreen
+2015-04-15T01:27:26  *** edoceo has joined #evergreen
+2015-04-15T03:20:30  *** edoceo has quit IRC
+2015-04-15T03:25:21  *** artunit has quit IRC
+2015-04-15T03:57:09  *** sarabee has quit IRC
+2015-04-15T06:41:20  *** chatley has quit IRC
+2015-04-15T07:16:38  <kmlussier> Good morning #evergreen
+2015-04-15T07:18:44  <csharp> kmlussier: happy tax day!
+2015-04-15T07:24:53  <kmlussier> It is tax day, isn't it?
+2015-04-15T07:29:59  *** Newziky has joined #evergreen
+2015-04-15T07:32:31  *** graced has joined #evergreen
+2015-04-15T07:44:38  *** rjackson_isl has joined #evergreen
+2015-04-15T08:02:18  *** krvmga has joined #evergreen
+2015-04-15T08:09:20  *** _bott_ has quit IRC
+2015-04-15T08:10:56  *** _bott_ has joined #evergreen
+2015-04-15T08:21:35  *** Dyrcona has joined #evergreen
+2015-04-15T08:22:33  *** mrpeters has joined #evergreen
+2015-04-15T08:32:09  <mrpeters> is a bug fix for the  2.6.3-2.6.4-upgrade-db.sql version-upgrade script still welcome, or has 2.6 gone out of support?
+2015-04-15T08:32:24  <mrpeters> it's trying to use "located_uris" and should be "evergreen.located_uris"
+2015-04-15T08:32:38  <mrpeters> on line 53
+2015-04-15T08:33:57  <csharp> mrpeters: 2.6 hasn't reached EOL, so I would assume it's welcome
+2015-04-15T08:34:28  <eeevil> mrpeters: that's due to ye ol' pg_dump backup/restore. the local fixes are: use pg_dumpall, or run this: SELECT evergreen.change_db_setting('search_path', ARRAY['evergreen','public','pg_catalog']);
+2015-04-15T08:34:50  <mrpeters> ah -- eeevil -- that makes sense
+2015-04-15T08:34:51  <mrpeters> thank you
+2015-04-15T08:36:08  <mrpeters> wonder if we should add that to the "Backing Up" in docs
+2015-04-15T08:36:20  <csharp> oh eeevil, since you popped up ;-)... which tables' indexes should I be looking at for the slow search issue?
+2015-04-15T08:36:36  <eeevil> csharp: metabib.*_field_entry
+2015-04-15T08:36:41  <csharp> k
+2015-04-15T08:37:06  <mrpeters> http://docs.evergreen-ils.org/2.1/html/backingup.html -- clearly that is dated, but the newest version i could find -- maybe a rewrite for later versions would be good for DIG team to include running the change_db_setting function after a restore from pg_dump
+2015-04-15T08:39:24  *** pmurray_away is now known as pmurray
+2015-04-15T08:41:29  <csharp> eeevil: here's a glance at those: http://pastie.org/10093803 (if you have a minute to look) :-)
+2015-04-15T08:42:38  *** Shae has joined #evergreen
+2015-04-15T08:43:18  <eeevil> csharp: yep, you're missing the index on the title table. likely happened during an upgrade.
+2015-04-15T08:43:45  <csharp> eww
+2015-04-15T08:43:47  <csharp> ok
+2015-04-15T08:44:13  <csharp> the one on index_vector?
+2015-04-15T08:44:28  <eeevil> create index concurrently metabib_title_field_entry_index_vector_idx on metabib.title_field_entry using gin (index_vector);
+2015-04-15T08:44:29  <eeevil> yes
+2015-04-15T08:44:31  * krvmga is trying to understand the exchanges between eevil and csharp.
+2015-04-15T08:45:01  <csharp> eeevil: excellent - thank you!
+2015-04-15T08:45:12  <Dyrcona> krvmga: It has to do with lp 1438136
+2015-04-15T08:45:12  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438136
+2015-04-15T08:45:21  <csharp> krvmga: you must first undergo the Rite of Initiation
+2015-04-15T08:46:03  <csharp> krvmga: or, just look at the bug link, either way :-P
+2015-04-15T08:46:05  <krvmga> Dyrcona: i figured it was that. i'm trying to grok whether or not we have the same cause for our slow searches.
+2015-04-15T08:46:33  <krvmga> csharp: :)
+2015-04-15T08:46:44  <Dyrcona> krvmga: Well, there are two things going on. 1) a suboptimal query, and 2) csharp's installation missing an index.
+2015-04-15T08:46:59  <Dyrcona> Number 1 gets you either way.
+2015-04-15T08:47:22  <Dyrcona> eeevil: If you think it would be helpful, I'll run the tests on my database in a bit.
+2015-04-15T08:47:32  <krvmga> Dyrcona: gonna have to check if we're missing the index, too.
+2015-04-15T08:47:35  <Dyrcona> I meant to yesterday, but got busy with other stuff.
+2015-04-15T08:47:44  <eeevil> Dyrcona: more data is more better, thanks!
+2015-04-15T08:47:49  *** collum has joined #evergreen
+2015-04-15T08:48:28  *** deric_ has joined #evergreen
+2015-04-15T08:50:05  <csharp> @praise data
+2015-04-15T08:50:06  * pinesol_green Shall I compare data to a summer's day? data is more lovely and more temperate.
+2015-04-15T08:50:22  <Dyrcona> krvmga: Yep, a good idea. I'm pretty sure we have 'em all, but I'll double check, too.
+2015-04-15T08:50:53  <csharp> @praise CREATE INDEX CONCURRENTLY
+2015-04-15T08:50:53  * pinesol_green the upgrade came off brilliantly, and it's all because of CREATE INDEX CONCURRENTLY
+2015-04-15T08:51:16  <csharp> pinesol_green: actually... we think the upgrade *caused* the issue
+2015-04-15T08:51:16  <pinesol_green> csharp: http://images.cryhavok.org/d/1291-1/Computer+Rage.gif
+2015-04-15T08:51:17  <pinesol_green> csharp: I am only a bot, please don't think I'm intelligent :)
+2015-04-15T08:51:19  <Dyrcona> Little bit or irony there, given the contest.
+2015-04-15T08:51:25  <Dyrcona> context...
+2015-04-15T08:52:41  <csharp> eeevil++ # index has definitely improved search
+2015-04-15T08:52:48  *** mmorgan has joined #evergreen
+2015-04-15T08:53:00  <eeevil> csharp: I'll say... ;)
+2015-04-15T08:53:55  <Dyrcona> indexes++
+2015-04-15T08:55:52  *** collum|2 has joined #evergreen
+2015-04-15T08:55:52  *** deric_ has quit IRC
+2015-04-15T08:57:54  *** ericar has joined #evergreen
+2015-04-15T09:00:09  *** collum has quit IRC
+2015-04-15T09:00:10  *** collum|2 has quit IRC
+2015-04-15T09:07:52  <Dyrcona> Hmm.. Query plans don't appear to differ much on 9.1.
+2015-04-15T09:08:05  <Dyrcona> Maybe that is expected.
+2015-04-15T09:08:31  * Dyrcona should really learn more about Pg.
+2015-04-15T09:08:40  <eeevil> Dyrcona: pasted somewhere?
+2015-04-15T09:09:17  <eeevil> Dyrcona: nm, I see it
+2015-04-15T09:09:27  <Dyrcona> Ok.
+2015-04-15T09:12:12  <eeevil> Dyrcona: yeah, I think your data distribution has stats that say the search terms are more rare than the pinned 0.05% estimate for the queryint operator
+2015-04-15T09:13:13  <csharp> Dyrcona: this slideshow has a nice quick overview: http://www.slideshare.net/pgconf/the-postgresql-query-planner
+2015-04-15T09:13:21  <rjackson_isl> Is there a method in reports to report on the RDA data (tag equals 264) and get the data on one line per item as opposed to a line per Subfield indicator1 and indicator2 combination from the Flattened MARC Fields source?
+2015-04-15T09:13:25  <csharp> (of query plans)
+2015-04-15T09:13:26  *** sarabee has joined #evergreen
+2015-04-15T09:13:40  <Dyrcona> csharp: Thanks. I'll take a look.
+2015-04-15T09:13:53  <eeevil> if you made the search term more common (stats-wise), you'd likely see what csharp sees. like, search on "the"
+2015-04-15T09:14:04  <Dyrcona> I think I get what's going on mostly.
+2015-04-15T09:14:13  <csharp> rjackson_isl: I'll look - just a second
+2015-04-15T09:14:15  <Dyrcona> OK.
+2015-04-15T09:14:35  <rjackson_isl> thanks csharp
+2015-04-15T09:17:31  <csharp> rjackson_isl: what is the desired outcome?  showing the place of publication? or the publisher's name?
+2015-04-15T09:18:31  <rjackson_isl> not sure - this is request from a library for reporting will have to get back to you :(
+2015-04-15T09:19:06  <rjackson_isl> csharp - are there sources that allow for reporting on one or the other?
+2015-04-15T09:20:22  <csharp> rjackson_isl: well, if it's publisher name it's 264 subfield $b, if place of publication, it's subfield $a, pub date, subfield $c, etc.
+2015-04-15T09:21:18  <csharp> rjackson_isl: if you can pastebin the generated SQL from the debugging info screen, I'll have a look
+2015-04-15T09:21:25  <bshum> But only on specific indicator combinations. Otherwise 264 could be other things besides "publisher"
+2015-04-15T09:21:34  <csharp> bshum: right
+2015-04-15T09:21:42  <csharp> sorry, should've been clear
+2015-04-15T09:21:46  <csharp> @blame marc
+2015-04-15T09:21:46  <pinesol_green> csharp: marc stole bradl's tux doll!
+2015-04-15T09:22:01  <bshum> No, no, no.
+2015-04-15T09:22:04  <rjackson_isl> csharp++ ok - I had sent an example output with all fields from the flattened source so she should be able to figure out a filter based on that
+2015-04-15T09:22:11  <bshum> @blame rda
+2015-04-15T09:22:11  <pinesol_green> bshum: rda is why we can never have nice things!
+2015-04-15T09:22:58  <csharp> bshum: my gripe with MARC is that the same field can mean different things conditionally - it's a nightmare
+2015-04-15T09:23:15  <bshum> Hehe, that too.
+2015-04-15T09:23:22  <csharp> and it all depends on manual entry, which in turn depends on human competence
+2015-04-15T09:23:27  <kmlussier> bshum: Isn't today supposed to be a travel day?
+2015-04-15T09:23:44  <rjackson_isl> differnt libraries have differnet standards?!?!? ;)
+2015-04-15T09:23:54  <bshum> kmlussier: Yes, but I just woke up and will continue packing shortly.
+2015-04-15T09:24:11  <kmlussier> Fun!
+2015-04-15T09:24:23  * kmlussier wants to pack for a trip somewhere
+2015-04-15T09:25:01  <bshum> Packing my electronics stresses me out. Inevitably I leave behind an important cable or something.
+2015-04-15T09:25:31  <Dyrcona> csharp: You're running into Gilb's law of computer reliability.
+2015-04-15T09:26:34  <csharp> Dyrcona++
+2015-04-15T09:26:37  <jeff> heh. going to computer conferences where i was driving was often an... interesting packing experience. i'd often end up taking WAY more tools/gear/parts than i ever needed.
+2015-04-15T09:27:22  <Dyrcona> Guess it is really know as Gilb's law of unreliability, but anyway....
+2015-04-15T09:27:29  <Dyrcona> known even.
+2015-04-15T09:28:25  <kmlussier> I'm sure you all have seen the emails already, but I'm just posting a reminder here that if you want the hotel conference rate, you should book your hotel rooms today for eg15.
+2015-04-15T09:28:56  * kmlussier takes off her conference hat for the rest of the day.
+2015-04-15T09:31:01  <jeff> that conference thing is soon, right?
+2015-04-15T09:31:03  <jeff> *ducks*
+2015-04-15T09:33:05  * kmlussier stares at jeff until she goad him into making his travel plans.
+2015-04-15T09:33:11  <kmlussier> goads
+2015-04-15T09:37:56  *** yboston has joined #evergreen
+2015-04-15T09:39:15  *** maryj has joined #evergreen
+2015-04-15T09:44:31  <jeff> 12:39a return flight departure? well, on one hand i'll save one night's worth of hotel expenses...
+2015-04-15T09:46:34  * Dyrcona commiserates. The flight times that I've gotten have been almost as ridiculous.
+2015-04-15T09:50:46  *** collum has joined #evergreen
+2015-04-15T09:51:41  <Dyrcona> jeff: Hopefully, you don't get to spend 11 hours in the Newark airport.
+2015-04-15T09:52:05  <kmlussier> If your flight from Portland to Michigan brings you to Newark, I would say find another flight.
+2015-04-15T09:52:12  * Dyrcona thinks they do it just to jerk me around.
+2015-04-15T09:52:36  <kmlussier> Dyrcona: 11 hours?
+2015-04-15T09:52:43  <kmlussier> At that point, I would rent a car and drive home.
+2015-04-15T09:52:46  <Dyrcona> Almost, yeah.
+2015-04-15T09:52:49  <kmlussier> From Newark, not Portland.
+2015-04-15T09:52:55  <Dyrcona> That's on the way there.
+2015-04-15T09:53:27  <Dyrcona> On the way back, I believe I have just enough time in Chicago to make it from one terminal to the other.
+2015-04-15T09:56:33  * csharp 's layover on the way back is in Detroit
+2015-04-15T09:57:29  *** ericar_ has joined #evergreen
+2015-04-15T09:59:11  *** ericar has quit IRC
+2015-04-15T09:59:21  *** ericar_ is now known as ericar
+2015-04-15T10:21:37  <Dyrcona> kmlussier: Are you using my dev vm today? I'm considering making a new branch and playing with something in the staff client.
+2015-04-15T10:21:52  <kmlussier> Dyrcona: No, I'm focusing on other things today.
+2015-04-15T10:22:01  <Dyrcona> Thanks.
+2015-04-15T10:22:02  <kmlussier> Or, trying to focus on them. Not getting very far.
+2015-04-15T10:22:17  * Dyrcona nods knowingly. 
+2015-04-15T10:23:46  <Dyrcona> Hmm. Turns out I get a conflict.
+2015-04-15T10:25:40  <Dyrcona> Minor conflicts with the conditional negative balance branch and recent changes to master.
+2015-04-15T10:25:52  <Dyrcona> Easily resolved, I think.
+2015-04-15T10:31:01  <dbwells> There is at least two lines with bugs in the negative balances branch which were discovered when I was testing for fine issue in master.  I should go ahead and rebase it, since a few more pieces are in master now.
+2015-04-15T10:32:42  <Dyrcona> dwells: That's cool.
+2015-04-15T10:32:48  <Dyrcona> dbwells, even.
+2015-04-15T10:33:06  <Dyrcona> My fingers appear to be on strike.
+2015-04-15T10:34:19  <csharp> @quote add < Dyrcona> My fingers appear to be on strike.
+2015-04-15T10:34:19  <pinesol_green> csharp: The operation succeeded.  Quote #110 added.
+2015-04-15T10:35:00  <kmlussier> @quote random
+2015-04-15T10:35:00  <pinesol_green> kmlussier: Quote #87: "<jeff> responsive XUL isn't really a thing." (added by bshum at 02:49 PM, July 30, 2014)
+2015-04-15T10:35:48  *** sarabee has quit IRC
+2015-04-15T10:37:20  *** sarabee has joined #evergreen
+2015-04-15T10:42:30  <csharp> Bmagic++ # fixing bug 1424646
+2015-04-15T10:42:30  <pinesol_green> Launchpad bug 1424646 in Evergreen "Paid-For Long Overdue Items Still Appear in "Other/Special Circulations" Window" (affected: 7, heat: 32) [Undecided,New] https://launchpad.net/bugs/1424646
+2015-04-15T10:42:35  <csharp> signoff branch a'comin'
+2015-04-15T10:43:20  <mmorgan> Bmagic++ csharp++
+2015-04-15T10:43:46  <Bmagic> csharp++  # testing
+2015-04-15T10:47:14  <Dyrcona> @quote random
+2015-04-15T10:47:14  <pinesol_green> Dyrcona: Quote #85: "< bshum> *Everything* is awesome." (added by csharp at 09:29 AM, May 27, 2014)
+2015-04-15T10:48:53  <csharp> https://www.youtube.com/watch?v=StTqXEQ2l-Y
+2015-04-15T10:50:28  <tsbere> So, I think amnesty mode should override backdating for voiding purposes. Right now if you backdate in amnesty mode you only get voiding to the backdate date.
+2015-04-15T10:50:34  <tsbere> To that end, I think this would fix it: http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/user/tsbere/amnesty_overrides_backdate
+2015-04-15T10:50:43  <tsbere> But I am unsure if other people agree with me or not
+2015-04-15T10:51:03  *** ericar_ has joined #evergreen
+2015-04-15T10:51:10  *** yboston has quit IRC
+2015-04-15T10:51:17  * kmlussier agrees with tsbere
+2015-04-15T10:52:53  *** ericar has quit IRC
+2015-04-15T10:52:55  *** ericar_ is now known as ericar
+2015-04-15T10:54:56  <mmorgan> tsbere: Just to make sure I'm understanding: right now, if you are backdating, the behavior is the same whether Amnesty mode is on or off?
+2015-04-15T10:55:23  <tsbere> mmorgan: Almost. The only difference is "does the voided overdue get the amnesty note attached".
+2015-04-15T10:56:25  *** ericar_ has joined #evergreen
+2015-04-15T10:56:57  * tsbere throws bug 1444514 up and then wanders off to run a quick training session
+2015-04-15T10:56:57  <pinesol_green> Launchpad bug 1444514 in Evergreen "Amnesty Mode doesn't work correctly with Backdating" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1444514
+2015-04-15T10:57:18  <mmorgan> Ah, ok. I would also agree that Amnesty mode should override backdating.
+2015-04-15T10:57:42  *** ericar has quit IRC
+2015-04-15T10:57:48  *** ericar_ is now known as ericar
+2015-04-15T10:58:07  * mmorgan secretly wishes, however, that Amnesty mode would forgive rather than void...
+2015-04-15T11:02:20  *** jwoodard has joined #evergreen
+2015-04-15T11:20:17  *** krvmga has quit IRC
+2015-04-15T11:23:01  <jeff> +1 to that
+2015-04-15T11:23:15  * csharp debates with himself about whether to ride the 10 a.m. shuttle or hitch with one of the ~11 a.m. car drivers on Saturday of the conference
+2015-04-15T11:25:23  <kmlussier> I was thinking of hitching a ride with collum. If it's still available.
+2015-04-15T11:26:23  <kmlussier> As long as somebody doesn't bribe him with chocolate into leaving earlier.
+2015-04-15T11:26:39  * kmlussier might have some leftover cookies to bribe him into sticking into the 10:45 time.
+2015-04-15T11:27:28  <collum> It is still available.  No cookies necessary.
+2015-04-15T11:28:15  <kmlussier> Speaking of which, I need to start thinking about what cookies I'm going to make for the MassLNC development partners. Maybe I should put a poll out and let the community decide.
+2015-04-15T11:28:25  <bshum> That's not negotiating. Negotiating would be more like, "Hmm, how many cookies?"
+2015-04-15T11:29:35  <berick> kmlussier: do you really want to be making bacon-beer-cat cookies?
+2015-04-15T11:30:15  * collum loves cookies, but doesn't really need cookies. However ginger snaps are a favorite.
+2015-04-15T11:30:50  <kmlussier> berick: No, not at all. Who puts cats in cookies?
+2015-04-15T11:31:01  <kmlussier> gmcharlt: Are you paying attention to this?
+2015-04-15T11:31:38  <berick> correction: bacon beer cat-shaped cookies
+2015-04-15T11:32:41  <kmlussier> berick: Phew! I feel better now. I know I'm not a cat person, but it doesn't make me a monster. ;)
+2015-04-15T11:33:06  <berick> hah
+2015-04-15T11:33:52  *** yboston has joined #evergreen
+2015-04-15T11:39:03  * csharp 's kids love the Trader Joes cat-shaped cookies
+2015-04-15T11:39:13  <csharp> no bacon, though
+2015-04-15T11:39:35  <csharp> or beer - what kind of father do you think I am? Jeez!
+2015-04-15T11:40:24  <gmcharlt> kmlussier: not yet, but I will be in 15 minutes
+2015-04-15T11:45:03  * csharp decides to play it safe and go with the 10 a.m. shuttle
+2015-04-15T11:55:29  <gmcharlt> kmlussier: berick: upon reading scrollback - I'm pretty sure my cats would object to being placed in cookies
+2015-04-15T11:56:37  <gmcharlt> however, if either of you care to bake tuna-catfish cookies...
+2015-04-15T11:57:16  <berick> cat-shaped, tuna-catfish bacon beer cookies
+2015-04-15T11:57:33  *** RoganH has joined #evergreen
+2015-04-15T11:57:50  <berick> sounds like something at the bottom of a garbage disposal
+2015-04-15T11:58:51  *** bmills has joined #evergreen
+2015-04-15T11:58:58  <kmlussier> I think I'll stick to my traditional recipes for now.
+2015-04-15T11:59:15  <kmlussier> Though I am a bit perplexed by csharp's comment that I should not be feeding beer cookies to my children. Is that wrong?
+2015-04-15T12:00:00  <berick> only if it's Icehouse
+2015-04-15T12:01:51  <kmlussier> Heh
+2015-04-15T12:04:06  <RoganH> I assume the alcohol is cooked out unless it's what my grandmother would call an "old world" recipe.
+2015-04-15T12:10:28  *** ericar_ has joined #evergreen
+2015-04-15T12:12:21  *** ericar has quit IRC
+2015-04-15T12:12:22  *** ericar_ is now known as ericar
+2015-04-15T12:19:49  <Dyrcona> A bit late to the party, but I think bread happened when someone tried to make beer but messed up, and then they decided to bake it.
+2015-04-15T12:20:29  <RoganH> Dyrcona++
+2015-04-15T12:20:48  <RoganH> Obviously they weren't from the south or they would have tried deep frying it.
+2015-04-15T12:20:53  <jonadab> tuna-catfish bacon beet cookies
+2015-04-15T12:21:16  * Dyrcona misses "cat-head" biscuits.
+2015-04-15T12:21:22  <jonadab> flavored with dill
+2015-04-15T12:21:52  <berick> RoganH++
+2015-04-15T12:22:12  <csharp> @quote add < RoganH> Obviously they weren't from the south or they would have tried deep frying it.
+2015-04-15T12:22:12  <pinesol_green> csharp: The operation succeeded.  Quote #111 added.
+2015-04-15T12:22:16  <Dyrcona> RoganH++
+2015-04-15T12:23:40  <csharp> following up on the bread was probably supposed to be beer discussion: https://www.youtube.com/watch?v=vyyyh8_Afyw (some nsfw language)
+2015-04-15T12:25:33  *** sandbergja has joined #evergreen
+2015-04-15T12:26:46  <Dyrcona> heh
+2015-04-15T12:29:11  <Dyrcona> I don't think the one knows the difference between cheese and yogurt. :)
+2015-04-15T12:35:29  * dbs tries to remember the DojoSRF GET param for setting a workstation so that one can maybe use LDAP auth...
+2015-04-15T12:37:29  <dbs> ws
+2015-04-15T12:41:10  <dbs> sets the workstation but sadly doesn't magically invoke the LDAP auth plugins :)
+2015-04-15T12:41:38  *** yboston_ has joined #evergreen
+2015-04-15T12:43:12  <csharp> @quote add <RoganH> My most remembered contributions to IRC will involve coffee and deep frying.
+2015-04-15T12:43:13  <pinesol_green> csharp: The operation succeeded.  Quote #112 added.
+2015-04-15T12:43:34  <csharp> :-D
+2015-04-15T12:44:30  *** yboston has quit IRC
+2015-04-15T12:44:30  *** yboston_ is now known as yboston
+2015-04-15T12:59:23  *** RoganH has quit IRC
+2015-04-15T13:00:08  *** RoganH has joined #evergreen
+2015-04-15T13:09:49  <csharp> dh-make-perl's --cpan parameter makes packaging the CPAN modules for debian/ubuntu so easy, it's a wonder we haven't been doing that the whole time :-)
+2015-04-15T13:10:21  *** RoganH has quit IRC
+2015-04-15T13:11:57  *** jihpringle has joined #evergreen
+2015-04-15T13:12:03  <csharp> steps (on ubuntu 14.04 but probably universal to Debian & familiy): 0) install build-essential, dh-make and dh-make-perl 1) create a directory named for the package name (e.g. "libbusiness-stripe-perl") 2) cd into that directory 3) run 'dh-make-perl --cpan Business::Stripe' 4) run 'dpkg-buildpackage -F' 5) profit
+2015-04-15T13:12:28  <csharp> (as roo)
+2015-04-15T13:12:33  <csharp> s/roo/root/
+2015-04-15T13:14:05  <csharp> well, there are a couple of environment variables to set too, so  0.5) follow the steps at https://www.debian.org/doc/manuals/maint-guide/first.en.html#dh-make to set environment variables
+2015-04-15T13:19:08  *** sarabee has quit IRC
+2015-04-15T13:20:31  *** sarabee has joined #evergreen
+2015-04-15T13:20:40  <jeff> travel-wise, it looks like I'm catching one of the tuesday afternoon shuttles, then taking the saturday 5 pm shuttle to be to PDX in time to catch my midnight-ish flight.
+2015-04-15T13:20:54  <jeff> oh, stuck in scroll. i see we've moved on to other topics. :-)
+2015-04-15T13:21:11  <Dyrcona> heh.
+2015-04-15T13:21:47  <Dyrcona> Some of us are getting rooms in PDX on Saturday night to catch 6:45 am flights on Sunday.
+2015-04-15T13:22:06  <csharp> the rest of the PINES folks are leaving on Sunday
+2015-04-15T13:22:43  *** RoganH has joined #evergreen
+2015-04-15T13:23:11  *** Newziky has quit IRC
+2015-04-15T13:26:05  <csharp> hmm - for some reason I added "Safe" as one of the CPAN modules to install on 14.04, but that looks like a core Perl module - any reason why we'd need the CPAN version?
+2015-04-15T13:26:42  <csharp> I see that wheezy installs it too
+2015-04-15T13:26:58  <csharp> and I pretty much worked from a copy of wheezy's makefile
+2015-04-15T13:27:01  * gmcharlt <3 Mozilla
+2015-04-15T13:27:28  <Dyrcona> Hmm. Not sure on Safe.
+2015-04-15T13:27:33  <gmcharlt> a think to try: open up Firefox to the default tab; hit referesh a few times
+2015-04-15T13:27:37  <gmcharlt> (look at the bit under the search box)
+2015-04-15T13:29:34  <gmcharlt> (or for a more direct link to what I'm talking about: https://snippets.mozilla.com/media/bundles/24dfc3950b1ee3c947f1235a59730d2d183cb310.html)
+2015-04-15T13:31:01  <jeff> glad for the link -- i only see "Thanks for choosing Firefox! To get the most out of your browser, learn more about the latest features." and "It's easy to customize your Firefox exactly the way you want it. Choose from thousands of add-ons." -- nothing about library week.
+2015-04-15T13:31:23  * csharp only sees start.fedoraproject.org :-/
+2015-04-15T13:31:48  <jeff> csharp: you may be able to navigate to about:home
+2015-04-15T13:31:56  <csharp> jeff: yeah, just did that
+2015-04-15T13:32:11  <gmcharlt> jeff: yeah, I had to bounce on the refresh button several times for it to cycle through
+2015-04-15T13:33:48  <jeff> possible that Firefox 38 uses a different set
+2015-04-15T13:35:03  * Dyrcona gives up on building a new dev branch today.
+2015-04-15T13:35:05  *** bmills has quit IRC
+2015-04-15T13:35:36  <Dyrcona> I'll drop a branch or two and do it again tomorrow.
+2015-04-15T13:36:04  <Dyrcona> Think I'll schedule a database reload for tonight, too, so I don't have to wait on it tomorrow.
+2015-04-15T13:40:26  <csharp> yep - Safe comes within the perl package on wheezy and jessie - maybe the wheezy version was too old?
+2015-04-15T13:41:41  <Dyrcona> Maybe it's a hold over from squeeze or before it was added to the base distribution?
+2015-04-15T13:42:04  <csharp> from the pre-modularized version of Makefile.install: # Are we sure most distros don't come with an acceptable version of Safe.pm?
+2015-04-15T13:42:37  <dbs> what does the commit referenced in "git blame" say about that line
+2015-04-15T13:45:59  <dbs> Can't get the library love page in FF 37.0.1 or 40.0a1; refresh causes a hit to geo.mozilla.org, maybe it's geofenced
+2015-04-15T13:46:24  <csharp> de3d6fb5 (Dan Scott              2010-06-24 03:29:02 +0000 244) # Are we sure most distros don't come with an acceptable version of Safe.pm?
+2015-04-15T13:46:25  <pinesol_green> [evergreen|dbs] First stab at Fedora 13 support in prerequisite installer - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=de3d6fb>
+2015-04-15T13:46:41  *** Shae has quit IRC
+2015-04-15T13:48:04  <Dyrcona> My start page is start.ubuntu.com, so doesn't work for me either.
+2015-04-15T13:48:39  <csharp> looks like the only PM that uses Safe is lib/OpenILS/Application/Trigger/Event.pm
+2015-04-15T13:49:31  <csharp>  Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Event.pm
+2015-04-15T13:50:39  * dbs digs further with "git blame de3d6fb5b8^ Open-ILS/src/extras/Makefile.install"
+2015-04-15T13:50:39  <pinesol_green> [evergreen|dbs] First stab at Fedora 13 support in prerequisite installer - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=de3d6fb>
+2015-04-15T13:51:24  <dbs> it was added in e88c8b24
+2015-04-15T13:51:24  <pinesol_green> [evergreen|miker] loop-based targeting (does not need the views defined the other day ... may remove those at some point), cut the first; org unit weighting for hold targeting - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e88c8b2>
+2015-04-15T13:52:00  <dbs> which dates back to 2009. So yeah, I bet the packaged versions of Safe.pm are fine in any supported distros by now.
+2015-04-15T13:52:10  *** RoganH has quit IRC
+2015-04-15T13:52:58  * csharp agrees
+2015-04-15T13:53:15  <csharp> e397d929
+2015-04-15T13:53:15  <pinesol_green> [evergreen|miker] use Safe to protect against EVIL evals coming in from the outside world -- we share the environment into the Safe compartment using the name $current_environment - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e397d92>
+2015-04-15T13:53:41  <csharp> same date, different commit
+2015-04-15T13:54:23  <csharp> eeevil: any thoughts on this? ^^
+2015-04-15T13:54:56  * csharp has already begun a branch - the fewer out-of-repo packages the better IMHO
+2015-04-15T13:55:00  <dbs> good old Subversion and haphazard commits :)
+2015-04-15T13:58:36  <eeevil> csharp: thoughts on what, exactly? any version of Safe should be fine, as dbs says, if that's what you mean
+2015-04-15T13:59:00  <csharp> eeevil: yeah - that was it - just wanted your blessing before removing it from the Makefiles
+2015-04-15T13:59:37  <jeff> pracrastinators beware! the hotel is selling out of the cheap rooms! :-)
+2015-04-15T13:59:39  <eeevil> sure thing, as long as wheezy has Safe as a core module, I say go for it
+2015-04-15T13:59:55  <jeff> (read: has sold out of the cheapest for the arrival/departure i have)
+2015-04-15T14:00:23  <kmlussier> jeff: I think the cheap rooms have been gone for a while. I had to *settle* for a river view.
+2015-04-15T14:00:26  <dbs> Probably dates back to something like Etch
+2015-04-15T14:06:13  *** bmills has joined #evergreen
+2015-04-15T14:08:42  *** RoganH has joined #evergreen
+2015-04-15T14:12:09  * csharp changed makefiles for wheezy/jessie/precise/trusty, but left squeeze alone
+2015-04-15T14:12:25  <csharp> bug 1444623
+2015-04-15T14:12:26  <pinesol_green> Launchpad bug 1444623 in Evergreen ""Safe" is no longer needed as a separate CPAN package" (affected: 1, heat: 6) [Medium,Confirmed] https://launchpad.net/bugs/1444623 - Assigned to Chris Sharp (chrissharp123)
+2015-04-15T14:13:59  *** Newziky has joined #evergreen
+2015-04-15T14:14:11  *** Newziky has left #evergreen
+2015-04-15T14:24:33  *** ericar_ has joined #evergreen
+2015-04-15T14:25:20  *** RoganH has quit IRC
+2015-04-15T14:27:16  *** ericar has quit IRC
+2015-04-15T14:27:20  *** ericar_ is now known as ericar
+2015-04-15T15:27:25  *** krvmga has joined #evergreen
+2015-04-15T15:30:15  *** krvmga has quit IRC
+2015-04-15T15:32:41  *** bmills has quit IRC
+2015-04-15T15:38:09  *** jihpringle has quit IRC
+2015-04-15T16:04:38  *** vlewis has joined #evergreen
+2015-04-15T16:05:04  *** vlewis_ has joined #evergreen
+2015-04-15T16:05:12  *** chatley has joined #evergreen
+2015-04-15T16:06:07  *** mglass has joined #evergreen
+2015-04-15T16:06:28  *** ericar_ has joined #evergreen
+2015-04-15T16:07:53  *** ericar has quit IRC
+2015-04-15T16:08:06  *** ericar_ is now known as ericar
+2015-04-15T16:22:47  *** bmills has joined #evergreen
+2015-04-15T16:39:31  *** collum has quit IRC
+2015-04-15T16:39:52  *** mrpeters has left #evergreen
+2015-04-15T16:50:08  *** artunit has joined #evergreen
+2015-04-15T17:00:14  *** Dyrcona has quit IRC
+2015-04-15T17:06:35  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-15T17:08:09  *** graced has quit IRC
+2015-04-15T17:14:45  *** jihpringle has joined #evergreen
+2015-04-15T17:15:26  *** ericar has quit IRC
+2015-04-15T17:16:50  *** mmorgan has left #evergreen
+2015-04-15T17:20:52  *** bmills has quit IRC
+2015-04-15T17:21:05  *** jboyer-isl has quit IRC
+2015-04-15T17:21:27  *** jboyer-isl has joined #evergreen
+2015-04-15T18:18:14  *** jihpringle has quit IRC
+2015-04-15T18:18:22  *** jihpringle has joined #evergreen
+2015-04-15T18:25:35  *** jihpringle has quit IRC
+2015-04-15T18:26:21  *** jihpringle has joined #evergreen
+2015-04-15T18:28:02  *** jihpringle has quit IRC
+2015-04-15T18:28:26  *** jihpringle has joined #evergreen
+2015-04-15T18:50:15  *** yboston has quit IRC
+2015-04-15T18:53:13  *** vlewis has quit IRC
+2015-04-15T18:53:15  *** vlewis_ has quit IRC
+2015-04-15T19:32:31  *** DPearl1 has joined #evergreen
+2015-04-15T19:33:11  *** jeff__ has joined #evergreen
+2015-04-15T19:38:27  *** _bott_ has quit IRC
+2015-04-15T19:38:29  *** jihpringle has quit IRC
+2015-04-15T19:39:25  *** jeff_ has quit IRC
+2015-04-15T19:39:26  *** DPearl has quit IRC
+2015-04-15T19:40:09  *** _bott_ has joined #evergreen
+2015-04-15T20:02:10  *** jwoodard has quit IRC
+2015-04-15T20:33:05  *** remingtron_ has joined #evergreen
+2015-04-15T20:33:15  *** BigRig has quit IRC
+2015-04-15T20:33:52  *** BigRig has joined #evergreen
+2015-04-15T20:35:39  *** remingtron has quit IRC
+2015-04-15T23:14:01  *** sandbergja has quit IRC

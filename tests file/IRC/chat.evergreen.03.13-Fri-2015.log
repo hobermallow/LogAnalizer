@@ -1,0 +1,395 @@
+2015-03-13T06:06:09  *** RBecker has quit IRC
+2015-03-13T06:38:35  *** RBecker has joined #evergreen
+2015-03-13T07:10:10  *** Callender has quit IRC
+2015-03-13T07:34:25  *** Callender has joined #evergreen
+2015-03-13T07:39:58  *** kitteh_ has quit IRC
+2015-03-13T07:40:06  *** Callender has quit IRC
+2015-03-13T07:53:48  *** Callender has joined #evergreen
+2015-03-13T07:59:49  *** akilsdonk has joined #evergreen
+2015-03-13T08:00:03  *** rjackson_isl has joined #evergreen
+2015-03-13T08:00:27  *** graced has joined #evergreen
+2015-03-13T08:07:15  *** collum has joined #evergreen
+2015-03-13T08:18:22  *** _bott_ has left #evergreen
+2015-03-13T08:21:33  *** _bott_ has joined #evergreen
+2015-03-13T08:41:02  *** maryj has joined #evergreen
+2015-03-13T09:06:45  *** ericar has joined #evergreen
+2015-03-13T09:13:23  <remingtron> gmcharlt: The security team wiki seems to have an incomplete sentence in the "restricted resources" section near the end
+2015-03-13T09:13:42  <remingtron> First bullet: "membership in the private security group on LaunchPad, which will allow them to see and" [should continue?]
+2015-03-13T09:13:55  <gmcharlt> remingtron: oops, yeah, copy and paste fail
+2015-03-13T09:13:59  <gmcharlt> thanks for the heads up
+2015-03-13T09:14:03  <jeff> remingtron: sorry, i don't think you're authorized to know the rest of that sentence...
+2015-03-13T09:14:09  * jeff ducks
+2015-03-13T09:14:18  <remingtron> gmcharlt: thank you for the proposal
+2015-03-13T09:14:39  <gmcharlt> jeff: no, we can't let anybody know about the purple cats we have petting access to!
+2015-03-13T09:14:43  <gmcharlt> ... oops
+2015-03-13T09:14:43  <remingtron> *jeff narrowly misses a plush angry bird
+2015-03-13T09:15:17  <remingtron> gmcharlt: librarians everywhere would be jealous
+2015-03-13T09:17:23  <gmcharlt> remingtron: not a copy and paste fail, just an incomplete thought :/
+2015-03-13T09:17:26  <gmcharlt> I've fixed it
+2015-03-13T09:18:28  <remingtron> gmcharlt++
+2015-03-13T09:26:21  *** yboston has joined #evergreen
+2015-03-13T09:38:39  <csharp> "which will allow them to see and..."  OOOH! A plush angry bird!
+2015-03-13T09:43:23  *** jboyer-isl has joined #evergreen
+2015-03-13T09:44:11  *** dbwells_ has joined #evergreen
+2015-03-13T09:47:19  *** dbwells has quit IRC
+2015-03-13T09:47:35  *** abowling has joined #evergreen
+2015-03-13T09:52:21  *** ericar_ has joined #evergreen
+2015-03-13T09:53:09  <Bmagic> Does evergreen check to see if a copy will fill a hold when you check it in even if that copy was not the target of the hold? We have a situation where a hold was on a pull list for library A and by the time they came back to check it in, it was filled by library B. The hold targeter hadn't changed the target copy in that time
+2015-03-13T09:53:47  *** ericar has quit IRC
+2015-03-13T09:53:57  *** dbwells_ is now known as dbwells
+2015-03-13T09:55:26  <bshum> Bmagic: Yeah, that's "opportunistic" hold capture at work.
+2015-03-13T09:55:41  <Bmagic> bshum: ah! That explains it
+2015-03-13T09:55:50  <bshum> Where lib B can fill a hold if the hold has been around too long (too long being if you use the settings)
+2015-03-13T09:56:02  <bshum> We use the "soft stalling" option in the library settings to try to mitigate that.
+2015-03-13T09:56:19  <bshum> Soft stalling will prevent opportunistic capture by other libraries before X time
+2015-03-13T09:56:48  <bshum> So in our consortium, for example
+2015-03-13T09:56:56  <bshum> We use an interval of "3 days" soft stalling
+2015-03-13T09:57:03  <Bmagic> interesting
+2015-03-13T09:57:07  <Bmagic> I need to bring this up
+2015-03-13T09:57:11  <bshum> To give the pickup library up to 3 days to opportunistically capture the item
+2015-03-13T09:57:22  <bshum> Before it's open season to any library that owns a copy and checks it in
+2015-03-13T09:57:31  <bshum> This operates separately from the hold targeter.
+2015-03-13T09:57:34  *** ericar_ has quit IRC
+2015-03-13T09:57:36  <bshum> Which may select any library anyways
+2015-03-13T09:57:53  <bshum> But only the pickup lib can initiate an opportunistic capture with any copy initially.
+2015-03-13T09:58:48  <bshum> If you haven't seen it, I highly recommend this powerpoint slides from an earlier Evergreen conference where folks from ESI tried to "explain" how holds work:
+2015-03-13T09:58:50  <bshum> http://evergreen-ils.org/~corinne/Hippos_Final.ppt
+2015-03-13T09:59:00  <Bmagic> bshum++
+2015-03-13T09:59:07  <bshum> It's a little older, but still helpful for the basic ideas.
+2015-03-13T09:59:23  <bshum> Though things have evolved ever so much with all the newer features for hold targeting in 2.4+
+2015-03-13T10:00:06  <bshum> But in any case, the behavior you described is... "normal"
+2015-03-13T10:00:40  <bshum> That's basically the "whoever is fastest wins" default.
+2015-03-13T10:00:55  <bshum> Tell Library A to stop slacking, obviously....
+2015-03-13T10:00:56  <bshum> :D
+2015-03-13T10:03:17  <Bmagic> lol
+2015-03-13T10:03:36  <jboyer-isl> Bmagic: we have some experience messing with that. EI went from 2-3 days of soft stalling to 0, now we’re back at 1 day for specifically the reason you mentioned about the hold pull list.
+2015-03-13T10:05:58  <Bmagic> So, if the hold is targeted on library's A's copy. Library A has 2 copies but they can't find the exact barcode that it calls for, then the other copy should fill the hold just fine?
+2015-03-13T10:06:16  <collum> \me has a desire to write up a LP enhancement for a popup that reads "Stop Slacking"
+2015-03-13T10:06:18  <bshum> Uh, it depends.
+2015-03-13T10:06:33  <bshum> So if the pickup library is library A, then yes, any copy at Library A will work.
+2015-03-13T10:06:55  <bshum> But if the pickup library is Library B, and it's a "targeted" hold at a specific copy at Library A, then it will only work with that specific copy.
+2015-03-13T10:07:05  <bshum> Until the hold stalling period ends, and then any copy from anywhere will work.
+2015-03-13T10:07:44  <bshum> Basically it's the least number of transits required idea
+2015-03-13T10:07:54  <bshum> If you're going to pick it up at that library, any copy there shall do.
+2015-03-13T10:08:05  <bshum> If you've got to send it somewhere, only send what we're asking for, no more.
+2015-03-13T10:08:29  <bshum> Unless the hold has been waiting around too long, then please send the next available copy, anybody!
+2015-03-13T10:09:10  *** Newziky has joined #evergreen
+2015-03-13T10:09:12  <Bmagic> 3 days seems weird
+2015-03-13T10:09:26  <Bmagic> because the hold targeter will pick a different copy anyway every 24 hours
+2015-03-13T10:09:29  <bshum> It was the happy medium that worked for our consortium.
+2015-03-13T10:09:43  <bshum> Originally, we were 5 days actually.
+2015-03-13T10:09:59  <bshum> Because our first two pilot libraries were estimated to be about 5 days apart.
+2015-03-13T10:10:04  <Bmagic> Your hold targeter doesn't change the target every 24 hours?
+2015-03-13T10:10:22  <bshum> In terms of trying to calculate based on how often the delivery truck went to the libs in question.
+2015-03-13T10:10:55  <bshum> We still need to play more with proximity to try grouping libs into better combinations for delivery.
+2015-03-13T10:11:00  <bshum> But meh
+2015-03-13T10:11:07  <bshum> It depends on the item.
+2015-03-13T10:11:14  <Bmagic> so, you changed your hold targeter as well?
+2015-03-13T10:11:22  <bshum> Nope, that's just what it is.
+2015-03-13T10:11:30  <bshum> It doesn't *always* pick a new copy from elsewhere.
+2015-03-13T10:11:38  <bshum> And not all libs check their pull list consistently every day.
+2015-03-13T10:11:46  <bshum> So some will do it twice a week
+2015-03-13T10:11:52  <bshum> And others will do it four times a day.
+2015-03-13T10:11:59  <Bmagic> so, you see why I'm confused about a soft stall for any interval greater than 24 hours?
+2015-03-13T10:12:16  <bshum> It gives the pickup library a few days to get their act together.
+2015-03-13T10:12:24  <bshum> The hold target may shift constantly
+2015-03-13T10:12:39  <bshum> But opportunistic capture at the pickup lib can happen at any time within those initial 3 days.
+2015-03-13T10:13:00  <bshum> So if a hold is captured by target elsewhere in the consortium, then yeah whatever, it locks on that, and that's the copy you get.
+2015-03-13T10:13:10  <bshum> Unless you use more settings to trump that and use the local copy first.
+2015-03-13T10:13:12  <Bmagic> So it shows up on thier pull list even though it's targeted a different copy in the meantime?
+2015-03-13T10:13:20  <bshum> No, it's not about the pull list
+2015-03-13T10:13:23  <bshum> It's about check-in
+2015-03-13T10:13:34  <bshum> You asked about during checkin, do holds get checked and filled
+2015-03-13T10:13:43  <bshum> And yes, they do, opportunistically at the pickup lib level
+2015-03-13T10:14:05  <bshum> These are separate things;  opportunistic holds work at the same time as targeted holds
+2015-03-13T10:14:11  <csharp> argh - we should really stop letting people clone and edit reports
+2015-03-13T10:14:26  <Bmagic> csharp: I agree!
+2015-03-13T10:15:02  <csharp> I spend literally hours getting a template just right, then someone clones and mangles it and I end up having to fix it
+2015-03-13T10:15:08  <csharp> @tantrum
+2015-03-13T10:15:09  <pinesol_green> csharp: No, you're a puzzleheaded kraken!
+2015-03-13T10:15:21  <bshum> It's too microscopic to try defining the scenario, in reality, you've got dozens of copies and lots of holds at the same time.
+2015-03-13T10:15:45  * csharp stops whining and gets back to it ;-)
+2015-03-13T10:15:56  <jeff> csharp: what's that you say? you'd prefer that a smaller subset of people DESIGN the reports, and then there's an easier self-service means of running them?
+2015-03-13T10:16:07  <csharp> jeff: haha
+2015-03-13T10:16:15  * csharp knows what's coming
+2015-03-13T10:16:29  <jeff> csharp: seems like there's a library doing something along thoes lines somewhere...
+2015-03-13T10:16:32  * jeff grins
+2015-03-13T10:16:39  <csharp> exactly
+2015-03-13T10:17:00  <collum> jeff beat me too it ;-)
+2015-03-13T10:17:00  <bshum> Bmagic: So the soft stall of 3 days is mainly to give the pickup library a good interval to get the book back and check it in, to capture the next hold and get it to fill for that.  Instead of having any checkin at any library that has that copy to capture, transit, and fill the hold.
+2015-03-13T10:17:57  <bshum> Bmagic: This is separate from the hold targeting process itself, which does try for a new target every 24 hours (based on when the hold was placed and how often you run hold_targeter) and that's what drives the pull lists and tells people what they should pull from the shelves to check in and see if it's still needed.
+2015-03-13T10:18:00  <Bmagic> bshum: Back to my original scenario where library B filled A's hold opportunistically. With the soft stall in place for library A, this would not be possible? I'm confused because the hold targeter will target a different copy, and the other library might be commaned to pull it and fill it, during the stall interval for A
+2015-03-13T10:18:05  *** afterl has joined #evergreen
+2015-03-13T10:18:30  <bshum> Bmagic: That is correct.  It's whoever is faster in that scenario you describe then.
+2015-03-13T10:18:51  <csharp> the soft stall was originally invented to deal with PINES courier delays, which were serious at the time, but those delays went away (probably before the feature was fully implemented)
+2015-03-13T10:18:55  <bshum> *still whoever was faster
+2015-03-13T10:19:32  <csharp> so people in our consortium who don't remember those days wonder why there's a 5 day stall
+2015-03-13T10:19:58  <bshum> Even if we don't have courier delays, irregular hold pull list checking, etc., the perception of delays still makes people feel better knowing that they've got the chance to use their copy to fill the hold ahead of transit copies, if they're efficient about it.
+2015-03-13T10:20:30  <bshum> So I go back to my earlier statement:  "Tell Library A to stop slacking, obviously...."
+2015-03-13T10:21:14  <Bmagic> Im still fuzzy on this. Let me ask another question that might help. If the hold is inside of the soft stall interval, nobody can fill the hold opportunistically except the library who has the soft stall?
+2015-03-13T10:22:06  <bshum> Bmagic: To be honest, I've never used soft stalling settings except consortially.  So I do not know what happens if you only apply it to a specific library.
+2015-03-13T10:22:27  <Bmagic> OK, consortially then
+2015-03-13T10:22:50  <bshum> If it's consortial, then only the pickup library can capture opportunistically.
+2015-03-13T10:22:59  <bshum> Everyone else checks in normally
+2015-03-13T10:23:06  <bshum> And only uses their copy for targeted holds
+2015-03-13T10:23:17  <bshum> Or holds that are past the soft stalling and can be captured opportunistically.
+2015-03-13T10:23:48  <Bmagic> I got it
+2015-03-13T10:24:45  <Bmagic> bshum++ #OMG holds
+2015-03-13T10:25:05  * bshum mostly gets it.
+2015-03-13T10:26:21  *** Dyrcona has joined #evergreen
+2015-03-13T10:29:57  <kmlussier> I think soft stalling was the one setting we had the most trouble figuring out when we were learning about Evergreen holds.
+2015-03-13T10:30:15  * kmlussier doesn't think any of the MassLNC consortia are using it.
+2015-03-13T10:30:47  * bshum disappears to head over for his next meetings
+2015-03-13T10:31:02  <bshum> Good luck, Bmagic++ # stay strong!
+2015-03-13T10:31:19  <Bmagic> LOL!
+2015-03-13T10:32:34  *** dreuther has joined #evergreen
+2015-03-13T10:48:56  *** ericar has joined #evergreen
+2015-03-13T10:51:51  *** mllewellyn has joined #evergreen
+2015-03-13T10:58:18  <hopkinsju> bshum++
+2015-03-13T10:58:48  <hopkinsju> Just got caught up on this. We should do a conference session titled #OMG HOLDS
+2015-03-13T10:59:23  <hopkinsju> We can do the OMG part and bshum can explain everything
+2015-03-13T11:09:30  <csharp> hopkinsju++
+2015-03-13T11:10:22  <csharp> @quote add < hopkinsju> Just got caught up on this. We should do a conference session titled #OMG HOLDS.  We can do the OMG part and bshum can explain everything.
+2015-03-13T11:10:22  <pinesol_green> csharp: The operation succeeded.  Quote #108 added.
+2015-03-13T11:16:11  *** vlewis has joined #evergreen
+2015-03-13T11:24:36  <hopkinsju> heh
+2015-03-13T11:38:45  *** kbutler has joined #evergreen
+2015-03-13T11:39:24  *** bmills has joined #evergreen
+2015-03-13T11:45:10  *** bmills has quit IRC
+2015-03-13T11:45:34  <jeff> I swear I just saw the string "facepalm" in this SRU output...
+2015-03-13T11:46:33  *** jihpringle has joined #evergreen
+2015-03-13T11:50:03  *** bmills has joined #evergreen
+2015-03-13T11:50:41  *** bmills1 has joined #evergreen
+2015-03-13T11:54:11  *** bmills has quit IRC
+2015-03-13T11:55:09  <bshum> Bleh
+2015-03-13T11:55:21  <bshum> 0898 hates me
+2015-03-13T11:55:38  <bshum> Oh wait, I know why
+2015-03-13T11:55:42  <bshum> Stupid restore
+2015-03-13T11:56:22  <bshum> Darn search_path gets me every time
+2015-03-13T11:57:05  <jeff> i want to kill those lingering issues.
+2015-03-13T11:57:21  <jeff> the only good fix that i'm aware of is to fully qualify.
+2015-03-13T11:58:05  <bshum> Right.
+2015-03-13T12:02:05  *** sandbergja has joined #evergreen
+2015-03-13T12:05:09  <Dyrcona> Let me check my restore script, I think we fix it in a script we run after.
+2015-03-13T12:07:14  <Dyrcona> Yep: ALTER DATABASE :db_name SET search_path=evergreen, public, pg_catalog;
+2015-03-13T12:08:06  <Dyrcona> with -v db_name=actual_database_name on the command line
+2015-03-13T12:09:08  <Dyrcona> And, I don't think it is necessary (or didn't used to be) if your database user's name is evergreen.
+2015-03-13T12:09:57  <Dyrcona> IIRC, postgres looks in a schema named for the current user, then in public, then in pg_catalog by default, but as always, I could be wrong or misremembering.
+2015-03-13T12:14:26  <jeff> pg_restore still breaks some things.
+2015-03-13T12:14:36  <jeff> because it will explicitly set the search path.
+2015-03-13T12:15:22  <jeff> so unless you're also hand-editing the pg_restore commands, you're going to be doing things like (at least) re-creating a few indexes that fail due to search path.
+2015-03-13T12:15:39  <jeff> though it's possible that THAT was fixed and I just missed that it's been fixed in more-recent versions.
+2015-03-13T12:15:50  <jeff> I'll try and bother to look.
+2015-03-13T12:16:20  <Dyrcona> We haven't had trouble with indexes in quite a while.
+2015-03-13T12:16:54  <Dyrcona> We do have trouble with config.z3950_index_field_map from time to time.
+2015-03-13T12:17:36  <Dyrcona> So, we check if select * returns anything and if not, we insert the values that should be in the table in our script we run post-restore.
+2015-03-13T12:18:01  <Dyrcona> Just below setting the path, actually.
+2015-03-13T12:18:26  <Dyrcona> I believe the index problems were fixed at some point.
+2015-03-13T12:20:03  <bshum> ~search_path
+2015-03-13T12:20:03  <pinesol_green> After restoring a database, make sure to reset the search_path accordingly with something like: alter database unpredicable_haxxors_go_away set search_path = evergreen, public, pg_catalog;
+2015-03-13T12:20:06  <bshum> Yeah.
+2015-03-13T12:20:41  <pastebot> "Dyrcona" at 64.57.241.14 pasted "MVLC's post restore SQL script." (22 lines) at http://paste.evergreen-ils.org/44
+2015-03-13T12:26:10  <jeff> Dyrcona: and you no longer have issues with the by_heading_and_thesaurus or by_heading indexes in the authority schema?
+2015-03-13T12:28:52  *** mglass_ has joined #evergreen
+2015-03-13T12:28:57  <jeff> "issues" meaning "they break at pg_restore time due to oils_xpath_string not being in the search path"
+2015-03-13T12:29:00  *** mglass_ has quit IRC
+2015-03-13T12:36:12  * csharp noticed that if he uses PGUSER=postgres that the restore drops things but doesn't with PGUSER=evergreen
+2015-03-13T13:08:48  <Dyrcona> jeff: No, we don't have that one any more. Forget what fixed it.
+2015-03-13T13:08:58  <jeff> Dyrcona: thanks.
+2015-03-13T13:09:15  * Dyrcona was AFK for a bit.
+2015-03-13T13:09:40  <jeff> the nerve.
+2015-03-13T13:18:59  <Dyrcona> heh
+2015-03-13T13:57:05  *** graced has quit IRC
+2015-03-13T14:10:20  <kmlussier> gmcharlt / eeevil: Do you know if work is being done on webby at the moment?
+2015-03-13T14:12:35  <gmcharlt> kmlussier: not at the moment; does it need a kick?
+2015-03-13T14:12:53  <kmlussier> I'm not retrieving any results when I try catalog searches.
+2015-03-13T14:13:27  <jeff> new feature. prevents "the result at position 2 should OBVIOUSLY be at position 1" complaints.
+2015-03-13T14:13:40  <Dyrcona> :)
+2015-03-13T14:13:56  <jeff> also, permanently ends argument about what the default search order should be!
+2015-03-13T14:14:31  <Dyrcona> I tought it was to prevent DOS by running an insane search that returns the whole database.
+2015-03-13T14:14:55  <jeff> that ability is now restricted to only GoogleBot
+2015-03-13T14:15:06  <jeff> (and Yandex, if you set the proper OU setting)
+2015-03-13T14:15:59  *** afterl has quit IRC
+2015-03-13T14:17:20  *** afterl has joined #evergreen
+2015-03-13T14:18:24  <gmcharlt> kmlussier: kick duly administered
+2015-03-13T14:18:32  <kmlussier> gmcharlt++
+2015-03-13T14:18:41  <gmcharlt> Harry Potter retrieval service now restored
+2015-03-13T14:19:19  <kmlussier> Ha! It's spooky how you said that just as I saw the harry potter search results filling the screen.
+2015-03-13T14:19:39  <Dyrcona> :)
+2015-03-13T14:21:01  *** bmills1 has quit IRC
+2015-03-13T14:21:10  * gmcharlt is now musing about organizing a super-library-geeky social event at #egconf15 that would have the effect of reshuffling all of our default catalog searches ;)
+2015-03-13T14:22:21  <kmlussier> That would be fun.
+2015-03-13T14:23:15  <kmlussier> My default search is "pugs", but I never use it on systems with test data because it rarely pulls up results. Interestingly, it does get a couple of hits on webby.
+2015-03-13T14:28:00  *** bmills has joined #evergreen
+2015-03-13T14:39:05  <bshum> I need to add my own "star trek" bib record to the stock data :)
+2015-03-13T14:40:28  <bshum> I usually do "mozart" as my concerto test.  And "Harry potter" if I want that one sample :)
+2015-03-13T14:40:31  <Dyrcona> We should add a bunch of "fictional" books written by community members, with notes extolling things they've done for Evergreen.
+2015-03-13T14:41:29  <bshum> That would be hilarious
+2015-03-13T14:41:31  <bshum> And awesome
+2015-03-13T14:41:51  <bshum> Yeah, where is the book of Evergreen?  That totally needs to be original cataloged...
+2015-03-13T14:42:15  <Dyrcona> Yeah.
+2015-03-13T14:42:57  <kmlussier> When I'm creating records in a test system, I usually do "Kathy's adventures in Evergreen."
+2015-03-13T14:43:10  <kmlussier> There's also a serial version: "Kathy's journal of Evergreen."
+2015-03-13T14:47:03  <Dyrcona> I've got some books on the shelf in my office with barcodes on them that I use if I need test copies.
+2015-03-13T14:49:13  <Dyrcona> I don't usually create MARC data.
+2015-03-13T14:50:20  <Dyrcona> We actually have a barcode prefix for our central site, though we do not have a circulating collection.
+2015-03-13T14:50:56  *** pmurray_away is now known as pmurray
+2015-03-13T14:52:48  <Dyrcona> Cataloged a Coca Cola bottle once, now that I think of it.
+2015-03-13T14:54:52  <dbs> Hmm. Running through acquisitions PO notes, I had a use case for copying and pasting multi-line notes and hoping the formatting would stick
+2015-03-13T14:55:02  <dbs> Munged it all onto one line, of course.
+2015-03-13T14:55:23  <dbs> But, imagine my surprise and delight when sticking in <br> tags introduced linefeeds into the output!
+2015-03-13T14:55:53  <dbs> So now I "just" need to teach the notes widget to convert line feeds to <br> tags and bob's my uncle
+2015-03-13T14:58:17  <Dyrcona> small matter of programming. :)
+2015-03-13T15:01:23  <bshum> Yay, open source!
+2015-03-13T15:02:41  <collinanderson> just don't open up any xss holes :)
+2015-03-13T15:09:33  <dbs> collinanderson: I wouldn't be opening up any that don't already exist. heh.
+2015-03-13T15:09:48  <gmcharlt> dbs: good plan!
+2015-03-13T15:09:48  <gmcharlt> ;)
+2015-03-13T15:44:58  *** maryj has quit IRC
+2015-03-13T15:46:03  *** bshum has quit IRC
+2015-03-13T15:46:53  <Dyrcona> Oh noes!!!
+2015-03-13T15:50:33  *** maryj has joined #evergreen
+2015-03-13T15:53:34  *** bshum has joined #evergreen
+2015-03-13T15:55:36  <jeff> vague ticket is vague.
+2015-03-13T16:01:29  <Dyrcona> Yes, it is.
+2015-03-13T16:01:57  <bshum> csharp: I hate my email response already and want to add more supplemental asterisk with expanded explanations for everything I said about upgrade and version-upgrade scripts.
+2015-03-13T16:02:04  <bshum> The whole thing is a mess :)
+2015-03-13T16:02:15  <bshum> And I'm glad we run master instead where it's neatly sequential without any gaps.
+2015-03-13T16:07:04  <jboyer-isl> @hate Launchpad search
+2015-03-13T16:07:04  <pinesol_green> jboyer-isl: The operation succeeded.  jboyer-isl hates Launchpad search.
+2015-03-13T16:08:19  <kmlussier> @whocares Launchpad search
+2015-03-13T16:08:19  <pinesol_green> kmlussier, Dyrcona and jboyer-isl hate Launchpad search
+2015-03-13T16:08:38  <bshum> Launchpad search sucks.
+2015-03-13T16:09:03  <bshum> My head is filled with the names and descriptions of so many bugs now... past, present
+2015-03-13T16:09:10  <Dyrcona> I seriously think it only searches bug titles, even in advanced search.
+2015-03-13T16:09:14  <jboyer-isl> my terms are unique, ugly, weird, and should only retrieve the one ticket I’m looking for, but no.
+2015-03-13T16:09:14  <bshum> They haunt my dreams
+2015-03-13T16:09:25  <kmlussier> Does it really, though? I sometimes find the problem has nothing to do with Launchpad, but everything to do with the fact that I describe problems in an entirely different way than somebody else.
+2015-03-13T16:09:54  <maryj> Can the launchpad search be enhanced at all?
+2015-03-13T16:10:10  <maryj> (or is that my hopeful optimism showing?)
+2015-03-13T16:10:14  <bshum> kmlussier: Typos too.
+2015-03-13T16:10:16  <bshum> :)
+2015-03-13T16:10:24  <Dyrcona> "Why can't search work like [insert multi-billion dollar online corporation here]?"
+2015-03-13T16:10:48  <bshum> maryj: To be honest, I usually just use google search and append whatever I'm looking for with "Evergreen launchpad"
+2015-03-13T16:11:00  <bshum> And 90% of the time, that gets me a link to the real LP bug entry that I was hoping for ;)
+2015-03-13T16:11:06  <Dyrcona> I just got to create a new bug. That usually finds the one I'm looking for.
+2015-03-13T16:11:22  <bshum> Or I just search my email to find the reference too.
+2015-03-13T16:11:27  <bshum> Which is also gmail, so, heh
+2015-03-13T16:11:29  <kmlussier> I think it would help if the default search included more types of bugs. I know duplicates are automatically excluded as well as ones marked as opinion or invalid.
+2015-03-13T16:12:04  <Dyrcona> yeah, I sometimes search my bug email folder.
+2015-03-13T16:13:46  <jboyer-isl> git tells me the thing I’m searching for has not been changed. Does anyone know whatever happened to any discussion of the money.m_b_x_open_xacts_idx index? It’s only an index on money.billable_xact (usr) and doesn’t have anything to do with xact_finish being null (as the name implies)
+2015-03-13T16:14:50  <jeff> jboyer-isl: do you recall discussion?
+2015-03-13T16:15:18  <jboyer-isl> I could have sworn I saw someone ask about it at some point, but Google tells me I’m making it up. :-/
+2015-03-13T16:17:12  <Dyrcona> My email search tells me you're making it up, too. :)
+2015-03-13T16:17:30  <Dyrcona> 'Course, I'll have saved bug mails back to November 9, 2012.
+2015-03-13T16:17:37  <Dyrcona> I only have...
+2015-03-13T16:17:54  <jboyer-isl> Anyway, I find myself needing such an index and didn’t know if I had missed a fix for it. Apparently not.
+2015-03-13T16:17:56  <Dyrcona> I could check the dev list.
+2015-03-13T16:19:16  <Dyrcona> Nothing on the dev list back to 2008 either.
+2015-03-13T16:20:47  <Dyrcona> I hate to start a flame war, but I don't think we should be mucking with the schema on point (i.e. bug fix) releases.
+2015-03-13T16:23:10  <jboyer-isl> Oh well. Thanks for the sanity check everyone. I’ll look into my project a little more and then probably hit launchpad so no one can find my bug later. ;)
+2015-03-13T16:23:21  <jboyer-isl> Dyrcona: agreed (re: schema)
+2015-03-13T16:24:30  <jonadab> As a general principle, I (in complete and total ignorance of the specific thing being referred to) would tend to agree with that.
+2015-03-13T16:24:52  <Dyrcona> The schema is the database layout, including tables and columns.
+2015-03-13T16:25:00  <jonadab> Right, I know what a schema is.
+2015-03-13T16:25:12  <jonadab> I meant I don't know of the specific schema mucking that is being discussed.
+2015-03-13T16:25:15  <Dyrcona> I think if a bug fix requires a change to the schema, then it should not go into a point release.
+2015-03-13T16:25:28  <Dyrcona> I'm speaking in general terms, not to anything specific.
+2015-03-13T16:25:33  <jonadab> Oh, I see.
+2015-03-13T16:25:37  <jonadab> In that case I would tend to agree.
+2015-03-13T16:25:53  <Dyrcona> A discussion of running database upgrade scripts came up on the general mailing list.
+2015-03-13T16:26:02  * csharp hates when he drops closing quotes and parens 
+2015-03-13T16:26:05  <jonadab> Unless the bug is extremely important (think: data loss crash) and the schema change can be done in a backward-compatible way.
+2015-03-13T16:26:43  * Dyrcona hates when he makes any kind of typo.
+2015-03-13T16:27:00  * Dyrcona usually lets it go when others do.
+2015-03-13T16:27:15  *** rjackson_isl has quit IRC
+2015-03-13T16:27:42  <csharp> jboyer-isl: you may be remembering when I learned the need for m_b_voider_idx to speed up patron merge
+2015-03-13T16:28:12  *** maryj has quit IRC
+2015-03-13T16:29:47  <csharp> Dyrcona: in theory, I agree with you - it would be great if the DB was static throughout a major release's lifetime and point releases just fixed EG application-level stuff
+2015-03-13T16:29:56  <jboyer-isl> csharp: Possibly. There doesn’t appear to be a whole lot else I could be remembering at this point.
+2015-03-13T16:30:24  <csharp> jboyer-isl: I mention it because it wasn't in email and I know you were there when I was working on it ;-)
+2015-03-13T16:31:20  *** collum has quit IRC
+2015-03-13T16:31:35  <csharp> but since so much app logic has moved to the DB, I can see that it's probably necessary to add DB stuff to even point releases
+2015-03-13T16:32:11  <gmcharlt> well, a distinction could be made between changing table structures and changing stored procedures
+2015-03-13T16:33:03  <csharp> true
+2015-03-13T16:33:14  <gmcharlt> the latter being (oftne, but not always) easier to backport
+2015-03-13T16:33:27  <gmcharlt> as long, of course, as tables that they use haven't changed
+2015-03-13T16:33:29  <gmcharlt> :)
+2015-03-13T16:34:00  *** afterl has quit IRC
+2015-03-13T16:35:26  *** jboyer-isl has quit IRC
+2015-03-13T16:37:06  *** mglass has quit IRC
+2015-03-13T16:37:20  *** afterl has joined #evergreen
+2015-03-13T16:38:09  *** dreuther_ has joined #evergreen
+2015-03-13T16:38:14  *** mglass has joined #evergreen
+2015-03-13T16:38:18  <bshum> gmcharlt: You know I've often wondered about that
+2015-03-13T16:38:19  *** chatley_ has joined #evergreen
+2015-03-13T16:38:21  *** vlewis_ has joined #evergreen
+2015-03-13T16:38:33  <bshum> In terms of seeing whether we can minimize the actual changes in minor versions vs. major versions.
+2015-03-13T16:39:05  <bshum> I've been told before by postgresql developers that they've found our schema changes in even minor versions of Evergreen to be a little weird.
+2015-03-13T16:40:52  *** vlewis has quit IRC
+2015-03-13T16:40:53  *** dreuther has quit IRC
+2015-03-13T16:41:04  <gmcharlt> FWIW, Koha has a reasonably strict policy that new stuff goes in master and only bugfixes get backpatched
+2015-03-13T16:41:06  *** vlewis_ has quit IRC
+2015-03-13T16:41:16  *** chatley has quit IRC
+2015-03-13T16:41:21  *** mglass has quit IRC
+2015-03-13T16:41:40  <Dyrcona> Do bugfixes include schema changes in Koha, or is that always considered new stuff?
+2015-03-13T16:41:43  *** vlewis has joined #evergreen
+2015-03-13T16:41:49  *** chatley_ has quit IRC
+2015-03-13T16:41:50  <gmcharlt> there are exceptions, of course, but there's rather less DB schema churn during maintenance release cycles as a consequence of that policy
+2015-03-13T16:41:52  *** mglass has joined #evergreen
+2015-03-13T16:42:22  *** chatley has joined #evergreen
+2015-03-13T16:42:29  <Dyrcona> We are supposed to have a similar policy, but I think we elide the definition of bug fix a bit.
+2015-03-13T16:42:36  *** dreuther_ has quit IRC
+2015-03-13T16:42:49  *** dreuther has joined #evergreen
+2015-03-13T16:42:55  <gmcharlt> Dyrcona: there's some of that elision in Koha too, but less
+2015-03-13T16:44:02  <Dyrcona> It's kind of funny that bshum and I would be pushing this, since we both run master and therefore shouldn't care. :)
+2015-03-13T16:44:15  <gmcharlt> looking at the changes in the Koha 3.18.x maint cycle so far, the only actual schema changes as such are one change of a column type and adding an index
+2015-03-13T16:44:38  <Dyrcona> I'd have no problem with adding an index.
+2015-03-13T16:46:08  <gmcharlt> yeah
+2015-03-13T16:46:18  <Dyrcona> The question of how to run the upgrade scripts or problems with them come up often enough, though.
+2015-03-13T16:46:58  <bshum> Heh, CREATE INDEX IF NOT EXISTS, it's fun reading threads that google throws at you
+2015-03-13T16:47:18  <gmcharlt> idempotence is a virtue :)
+2015-03-13T16:47:57  <Dyrcona> eeevil's deprecates idea sound like it would help.
+2015-03-13T16:48:43  <gmcharlt> Dyrcona:  I AM THE ONE TRUE REINGEST. ALL OTHERS ARE DEPRECATED BEFORE ME
+2015-03-13T16:48:46  <gmcharlt> ;)
+2015-03-13T16:49:11  * bshum should look again at sqitch
+2015-03-13T16:49:18  * bshum saw a presentation about it once at a PGCon
+2015-03-13T16:49:20  <bshum> http://sqitch.org/
+2015-03-13T16:49:47  <Dyrcona> gmcharlt: haha. But my reingest forks. ;)
+2015-03-13T16:50:14  <gmcharlt> your reingest is legion? /me ducks
+2015-03-13T16:50:41  <Dyrcona> ha
+2015-03-13T16:54:58  *** afterl has left #evergreen
+2015-03-13T16:58:43  <Dyrcona> Have a good weekend, everybody!
+2015-03-13T16:59:00  *** Dyrcona has quit IRC
+2015-03-13T17:01:53  *** phasefx_ has joined #evergreen
+2015-03-13T17:03:38  <kmlussier> Hooray - it's quitting time! See y'all on Monday!
+2015-03-13T17:05:20  <berick> It's 5 o'clock somewhere!  Oh yeah, here.
+2015-03-13T17:07:45  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-13T17:20:44  * berick calls 0915
+2015-03-13T17:24:57  * csharp answers "Hello?  Hello, this is 0915, is anyone there?"
+2015-03-13T17:26:01  <berick> "have you checked the children?"
+2015-03-13T17:26:10  <csharp> heh
+2015-03-13T17:28:28  *** ericar has quit IRC
+2015-03-13T17:32:37  <pinesol_green> [evergreen|Bill Erickson] LP#1234220 Improve hold/copy ratio renewal messages - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=06a35b3>
+2015-03-13T17:32:38  <pinesol_green> [evergreen|Bill Erickson] LP#1234220 hold ratio renewal override perms - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=919a07d>
+2015-03-13T17:32:39  <pinesol_green> [evergreen|Bill Erickson] LP#1234220 Stamping DB upgrade copy/ratio messages - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=2acd1c2>
+2015-03-13T17:41:48  *** abowling has quit IRC
+2015-03-13T17:49:37  *** akilsdonk has quit IRC
+2015-03-13T17:51:15  *** Newziky has left #evergreen
+2015-03-13T17:55:10  *** mllewellyn has quit IRC
+2015-03-13T17:59:23  *** akilsdonk has joined #evergreen
+2015-03-13T18:01:27  *** kbutler has quit IRC
+2015-03-13T18:06:45  *** vlewis has quit IRC
+2015-03-13T18:25:19  *** dreuther has quit IRC
+2015-03-13T19:06:26  *** sandbergja has quit IRC
+2015-03-13T19:10:36  *** sarabee has quit IRC
+2015-03-13T19:12:26  *** pmurray is now known as pmurray_away
+2015-03-13T19:21:48  *** yboston has quit IRC
+2015-03-13T19:26:59  *** bmills has quit IRC
+2015-03-13T19:27:13  *** bmills has joined #evergreen
+2015-03-13T20:44:12  *** jihpringle has quit IRC
+2015-03-13T21:10:12  *** bmills has quit IRC
+2015-03-13T21:15:42  *** akilsdonk has quit IRC
+2015-03-13T21:25:16  *** akilsdonk has joined #evergreen
+2015-03-13T22:26:13  *** book` has quit IRC
+2015-03-13T22:34:27  *** book` has joined #evergreen

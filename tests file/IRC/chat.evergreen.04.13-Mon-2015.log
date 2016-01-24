@@ -1,0 +1,274 @@
+2015-04-13T04:53:41  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-13T07:19:47  *** graced has joined #evergreen
+2015-04-13T07:35:19  *** sarabee has joined #evergreen
+2015-04-13T07:50:42  *** mrpeters has joined #evergreen
+2015-04-13T08:00:40  *** Newziky has joined #evergreen
+2015-04-13T08:14:59  *** rjackson_isl has joined #evergreen
+2015-04-13T08:18:54  *** RoganH has joined #evergreen
+2015-04-13T08:19:50  *** jboyer-isl has joined #evergreen
+2015-04-13T08:25:15  *** mrpeters has joined #evergreen
+2015-04-13T08:28:57  <mrpeters> does auditor.actor_usr_history keep any record of which user "created" another user?  would it just be the minimum id value in the audit log for a particular actor.usr.id, with the action of "U"?
+2015-04-13T08:31:25  *** collum has joined #evergreen
+2015-04-13T08:32:21  *** Shae has joined #evergreen
+2015-04-13T08:47:15  *** mmorgan has joined #evergreen
+2015-04-13T08:49:32  *** ericar has joined #evergreen
+2015-04-13T09:01:44  <csharp> mrpeters: iirc, there's an 'audit user' or similar field that should be what you're after
+2015-04-13T09:02:06  <csharp> yeah, audit_user
+2015-04-13T09:02:24  <mrpeters> does it distinctly tell you the user was created?  or does it just show as an "Update" or "U"
+2015-04-13T09:02:50  <csharp> I think it should be 'C' for creation, but I've never dug deep
+2015-04-13T09:03:29  <csharp> the requests we usually get are along the lines of "Who changed user X?" (removed note, updated address, etc.)
+2015-04-13T09:03:29  <jeff> record creation is not audited. the state of the record as it was created will be recorded on first update.
+2015-04-13T09:03:43  <csharp> jeff: good to know
+2015-04-13T09:04:09  <csharp> mrpeters: so you'd probably have to go to the logs for who created it
+2015-04-13T09:04:29  <mrpeters> jeff: yep -- thats what i thought
+2015-04-13T09:04:39  <jeff> and actor.usr does not have a creator column or similar, so i think you're going to be looking at something that is only discernable from logs.
+2015-04-13T09:05:09  <jeff> unless you find that there's a part of the standard process of creating a user that results in an immediate update.
+2015-04-13T09:05:13  <mrpeters> they want a report on who created a particular user (obviously migrated data will not qualify) but i was thinking the minimum id in the auditor log for the user in question would get me that info
+2015-04-13T09:05:21  <mrpeters> as it was the first "update"
+2015-04-13T09:05:40  <jeff> but even in that case, you may find that the action isn't one of the actions that sets audit_user / audit_ws
+2015-04-13T09:06:18  <mrpeters> true
+2015-04-13T09:07:33  <csharp> it's possible the "work log" within the staff client might do what they're after
+2015-04-13T09:08:10  <csharp> depends on whether they're after stats or are trying to track/resolve a staff problem
+2015-04-13T09:08:27  <mrpeters> its a stats thing
+2015-04-13T09:08:30  <csharp> k
+2015-04-13T09:10:41  <jeff> interesting: looking at a user created yesterday, they have two entries in auditor.actor_usr_history with audit_time that matches their create_date (and last_update_time). both have audit_user and audit_ws, so it looks like my musing above was on-target.
+2015-04-13T09:11:52  * jeff throws that on the pile of things to look into later
+2015-04-13T09:12:57  <jeff> but just off the top of my head, you can probably rely on "auditor.actor_usr_history with audit_time matching actor.usr.create_date for the user will contain the audit_user/audit_ws that created the user"
+2015-04-13T09:13:01  <jeff> test, of course.
+2015-04-13T09:14:49  <mrpeters> that may be a good start, and enough for what they want
+2015-04-13T09:15:52  <csharp> so... I'm investigating another see also from tracing issue with OPAC browse search: http://gapines.org/eg/opac/browse?blimit=20&qtype=author&bterm=poznanski%2C+ursula&locg=1 is the main heading and "Archer, Ursula" is listed as a see also, but there is no authority record for "Archer, Ursula" for it to link to
+2015-04-13T09:16:34  <csharp> in that case, is there a way to have see also/from tracings work - that is, when there is no auth record for the reference?
+2015-04-13T09:16:48  * csharp just doesn't know enough about authorities to really know
+2015-04-13T09:19:28  *** Newziky1 has joined #evergreen
+2015-04-13T09:21:59  * collum just created a user in his test Evergreen and two identical update rows appeared in auditor.actor_usr_history.
+2015-04-13T09:27:08  <mrpeters> thanks for the test collum
+2015-04-13T09:28:21  <csharp> @blame authorities
+2015-04-13T09:28:21  <pinesol_green> csharp: It's all authorities's fault!
+2015-04-13T09:28:33  <csharp> @who has a problem with authority?
+2015-04-13T09:28:33  <pinesol_green> paxed has a problem with authority.
+2015-04-13T09:30:41  *** yboston has joined #evergreen
+2015-04-13T09:32:30  <dbs> csharp: so you have this auth record: http://id.loc.gov/authorities/names/no2012027363.html
+2015-04-13T09:32:58  *** Newziky1 has left #evergreen
+2015-04-13T09:34:45  <csharp> dbs: yes, I do
+2015-04-13T09:35:43  <dbs> but not http://id.loc.gov/authorities/names/no2012027363.html ?
+2015-04-13T09:36:02  <dbs> argh
+2015-04-13T09:36:10  <dbs> http://id.loc.gov/authorities/names/n2014061399.html
+2015-04-13T09:36:29  <dbs> #$*@(*! chrome highlight-no-copy-to-clipboard
+2015-04-13T09:36:31  <csharp> dbs: correct
+2015-04-13T09:37:47  <dbs> so the first auth says "See also" and points to a deprecated authority record; maybe your cataloguers deleted the deprecated auth record or never had it
+2015-04-13T09:38:16  <dbs> (well, it doesn't even really point to the deprecated auth record because it just uses string literals)
+2015-04-13T09:40:33  <dbs> I assume the reason the valid record says "see also this deprecated form" is because LoC also assumes that there will be bib records out there that had been authorized against the deprecated form, thus a search for that might turn up results you wouldn't otherwise see for Poznanski
+2015-04-13T09:40:43  <dbs> but I'm doing a lot of assuming.
+2015-04-13T09:44:02  <csharp> looks like we never had the deprecated record
+2015-04-13T09:45:26  <csharp> the n2014061399 number is in the 010 $z field (canceled or invalid number), but that may be where you saw it in the first place ;-)
+2015-04-13T09:45:56  <dbs> hey wait, 400 is "see from"
+2015-04-13T09:47:05  <csharp> so should a "see from" show up in the list (btw, I have been doing authority_authority_linker.pl on that record, but seeing no change)
+2015-04-13T09:47:23  <csharp> now I'm trying to disentangle what that script does
+2015-04-13T09:49:00  <dbs> I think only "See also"s (5xx) are supposed to show up in the auth browse
+2015-04-13T09:49:48  <csharp> dbs: "auth browse" = "OPAC browse" or auth browse in the staff client?
+2015-04-13T09:50:09  <csharp> (it isn't showing either place, btw, just wanting to clarify)
+2015-04-13T09:50:24  <dbs> csharp: opac browse
+2015-04-13T09:51:04  <csharp> ok - good - then this may be a case of unfulfilled expectations rather than an actual technical issue
+2015-04-13T09:52:05  <dbs> yeah. perhaps the thought was that you don't want to lead people _to_ an unauthorized from, and all of your entries will of course have been updated to use the preferred, authorized form :)
+2015-04-13T09:52:59  <dbs> Although I've certainly seen auth browses in OPACs that had 4xx entries that said something like: "Archer, Ursula _see Poznanski, Ursula_"
+2015-04-13T09:53:18  <csharp> that is what's expected here
+2015-04-13T09:54:10  <csharp> I think the originating issue was "user searched for Archer, Ursula in the OPAC author browse and didn't see an entry"
+2015-04-13T09:57:55  <csharp> dbs++ # troubleshooting assistance
+2015-04-13T09:59:13  <bshum> mceraso++ # Bibliomation is smoothly upgraded to 2.8.
+2015-04-13T09:59:41  <jeff> bshum: congrats!
+2015-04-13T09:59:43  <jeff> mceraso++
+2015-04-13T10:00:03  <dbs> http://docs.evergreen-ils.org/2.5/_opac_2.html#_bib_record_browser_with_linked_authorities was the feature note; http://docs.evergreen-ils.org/2.8/_authorities.html has the technical docs that don't really put the pieces together
+2015-04-13T10:03:30  <csharp> dbs: thanks
+2015-04-13T10:06:09  <csharp> "If the browse heading is linked to any authority records, and if any other authority records point to those with "See also" or other non-main entry headings, those alternative headings are displayed linked to a search results page showing related bib records related to the alternate heading."
+2015-04-13T10:06:21  <csharp> hmmmm
+2015-04-13T10:19:15  *** mllewellyn has joined #evergreen
+2015-04-13T10:29:31  <pinesol_green> [evergreen|Bill Erickson] LP#1380803 Include direct charges in PO esimated price - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=caa6a95>
+2015-04-13T10:29:32  <pinesol_green> [evergreen|Bill Erickson] LP#1380803 Update PO summary amounts - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a91a15d>
+2015-04-13T10:35:33  *** mllewellyn has quit IRC
+2015-04-13T10:36:57  *** mllewellyn has joined #evergreen
+2015-04-13T10:41:19  *** mllewellyn has quit IRC
+2015-04-13T10:43:53  *** mllewellyn has joined #evergreen
+2015-04-13T10:46:40  *** krvmga has joined #evergreen
+2015-04-13T10:49:24  *** mllewellyn has quit IRC
+2015-04-13T10:49:55  *** mllewellyn has joined #evergreen
+2015-04-13T10:51:24  *** sandbergja has joined #evergreen
+2015-04-13T11:00:44  *** mllewellyn has quit IRC
+2015-04-13T11:02:39  <dbs> csharp: looks like find_authority_headings_and_notes() in OpenILS::WWW::EGCatLoader::Browse is where the magic happens
+2015-04-13T11:03:33  *** Newziky has quit IRC
+2015-04-13T11:03:39  <csharp> dbs: excellent - I'll take a look
+2015-04-13T11:04:22  <dbs> it's still pretty convoluted in there
+2015-04-13T11:04:39  <dbs> but there are some good comments reflecting the confusion of the author :)
+2015-04-13T11:11:09  *** dreuther has joined #evergreen
+2015-04-13T11:27:06  <krvmga> is there a limit on the number of titles that can be included in a bucket?
+2015-04-13T11:27:36  <eeevil> krvmga: nope
+2015-04-13T11:27:46  <krvmga> eeevil: thanks :)
+2015-04-13T11:29:25  <bshum> There isn't, but I feel like there are limits to the number of things retrievable in the XUL client from a bucket before it can blow up.
+2015-04-13T11:29:50  * bshum remembers the library that scanned over 1000 things into a copy bucket and then tried to "retrieve it"
+2015-04-13T11:32:01  <bshum> Huh....... so overdue reinstatement of old fines, plus newly generated fines up to today, appears to have added up to fines greater than the max fines for a given circulation.  On multiple circs since we upgraded.
+2015-04-13T11:32:10  * bshum wonders what's changed... and double checks all the surrounding details.
+2015-04-13T11:32:28  <tsbere> bshum: How much over the max fines?
+2015-04-13T11:32:45  <bshum> tsbere: Well, it's $6.00 is maxfines, and it's like $9.75 atm
+2015-04-13T11:33:09  <bshum> What I might have normally expected to see is reinstated overdues, and then new fines generated up to the maxfines
+2015-04-13T11:33:23  <bshum> It's a lost item that came back, and they checked it in today.
+2015-04-13T11:33:32  <bshum> So the original overdues were voided
+2015-04-13T11:33:44  <bshum> When the lost bill was added
+2015-04-13T11:33:56  <bshum> And when the item was returned, the lost bill was voided, and overdues reinstated
+2015-04-13T11:34:11  <bshum> But now new overdues added onto it, up to today due to not having returned it on time.
+2015-04-13T11:34:34  <bshum> But it's definitely beyond the maxfine setting that should have applied to the circ based on the rule used and what was listed in the circulation entry
+2015-04-13T11:34:41  <bshum> So it seems like something is super wrong.
+2015-04-13T11:35:12  <tsbere> Is it all overdues, or did other billing types get thrown into the mix?
+2015-04-13T11:35:56  * tsbere answers "why do they owe more than X?" or "why didn't it auto-void that fine?" with "because some staff member added a billing manually" way too often
+2015-04-13T11:36:01  *** krvmga has quit IRC
+2015-04-13T11:36:39  <bshum> It looks like just overdue billing type
+2015-04-13T11:37:15  <csharp> bshum: does the max_fine match the max_fine_rule on each circ?
+2015-04-13T11:39:37  <bshum> csharp: Yes, the circulation entry shows the right maxfine
+2015-04-13T11:39:47  <csharp> k - just checking
+2015-04-13T11:41:48  *** bbqben has joined #evergreen
+2015-04-13T11:42:35  <bshum> I just wonder if it's a consequence of commits pushed to master as part of https://bugs.launchpad.net/evergreen/+bug/1198465
+2015-04-13T11:42:35  <pinesol_green> Launchpad bug 1198465 in Evergreen "Support for Conditional Negative Balances" (affected: 16, heat: 74) [Wishlist,Confirmed]
+2015-04-13T11:43:05  <bshum> Changes like 54cd1b8c38ffab5cd48572a68b3544c88e7cd3eb
+2015-04-13T11:43:05  <pinesol_green> [evergreen|Dan Wells] LP#1198465 lost overdues generated in main xact - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=54cd1b8>
+2015-04-13T11:43:12  *** mrpeters1 has joined #evergreen
+2015-04-13T11:43:28  *** mrpeters has quit IRC
+2015-04-13T11:44:55  <tsbere> If the new overdues are being generated outside of an xact, and the previously voided ones are unvoided in a different xact, the two combined could result in the issue in question
+2015-04-13T11:45:56  <tsbere> Or, to clear up what I was saying, if the fine generator still sees the old ones as voided it will keep adding on to max fines, it looks like. Then when the un-voiding happens it goes beyond the max.
+2015-04-13T11:46:25  * tsbere wonders if voided overdues should count towards the max in the first place or not...
+2015-04-13T11:46:31  <tsbere> I can come up with arguments both ways. <_<
+2015-04-13T11:46:53  <bshum> Well, it seems like this might be a bug then.
+2015-04-13T11:47:26  <bshum> To me, I think maxfine ought to be respected, and if we're there already, don't add more fines
+2015-04-13T11:47:43  *** mllewellyn has joined #evergreen
+2015-04-13T11:47:51  <tsbere> I suppose the alternate workflow is "we generated overdues, then un-voided old ones"
+2015-04-13T11:48:25  <Bmagic> I am having issues finding subroutines in the perl code associated with editor. Any insight? AKA: $editor->search_action_circulation where is search_action_circulation defined? Somehow the subroutine is parsed in the CStoreEditor.pm ?
+2015-04-13T11:48:54  <tsbere> Bmagic: Some of that is auto-generated functions based on the IDL
+2015-04-13T11:48:57  <dbwells> bshum: I'd say there is a good chance this is a regression from those changes you linked to.
+2015-04-13T11:49:15  <bshum> dbwells: Ugh
+2015-04-13T11:49:16  <Bmagic> tsbere: ah
+2015-04-13T11:49:40  * bshum wonders how hard it'll be to unroll those from his production system before it breaks more patrons... hmm
+2015-04-13T11:50:30  <Bmagic> tsbere: so, somewhere in the code I should* find sub search_action_circulation{  ?
+2015-04-13T11:50:32  <bshum> dbwells: At present, I see a batch of about 6 commits that were merged related to those areas.  I'm checking further to see what else altered and how.
+2015-04-13T11:52:31  <tsbere> Bmagic: I imagine there is a "loop over fieldmapper/the IDL and generate functions that have a cstore handler" routine somewhere that makes the sub dynamically.
+2015-04-13T11:52:58  <Bmagic> tsbere: I see, thanks!
+2015-04-13T11:53:05  <dbwells> bshum: It's probably something which works in the "complete" branch for that bug, and we just didn't get the lines drawn quite right when splitting it into bite-sized pieces.  I will start looking now, too, to see where I went wrong.
+2015-04-13T11:54:50  <tsbere> dbwells / bshum: I think I see what is going on
+2015-04-13T11:56:29  <tsbere> checkin_handle_circ does the "handle lost or longoverdue" bit, which eventually unvoids fines. do_checkin calls that.....but before then it does a handle_fines call that may ignore stop_fines.
+2015-04-13T11:58:13  <tsbere> The "generate fines on checkin" call itself needs to be moved to after checkin_handle_circ, basically...even if some of the things it looks up (ignore_stop_fines) happen before then?
+2015-04-13T12:00:54  <dbs> csharp: if it makes you feel any better, yeah, http://www.loc.gov/marc/authority/adtracing.html 'TRACING FIELDS - SIMPLE CROSS REFERENCES' suggests that browse should have a "Archer, Ursula -- see under Poznanski, Ursula' entry
+2015-04-13T12:02:04  * dbs is wondering if the linking_subfield = 0 where tag IN (410, 510) is perhaps the issue
+2015-04-13T12:02:13  <dbs> SELECT * FROM authority.control_set_authority_field WHERE tag IN ('410', '510', '110');
+2015-04-13T12:03:31  <csharp> dbs: linking_subfield is 0 for 510, but not for 410
+2015-04-13T12:03:58  <csharp> and not for 400 either
+2015-04-13T12:04:45  <dbs> that is, maybe the 500 should have a $0 that links to the id of the auth record that has the 100? Damn it would help if the docs actually had a MARC21-centric example to help that tiny subset of libraries that use MARC21 LoC authorities.
+2015-04-13T12:05:11  <dbwells> tsbere: Here is an unpushed commit from the complete branch which I think addresses what you are saying: http://git.evergreen-ils.org/?p=working/Evergreen.git;a=commitdiff;h=542054fce727c7bd09eeb4e1fe479b919aebf3a8
+2015-04-13T12:06:00  <dbwells> There might be a simpler way to do it, but I'm still trying to get all the pieces back in my mind.
+2015-04-13T12:06:24  <dbs> stock seed data says UPDATE authority.control_set_authority_field SET linking_subfield = '0' WHERE tag LIKE ANY (ARRAY['5%','7%']);
+2015-04-13T12:06:57  <tsbere> dbwells: That looks like it deals with some of it. Can't say if it is the best way as I would have to start digging in a lot more.
+2015-04-13T12:07:06  <dbs> csharp: right, sorry, I meant WHERE tag IN (500, 510)
+2015-04-13T12:07:18  <dbs> <-- unhelpful
+2015-04-13T12:07:29  <jeff> Bmagic: The subs you seek are generated by OpenILS::Utils::CStoreEditor::init()
+2015-04-13T12:07:54  <csharp> dbs: yeah - 500 has "0" too
+2015-04-13T12:08:31  <dbwells> tsbere: are you planning to look into it more?  It like to take a crack at it, but also don't want to duplicate any other efforts.
+2015-04-13T12:08:33  <jeff> Bmagic: look around line 913 of OpenILS/Utils/CStoreEditor.pm
+2015-04-13T12:10:06  <dbs> csharp: so given that http://id.loc.gov/authorities/names/no2012027363.marcxml.xml has a 400, maybe that blows that theory to hell
+2015-04-13T12:10:35  <dbs> (and I'm pretty sure I've been looking at local examples that have 5xx without $0 that aren't resulting in entries either)
+2015-04-13T12:10:46  <dbs> E_TOO_ABSTRACT
+2015-04-13T12:11:18  *** buzzy has joined #evergreen
+2015-04-13T12:12:13  <dbs> I guess this needs some serious TPAC updating too: http://docs.evergreen-ils.org/2.8/_opac_searching_of_authorities.html
+2015-04-13T12:12:51  <yboston> dbs: I was planning on just pullign that section out
+2015-04-13T12:12:53  *** mrpeters has joined #evergreen
+2015-04-13T12:13:09  *** mrpeters1 has quit IRC
+2015-04-13T12:13:13  <yboston> dbs: since that particular feature is not found in TPAC
+2015-04-13T12:16:36  *** jihpringle has joined #evergreen
+2015-04-13T12:18:51  <dbwells> bshum: are you in a position to test a fix?  If so, I can suggest one to try.
+2015-04-13T12:19:05  <bshum> dbwells: I can give it a shot.
+2015-04-13T12:19:50  <bshum> dbwells: I was putting together a revert branch to remove everything and put it back to the earlier way, if you guys weren't ready to suggest anything.
+2015-04-13T12:20:00  <bshum> Fine bugs make me feel weird.
+2015-04-13T12:20:28  <dbwells> bshum: The fix is cherry-picking in two commits, 76ed91eaf8e2b followed by 542054fce72
+2015-04-13T12:20:42  <jeff> Every Good Bug Does Fines
+2015-04-13T12:21:04  *** bbqben has quit IRC
+2015-04-13T12:21:43  <bshum> dbwells: I'll go give that a quick whirl on our test server.
+2015-04-13T12:21:55  <bshum> Lucky for me I have lots of examples of broken circs from today to try with :\
+2015-04-13T12:22:01  <jeff> and perhaos Fines Always Cause Evil?
+2015-04-13T12:22:37  <dbs> yboston: well, the functionality is there, it's just part of the regular catalogue UI now accessed by "Browse the catalog" instead of under "Advanced search" right?
+2015-04-13T12:29:33  <yboston> dbs: no, that doc is for an older simpler feature that Berklee paid for that only worked on JSpac
+2015-04-13T12:29:49  <dbwells> bshum: I have a lunch appt in a few minutes.  I'll check back and also do some testing of my own when I get back.
+2015-04-13T12:29:57  <yboston> dbs: it only grabbed data from authoritites; and for example the only title search it could do was on uniform titles
+2015-04-13T12:30:02  <bshum> dbwells: Thanks man, I'll see what I can find out.
+2015-04-13T12:32:14  <bshum> dbwells: Checked one circ so far, and it applied up to the right max fines this time 'round
+2015-04-13T12:32:21  <bshum> Testing another circ that's lost to be absolutely sure.
+2015-04-13T12:35:01  *** Dyrcona has joined #evergreen
+2015-04-13T12:39:01  <bshum> Well, it takes its sweet time calculating (retrieving, retrieving) but it does eventually give me the right amount of overdues stopped at the maxfine as expected.
+2015-04-13T12:39:25  <bshum> dbwells++
+2015-04-13T12:39:49  <bshum> We'll test further but I think we should slate those fixes for merging to master and rel_2_8
+2015-04-13T12:40:02  <dbwells> bshum++
+2015-04-13T12:40:23  <dbwells> I'll also test further this afternoon.  Don't want to take one step forward, two back.
+2015-04-13T12:40:39  * dbwells steps away for a bit
+2015-04-13T12:45:57  *** bbqben has joined #evergreen
+2015-04-13T13:01:48  *** buzzy has quit IRC
+2015-04-13T13:04:34  *** bmills has joined #evergreen
+2015-04-13T13:07:26  *** bbqben has quit IRC
+2015-04-13T13:23:02  *** collum has quit IRC
+2015-04-13T13:30:21  *** collum has joined #evergreen
+2015-04-13T13:38:10  <tsbere> dbwells: Sorry, I got pulled away. I have stopped looking at things at this point. (and I see you stepped away too)
+2015-04-13T13:45:48  <jeffdavis> Is anyone using Summon (the discovery layer) with EG?
+2015-04-13T13:55:45  <Dyrcona> @summon Dire Weasel
+2015-04-13T13:55:45  <pinesol_green> Dyrcona: The horror... The horror...
+2015-04-13T14:00:43  <dbs> yboston: yeah, commit e710ecbee519 seems to have the core description of the TPAC version
+2015-04-13T14:00:43  <pinesol_green> [evergreen|Lebbeous Fogle-Weekley] Bib record browser with 'see also', etc from linked authority headings - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e710ecb>
+2015-04-13T14:01:16  <dbs> And bug 1177810 should have the full discussion
+2015-04-13T14:01:16  <pinesol_green> Launchpad bug 1177810 in Evergreen "Bib record browser with 'see also', etc from linked authority headings" (affected: 4, heat: 26) [Wishlist,Fix released] https://launchpad.net/bugs/1177810
+2015-04-13T14:01:40  *** maryj has joined #evergreen
+2015-04-13T14:03:26  <dbs> csharp: https://bugs.launchpad.net/evergreen/+bug/1177810/comments/30 is the smoking gun for you. We should get a summary of that whole freaking bug into the docs.
+2015-04-13T14:03:26  <pinesol_green> Launchpad bug 1177810 in Evergreen "Bib record browser with 'see also', etc from linked authority headings" (affected: 4, heat: 26) [Wishlist,Fix released]
+2015-04-13T14:04:59  <dbs> So I guess if you have auth record # 123 with field 100 establishing an author's name, as well as a 500 establishing a "See from" heading, it's really unlikely that that 500 is going to have a $0 pointing to its own record ID
+2015-04-13T14:05:39  <dbs> but if that 500 had $0 (OCLoC)123 or whatever, you'd be golden
+2015-04-13T14:05:51  <dbs> See from: oooookay
+2015-04-13T14:09:04  <csharp> dbs: reading now
+2015-04-13T14:09:10  <csharp> and I'll test too
+2015-04-13T14:16:26  * csharp highlights https://bugs.launchpad.net/evergreen/+bug/1438136/comments/12 on behalf of eeevil who is soliciting feedback from people with expertise with/opinions about the query parser's functionality
+2015-04-13T14:16:26  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New]
+2015-04-13T14:20:05  <Dyrcona> My comment this morning was intended to say, "Dunno. Sounds good to me. Give it a try."
+2015-04-13T14:20:24  <Dyrcona> 'Cause, I don't feel qualified to comment otherwise.
+2015-04-13T14:42:36  *** pmurray_away is now known as pmurray
+2015-04-13T14:57:13  *** maryj has quit IRC
+2015-04-13T15:05:51  <ldw> afk lunch
+2015-04-13T15:06:07  <ldw> mt
+2015-04-13T16:06:47  *** collum has quit IRC
+2015-04-13T16:23:01  *** RoganH has quit IRC
+2015-04-13T16:28:52  *** rjackson_isl has quit IRC
+2015-04-13T16:35:06  *** jboyer-isl has quit IRC
+2015-04-13T16:37:36  *** buzzy has joined #evergreen
+2015-04-13T16:43:27  *** buzzy has quit IRC
+2015-04-13T16:48:49  *** Shae has quit IRC
+2015-04-13T16:50:53  *** ericar has quit IRC
+2015-04-13T16:51:45  *** buzzy has joined #evergreen
+2015-04-13T17:00:13  *** Dyrcona has quit IRC
+2015-04-13T17:09:48  *** graced has quit IRC
+2015-04-13T17:10:49  <Bmagic> jeff: Thanks, I figured it out. It's neat how that works.
+2015-04-13T17:18:20  *** mmorgan has left #evergreen
+2015-04-13T17:28:13  *** mrpeters has quit IRC
+2015-04-13T17:30:52  *** tsbere has quit IRC
+2015-04-13T18:07:25  *** mllewellyn has quit IRC
+2015-04-13T18:13:02  <dbwells> bshum: Did a bunch of testing, and most things worked fine.  The biggest issue was that it no longer generated new overdues on lost item return due to a thinko in one of those commits.  I also found one other thinko which would clobber a MAX_FINES stop_fines_reason in some cases.  Here is a paste of the diff: http://paste.evergreen-ils.org/49
+2015-04-13T18:17:11  <dbwells> (To clarify, the above lost item return issue only applies if that particular setting is turned on, which is not OOTB behavior.)
+2015-04-13T18:25:55  *** yboston has quit IRC
+2015-04-13T18:45:06  * kmlussier notes that a lot of libs in these parts make use of that setting.
+2015-04-13T18:49:49  *** buzzy has quit IRC
+2015-04-13T19:51:30  <jeffdavis> question about bug 1074096
+2015-04-13T19:51:31  <pinesol_green> Launchpad bug 1074096 in Evergreen "Advanced Search by Bib Call Number Returns 0 Results" (affected: 3, heat: 18) [Low,Fix released] https://launchpad.net/bugs/1074096
+2015-04-13T19:52:30  <jeffdavis> we removed Bib Call Number as a search option in numeric search. However, it still appears as an option in the basic and advanced search interfaces. Was the intent to remove it completely?
+2015-04-13T19:53:28  <jeffdavis> (If so, I think we need to remove the relevant line from qtype_selector.tt2.)
+2015-04-13T20:21:47  *** bmills has quit IRC
+2015-04-13T20:24:19  <kmlussier> jeffdavis: Oops. Our sites had customized that option away so long ago, I didn't realize that it lived anywhere other than the numeric search. Total oversight on my part.
+2015-04-13T20:26:54  * kmlussier can whip up a branch tomorrow unless somebody beats me to it.
+2015-04-13T21:08:00  <jeff> 21 seconds to sync offline patron auth for ezproxy while we're down for upgrade.
+2015-04-13T21:10:02  *** jihpringle has quit IRC
+2015-04-13T21:46:11  *** buzzy has joined #evergreen
+2015-04-13T22:16:53  *** pmurray is now known as pmurray_away
+2015-04-13T23:00:20  *** jeff_ has joined #evergreen
+2015-04-13T23:06:51  *** jeff__ has quit IRC
+2015-04-13T23:06:52  *** paxed has quit IRC
+2015-04-13T23:13:12  *** paxed has joined #evergreen
+2015-04-13T23:23:03  *** sandbergja has quit IRC
+2015-04-13T23:32:27  <bshum> dbwells: Thanks for investigating.  I applied the paste you suggested to our systems too.  We do make use of that setting in our environment.
+2015-04-13T23:33:26  <bshum> I'll coordinate with you tomorrow on getting things into some sort of branch to get pushed along to fix things before the next cuts.
+2015-04-13T23:33:28  <bshum> dbwells++

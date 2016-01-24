@@ -1,0 +1,250 @@
+2015-03-26T01:34:19  *** dcook has joined #evergreen
+2015-03-26T02:10:37  *** eady has quit IRC
+2015-03-26T02:57:16  *** eady has joined #evergreen
+2015-03-26T03:06:06  *** jihpringle has quit IRC
+2015-03-26T07:14:34  *** dbwells_ has joined #evergreen
+2015-03-26T07:18:46  *** pmurray_` has joined #evergreen
+2015-03-26T07:20:40  *** BigRig_ has joined #evergreen
+2015-03-26T07:25:06  *** dbwells has quit IRC
+2015-03-26T07:25:07  *** jeffdavis has quit IRC
+2015-03-26T07:25:07  *** dkyle1 has quit IRC
+2015-03-26T07:25:10  *** paxed has quit IRC
+2015-03-26T07:29:17  *** paxed has joined #evergreen
+2015-03-26T07:30:32  *** pmurray_away has quit IRC
+2015-03-26T07:30:32  *** BigRig has quit IRC
+2015-03-26T07:30:34  *** egbuilder has quit IRC
+2015-03-26T07:30:37  *** Bmagic has quit IRC
+2015-03-26T07:30:38  *** artunit has quit IRC
+2015-03-26T07:30:38  *** gmcharlt has quit IRC
+2015-03-26T07:30:38  *** rangi has quit IRC
+2015-03-26T07:30:39  *** phasefx has quit IRC
+2015-03-26T07:31:54  *** graced has joined #evergreen
+2015-03-26T07:33:41  *** jeffdavi1 has joined #evergreen
+2015-03-26T07:33:41  *** dkyle2 has joined #evergreen
+2015-03-26T07:33:41  *** egbuilder_ has joined #evergreen
+2015-03-26T07:33:41  *** Bmagic has joined #evergreen
+2015-03-26T07:33:41  *** artunit has joined #evergreen
+2015-03-26T07:33:41  *** gmcharlt has joined #evergreen
+2015-03-26T07:33:41  *** rangi has joined #evergreen
+2015-03-26T07:33:41  *** phasefx has joined #evergreen
+2015-03-26T07:39:39  <csharp> I wasn't around for the big DOB discussion yesterday, but fwiw, we use DOB as a matching criterion for patron de-duplication - in fact, our staff depend on it heavily
+2015-03-26T07:40:27  *** pmurray_` is now known as pmurray
+2015-03-26T07:40:37  *** jboyer-isl has joined #evergreen
+2015-03-26T07:40:41  *** pmurray has quit IRC
+2015-03-26T07:40:41  *** pmurray has joined #evergreen
+2015-03-26T07:42:00  <csharp> vaguely related: a soon-to-be-coming feature request from GPLS/PINES will be a "potential duplicate patrons matcher" interface (similar in concept to the Admin -> Local Administration -> Transit List) where you could match patrons with the same (say) first name, last name, and DOB and scope those matches to your library or system or to the whole consortium to find duplicates
+2015-03-26T07:42:29  <csharp> s/duplicates/potential duplicates/
+2015-03-26T07:44:33  <csharp> oh, and we require DOB as a matter of policy, and for patrons who don't want to provide DOB, we use the magical date of 1901-01-01  (we're betting that there are no living patrons with that actual birthdate, of course ;-) )
+2015-03-26T07:44:43  *** jboyer-isl has quit IRC
+2015-03-26T07:46:24  *** jboyer-isl has joined #evergreen
+2015-03-26T07:57:02  *** rjackson_isl has joined #evergreen
+2015-03-26T08:09:10  *** krvmga has joined #evergreen
+2015-03-26T08:11:13  *** collum has joined #evergreen
+2015-03-26T08:12:08  *** Dyrcona has joined #evergreen
+2015-03-26T08:20:45  *** mrpeters has joined #evergreen
+2015-03-26T08:21:42  *** akilsdonk has joined #evergreen
+2015-03-26T08:24:32  *** ericar has joined #evergreen
+2015-03-26T08:30:26  *** mmorgan has joined #evergreen
+2015-03-26T08:38:49  *** maryj has joined #evergreen
+2015-03-26T08:38:58  *** maryj has quit IRC
+2015-03-26T08:39:17  *** maryj has joined #evergreen
+2015-03-26T08:47:47  * kmlussier seems to recall a grocery discussion in here a few months ago.
+2015-03-26T08:49:11  <kmlussier> +1 to renaming it
+2015-03-26T08:49:29  * jboyer-isl no longer sees the groceries; there's a rutabega, that's a squash, over here is a pod of peas.
+2015-03-26T08:50:19  <jboyer-isl> Will you take the blueberry or the raspberry?
+2015-03-26T08:51:20  <mmorgan> +1 from me, too.
+2015-03-26T08:52:12  *** dbwells_ is now known as dbwells
+2015-03-26T08:55:12  <mmorgan> Found the previous discussion: http://irc.evergreen-ils.org/evergreen/2015-01-08#i_148257
+2015-03-26T08:55:32  <kmlussier> heh, I was just about to post that link. mmorgan beat me to it.
+2015-03-26T08:55:36  <kmlussier> mmorgan++
+2015-03-26T08:58:18  <jboyer-isl> I'm a fan of "manual" since that gets the human-generated part across. I don't particularly care for "staff"
+2015-03-26T08:58:52  *** jwoodard has joined #evergreen
+2015-03-26T09:04:44  *** Shae has joined #evergreen
+2015-03-26T09:09:46  <jboyer-isl> Well, that was potentially exciting. Apparently the query planner was quite loathe to give up the age_protect index I just put together and tried to discard. Table locks ahoy!
+2015-03-26T09:15:11  <dbwells> We switched "Grocery" to "General" locally a while back.  It's not a perfect label, but it stopped the complaints.  Other terms to consider: "Direct", (or if we want to be really literal) "Transactionless", or even "None" (since these are bills not tied to what EG calls a "transaction").
+2015-03-26T09:21:32  *** yboston has joined #evergreen
+2015-03-26T09:26:54  <eeevil> dbwells: well, that's not really true. money.grocery and money.circulation are both child tables of money.billable_xact
+2015-03-26T09:27:03  <eeevil> </pedant>
+2015-03-26T09:27:59  <dbwells> eeevil: I was actually just looking at that (not remembering how "grocery-ness" was captured) :P
+2015-03-26T09:33:14  <dbwells> makes sense.  So it is a transaction, but just one with the sole purpose (from a system perspective) of GETTING MONEY :)
+2015-03-26T09:34:21  <Dyrcona> M-O-N-E-Y...
+2015-03-26T09:34:35  * Dyrcona is listening to Lyle Lovett at the moment.
+2015-03-26T09:35:01  <tsbere> I know some libraries have asked if they can put negative grocery bills in for "they put money on their card ahead of time" >_>
+2015-03-26T09:35:35  <tsbere> Intended to deal with rental fees and such instead of paying out each time they grab a rental item
+2015-03-26T09:35:41  * tsbere never had a good answer for them
+2015-03-26T09:37:29  <jboyer-isl> tsbere: isn't that what the patron credit option is for? (or is that not allowed and they doing this goofy negative bill thing anyway?)
+2015-03-26T09:37:39  <jonadab> We've had patrons do that (put a credit on their account), but we hate it because it confuses the staff.  (Part of the problem is that our existing ILS doesn't automatically apply the credit to new charges when they later occur.  That has to be done manually, using the "pay" interface.)
+2015-03-26T09:37:43  <kmlussier> Yes, that is what I was thinking. The patron credit.
+2015-03-26T09:38:09  <kmlussier> But is there a way to just add patron credit? I thought the only way to put money there was to convert change to a patron credit.
+2015-03-26T09:38:25  <eeevil> jboyer-isl: that is what it's for, but getting money into that is non-trivial -- there's not "put money on in their credit pile" interface. that would be nice, though
+2015-03-26T09:38:31  <jboyer-isl> I see.
+2015-03-26T09:38:45  <Dyrcona> I'm surprised our members would be interested in giving patrons credit. Most of them seem dead set against negative balances.
+2015-03-26T09:38:46  <eeevil> kmlussier: zackly :)
+2015-03-26T09:40:03  <kmlussier> But patron credit doesn't really create a negative balance, so I think it could work well in this situation if an interface was created for it.
+2015-03-26T09:40:29  <kmlussier> And good training provided. I don't think we see a lot of use of the patron credit feature around these parts.
+2015-03-26T09:42:30  <csharp> patron credit has always been against PINES policy, so we've disabled its display with every upgrade
+2015-03-26T09:42:46  <csharp> well, until it became a YAOUS
+2015-03-26T09:43:05  * Dyrcona thinks circ/billing needs an overhaul.
+2015-03-26T09:43:15  * Dyrcona has unpopular thoughts.
+2015-03-26T09:43:45  * csharp , who is currently trying to create reports for bills/payments billed/received at specific libraries, agrees with Dyrcona 
+2015-03-26T09:43:59  <jboyer-isl> How is patron credit even stored? I was going to see if it's even possible to use in consortia where payments are allowed anywhere and the money redistributed, but I can't find where the balances are kept.
+2015-03-26T09:44:24  <csharp> it's very cumbersome to trace billings/payments back to specific libraries for reports purposes
+2015-03-26T09:44:26  * jboyer-isl needs to add some odd to balance all of these events.
+2015-03-26T09:44:31  <jboyer-isl> evens. Bah.
+2015-03-26T09:44:52  <csharp> we at least need another view, but I haven't figured out what it should look like
+2015-03-26T09:45:03  <csharp> jboyer-isl: it's on the actor.usr object
+2015-03-26T09:46:32  * csharp thinks for consistency that it should not be on actor.usr, but exist in an money.patron_credit_map table
+2015-03-26T09:46:40  <jboyer-isl> Whoa! That's off limits then. There's absolutely no way to determine where that was originally depostied for "pay me" purposes. I guess we won't ever offer that.
+2015-03-26T09:46:42  <csharp> or somethin'
+2015-03-26T09:47:23  <jboyer-isl> csharp: it would be ugly, but if that proposed table had entries for each deposit location it could be very useful.
+2015-03-26T09:47:55  <jboyer-isl> Though I do like the simplicity of the "we're not a bank" stance.
+2015-03-26T09:49:04  <jonadab> We're not a bank.  We're more of an internet cafe and a video store, rolled into one.
+2015-03-26T09:50:07  <jboyer-isl> jonadab++
+2015-03-26T09:51:51  <csharp> jboyer-isl: "we're not a bank" is exactly the rationale behind the PINES policy
+2015-03-26T09:53:19  <csharp> http://pines.georgialibraries.org/annual-meeting-2006#AI4
+2015-03-26T09:53:55  <csharp> that was actually before PINES went live
+2015-03-26T09:58:17  * csharp goes back to trying to figure out why his "payments received at my library" report is busted
+2015-03-26T09:58:41  <jboyer-isl> csharp: can you share a paste of the sql you're getting (or using, if this is a manual thing)
+2015-03-26T09:58:49  *** tsbere_ has joined #evergreen
+2015-03-26T09:58:57  *** tsbere has quit IRC
+2015-03-26T09:58:59  *** tsbere_ is now known as tsbere
+2015-03-26T10:02:05  <csharp> jboyer-isl: it's a template I'm trying to create... here's the generated SQL (edited for readability): http://pastie.org/10054941
+2015-03-26T10:02:46  <csharp> it's apparently a fieldmapper issue, because the problem is that money.billable_xact doesn't have a "billing_total" column
+2015-03-26T10:05:13  <jeff> csharp: what are you trying to report on?
+2015-03-26T10:07:10  <csharp> jeff: the request is a report for "total amount paid to the library during a specified period of time" and they want to see the total billing amount in the output rows
+2015-03-26T10:08:01  <jboyer-isl> mbx doesn't have any money related columns, so it definitely sounds like a fieldmapper issue. Does this report do anything when you run it or do you get an error message?
+2015-03-26T10:08:33  <csharp>  DBD::Pg::st execute failed: ERROR:  column a6ab8ad791a40039d0a9a9cb75b7f4df.billing_total does not exist
+2015-03-26T10:08:36  <csharp> LINE 6:  "a6ab8ad791a40039d0a9a9cb75b7f4df"."billing_total" AS "Tota...
+2015-03-26T10:08:38  <csharp>          ^ at /openils/bin/clark-kent.pl line 217.
+2015-03-26T10:09:50  <csharp> mbx has that as a virtual field (linked from reporter.xact_billing_totals)
+2015-03-26T10:11:45  *** TaraC has quit IRC
+2015-03-26T10:11:48  <jeff> csharp: and what should the value in "total billing amount" represent?
+2015-03-26T10:12:07  *** TaraC has joined #evergreen
+2015-03-26T10:17:43  <jboyer-isl> There's a might_have link from mbt to rxbt for total_balance, but there are nothing but inner joins in that sql (and nothing to rxbt). That will make it hard to get what you're looking for.
+2015-03-26T10:17:48  <jeff> csharp: also, something of note in your paste -- you seem to be limiting to voided payments, which are pretty rare (nigh-on "unsupported" rare) -- AND mdpv."voided" = 't'
+2015-03-26T10:17:54  <jboyer-isl> billing_total, rather.
+2015-03-26T10:19:46  <csharp> jeff: good catch - I reversed the logic in my head
+2015-03-26T10:20:34  <csharp> jboyer-isl: yeah, I figured there were other problems with the template, but "not working at all" wasn't the problem I was anticipating ;-)
+2015-03-26T10:20:37  <jeff> i'd be surprised if this returned anything other than a single row: select count(*), voided from money.payment group by voided;
+2015-03-26T10:21:53  <csharp> huh - there are 16 voided payments
+2015-03-26T10:21:59  <jeff> neat.
+2015-03-26T10:22:07  <csharp> but your point remains - I can probably drop the filter ;-)
+2015-03-26T10:22:37  <jeff> i don't think there's a way to void from the staff client, and i'm not sure if SIP or even the API support it either, I think the last time I looked it was possible only by direct database manipulation (or, you know... migrations!)
+2015-03-26T10:23:44  <jeff> well, pcrud probably lets you void 'em, now that i think about it.
+2015-03-26T10:23:56  <jeff> last time i looked was long ago.
+2015-03-26T10:24:23  <jboyer-isl> Something else to think about csharp, the rxbt view that this report wants to use includes voided bills in the total, there's an unvoided column if that's what the libs really want. (you know, when it's all plumbed properly)
+2015-03-26T10:25:33  *** BigRig_ is now known as BigRig
+2015-03-26T10:26:51  <dbs> kmlussier++ # linking to previous discussions
+2015-03-26T10:27:00  <dbwells> csharp: getting back to your original question, I think you're right, there is a bug in the IDL.  "billing_total" and "payment_total" on mbt should be reporter:datatype="link", not "money" (methinks).
+2015-03-26T10:27:17  <dbs> mmorgan++
+2015-03-26T10:28:17  <dbwells> csharp: they're already defined in <links>, so I think just the datatype is off
+2015-03-26T10:28:24  <mmorgan> csharp++ # opening the bug ticket!
+2015-03-26T10:29:36  <Stompro> Migration press-release posted :-)  - http://esilibrary.com/lake-agassiz-and-nw-regional-choose-evergreen/
+2015-03-26T10:30:03  <kmlussier> Stompro++
+2015-03-26T10:30:07  <kmlussier> Congratulations!
+2015-03-26T10:31:04  <mmorgan> Stompro++
+2015-03-26T10:32:42  <krvmga> Stompro++
+2015-03-26T10:32:46  <krvmga> Grats!
+2015-03-26T10:33:14  <Stompro> Thanks, we are all very excited.
+2015-03-26T10:33:44  <csharp> Stompro++
+2015-03-26T10:34:04  <csharp> dbwells++ # excellent
+2015-03-26T10:34:20  <jboyer-isl> dbwells: Oh, I missed that the types were "money" for both of those. Mystery (probably!) solved. :D
+2015-03-26T10:34:28  <csharp> yeah - I'll test
+2015-03-26T10:35:09  <berick> hackfest proposal, hood river style: http://assets-s3.mensjournal.com/img/essential/where-to-learn-to-kiteboard-hood-river-or/618_348_where-to-learn-to-kiteboard-hood-river-or.jpg
+2015-03-26T10:35:33  <jboyer-isl> Quick note: money.grocery has the same issue (just happened to see it at the top of my screen)
+2015-03-26T10:35:39  <csharp> berick++
+2015-03-26T10:35:51  <csharp> @praise berick
+2015-03-26T10:35:51  * pinesol_green Shall I compare berick to a summer's day? berick is more lovely and more temperate.
+2015-03-26T10:35:55  <berick> gotta love the snow-capped mountain
+2015-03-26T10:35:59  <berick> hah
+2015-03-26T10:37:26  * kmlussier re-arranges here conference schedule so that she can learn to kiteboard.
+2015-03-26T10:45:11  <jboyer-isl> csharp, dbwells: This search is illustrative in vim: /oils_persist\:virtual="true" reporter\:datatype="[^l]
+2015-03-26T10:45:47  <jboyer-isl> A surprising number of hits, not all of which can I tell if they can/do work or now.
+2015-03-26T10:45:49  <jboyer-isl> not.
+2015-03-26T10:52:29  <csharp> jboyer-isl: thanks for that tip
+2015-03-26T10:54:38  *** krvmga has quit IRC
+2015-03-26T11:06:28  *** jboyer-isl has quit IRC
+2015-03-26T11:06:49  *** jboyer-isl has joined #evergreen
+2015-03-26T11:07:24  *** jboyer-isl has joined #evergreen
+2015-03-26T11:17:10  *** Newziky1 has joined #evergreen
+2015-03-26T11:17:16  *** sal_ has joined #evergreen
+2015-03-26T11:20:36  *** dcook__ has joined #evergreen
+2015-03-26T11:24:02  *** dcook has quit IRC
+2015-03-26T11:37:26  *** dMiller_ has joined #evergreen
+2015-03-26T11:45:43  *** graced has quit IRC
+2015-03-26T11:47:52  *** jeffdavi1 is now known as jeffdavis
+2015-03-26T11:48:36  *** jeffdavis has joined #evergreen
+2015-03-26T11:54:17  *** maryj has quit IRC
+2015-03-26T11:59:12  *** graced has joined #evergreen
+2015-03-26T12:01:41  *** maryj has joined #evergreen
+2015-03-26T12:08:55  *** bmills has joined #evergreen
+2015-03-26T12:09:17  *** jihpringle has joined #evergreen
+2015-03-26T12:29:04  *** sal_ has quit IRC
+2015-03-26T12:52:41  *** maryj has quit IRC
+2015-03-26T13:26:09  *** BigRig has quit IRC
+2015-03-26T13:52:41  *** Newziky has joined #evergreen
+2015-03-26T14:01:52  *** BigRig_ has joined #evergreen
+2015-03-26T14:09:20  *** Newziky has quit IRC
+2015-03-26T14:17:10  *** Newziky has joined #evergreen
+2015-03-26T14:25:31  * dbs suspects bugs like bug 1436983 should have a title prefix like "Web Staff Client: " or something to define where the problem is occurring
+2015-03-26T14:25:31  <pinesol_green> Launchpad bug 1436983 in Evergreen "Calendar widget does not work in Firefox" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1436983
+2015-03-26T14:25:33  *** Newziky has quit IRC
+2015-03-26T14:25:40  * dbs prefixes that one accordingly
+2015-03-26T14:26:30  * dbs adds "webstaffclient" tag for good measure
+2015-03-26T14:28:05  <dbs> oh, there's "browserclient" already in unofficial use
+2015-03-26T14:29:03  * dbs having fun with https://bugs.launchpad.net/evergreen/+manage-official-tags - moves "serials" with 30 related bugs from unofficial to official tag status
+2015-03-26T14:29:19  <bshum> dbs++
+2015-03-26T14:31:43  * dbs moves a few open bugs from "browserclient" to "webstaffclient"
+2015-03-26T14:44:23  *** Newziky has joined #evergreen
+2015-03-26T14:45:44  <Dyrcona> dbs++
+2015-03-26T14:45:55  <Dyrcona> webstaffclient is a better tag, imho.
+2015-03-26T14:59:51  * kmlussier agrees with webstaffclient
+2015-03-26T15:04:53  <kmlussier> I don't understand why some of the old browserclient-tagged bugs ever had that tag. For example, bug 1357037 is an issue in any client.
+2015-03-26T15:04:53  <pinesol_green> Launchpad bug 1357037 in Evergreen "Additional sort order options when viewing purchase order line items" (affected: 2, heat: 10) [Wishlist,Confirmed] https://launchpad.net/bugs/1357037
+2015-03-26T15:06:31  <dbs> kmlussier: I was thinking the same thing, after I changed it, but was separating the simple activity of unifying tags from the more complex determination of whether the tag is relevant :)
+2015-03-26T15:07:55  <kmlussier> dbs: Yeah, I know. The comment wasn't directed at you. It just had the effect of bringing the bug to my attention. :)
+2015-03-26T15:55:51  <gmcharlt> metadata correction ==> coming across more metadata issues ==> metadata correction ==> coming across....
+2015-03-26T15:57:31  <kmlussier> It's like shelf reading in the children's room. :)
+2015-03-26T15:57:59  <gmcharlt> *shudder*, *shudder*
+2015-03-26T16:04:14  <dbs> Shelf reading the fairy tales section
+2015-03-26T16:13:44  <jonadab> Can't be that much worse than the Chiltons.
+2015-03-26T16:14:12  <jonadab> We also have at least one shelver with a strong dislike for the manga section.
+2015-03-26T16:14:39  <kmlussier> I can imagine that the manga section would be difficult. That is, if you have a lot of manga.
+2015-03-26T16:15:35  <dbs> As computer page in my first library job at the ripe old age of 14, I was given the responsibility of shelf reading the fairy tales. the memory burns
+2015-03-26T16:16:04  <jonadab> Heh.
+2015-03-26T16:16:59  <jonadab> We at one point had a volunteer remove from the shelf, scan for inventory, and then reshelve large sections of the collection, including the entire non-fiction section.
+2015-03-26T16:17:08  <kmlussier> dbs: It didn't scare you away from libraries for good?
+2015-03-26T16:18:36  *** collum has quit IRC
+2015-03-26T16:22:33  *** dMiller_ has quit IRC
+2015-03-26T16:28:21  *** rjackson_isl has quit IRC
+2015-03-26T16:35:02  *** vlewis has joined #evergreen
+2015-03-26T16:37:34  *** maryj has joined #evergreen
+2015-03-26T16:47:28  *** ericar has quit IRC
+2015-03-26T16:53:49  *** Newziky1 has quit IRC
+2015-03-26T16:55:15  *** maryj has quit IRC
+2015-03-26T16:57:00  *** dMiller_ has joined #evergreen
+2015-03-26T16:59:55  *** Dyrcona has quit IRC
+2015-03-26T17:04:30  *** yboston has quit IRC
+2015-03-26T17:06:46  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-26T17:09:07  *** graced has quit IRC
+2015-03-26T17:11:05  *** Shae has quit IRC
+2015-03-26T17:13:32  *** mmorgan has left #evergreen
+2015-03-26T17:46:20  *** buzzy has joined #evergreen
+2015-03-26T17:48:51  *** Newziky has left #evergreen
+2015-03-26T17:55:35  *** mrpeters has quit IRC
+2015-03-26T18:05:58  *** BigRig_ is now known as BigRig
+2015-03-26T18:25:38  *** dMiller_ has quit IRC
+2015-03-26T19:01:58  *** dMiller_ has joined #evergreen
+2015-03-26T19:03:27  *** vlewis has quit IRC
+2015-03-26T19:19:49  *** dMiller_ has quit IRC
+2015-03-26T19:21:43  *** dMiller_ has joined #evergreen
+2015-03-26T19:33:42  *** dMiller_ has quit IRC
+2015-03-26T19:51:56  *** mglass has quit IRC
+2015-03-26T19:57:49  *** bmills has left #evergreen
+2015-03-26T20:02:25  *** jwoodard has quit IRC
+2015-03-26T20:49:41  *** jihpringle has quit IRC
+2015-03-26T20:51:30  *** akilsdonk has quit IRC
+2015-03-26T20:54:45  *** bmills has joined #evergreen
+2015-03-26T20:57:02  *** bmills has quit IRC
+2015-03-26T21:42:37  *** dcook has joined #evergreen
+2015-03-26T21:44:27  *** dcook__ has quit IRC

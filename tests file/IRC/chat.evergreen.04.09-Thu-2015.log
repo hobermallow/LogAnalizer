@@ -1,0 +1,331 @@
+2015-04-09T01:17:17  *** bmills1 has quit IRC
+2015-04-09T02:11:01  *** eady has quit IRC
+2015-04-09T02:12:54  *** eady has joined #evergreen
+2015-04-09T03:43:43  *** sarabee has quit IRC
+2015-04-09T07:35:42  *** graced has joined #evergreen
+2015-04-09T07:36:04  *** graced has joined #evergreen
+2015-04-09T07:39:15  *** jboyer-isl has joined #evergreen
+2015-04-09T07:43:36  *** collum has joined #evergreen
+2015-04-09T08:00:17  *** Newziky has joined #evergreen
+2015-04-09T08:11:57  *** rjackson_isl has joined #evergreen
+2015-04-09T08:30:02  *** akilsdonk has joined #evergreen
+2015-04-09T08:36:46  *** mmorgan has joined #evergreen
+2015-04-09T08:47:54  *** Shae has joined #evergreen
+2015-04-09T08:48:07  *** RoganH has joined #evergreen
+2015-04-09T08:48:09  *** darshana has joined #evergreen
+2015-04-09T08:56:47  <graced> bshum++
+2015-04-09T08:57:15  *** maryj has joined #evergreen
+2015-04-09T08:58:09  *** RoganH has quit IRC
+2015-04-09T09:05:40  *** jwoodard has joined #evergreen
+2015-04-09T09:06:24  <bshum> dbs++
+2015-04-09T09:09:03  *** mrpeters has joined #evergreen
+2015-04-09T09:11:06  *** ericar has joined #evergreen
+2015-04-09T09:16:19  *** Dyrcona has joined #evergreen
+2015-04-09T09:18:46  <graced> dbs++ indeed
+2015-04-09T09:31:01  *** yboston has joined #evergreen
+2015-04-09T09:31:24  *** RoganH has joined #evergreen
+2015-04-09T09:46:00  *** sarabee has joined #evergreen
+2015-04-09T09:49:14  *** collum has quit IRC
+2015-04-09T09:55:15  *** akilsdonk has quit IRC
+2015-04-09T09:55:20  *** collum has joined #evergreen
+2015-04-09T10:06:54  *** Newziky1 has joined #evergreen
+2015-04-09T10:27:42  <kmlussier> bshum++ indeed
+2015-04-09T10:27:42  *** TaraC has joined #evergreen
+2015-04-09T10:27:49  <kmlussier> Very nice synopsis on the list.
+2015-04-09T10:28:08  <kmlussier> dbs++ #For all of that awesome work with structured data
+2015-04-09T11:02:37  *** ericar_ has joined #evergreen
+2015-04-09T11:04:58  *** ericar has quit IRC
+2015-04-09T11:05:00  *** ericar_ is now known as ericar
+2015-04-09T11:17:38  *** sandbergja has joined #evergreen
+2015-04-09T11:41:19  <RoganH> @coffee
+2015-04-09T11:41:19  * pinesol_green brews and pours a cup of Fair Trade Organic Guatemala, and sends it sliding down the bar to RoganH
+2015-04-09T11:41:32  <RoganH> bloody hippie barristas
+2015-04-09T11:42:01  <Dyrcona> @coffee 4
+2015-04-09T11:42:01  * pinesol_green brews and pours a cup of La Esmeralda, and sends it sliding down the bar to 4
+2015-04-09T11:42:07  <Dyrcona> hah.
+2015-04-09T11:45:18  <mmorgan> Can anyone point me to where to change the registered workstation in a mac client?
+2015-04-09T11:45:56  <mmorgan> Think I have done it in the past, but can't locate the info :-(
+2015-04-09T11:46:55  <RoganH> I'll look on mine but usually they're in ~/Library/Preferences
+2015-04-09T11:47:38  <bshum> If it was me, and it was a one time thing
+2015-04-09T11:47:51  <bshum> I would just change the hostname slightly.
+2015-04-09T11:47:56  <bshum> And re-register.
+2015-04-09T11:48:18  <bshum> Like do a capital letter in the hostname instead of all lower-case, etc.
+2015-04-09T11:48:19  <RoganH> Thee's a file called org.evergreen-ils.Evergreen.pllist there.  I haven't tried it (since I'm logged into mine right now) but I'd try deleting that.
+2015-04-09T11:48:33  <jeff> ~/Library/Application\ Support/open_ils_staff_client/
+2015-04-09T11:48:33  <pinesol_green> jeff: I am only a bot, please don't think I'm intelligent :)
+2015-04-09T11:49:06  <RoganH> If you want to register to another server or keeping the old one doesn't matter bshum 's idea is easier and in many ways better
+2015-04-09T11:49:19  <RoganH> If you want to wipe the information from the machine the plist
+2015-04-09T11:49:43  <jeff> The file you want will be ws_info, it'll be in Profiles/[random].default/chrome/ws_info or similar
+2015-04-09T11:50:22  <jeff> this may be the fastest command to find the full path, [random] bit and all (it may turn up multiple results if you have multiple profiles): find ~/Library/Application\ Support/open_ils_staff_client -name ws_info
+2015-04-09T11:53:30  <jeff> the file ~/Library/Preferences/org.evergreen-ils.Evergreen.plist contains settings unrelated to your current need.
+2015-04-09T11:54:16  <tsbere> I personally like "hostname/blah" where blah is changeable. Because then you don't have to worry about "slightly changing" the hostname. I tend to go with hostname/shortname myself....
+2015-04-09T11:54:30  *** Newziky has quit IRC
+2015-04-09T11:54:43  <jeff> There is also last_ws_server, in the same directory as ws_info. That simply contains a key corresponding to one of the entries in ws_info.
+2015-04-09T11:54:56  * tsbere wrote that feature in because of his dislike for the "slightly change the hostname and/or enter aliases into dns and/or the hosts on the machine" methods
+2015-04-09T11:55:11  <jeff> tsbere: likewise. server.example.org/BR1 server.example.org/BR2 etc
+2015-04-09T11:56:36  <mmorgan> Sorry, got pulled away for a phone call. Reading up.
+2015-04-09T12:04:30  <bshum> gmcharlt++ # we might try out those fixes for the message center in a bit.  Since we're upgrading to 2.8 on Saturday and could probably use those patches :)
+2015-04-09T12:06:07  <gmcharlt> bshum: I'm in the process of creating a total of 5 bugs and their corresponding branches
+2015-04-09T12:06:11  <mmorgan> Thanks for all the suggestions. In the interest of speed and ease, going with the "hostname/blah" approach suggested by tsbere. Will delve into the file system later (maybe):)
+2015-04-09T12:06:39  <bshum> gmcharlt: Sounds good, we'll take a look at them after they're up and help get them signed and pushed along.  Thanks!
+2015-04-09T12:07:15  <bshum> If there's anything else I can do to help, let me know.  :)
+2015-04-09T12:09:13  <kmlussier> gmcharlt++ bshum++
+2015-04-09T12:10:52  *** jboyer-isl has quit IRC
+2015-04-09T12:11:11  <bshum> hopkinsju++ # you get a +1 too!
+2015-04-09T12:11:39  *** DPearl has joined #evergreen
+2015-04-09T12:12:16  <kmlussier> hopkinsju++
+2015-04-09T12:13:58  <Dyrcona> The hostname/shortname trick is nice for central site staff who want to login as certain locations for troubleshooting purposes.
+2015-04-09T12:18:56  * kmlussier has been using the shortname trick since seeing it in use at MVLC.
+2015-04-09T12:19:04  <mmorgan> Dyrcona: We use the profile manager on Windows machines at central site to maintain different profiles for different locations, but not on our smattering of macs. Not sure if it can be set up similarly on macs.
+2015-04-09T12:19:59  <Dyrcona> mmorgan: You can use profile manager on Mac and on Linux. It isn't necessary with the /shortname trick.
+2015-04-09T12:20:37  <Dyrcona> I use /shortname to register my workstation at the branch represented by the shortname.
+2015-04-09T12:20:45  <mmorgan> Sometimes it's useful to have the entire profile, including column settings, receipt templates, etc., not just the workstation registration.
+2015-04-09T12:21:25  * jeff nods
+2015-04-09T12:21:29  <Dyrcona> Yes, but you need to get that from the branch in question.
+2015-04-09T12:21:32  <jeff> we use both for different purposes.
+2015-04-09T12:21:51  <bshum> Ooh, /shortname
+2015-04-09T12:21:54  <mmorgan> The /shortname trick will definitely be handy for some purposes.
+2015-04-09T12:21:56  <bshum> Now that I didn't think of...
+2015-04-09T12:22:02  <jeff> bshum: hmm?
+2015-04-09T12:22:09  <bshum> I didn't try that before.
+2015-04-09T12:22:19  <bshum> What they're talking about up there with hostname/shortname
+2015-04-09T12:22:19  <Dyrcona> I am usually not troubleshooting things affected by the profile.
+2015-04-09T12:22:37  *** ericar_ has joined #evergreen
+2015-04-09T12:22:37  <Dyrcona> Yeah, it's very handy.
+2015-04-09T12:23:32  <Dyrcona> You don't have to use the shortname, any unique string will do, but the shortname helps keep it clear where you've registered the workstation.
+2015-04-09T12:23:55  <bshum> Yeah
+2015-04-09T12:24:05  <bshum> That's quite helpful, indeed.
+2015-04-09T12:24:45  <jeff> don't feel too bad. it didn't exist until 2011, commit 5b702c3 :-)
+2015-04-09T12:24:45  <pinesol_green> [evergreen|Thomas Berezansky] Support server/id for server name - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=5b702c3>
+2015-04-09T12:25:07  <mmorgan> tsbere++
+2015-04-09T12:25:10  *** ericar has quit IRC
+2015-04-09T12:25:14  *** ericar_ is now known as ericar
+2015-04-09T12:25:35  <gmcharlt> bshum: kmlussier: ok, all five patches are bugged and published
+2015-04-09T12:26:56  <bshum> jeff: Heh, oh, well then I feel slightly better already.
+2015-04-09T12:26:58  <kmlussier> 2011 was an eternity ago.
+2015-04-09T12:27:20  * bshum still has a copy of our first 1.6 database somewhere.
+2015-04-09T12:27:25  <bshum> From 2011.
+2015-04-09T12:47:21  *** bmills has joined #evergreen
+2015-04-09T13:00:13  <RoganH> bshum: do you still have some 5 1/4" disks too?  :-p
+2015-04-09T13:02:32  *** bmills has quit IRC
+2015-04-09T13:04:04  *** bmills has joined #evergreen
+2015-04-09T13:04:20  *** akilsdonk has joined #evergreen
+2015-04-09T13:04:41  *** bmills1 has joined #evergreen
+2015-04-09T13:04:52  *** bmills has quit IRC
+2015-04-09T13:10:54  *** RoganH has quit IRC
+2015-04-09T13:10:56  *** krvmga has joined #evergreen
+2015-04-09T13:12:50  <krvmga> i'm just looking at our 2.7 test installation and no icons are appearing for any items in search returns in the opac. i don't know why.
+2015-04-09T13:13:47  <bshum> krvmga: Well, two thoughts:  (1) did you guys monkey with any format_icon configuration in the settings, or (2) did you perform a reingest of all your bibs.
+2015-04-09T13:14:10  <krvmga> bshum: we just finished a re-ingest of all our bibs
+2015-04-09T13:14:22  <krvmga> bshum: format_icon configuration in the settings?
+2015-04-09T13:14:33  <bshum> Or is it icon_format
+2015-04-09T13:14:35  <bshum> I never can remember.
+2015-04-09T13:14:41  <krvmga> i'm not sure where to find that.
+2015-04-09T13:15:06  <kmlussier> krvmga: We should have some docs on that. Let me check.
+2015-04-09T13:15:25  <bshum> "icon_format" is right.
+2015-04-09T13:15:29  *** geoffsams has joined #evergreen
+2015-04-09T13:15:33  <kmlussier> krvmga: http://docs.evergreen-ils.org/2.6/_marc_record_attributes.html#_multi_valued_fields_and_composite_record_attributes
+2015-04-09T13:16:25  <krvmga> kmlussier: thanks. i totally didn't know about this.
+2015-04-09T13:17:53  *** gsams has quit IRC
+2015-04-09T13:19:11  <kmlussier> krvmga: If it's an ESI project, as this was, there's usually documentation that goes along with it. :)
+2015-04-09T13:19:42  <krvmga> of course, now i need to figure out what to do...
+2015-04-09T13:20:04  <kmlussier> krvmga: If you didn't change any settings, all of those icon format settings should just be there.
+2015-04-09T13:20:29  <krvmga> kmlussier: i didn't change anything...but they aren't there.
+2015-04-09T13:20:41  <krvmga> i mean, the icons don't show
+2015-04-09T13:20:47  <kmlussier> My first place to check would be  to check on the reingest.
+2015-04-09T13:20:52  <bshum> So maybe something went wrong with the reingest process.
+2015-04-09T13:21:06  <krvmga> bshum: oh, please don't say that.
+2015-04-09T13:21:09  <krvmga> lol
+2015-04-09T13:21:43  <bshum> I mean, what command did you use?  Maybe you reingested the wrong portions of your records?  Or you needed a full reingest and it only did partial on only certain metabib flags/fields
+2015-04-09T13:23:35  <krvmga> equinox did our re-ingest
+2015-04-09T13:23:51  *** bmills1 has quit IRC
+2015-04-09T13:23:57  <bshum> krvmga: Maybe you should ask them what they did then.  :)
+2015-04-09T13:24:00  <krvmga> i'm pretty sure they did a full re-ingest
+2015-04-09T13:24:08  *** bmills has joined #evergreen
+2015-04-09T13:24:13  <kmlussier> krvmga: I would file a support ticket with them
+2015-04-09T13:24:28  <kmlussier> They'll be able to speak more knowledgeably about it since they performed the reingest.
+2015-04-09T13:29:05  <krvmga> kmlussier: we're putting in a ticket now.
+2015-04-09T13:30:18  <bshum> krvmga: For fun, what happens if you edit a single bib (like add something extra to it or remove something) and then save it.  (that ought to force a reingest on a single bib)
+2015-04-09T13:31:23  <kmlussier> Of course, it could also be your bib records not having the right fixed fields data. But I wouldn't expect that to be the culprit if you see no icons at all.
+2015-04-09T13:32:13  <bshum> Or maybe it's a template problem.  Do you use customizations on the server?  (maybe the code to display the icon went poof???!)
+2015-04-09T13:32:19  <bshum> :)
+2015-04-09T13:34:59  <kmlussier> Yeah, old templates are always good to look into right after an upgrade.
+2015-04-09T13:37:00  <dbs> thanks for the plusses earlier, folks. very kind of you
+2015-04-09T13:39:38  *** vlewis has joined #evergreen
+2015-04-09T13:48:03  <Dyrcona> dbs++
+2015-04-09T13:48:32  <kmlussier> krvmga: OK, I just did what bshum suggested on your training system (edit single bib and save) and I still don't see the icon. At this point, I'm leaning more towards template problems than a reingest issue.
+2015-04-09T13:51:48  *** mglass has joined #evergreen
+2015-04-09T13:54:41  *** akilsdonk has quit IRC
+2015-04-09T13:56:39  <yboston> heads up, the Evergreen for academics meeting starts at 2 PM
+2015-04-09T13:58:36  <kmlussier> krvmga: Specifically, there is a section in misc_util.tt2 that should look something l ike this http://pastebin.com/8wiv5CGn
+2015-04-09T14:00:25  <yboston> #startmeeting 2015-04-09 - Evergreen for academics monthly meeting.
+2015-04-09T14:00:25  <pinesol_green> Meeting started Thu Apr  9 14:00:25 2015 US/Eastern.  The chair is yboston. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-04-09T14:00:25  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-04-09T14:00:25  <pinesol_green> The meeting name has been set to '2015_04_09___evergreen_for_academics_monthly_meeting_'
+2015-04-09T14:00:35  <yboston> The agenda can be found here http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen_for_academics:2015-04-09
+2015-04-09T14:00:46  <yboston> #topic Introductions
+2015-04-09T14:00:56  <yboston> Please feel free to start introducing yourselves...
+2015-04-09T14:01:02  <yboston> #info yboston is Yamil Suarez @ Berklee College of Music
+2015-04-09T14:01:15  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC (mostly lurking today)
+2015-04-09T14:01:18  <krvmga> ok, equinox dealt with the icon problem by cancelling all the customizations on the site and returning it to vanilla.
+2015-04-09T14:01:43  <krvmga> this means that somewhere in all those files is likely one file - or even one line in one file - that was causing the problem
+2015-04-09T14:01:54  <kmlussier> krvmga: Look at what I posted to you above
+2015-04-09T14:01:59  <kmlussier> krvmga: Also, we're in a meeting. :)
+2015-04-09T14:02:07  <krvmga> kmlussier: sorry, missed it.
+2015-04-09T14:02:16  <kmlussier> Apparently a two-person meeting.
+2015-04-09T14:02:40  <yboston> apparently
+2015-04-09T14:02:44  *** Christineb has joined #evergreen
+2015-04-09T14:02:57  <yboston> I always wait 3 minutes for introductions. we will start when timer ends
+2015-04-09T14:04:04  <Dyrcona> I was thinking of chiming in during the indexing discussion, but looks like it won't happen.
+2015-04-09T14:04:44  <krvmga> #info krvmga is jim keenan, cwmars
+2015-04-09T14:04:58  * krvmga fixed misc_util.tt2
+2015-04-09T14:05:02  <krvmga> kmlussier++
+2015-04-09T14:05:15  <yboston> just saw an eamil from Donald. He was having connection issues. I sent him the web gateway link
+2015-04-09T14:05:20  * krvmga has been busy like a house afire today.
+2015-04-09T14:05:31  <yboston> so I guess there are three of us?
+2015-04-09T14:05:41  * kmlussier is mostly lurking
+2015-04-09T14:05:46  <yboston> 2 and a half
+2015-04-09T14:05:49  <krvmga> lol
+2015-04-09T14:05:52  <yboston> going once
+2015-04-09T14:06:25  <yboston> I can wait a few minutes and then cancel the meeting
+2015-04-09T14:06:43  <yboston> though I would like to chat by phone or by private message with krvmga about the group
+2015-04-09T14:06:45  <krvmga> yboston: i was thinking maybe you and i could get together in a hangout to go over a few things.
+2015-04-09T14:06:54  <yboston> exactly
+2015-04-09T14:06:57  <krvmga> lol, we're both thinking the same thing
+2015-04-09T14:08:33  <yboston> I guess I can cancel the meeting at this point
+2015-04-09T14:08:51  *** jihpringle has joined #evergreen
+2015-04-09T14:08:56  <yboston> #endmeeting
+2015-04-09T14:08:56  <pinesol_green> Meeting ended Thu Apr  9 14:08:56 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-04-09T14:08:56  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-09-14.00.html
+2015-04-09T14:08:56  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-09-14.00.txt
+2015-04-09T14:08:56  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-09-14.00.log.html
+2015-04-09T14:09:19  <yboston> feel free to go back to you earlier IRC convos
+2015-04-09T14:09:46  <yboston> krvmga: when can we chat? now or a little latter?
+2015-04-09T14:10:27  <krvmga> yboston: i'll be right with you
+2015-04-09T14:13:30  *** dmoses has joined #evergreen
+2015-04-09T14:15:08  *** jck_ has joined #evergreen
+2015-04-09T14:15:44  *** mglass has quit IRC
+2015-04-09T14:17:16  *** mglass has joined #evergreen
+2015-04-09T14:30:03  *** remingtron_ has joined #evergreen
+2015-04-09T14:30:53  <kmlussier> berick: Is the primary idea behind bug 1440114 to provide more support for standing orders?
+2015-04-09T14:30:53  <pinesol_green> Launchpad bug 1440114 in Evergreen "Support blanket orders in acquisitions via direct charges" (affected: 1, heat: 6) [Wishlist,New] https://launchpad.net/bugs/1440114
+2015-04-09T14:31:24  *** Shae_ has joined #evergreen
+2015-04-09T14:32:59  *** Shae has quit IRC
+2015-04-09T14:33:00  *** Shae_ is now known as Shae
+2015-04-09T14:33:28  *** remingtron has quit IRC
+2015-04-09T14:35:18  <berick> kmlussier: depends on what you mean by standing order...  i think of standing orders as repeating, say, every year.
+2015-04-09T14:35:47  <berick> this is more like "give me $X of children's materials and I don't care what they are or if I get them all at once"
+2015-04-09T14:36:08  <berick> but it does not automatically create a new order every year
+2015-04-09T14:36:50  *** krvmga has quit IRC
+2015-04-09T14:41:17  <kmlussier> berick: OK, thanks. I wasn't thinking of something that needs to repeat, but something like Autotically Yours that ships certain titles, like bestsellers, automatically. I think libraries may budget a certain amount for those orders, though I'm not clear on that.
+2015-04-09T14:41:57  <berick> kmlussier: i'm not familiar w/ that specifically, but it sounds like it might be the same thing
+2015-04-09T14:42:43  <kmlussier> It looks intriguing. I've sent a link to the proposal to our acq people here and asked them to post feedback if they had any.
+2015-04-09T14:43:02  <berick> very cool, thanks kmlussier
+2015-04-09T14:43:23  <berick> i've started coding to make sure what I'm trying to do makes sense.  so far, so good
+2015-04-09T14:57:39  <kmlussier> yboston: I did ask about meeting space at the conference for the Academics for Evergreen group. But I never heard back.
+2015-04-09T15:00:09  *** jck_ has quit IRC
+2015-04-09T15:06:57  *** dmoses has left #evergreen
+2015-04-09T15:42:24  <jeff> What is the latest version of xulrunner for Mac OS X that we should try for 2.7.4?
+2015-04-09T15:42:51  <bshum> jeff: So... I never tested anything beyond what we use now for the other clients, that's 14.0.1
+2015-04-09T15:43:01  <bshum> That's not true, I tried up through XUL 17 or so
+2015-04-09T15:43:07  <bshum> And there were let's say... bugs and crashes.
+2015-04-09T15:43:17  <bshum> So at least on 14, you'll be where everyone else is.
+2015-04-09T15:44:08  * bshum is fairly sure the Mac client building instructions on the wiki reflect that XUL 14 version.
+2015-04-09T15:47:17  <jeff> co-worker mentioned that the instructions they were looking at mentioned evergreen 2.3, so they were... undertain of the doc's relevance.
+2015-04-09T15:47:24  * jeff looks
+2015-04-09T15:47:26  <jeff> bshum++
+2015-04-09T15:48:37  <bshum> They are old docs, but Xulrunner testing hasn't progressed since then.  Since after XUL 18 or so, I think that's when remote XUL goes away and things die.
+2015-04-09T15:49:12  <bshum> I do sometimes think that XUL 15 might be a better choice though, since that's the version of Firefox where they fixed all the broken memory issues with Firefox 14.
+2015-04-09T15:49:43  <bshum> But when we tested XUL 15 built staff clients in production at one library, the staff client would occasionally, spontaneously close without warning.
+2015-04-09T15:53:18  *** Shae has quit IRC
+2015-04-09T15:56:01  <Dyrcona> @blame mozilla
+2015-04-09T15:56:02  <pinesol_green> Dyrcona: everything was going great until mozilla came along
+2015-04-09T15:56:24  <Dyrcona> @praise mozilla
+2015-04-09T15:56:24  * pinesol_green mozilla is the very model of a modern major hacker
+2015-04-09T16:09:56  *** akilsdonk has joined #evergreen
+2015-04-09T16:18:48  <kmlussier> gmcharlt: So I was looking at bug 1442246, and the part about the no line breaks caught my attention.
+2015-04-09T16:18:49  <pinesol_green> Launchpad bug 1442246 in Evergreen 2.8 "patron message center - improve display of message text" (affected: 1, heat: 6) [Wishlist,New] https://launchpad.net/bugs/1442246
+2015-04-09T16:19:09  *** Dyrcona has left #evergreen
+2015-04-09T16:19:59  <kmlussier> Is there any way we can make the text wrap there?
+2015-04-09T16:20:33  *** collum has quit IRC
+2015-04-09T16:22:15  <tsbere> kmlussier: pre-wrap instead of pre in the CSS?
+2015-04-09T16:22:37  * kmlussier doesn't think this is working the way it's intended.
+2015-04-09T16:23:43  * tsbere doesn't know how it is intended to work, nor how it is working, but sees that the css says "pre" which doesn't (I believe) wrap, but preserves line breaks and spaces. "pre-wrap" is supposed to be "pre, but wrap lines" as far as I recall
+2015-04-09T16:23:57  <gmcharlt> indeed
+2015-04-09T16:24:02  <gmcharlt> kmlussier: quick screenshot?
+2015-04-09T16:24:14  <kmlussier> Yeah. I'm working on it now
+2015-04-09T16:27:02  <kmlussier> This is a long public note on the server with the patch. It's running off the screen. http://www.screencast.com/t/6j3o8LjZEyI
+2015-04-09T16:27:17  <kmlussier> When I add the same note on a server with a clean version of master, it's wrapping into a nice little paragraph.
+2015-04-09T16:27:38  <kmlussier> gmcharlt: You can also log in with the leona concerto account to see it.
+2015-04-09T16:27:43  <kmlussier> Password is leon1234
+2015-04-09T16:28:39  *** rjackson_isl has quit IRC
+2015-04-09T16:29:56  *** ericar has quit IRC
+2015-04-09T16:30:12  <kmlussier> And this is how the same note looks on the clean master system - http://www.screencast.com/t/eWUcFqcMGF
+2015-04-09T16:30:32  *** maryj has quit IRC
+2015-04-09T16:35:08  <gmcharlt> kmlussier: ok, please refresh the page
+2015-04-09T16:35:40  <kmlussier> That looks better! :)
+2015-04-09T16:36:01  <gmcharlt> the change was in fact to use pre-wrap
+2015-04-09T16:36:31  <gmcharlt> and that accommodates the best of both words: if the message template inentionally contains line breaks, they won't get smushed
+2015-04-09T16:38:01  <kmlussier> Ah, I see.
+2015-04-09T16:38:03  <kmlussier> gmcharlt++
+2015-04-09T16:38:15  <gmcharlt> I'll push a followup to the relevant branch
+2015-04-09T16:41:31  *** pmurray_away is now known as pmurray
+2015-04-09T16:58:28  <hopkinsju> Does anyone have a quick way to count records in a marc file using yaz-marcdump or some other command line?
+2015-04-09T16:58:38  <hopkinsju> I'm pretty sure I've heard gmcharlt talk about doing this
+2015-04-09T16:59:19  <gmcharlt> hopkinsju: yaz-marcdump -o marcxml foo.mrc | grep -c '<record'
+2015-04-09T16:59:22  <eeevil> yaz-marcdump -f MARC-8 -t UTF-8 -o marcxml marc21.raw|grep '<record'|wc -l
+2015-04-09T16:59:23  <eeevil> heh
+2015-04-09T16:59:40  <gmcharlt> eeevil: TOO SLOW
+2015-04-09T16:59:41  <gmcharlt> ;)
+2015-04-09T17:00:07  <eeevil> well, back in MY DAY grep didn't have -c #getoffmylawn
+2015-04-09T17:00:16  <hopkinsju> I was actually thinking that same thing eeevil, but I think gmcharlt knows of a magical control character that I can't seem to find
+2015-04-09T17:00:16  *** yboston has quit IRC
+2015-04-09T17:02:23  <kmlussier> I don't have time to sign off on bug 1442246 tonight, but if bshum wants to push it, I'm ok with it. Otherwise, I'll signoff tomorrow.
+2015-04-09T17:02:23  <pinesol_green> Launchpad bug 1442246 in Evergreen 2.8 "patron message center - improve display of message text" (affected: 1, heat: 6) [Wishlist,New] https://launchpad.net/bugs/1442246
+2015-04-09T17:02:33  <kmlussier> Good night all!
+2015-04-09T17:02:48  <hopkinsju> At any rate, that's a good enough solution I was just trying to satisfy my curiosity
+2015-04-09T17:09:09  *** eady has quit IRC
+2015-04-09T17:10:26  *** mmorgan has left #evergreen
+2015-04-09T17:16:29  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-09T17:40:17  *** bmills has quit IRC
+2015-04-09T17:45:39  *** graced has quit IRC
+2015-04-09T17:48:56  *** eady has joined #evergreen
+2015-04-09T17:51:27  *** Newziky1 has quit IRC
+2015-04-09T17:52:05  <Bmagic> Who is using "Items Out Lost display setting" ?
+2015-04-09T17:52:31  <Bmagic> I have a library that wants those to NOT SHOW on the items out screen. This setting really seems like the answer
+2015-04-09T17:52:32  <hopkinsju> Anyone had to transform a reasonable (XML) format into Ascii format 3 ?
+2015-04-09T18:02:58  *** darshana has quit IRC
+2015-04-09T19:05:37  *** vlewis has quit IRC
+2015-04-09T19:06:47  *** bmills has joined #evergreen
+2015-04-09T19:25:18  *** mrpeters has quit IRC
+2015-04-09T19:54:11  *** mglass has quit IRC
+2015-04-09T20:01:01  *** jwoodard has quit IRC
+2015-04-09T20:06:27  *** sandbergja has quit IRC
+2015-04-09T20:10:48  *** sarabee has quit IRC
+2015-04-09T20:26:34  *** kitteh_ has quit IRC
+2015-04-09T20:34:29  *** Christineb has quit IRC
+2015-04-09T20:54:25  *** akilsdonk has quit IRC
+2015-04-09T21:18:55  *** jihpringle has quit IRC
+2015-04-09T21:23:41  *** akilsdonk has joined #evergreen
+2015-04-09T21:50:30  * bshum cracks his nuckles and gets ready to push some commits along
+2015-04-09T21:50:42  <dcook> \o/
+2015-04-09T21:50:46  <dcook> Also hey bshum :)
+2015-04-09T21:50:59  * bshum waves back at dcook!
+2015-04-09T21:53:38  * jeff waves
+2015-04-09T21:54:03  <bshum> Calling 0916
+2015-04-09T21:55:42  <pinesol_green> [evergreen|Galen Charlton] LP#1442250: fix thinko preventing message deletion acknowledgment from being displayed - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=2b40b47>
+2015-04-09T21:57:42  <pinesol_green> [evergreen|Galen Charlton] LP#1442260: include unread message count in page title - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a4468a5>
+2015-04-09T21:57:43  <pinesol_green> [evergreen|Galen Charlton] LP#1442262: move patron messages link to dashboard button bar - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=6f658be>
+2015-04-09T22:01:43  <pinesol_green> [evergreen|Galen Charlton] LP#1442254: adjust how sending library set for messages created from notes - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7971f16>
+2015-04-09T22:01:44  <pinesol_green> [evergreen|Ben Shum] LP#1442254: Stamping upgrade script for use-ws-lib-for-messages - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=0842413>
+2015-04-09T22:01:45  <pinesol_green> [evergreen|Galen Charlton] LP#1442246: improve styling of patron messages - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=68229ed>
+2015-04-09T22:01:46  <pinesol_green> [evergreen|Galen Charlton] LP#1442246: (follow-up) use pre-wrap rather than pre - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=892fcc2>
+2015-04-09T22:03:44  <pinesol_green> [evergreen|Galen Charlton] LP#1435494: set limits on Clark Kent's resource usage - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=427cb93>
+2015-04-09T22:03:45  <pinesol_green> [evergreen|Galen Charlton] LP#1435494: do not encourage <resultset_limit></resultset_limit> - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=b9a3029>
+2015-04-09T22:03:46  <pinesol_green> [evergreen|Galen Charlton] LP#1435494: suggest 1048575 as a default resultset_limit - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a3665b0>
+2015-04-09T22:03:47  <pinesol_green> [evergreen|Galen Charlton] LP#1435494: add release notes entry - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=41054e3>
+2015-04-09T22:04:24  *** akilsdonk has quit IRC
+2015-04-09T22:07:45  <pinesol_green> [evergreen|Bill Erickson] LP#1436906 clean up PO direct charges on delete/cancel - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=be766fb>
+2015-04-09T22:09:04  * bshum waves at jeff too
+2015-04-09T22:15:12  * bshum disappears back into the mists
+2015-04-09T23:56:18  *** pmurray is now known as pmurray_away

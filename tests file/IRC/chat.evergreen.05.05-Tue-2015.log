@@ -1,0 +1,187 @@
+2015-05-05T02:55:30  *** sarabee has quit IRC
+2015-05-05T03:23:19  *** dcook has quit IRC
+2015-05-05T05:10:39  *** book` has quit IRC
+2015-05-05T05:50:50  *** book` has joined #evergreen
+2015-05-05T06:03:59  *** book` has quit IRC
+2015-05-05T06:11:28  *** book` has joined #evergreen
+2015-05-05T07:04:54  *** book` has quit IRC
+2015-05-05T07:12:03  *** sarabee has joined #evergreen
+2015-05-05T07:18:35  *** book` has joined #evergreen
+2015-05-05T07:29:41  *** graced has joined #evergreen
+2015-05-05T07:53:02  *** mrpeters has joined #evergreen
+2015-05-05T07:53:51  *** book` has quit IRC
+2015-05-05T07:55:33  *** book` has joined #evergreen
+2015-05-05T08:00:22  *** collum has joined #evergreen
+2015-05-05T08:17:23  *** akilsdonk has joined #evergreen
+2015-05-05T08:25:48  *** Dyrcona has joined #evergreen
+2015-05-05T08:30:00  *** Newziky has joined #evergreen
+2015-05-05T08:33:58  *** mmorgan has joined #evergreen
+2015-05-05T08:40:15  *** book` has quit IRC
+2015-05-05T08:44:52  *** book` has joined #evergreen
+2015-05-05T08:53:12  *** Dyrcona has quit IRC
+2015-05-05T08:55:57  *** jwoodard has joined #evergreen
+2015-05-05T09:13:58  *** Dyrcona has joined #evergreen
+2015-05-05T09:17:51  * csharp is suddenly convinced that lib_ips.txt needs to be moved to the DB
+2015-05-05T09:18:28  * tsbere has never used that feature
+2015-05-05T09:20:35  <csharp> for the unfamiliar, if your org_unit's shortname, start of IP range, and end of IP range is in that file (/openils/conf/lib_ips.txt), and the OPAC redirector is uncommented in /etc/apache2/eg_startup, the server will redirect the request to search that org_unit's collection
+2015-05-05T09:21:23  <csharp> it's a plain text file, but I'm now convinced that there's no reason no to put that in the DB so libraries can manage it themselves
+2015-05-05T09:21:36  <csharp> s/reason no/reason not/
+2015-05-05T09:21:44  <tsbere> We use subdomains and rewrite tricks. <_<
+2015-05-05T09:22:26  <csharp> that would be far less manageable at our scale
+2015-05-05T09:22:48  <csharp> 54 systems, ~340 units
+2015-05-05T09:23:10  <dbs> we use subdomains and rewrite tricks too.
+2015-05-05T09:24:51  <tsbere> csharp: Specifically, the rewrite tricks define "this subdomain means this code" (we have some codes used multiple times) and "this code means this physical location" in text files.
+2015-05-05T09:24:55  <tsbere> It isn't that hard to maintain.
+2015-05-05T09:25:41  *** remingtron has quit IRC
+2015-05-05T09:25:56  <jeff> it changes the maintenance from "libraries should be sure that central systems staff have all of their client IPs on file" to "libraries should set this as their homepage url"
+2015-05-05T09:26:29  <jeff> but it doesn't handle the case of "patron got here via other means (manual url entry, following a link, search results) and we'd like them to receive special treatment based on their ip"
+2015-05-05T09:26:31  <csharp> hmm - I'll have to ponder that
+2015-05-05T09:26:43  <jeff> (because you do kinda' need their IP to do that kind of thing)
+2015-05-05T09:26:45  *** Shae has joined #evergreen
+2015-05-05T09:27:00  <jeff> barring a proxy that you control that does interception and header insertion, etc, etc.
+2015-05-05T09:27:09  <csharp> we've been a monolithic "gapines.org" for so long - I would have to be convinced enough to convince others it's worth the trouble
+2015-05-05T09:28:30  <csharp> in any case, moving the IPs into the database sounds like a low overhead solution for our current approach
+2015-05-05T09:28:59  <csharp> I have definitely wondered in the past if anyone else out there even uses the lib_ips.txt feature
+2015-05-05T09:30:05  <csharp> it would also be nice to configure SIP accounts in the DB and not require us to edit XML
+2015-05-05T09:30:28  * csharp points out that he is not on the most recent version of SIPServer or the newer sip config
+2015-05-05T09:30:45  <jeff> we used to use it.
+2015-05-05T09:31:12  <jeff> (lib_ips)
+2015-05-05T09:34:00  *** yboston has joined #evergreen
+2015-05-05T09:35:21  *** remingtron has joined #evergreen
+2015-05-05T09:37:23  <tsbere> csharp: I can somewhat agree on some of the SIP stuff, though I think the way things work in the XML would be hard to translate to DB storage right now.
+2015-05-05T09:38:04  <tsbere> Might be easier to rig up a DB table with needed info and then rig something to dump the relevant config file lines from it.
+2015-05-05T09:39:30  *** maryj has joined #evergreen
+2015-05-05T09:46:06  <jeff> i'm not sure i'd favor SIPServer reading config from a db. i would favor things that would make reconfiguring it easier -- i'm not actually certain that it hadn't recently gained an easier way to do a kind of graceful reload/restart.
+2015-05-05T09:47:22  *** Shae has quit IRC
+2015-05-05T09:48:22  <Stompro> bshum, I do now remember that error message about fts, I just used the 93 version like it suggested, I haven't noticed any problems with using the 93 version.
+2015-05-05T09:49:43  <jonadab> You could always have the firewall ruleset redirect each library's IP range to a different port, then use Apache virtual server stuff to engage rewrite tricks from there.
+2015-05-05T09:49:46  * jonadab ducks.
+2015-05-05T09:50:02  * jeff sends the ducks after jonadab 
+2015-05-05T09:58:57  *** book` has quit IRC
+2015-05-05T10:05:36  *** book` has joined #evergreen
+2015-05-05T10:26:54  <bshum> Stompro: That sounds about right.
+2015-05-05T10:27:24  <bshum> Well if we finish that piece and then I think the next maintenance releases will work with Jessie.
+2015-05-05T10:28:05  *** mrpeters has quit IRC
+2015-05-05T10:31:05  <Stompro> bshum++, thanks for all your work on that yesterday.
+2015-05-05T10:35:51  <Dyrcona> @praise bshum
+2015-05-05T10:35:51  * pinesol_green bshum can run a report without assistance
+2015-05-05T10:36:05  <Dyrcona> Faint praise there, pinesol_green.
+2015-05-05T10:37:25  <bshum> Actually I don't know if that's true. Reporter and me do not see eye to eye....
+2015-05-05T10:41:59  *** Shae has joined #evergreen
+2015-05-05T10:50:46  *** mrpeters has joined #evergreen
+2015-05-05T11:03:37  *** mrpeters has left #evergreen
+2015-05-05T11:05:19  *** mrpeters has joined #evergreen
+2015-05-05T11:22:08  *** sandbergja has joined #evergreen
+2015-05-05T11:31:13  *** buzzy has joined #evergreen
+2015-05-05T11:32:01  *** collum has quit IRC
+2015-05-05T11:51:44  *** kitteh_ has quit IRC
+2015-05-05T11:52:02  *** kitteh_ has joined #evergreen
+2015-05-05T11:54:26  <yboston> Hello everyone, DIG will need access to a test server running 2.8.x, I suspect we may be able to use webby? Any other recommendations?
+2015-05-05T11:55:22  <tsbere> yboston: kmlussier may be willing to spin up one of the masslnc test boxes for ya, though those don't get the web client going currently.
+2015-05-05T11:55:41  <yboston> tsbere: thanks
+2015-05-05T11:56:13  <kmlussier> yboston: The server on the community servers page already has 2.8. But, as tsbere said, it doesn't have webby.
+2015-05-05T11:56:26  <kmlussier> I usually use webby for web client docs.
+2015-05-05T11:57:36  <yboston> kmlussier: my bad I misread what version the mlnc4 server was running
+2015-05-05T11:57:56  <kmlussier> I forgot to equate the date with a version. I usually do that.
+2015-05-05T11:58:07  <yboston> kmlussier: I think we are all set
+2015-05-05T11:58:08  <kmlussier> I'm guessing 4/6 was 2.8.0ish?
+2015-05-05T12:00:22  <tsbere> Wouldn't take long to re-build it if we want. I could do so for you if you want.
+2015-05-05T12:18:55  *** bmills has joined #evergreen
+2015-05-05T12:21:13  *** jihpringle has joined #evergreen
+2015-05-05T12:32:36  *** collum has joined #evergreen
+2015-05-05T12:37:24  *** collum has quit IRC
+2015-05-05T12:44:05  *** collum has joined #evergreen
+2015-05-05T13:14:43  <tsbere> dbs: You around at this point? I saw some of the discussion you had with Dyrcona.
+2015-05-05T13:26:54  *** pmurray is now known as pmurray_away
+2015-05-05T13:31:52  *** pmurray_away is now known as pmurray
+2015-05-05T13:41:15  <csharp> uhhh - so apparently accented characters (such as é), which we don't check for in our email regex, result in a broken email address in EG
+2015-05-05T13:43:02  <jeff> "broken email address" in the sense that a single patron doesn't receive notification, or something else?
+2015-05-05T13:46:59  <tsbere> non-compliant email address due to localpart issues I assume
+2015-05-05T13:52:03  <Dyrcona> Yep. Non-compliant.
+2015-05-05T13:52:26  <bshum> csharp: So Dyrcona and I are flying in like 10 pm or something crazy late.
+2015-05-05T13:52:44  <bshum> If you're still at PDX, we can bring you along then.
+2015-05-05T13:53:48  <csharp> bshum: thanks for the offer.  I may end up needing a rental
+2015-05-05T13:54:08  <bshum> Sure, just saying.
+2015-05-05T13:54:14  <csharp> :-D
+2015-05-05T13:55:06  <Dyrcona> Header field bodies have to contain US-ASCII characters, but it could be encoding for a special character, like a URL escape format.
+2015-05-05T13:55:34  <Dyrcona> Trouble is, how a local-part of the email address works is left up to the recipient server.
+2015-05-05T13:56:47  <Dyrcona> And that explains some of the gibberish spam I get from China. :)
+2015-05-05T13:59:30  <csharp> é ends up looking like Ã© in this particular case
+2015-05-05T14:06:09  <jeffdavis> "ends up looking like" in what display context?
+2015-05-05T14:07:07  <csharp> I'm looking at a screenshot that appears to be from Outlook
+2015-05-05T14:07:31  * csharp goes to the logs to see exactly what happened
+2015-05-05T14:09:18  <Dyrcona> jeffdavis: My guess is in an ISO-8859-1 context. :)
+2015-05-05T14:09:48  <jeffdavis> Dyrcona: technically a correct answer :)
+2015-05-05T14:12:20  <Dyrcona> Possibly Windows 1252....
+2015-05-05T14:12:31  <Dyrcona> ;)
+2015-05-05T14:12:48  <jeffdavis> If someone entered a UTF-8 é in the email address during patron reg, I'd expect it to display correctly within EG (although this may be naive of me), but perhaps get garbled when mail is sent.
+2015-05-05T14:13:53  <Dyrcona> jeffdavis: I would expect more or less the same, but it depends on XulRunner getting the right character set information from the PC and possibly the server as well.
+2015-05-05T14:23:35  <csharp> yeah - the postfix log shows ?? in place of the é character
+2015-05-05T14:23:49  <csharp> it was rejected as a syntax error
+2015-05-05T14:24:44  <csharp> btw, both the patron name and email address displays fine in the staff client, fwiw
+2015-05-05T14:28:40  <dbs> csharp: you might not be using the email templates that include helper escape functions?
+2015-05-05T14:29:26  <dbs> We had that problem initially, which is why I went through that process
+2015-05-05T14:30:03  <dbs> https://bugs.launchpad.net/evergreen/+bug/1031335 I think?
+2015-05-05T14:30:03  <pinesol_green> Launchpad bug 1031335 in Evergreen 2.7 "Email templates should always escape headers" (affected: 2, heat: 10) [Undecided,Confirmed]
+2015-05-05T14:32:11  <dbs> tsbere: around, but not in a headspace to recall or revisit library/copy ranking design decisions very effectively
+2015-05-05T14:47:01  <mmorgan> Anyone around to poke webby? I was hoping to test a few things, but can't login :-(
+2015-05-05T14:58:11  <mmorgan> Hey, webby's back! Thanks to whoever poked!
+2015-05-05T14:58:49  <eeevil> mmorgan: the drive's filled up, I'm looking for places to free space now
+2015-05-05T14:58:55  <eeevil> it'll die before too long ;)
+2015-05-05T14:59:23  <mmorgan> Aww. That's sad :-(
+2015-05-05T14:59:37  <bshum> Like a balloon inflating till it explodes.
+2015-05-05T14:59:44  <bshum> *pop*
+2015-05-05T15:01:09  <mmorgan> When dev servers get endearing names like 'webby', it's sad when they go away.
+2015-05-05T15:03:39  <berick> mmorgan: wait til you're testing on "widdlepuppy"
+2015-05-05T15:05:12  *** Stompro has quit IRC
+2015-05-05T15:05:35  <mmorgan> widdlepuppy? I can't stand it! ;-)
+2015-05-05T15:10:48  *** TaraC has quit IRC
+2015-05-05T15:14:37  <eeevil> mmorgan: ok, it should stay up for a while, cleared about 500MB. we'll look at increasing space generally soon
+2015-05-05T15:15:20  <mmorgan> eeevil++
+2015-05-05T15:15:23  <mmorgan> Thanks!
+2015-05-05T15:20:57  <jeff> if filesystems went "pop" upon reaching capacity...
+2015-05-05T15:21:05  <jeff> yeah, i don't want to think about that.
+2015-05-05T15:21:47  <eeevil> the bits! they are all over the floor! someone bring me a roll of paper towels!
+2015-05-05T15:21:54  <berick> exactly :)
+2015-05-05T15:21:56  <Dyrcona> heh
+2015-05-05T15:22:20  <Dyrcona> I only ever seem to have trouble with /boot about every 3rd kernel update. :)
+2015-05-05T15:22:30  * berick watches them drain into the air ducts
+2015-05-05T15:22:36  <jeff> Dyrcona: sounds like an ubuntu problem
+2015-05-05T15:22:38  <bshum> Dyrcona: Ugh, don't remind me.
+2015-05-05T15:22:51  <Dyrcona> jeff: I believe it does. :)
+2015-05-05T15:34:13  <csharp> dbs: indeed we are not using A/T for overdue notices yet - that's on the Big Board, but hasn't risen to the top of the list ;-_
+2015-05-05T15:34:52  <csharp> @quote add < mmorgan> When dev servers get endearing names like 'webby', it's sad when they go away.
+2015-05-05T15:34:52  <pinesol_green> csharp: The operation succeeded.  Quote #115 added.
+2015-05-05T15:35:22  <csharp> berick++ # whiddlepuppy
+2015-05-05T15:39:49  <dbs> csharp: ahh, well maybe those branches will provide useful leads for functions to help escape your super-ancient overdue notifications :)
+2015-05-05T15:40:32  <csharp> dbs: thanks ;-)
+2015-05-05T15:41:48  <mmorgan> Hey, my first quote! :)
+2015-05-05T15:41:57  <Dyrcona> mmorgan++
+2015-05-05T15:45:13  <kmlussier> mmorgan++
+2015-05-05T16:04:12  *** buzzy has quit IRC
+2015-05-05T16:24:33  *** collum has quit IRC
+2015-05-05T16:36:48  *** mrpeters has left #evergreen
+2015-05-05T16:45:50  *** vlewis has joined #evergreen
+2015-05-05T16:48:04  *** maryj has quit IRC
+2015-05-05T16:55:23  *** Shae has quit IRC
+2015-05-05T16:56:29  *** Dyrcona has quit IRC
+2015-05-05T17:00:40  *** mmorgan has left #evergreen
+2015-05-05T17:07:02  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-05T17:08:11  *** graced has quit IRC
+2015-05-05T17:12:38  *** yboston has quit IRC
+2015-05-05T17:23:32  *** Newziky has left #evergreen
+2015-05-05T17:43:42  *** bmills1 has joined #evergreen
+2015-05-05T17:43:42  *** bmills has quit IRC
+2015-05-05T18:39:26  *** vlewis has quit IRC
+2015-05-05T19:59:49  *** jwoodard has quit IRC
+2015-05-05T20:08:31  *** nuentoter has joined #evergreen
+2015-05-05T20:24:25  *** nuentoter has quit IRC
+2015-05-05T20:37:35  *** nuentoter has joined #evergreen
+2015-05-05T20:44:16  *** akilsdonk has quit IRC
+2015-05-05T20:47:05  <kmlussier> @quote random
+2015-05-05T20:47:05  <pinesol_green> kmlussier: Quote #89: "<jboyer-isl> Assumption soup isn’t nearly as good as turtle soup." (added by gmcharlt at 02:13 PM, August 20, 2014)
+2015-05-05T21:06:16  *** nuentoter has quit IRC
+2015-05-05T21:26:55  *** jihpringle has quit IRC
+2015-05-05T22:11:19  *** bmills1 has quit IRC
+2015-05-05T22:19:33  *** akilsdonk has joined #evergreen
+2015-05-05T23:10:33  *** akilsdonk has quit IRC

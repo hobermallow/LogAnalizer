@@ -1,0 +1,507 @@
+2015-03-06T01:47:04  *** dcook__ has quit IRC
+2015-03-06T05:09:54  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-06T07:38:32  <dbs>  Task "karma:unit" failed in the phantomJS tests (which, btw, COOL)
+2015-03-06T07:43:15  *** mrpeters has joined #evergreen
+2015-03-06T07:51:24  *** rjackson_isl has joined #evergreen
+2015-03-06T08:01:57  *** julialima_ has joined #evergreen
+2015-03-06T08:13:24  *** Dyrcona has joined #evergreen
+2015-03-06T08:18:50  *** collum has joined #evergreen
+2015-03-06T08:23:26  *** akilsdonk has joined #evergreen
+2015-03-06T08:38:57  *** mmorgan has joined #evergreen
+2015-03-06T08:39:00  <Dyrcona> WTF, Evergreen?
+2015-03-06T08:42:54  <bshum> That kind of morning already?
+2015-03-06T08:43:47  <Dyrcona> No a/t events were process at 00:15 the other night when we ran out of settings drones.
+2015-03-06T08:44:03  <Dyrcona> So, that puts me back at square one, I think.
+2015-03-06T08:48:33  *** gsams has quit IRC
+2015-03-06T08:48:53  *** graced has joined #evergreen
+2015-03-06T08:49:54  *** gsams has joined #evergreen
+2015-03-06T08:54:12  *** ericar has joined #evergreen
+2015-03-06T08:59:40  *** jeff_ has joined #evergreen
+2015-03-06T09:01:49  *** jeff has quit IRC
+2015-03-06T09:06:03  *** jeff_ is now known as jeff
+2015-03-06T09:06:21  <jeff> @tableflip INN-Reach
+2015-03-06T09:06:22  <pinesol_green> jeff: What do you mean? An African or European swallow?
+2015-03-06T09:09:23  <jeff> Simple weight ratios! A 3k ItemRequested message could not carry a 700 byte ShippingInformation stanza!
+2015-03-06T09:09:39  <jeff> Wait, no. It could. It should. That would MAKE SENSE if it did.
+2015-03-06T09:09:44  <jeff> (which is perhaps why it doesn't)
+2015-03-06T09:10:29  *** yboston has joined #evergreen
+2015-03-06T09:11:06  <jeff> "Well, it doesn't matter. Will you go and tell your patron that the audiobook of Pilgrim's Progress from agency zv108 is here?"
+2015-03-06T09:11:37  <jeff> "Where is 'here'?"
+2015-03-06T09:11:39  <jeff> "Huh? I... I don't know that."
+2015-03-06T09:11:59  <jeff> [EVERYTHING gets thrown off the bridge with a cry of AAUGH!]
+2015-03-06T09:13:25  <gmcharlt> jeff++ # being forward thinking and arranging interstellar ILL
+2015-03-06T09:13:57  <collum> Your next task is the rabbit.
+2015-03-06T09:15:50  * Dyrcona goes to reading Introduction to Python 3.
+2015-03-06T09:17:30  <yboston> here is the link for the DIG hackfest Google Hangout: https://plus.google.com/hangouts/_/g6xswgw5bc3xtoy5wlfm6p46tya
+2015-03-06T09:20:02  <kmlussier> yboston: I'm not going to be able to join the hackfest until later. I have a few things I need to do this morning first.
+2015-03-06T09:20:18  <yboston> kmlussier: no problem
+2015-03-06T09:30:05  *** maryj has joined #evergreen
+2015-03-06T09:31:47  *** mrpeters has quit IRC
+2015-03-06T09:31:58  <csharp> so in my prep for my (proposed) EG2015 session on server logging, I'm interested whether anyone has gotten Evergreen logging via systemd/journalctl since that's what's coming down the road for mainstream distros
+2015-03-06T09:32:38  <csharp> has anyone given thought and/or experimentation towards that?
+2015-03-06T09:32:54  <bshum> csharp: I finally left syslog-ng server behind last year when our log server inexplicably exploded.
+2015-03-06T09:33:08  <bshum> And I had to build a new one using rsyslog.
+2015-03-06T09:33:14  <bshum> So.... no, not from me.
+2015-03-06T09:33:14  <bshum> :)
+2015-03-06T09:33:16  <csharp> cool
+2015-03-06T09:33:25  <csharp> we've been using rsyslog for a while now
+2015-03-06T09:33:47  *** mrpeters has joined #evergreen
+2015-03-06T09:39:27  <csharp> my plan right now is to build a fedora EG server and 1) see what happens to logs by default and 2) try and configure systemd/journalctl to treat them similarly to rsyslog/traditional syslog
+2015-03-06T09:40:55  *** _bott_ has joined #evergreen
+2015-03-06T09:41:33  *** alynn26 has joined #evergreen
+2015-03-06T09:52:26  <remingtron> graced: I have a question about documenting the web client
+2015-03-06T09:52:41  <berick> csharp: i'm curious how that turns out
+2015-03-06T09:52:43  * graced is all ears
+2015-03-06T09:53:43  <remingtron> graced: when should we start telling people to post individual web client bugs to launchpad?
+2015-03-06T09:54:12  <remingtron> can they start now? or is ESI still working through their own list?
+2015-03-06T09:54:30  <graced> remingtron: we have resolved all but a few (less than 10 I think) bugs that were reported initially.
+2015-03-06T09:54:56  <graced> So, we'll release that WHOLE list next week with the reports and resolutions so people can cross check their bugs?
+2015-03-06T09:55:17  <graced> And as we've been fixing we've been updating webby, of course
+2015-03-06T09:55:38  <remingtron> do you expect to release the remaining ones as launchpad bugs, or some other published list?
+2015-03-06T09:56:25  <yboston> Heads up, I will be stepping away from my desk from 10 AM EST to about 11 AM EST; feel free to use the Google Hangout without me there
+2015-03-06T09:56:25  <graced> We plan to resolve all the bugs but there are a few that we will be moving to LP to get some assistance/sanity checking from a larger group
+2015-03-06T09:57:30  <graced> So, the resolved ones won't be duplicated on LP, we'll just release the spreadsheet showing the reported bugs and the resolution
+2015-03-06T09:57:49  <remingtron> right, sounds good.
+2015-03-06T09:57:55  <graced> We do have a different plan for bug reporting for Sprint #2... so hopefully this will be less... complicated
+2015-03-06T09:58:11  <graced> Well, I should say we're looking at several different plans. we haven't settled yet.
+2015-03-06T09:58:31  <graced> Regardless, I think they're all better than round 1
+2015-03-06T09:58:43  <remingtron> improvement is good!
+2015-03-06T09:58:51  <graced> :)
+2015-03-06T09:59:10  <graced> remingtron: I have to run but feel free to ping me Monday or email me if you think of anything else.
+2015-03-06T09:59:17  <remingtron> graced: thanks!
+2015-03-06T09:59:24  <graced> np, thank you!
+2015-03-06T10:03:57  <remingtron> @later tell graced For the record, a docs commit was backported to 2.7 today (to fix a syntax bug) that says to report bugs on launchpad. Since ESI is very near completion on their bug list, I will leave that commit as it is, since there is very little chance of duplicate bugs being reported before you publish your list next week.
+2015-03-06T10:03:57  <pinesol_green> remingtron: The operation succeeded.
+2015-03-06T10:04:11  *** graced has quit IRC
+2015-03-06T10:19:01  *** kbutler has joined #evergreen
+2015-03-06T10:32:57  *** maryj has quit IRC
+2015-03-06T10:33:12  *** maryj has joined #evergreen
+2015-03-06T10:33:42  <remingtron> thanks to MassLNC for updating their community test server (http://evergreen-ils.org/dokuwiki/doku.php?id=community_servers)
+2015-03-06T10:33:57  <remingtron> I'm using it for the docs hackfest today.
+2015-03-06T10:34:24  <remingtron> kmlussier++ Dyrcona++
+2015-03-06T10:34:30  <remingtron> #and any others who helped
+2015-03-06T10:37:22  <kmlussier> tsbere++
+2015-03-06T10:48:56  <remingtron> tsbere++
+2015-03-06T10:50:06  <remingtron> I'm documenting the new 2.8 ability to delete copy locations, and wanted to add info about other common copy-location-editor actions. Anyone have comments?
+2015-03-06T10:50:53  <remingtron> OPAC visible, holdable, checkin alert, etc.?
+2015-03-06T10:51:19  <remingtron> (and how to explain them in 1 line)
+2015-03-06T10:52:37  <mmorgan> I'll give it a try for some...
+2015-03-06T10:52:43  <mmorgan> Checkin Alert with provide an alert at checkin that the item needs to be routed to that location.
+2015-03-06T10:53:20  <mmorgan> Holdable set to false will make all copies in that location NOT holdable regardless of other settings.
+2015-03-06T10:54:00  <mmorgan> OPAC Visible set to false will hide all copies in that location from the public OPAC
+2015-03-06T10:55:05  <jeff> Last I looked, the checkin alert is limited to only interfaces (such as the staff client) that maintain a list of shelving locations with alert messages and pop up the message accordingly. There is no checkin event thrown, it is not a "do you want to override this?" kind of action, and there is zero effect on things like SIP checkins. I should go verify all that to ensure that it's still that way.
+2015-03-06T10:55:39  <jeff> Holdable set to false at the shelving location level has some interesting interactions with staff-placed copy level holds, I think.
+2015-03-06T10:55:42  <remingtron> mmorgan++ #thanks for the help!
+2015-03-06T10:56:35  <remingtron> jeff++ #thanks for the detailed perspective
+2015-03-06T10:57:34  <jeff> Somewhere it's worth documenting if it isn't documented yet (or documenting in multiple locations) that certain things like "opac visible" exist as both shelving location and item attributes. Any "no" trumps.
+2015-03-06T10:57:49  <mmorgan> Hold verify, I can't quite remember how that works. Looked at it a bit ago. I *think* if set to true, it pops up an alert for items in that location at capture time saying "Hold capture delayed".
+2015-03-06T10:58:03  <mmorgan> jeff++ excellent point!
+2015-03-06T10:59:38  <jeff> Hold Capture Verify in the staff client means that if an item is being checked in and would normally capture for a hold, staff receive a message (possibly paraphrasing:) "this item could be captured for a hold but has been prevented by policy" with a prompt to capture the item or not.
+2015-03-06T11:00:29  <jeff> The original use case was to prevent immediate availability of AV materials that had been checked in but had not yet been "inspected" for damage / missing discs / cleaning.
+2015-03-06T11:01:27  <jeff> That's one of those things where we needed the functionality, we funded the development, and now we no longer need the functionality (we did use the feature for many years). I do not know if anyone else uses it, or what their use case is if different from ours.
+2015-03-06T11:08:19  *** vlewis has joined #evergreen
+2015-03-06T11:08:55  <jboyer-isl> I think the message confuses staff. "prevented by policy" sounds like you can't have it, not that it has been delayed for some other purpose with the intent of allowing it later.
+2015-03-06T11:09:14  <mmorgan> remingtron++
+2015-03-06T11:23:43  <jeff> jboyer-isl: yep. "delayed because it is in the shelving location FOO, whose configuration prevents automatic hold capture" or something might be better. :-)
+2015-03-06T11:24:55  <jeff> or just "because its shelving location is configured to prevent automatic hold capture"
+2015-03-06T11:26:41  <jboyer-isl> That one is pretty good. I wasn't necessarily arguing to have it changed, but the only time it's ever come up here is when someone checks a box to see what it does and then the circ staff start asking questions. :)
+2015-03-06T11:29:22  *** mglass has joined #evergreen
+2015-03-06T11:31:02  * jeff nods
+2015-03-06T11:31:37  *** eeevil has quit IRC
+2015-03-06T11:32:39  *** eeevil has joined #evergreen
+2015-03-06T11:35:13  <pinesol_green> [evergreen|Remington Steed] Docs: 2.8 feature "Deleted flag for copy locations" - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=35b8417>
+2015-03-06T11:37:07  <jeff> possible typo: +* Set _OPAC Visible_ to "No" to hide all copies in a copy location from the
+2015-03-06T11:37:10  <jeff> +public catalog. (This can also be managed at the _Shelving Location_ level.)
+2015-03-06T11:37:20  <jeff> seems like a circular reference
+2015-03-06T11:41:37  * mmorgan agrees with jeff. Maybe remingtron meant it to say (This can also be managed at the _Copy_ level.)
+2015-03-06T11:44:37  <kmlussier> berick++ #simply for assigning yourself to bug 1234220 :)
+2015-03-06T11:44:37  <pinesol_green> Launchpad bug 1234220 in Evergreen "Renewal blocked due to holds ratio does not display block message" (affected: 2, heat: 10) [Medium,Confirmed] https://launchpad.net/bugs/1234220 - Assigned to Bill Erickson (berick)
+2015-03-06T11:44:54  <berick> kmlussier: i'm blazing new ground over here ;)
+2015-03-06T11:46:35  <kmlussier> berick: You will have at least one guaranteed tester if you find a fix for that. :)
+2015-03-06T11:47:21  <berick> kmlussier: reload, plz
+2015-03-06T11:47:39  <kmlussier> Hooray!
+2015-03-06T11:48:21  <kmlussier> berick++
+2015-03-06T11:48:44  <remingtron> jeff: oops, I misread your initial comment. Thanks for the correction.
+2015-03-06T11:53:30  *** bmills has joined #evergreen
+2015-03-06T11:54:18  *** julialima_ has quit IRC
+2015-03-06T11:54:52  <dbs> Dyrcona: fwiw, Francis is a pretty well-known #code4libber and could actually make the dream of *BSD support possible, given some encouragement :)
+2015-03-06T11:59:50  *** akilsdonk has quit IRC
+2015-03-06T12:00:23  <berick> dbs++
+2015-03-06T12:02:59  *** sandbergja has joined #evergreen
+2015-03-06T12:06:02  <Dyrcona> dbs: Whatever. I don't know this person. Respect must be earned.
+2015-03-06T12:06:18  <Dyrcona> Plus, I'm not having a good day.
+2015-03-06T12:06:46  <Dyrcona> Plus, I often come off "mean" when I'm just being terse.
+2015-03-06T12:08:08  <Dyrcona> Plus, I'm really down on Evergreen right now.
+2015-03-06T12:08:19  <Dyrcona> Plus, I should stop saying "plus."
+2015-03-06T12:08:23  * Dyrcona eats lunch.
+2015-03-06T12:13:52  <dbs> Dyrcona: Sorry to hear you're not having a good day :/
+2015-03-06T12:16:41  <Dyrcona> It has been the whole week, really, but I don't want to bore everyone with details.
+2015-03-06T12:22:08  <jeffdavis> Hm, the person who reported bug 1428753 (based on the evergreen-catalogers thread) is on EG2.2 :(
+2015-03-06T12:22:08  <pinesol_green> Launchpad bug 1428753 in Evergreen "Fixed field 008 Time Tech do not display in fixed field grid" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1428753
+2015-03-06T12:22:39  <jeffdavis> I wonder how many sites are running unsupported versions of EG.
+2015-03-06T12:22:59  <Dyrcona> jeffdavis: Lots, I imagine.
+2015-03-06T12:23:41  * Dyrcona used to have his own version of berick's FreeBSD installation notes with changes, but I believe that I deleted it a couple of years ago. :(
+2015-03-06T12:26:02  <jeffdavis> Maybe more to the point, I wonder if we can be doing more to encourage folks to keep their systems up to date, or if we should be more emphatic about the lifetime of releases.
+2015-03-06T12:26:14  <jeff> making upgrades easier is a big part.
+2015-03-06T12:26:21  <jeff> every bit helps there.
+2015-03-06T12:26:34  <jeff> including web staff client.
+2015-03-06T12:26:52  *** akilsdonk has joined #evergreen
+2015-03-06T12:27:02  <jeff> and per-attribute reingest as introduced in recent evergreen versions, etc.
+2015-03-06T12:27:28  <pinesol_green> [evergreen|Remington Steed] Docs: 2.8 feature correction - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=23efe68>
+2015-03-06T12:27:45  <jeff> but this is a good conversation to have, because i'm sure there are lots of ideas and lots of reasons folk have for keeping on the versions they're on.
+2015-03-06T12:29:47  <jeffdavis> I'm mostly curious if there's a lack of awareness about EG release lifecycles. I imagine many libraries aren't used to the idea of upgrading their ILS every 1-2 years.
+2015-03-06T12:30:05  *** alynn26 has quit IRC
+2015-03-06T12:30:21  <jeffdavis> Let alone more frequently, for you bleeding-edge folks :)
+2015-03-06T12:31:52  <Dyrcona> jeffdavis: We upgrade roughly with every major release, i.e. every 6 months.
+2015-03-06T12:32:15  <Dyrcona> We patch in fixes as needed and git makes that easy.
+2015-03-06T12:33:05  <Dyrcona> I believe bshum and Bibliomation also upgrade about that often.
+2015-03-06T12:33:19  <jeff> jeffdavis: the fact that i'm having trouble finding an obvious location on the web site or wiki that states the community policy on that is making me think that you MIGHT be on to something!
+2015-03-06T12:33:23  * jeff ducks
+2015-03-06T12:33:26  <jeff> hrm.
+2015-03-06T12:34:09  <gmcharlt> and community policy can't by itself drive a library to upgrade
+2015-03-06T12:34:25  <jeff> no.
+2015-03-06T12:35:02  <gmcharlt> some libraries are happy as clams with whatever version of EG they're running, and may be both aware of the new stuff -- and yet feel no compelling reason to change
+2015-03-06T12:35:09  * jeff nods
+2015-03-06T12:35:43  <gmcharlt> others are more than usually averse to to taking downtime... thouse of course, the longer one puts off a major upgrade...
+2015-03-06T12:36:03  <jeff> I don't know ANY libraries that are averse to upgrade-related downtime!
+2015-03-06T12:36:06  *** krvmga_ has joined #evergreen
+2015-03-06T12:36:08  * jeff (once again) ducks
+2015-03-06T12:36:16  * dbs suspects the Dojo community is having the same discussion
+2015-03-06T12:36:18  <gmcharlt> also, TPAC and in-DB circ can represent a *lot* of work to switch to
+2015-03-06T12:36:19  * Dyrcona quacks.
+2015-03-06T12:36:31  <dbs> And also the XUL community. Heh.
+2015-03-06T12:36:38  <gmcharlt> jeff: so, how's the weather in your alternate universe? ;)
+2015-03-06T12:37:10  <jeff> @weather ktvc --bizarro
+2015-03-06T12:37:11  <pinesol_green> jeff: The current temperature in Traverse City, Michigan is 24.8°F (11:53 AM EST on March 06, 2015). Conditions: Mostly Cloudy. Humidity: 51%. Dew Point: 8.6°F. Windchill: 14.0°F. Pressure: 30.22 in 1023 hPa (Falling). 
+2015-03-06T12:37:16  <jeff> apparently the same as here.
+2015-03-06T12:37:27  <dbs> For some reason I thought the policy was listed on the downloads page
+2015-03-06T12:37:59  <dbs> Holy crow there are a lot of links on the downloads page now :)
+2015-03-06T12:38:09  <jeff> dbs: that was the first place i looked also -- the current supported status of each version is, but i didn't see the policy or a link to it. also wasn't apparent in some limited wiki searching, at which point i said to myself, "okay, this might need some attention"
+2015-03-06T12:39:19  <gmcharlt> dbs: which reminds me
+2015-03-06T12:39:24  <jeff> @decide moo! or kaw!
+2015-03-06T12:39:25  <pinesol_green> jeff: Yeah, well, you know, that's just like uh, your opinion, man.
+2015-03-06T12:39:43  <jeff> pinesol_green: fine, i'll go ask zoia then.
+2015-03-06T12:39:43  <pinesol_green> jeff: Try restarting apache.
+2015-03-06T12:39:44  <pinesol_green> jeff: I am only a bot, please don't think I'm intelligent :)
+2015-03-06T12:39:46  <gmcharlt> FOLKS, your periodic reminder that 2.5 will be desupported upon release of 2.8.0! :)
+2015-03-06T12:43:51  <Dyrcona> Err. 2.5 is already unsupported and 2.5.9 was only done, 'cause the security release process started before March 1.
+2015-03-06T12:47:31  <kmlussier> I don't think the policy was ever moved to the web site. I think it's in some long-ago email to the general and dev lists.
+2015-03-06T12:49:28  * dbs says in "Drunk Uncle" voice, "I'm **prettty sure** it was at least on a wiki page"
+2015-03-06T12:50:47  <dbs> http://wiki.evergreen-ils.org/doku.php?id=dev:evergreen:supported_releases&rev=1348773481 but it was deleted
+2015-03-06T12:52:22  <jeff> has the wiki lost the history of that page?
+2015-03-06T12:52:27  <dbs> http://wiki.evergreen-ils.org/doku.php?id=release_schedule - nothing else in the wiki links to the page. heh
+2015-03-06T12:52:51  <dbs> jeff: nope. I created it, lebbeous deleted it
+2015-03-06T12:52:53  <jeff> at least when logged in, nothing i can see lets me get to the revision you linked.
+2015-03-06T12:52:57  <dbs> http://wiki.evergreen-ils.org/doku.php?id=dev:evergreen:supported_releases&do=revisions
+2015-03-06T12:53:11  <jeff> er, "at least when NOT logged in", that is.
+2015-03-06T12:53:53  <dbs> I found the link from http://wiki.evergreen-ils.org/doku.php?id=dev:meetings:2011-11-22
+2015-03-06T12:54:03  <dbs> I'm not logged in. Strange
+2015-03-06T12:54:25  <dbs> jeff: the "old revisions" link for every page is on the right hand side. even for deleted pages
+2015-03-06T12:54:29  <Dyrcona> I'm usually not logged in to dokuwiki.
+2015-03-06T12:54:33  *** buzzy has joined #evergreen
+2015-03-06T12:54:42  <dbs> Might require javascript
+2015-03-06T12:56:30  <kmlussier> This is the email thread I was thinking of: http://georgialibraries.markmail.org/thread/2ofnmjgoku4zeng2. Not sure if those bits made it to the wiki or not.
+2015-03-06T12:57:38  <gmcharlt> kmlussier: thanks for digging that up
+2015-03-06T12:57:39  <dbs> Yeah, I've been working through dev meeting minutes and http://wiki.evergreen-ils.org/doku.php?id=dev:meetings:2011-12-20 seems to be the last mention
+2015-03-06T12:57:48  <gmcharlt> and dbs too
+2015-03-06T12:58:03  <gmcharlt> I think that gives me enough to put something up on the main website
+2015-03-06T13:00:28  *** ericar has quit IRC
+2015-03-06T13:03:07  * Dyrcona needs an "alias" for ubunut->ubuntu...
+2015-03-06T13:03:41  <dbs> gmcharlt++
+2015-03-06T13:03:48  <kmlussier> gmcharlt++
+2015-03-06T13:03:57  * berick needs a psql alias for udpate -> update
+2015-03-06T13:04:11  <Dyrcona> berick: heh. me, too. :)
+2015-03-06T13:04:17  <jeff> dbs: i see where i went wrong -- i clicked the page in my "Trace" breadcrumb/navigation, which took me to a completely different (but SLIGHTLY related) page.
+2015-03-06T13:04:37  <jeff> Ud Paté
+2015-03-06T13:04:56  <Dyrcona> jeff: That does not sound appetizing....
+2015-03-06T13:05:00  <Dyrcona> ;)
+2015-03-06T13:16:19  *** taterrr has joined #evergreen
+2015-03-06T13:16:32  *** mtate has quit IRC
+2015-03-06T13:16:33  *** taterrr is now known as mtate
+2015-03-06T13:16:50  *** mtate is now known as taterrr
+2015-03-06T13:16:56  *** taterrr is now known as mtate
+2015-03-06T13:56:45  *** jihpringle has joined #evergreen
+2015-03-06T14:01:42  <jeff> Dyrcona: neither does an SQL UDPATE :-)
+2015-03-06T14:01:53  <Dyrcona> heh
+2015-03-06T14:13:30  <Dyrcona> Ooh. Upgrade script errors.
+2015-03-06T14:13:36  <Dyrcona> psql:/home/opensrf/Evergreen/Open-ILS/src/sql/Pg/upgrade/0910.schema.message-center.sql:76: ERROR:  null value in column "create_date" violates not-null constraint
+2015-03-06T14:14:02  <Dyrcona> psql:/home/opensrf/Evergreen/Open-ILS/src/sql/Pg/upgrade/0911.data.message-center.sql:27: ERROR:  column "message_usr_path" of relation "event_definition" does not exist
+2015-03-06T14:14:47  *** Newziky has joined #evergreen
+2015-03-06T14:14:54  <jonadab> Shouldn't a create_date have an automatic grab-the-current-date default?
+2015-03-06T14:15:50  <Dyrcona> *Should* is one thing. *Does* is another. :)
+2015-03-06T14:16:12  <Dyrcona> I have a hunch things are just done out of order.
+2015-03-06T14:16:30  <Dyrcona> Since I'm not messing with message center. I won't worry about it today.
+2015-03-06T14:16:35  <eady> Well, yes.
+2015-03-06T14:17:07  <berick> huh, actor.usr_note has a default create_date, but it's NULLable
+2015-03-06T14:17:27  <berick> guessing you have a usr_note w/ a NULL create_date
+2015-03-06T14:17:42  <berick> may need a coalesce in the upgrade
+2015-03-06T14:18:10  <jonadab> Upgrades are so much fun.  Why don't people do them more often?  ;-)
+2015-03-06T14:18:12  <Dyrcona> Or, maybe a nullable column? Since who knows when the note was created.
+2015-03-06T14:18:15  <kmlussier> Huh. What would cause a user note not to have a create date?
+2015-03-06T14:18:33  <berick> kmlussier: i'm guessing through non-standard means
+2015-03-06T14:18:34  <Dyrcona> jonadab: I do them quite often ion my development server.
+2015-03-06T14:18:43  <berick> like, a manual insert or a migration or some such
+2015-03-06T14:18:48  <Dyrcona> You might say, that's what this was. :)
+2015-03-06T14:18:48  <dbs> non-null prevents non-standard data :)
+2015-03-06T14:18:51  <jonadab> Dyrcona: Ah, yes.
+2015-03-06T14:19:06  <Dyrcona> dbs: Where's the fun in that? ;)
+2015-03-06T14:19:29  <dbs> If we wanted fun, we would have used mysql
+2015-03-06T14:19:38  <jonadab> Heh.
+2015-03-06T14:19:47  <berick> heh, indeed
+2015-03-06T14:19:55  <Dyrcona> SQLite....or BerkeleyDB.
+2015-03-06T14:20:08  <Dyrcona> GDBM, anyone?
+2015-03-06T14:20:12  <jonadab> I actually use MySQL for a lot of stuff.  But I wholeheartedly endorse the choice of Postgres for an ILS.
+2015-03-06T14:20:14  <Dyrcona> No takers?
+2015-03-06T14:20:24  <dbs> MARC::Charset took GDBM didn't it?
+2015-03-06T14:20:26  <Dyrcona> jonadab: Ditto.
+2015-03-06T14:20:37  * berick likes sqlite.. for other stuff ;)
+2015-03-06T14:20:38  <dbs> me too, but not by choice :)
+2015-03-06T14:20:51  <Dyrcona> But really the 0911 error bothers me more, since 0910 is my data's fault. :)
+2015-03-06T14:21:09  <jeff> dbs: yes, which makes MARC::Charset fail on perl that was compiled without a system having libgdbm :-)
+2015-03-06T14:21:12  <berick> Dyrcona: 0911 fails because 0910 did
+2015-03-06T14:21:16  <Dyrcona> I've used hsqldb for some Java stuff.
+2015-03-06T14:21:25  <Dyrcona> berick: OK, then.
+2015-03-06T14:22:02  <Dyrcona> Anyway... I'll fix that after I mangle some biblio record entry buckets.
+2015-03-06T14:23:03  <yboston> jihpringle: got a moment?
+2015-03-06T14:23:34  * csharp has an aversion to messages (in IRC or email) that begin "Hi Guys..."
+2015-03-06T14:23:59  <Dyrcona> In order to make them "shared," I have to set pub to true, right? These are staff buckets.
+2015-03-06T14:24:01  <jihpringle> yboston: sure
+2015-03-06T14:24:39  <yboston> do you guys/gals have docuemtnation for the cataloging "manage authorites" interface?
+2015-03-06T14:24:52  <Dyrcona> gmcharlt: I knew I should have saved a local copy of berick's FreeBSD notes earlier. :)
+2015-03-06T14:24:52  <mmorgan> Dyrcona: you mean shared among staff?
+2015-03-06T14:25:01  <Dyrcona> mmorgan: Yes.
+2015-03-06T14:25:13  <yboston> I may start a very bare bones doc to docuemnt my 2.8 feature if you don't
+2015-03-06T14:25:16  <Dyrcona> Actually, they just need the bucket #, don't they?
+2015-03-06T14:25:23  <mmorgan> Yup!
+2015-03-06T14:25:38  <Dyrcona> Been one of /those/ weeks.
+2015-03-06T14:25:44  <Dyrcona> Thanks, mmorgan!
+2015-03-06T14:26:01  <mmorgan> YW. BTW, it's Friday!
+2015-03-06T14:26:17  <jihpringle> yboston: no, we don't have any authorities docs yet of any kind, we're still in the testing phase without an expected dates to start using authorities
+2015-03-06T14:26:50  <yboston> jihpringle: OK, I'll make a bare bones docs
+2015-03-06T14:26:55  <yboston> jihpringle: thanks
+2015-03-06T14:27:25  <jihpringle> np
+2015-03-06T14:27:42  <gmcharlt> Dyrcona: hee
+2015-03-06T14:28:09  <Dyrcona> \o/ It's Friday after all!
+2015-03-06T14:28:09  <gmcharlt> at least the URL will continue to be COOL, once the TTL has passed
+2015-03-06T14:28:12  <berick> Dyrcona: http://git.evergreen-ils.org/?p=working/random.git;a=shortlog;h=refs/heads/collab/berick/eg-freebsd
+2015-03-06T14:28:18  <berick> for posterity
+2015-03-06T14:28:32  <Dyrcona> I think I may based my branc on that one.
+2015-03-06T14:28:38  <Dyrcona> branch
+2015-03-06T14:28:51  <Dyrcona> It has been at least 3 years though.
+2015-03-06T14:29:40  * Dyrcona is going to go home, eat chocolate cookies, drink some milk, and watch a Marx Brothers marathon, and consequently drive his family crazy.
+2015-03-06T14:30:27  * dbs has used sqlite (Android) and apache derby (shocker) for some java things
+2015-03-06T14:30:29  <csharp> Dyrcona++
+2015-03-06T14:30:37  <dbs> Dyrcona++
+2015-03-06T14:31:00  <Dyrcona> I've played with sqlite but not used it seriously. Just to kick the tires as it were.
+2015-03-06T14:31:16  <Dyrcona> Anyway....back to record buckets.
+2015-03-06T14:33:28  <jonadab> SQLite is much better than rolling your own black-box DB-in-a-file format.
+2015-03-06T14:33:42  <jonadab> Which I have seen people do.
+2015-03-06T14:34:01  <dbs> sqlite++
+2015-03-06T14:34:06  <berick> it's wonderfully simple
+2015-03-06T14:34:13  <dbs> I have great respect for Richard Hipp
+2015-03-06T14:35:08  <jonadab> Of course, there's always CSV.
+2015-03-06T14:35:09  * jonadab ducks.
+2015-03-06T14:35:23  * Dyrcona quacks.
+2015-03-06T14:35:34  <kmlussier> Dyrcona++
+2015-03-06T14:35:51  <Dyrcona> I've used DBD::CSV for something that needed read only access to CSV data.
+2015-03-06T14:35:57  <dbs> jihpringle: yboston: http://evergreen-ils.org/dokuwiki/doku.php?id=authorities:2.0 are ancient docs for the first iteration
+2015-03-06T14:36:16  <yboston> dbs: gracias
+2015-03-06T14:36:23  <Dyrcona> I think it was something related to Evergreen, too, some kind of clean up project.
+2015-03-06T14:38:28  <Dyrcona> Well, looks like I did something right today.
+2015-03-06T14:39:31  <Dyrcona> berick: I think I'm just going to set some arbitrary date on my null usr_notes, like 2011-05-30 at midnight.
+2015-03-06T14:39:40  <Dyrcona> That's roughly the time of our migration.
+2015-03-06T14:39:52  <berick> Dyrcona: you confirmed some exist?
+2015-03-06T14:39:58  <berick> w/ null dates, that is
+2015-03-06T14:40:02  <Dyrcona> Well, no. I'm just guessing.
+2015-03-06T14:40:24  <berick> i only ask because i'm mostly guessing too
+2015-03-06T14:40:37  <berick> i mean, it seems like the likely cause
+2015-03-06T14:41:10  <Dyrcona> OK. I've confirmed...
+2015-03-06T14:41:20  <berick> cool, thanks for checking
+2015-03-06T14:41:31  <Dyrcona> You wouldn't believe me if I told you: 24,121.
+2015-03-06T14:41:46  <Dyrcona> Must be a migration thing.
+2015-03-06T14:41:50  <berick> yeah..
+2015-03-06T14:41:53  <Dyrcona> Our people love notes.
+2015-03-06T14:42:37  <Dyrcona> Well, that's not so bad. 169,830 are not null.
+2015-03-06T14:44:29  <Dyrcona> And, 0910 works now. I'll run 0911 next.
+2015-03-06T14:44:56  <Dyrcona> And it works.
+2015-03-06T14:45:04  <Dyrcona> I'll just do that update in production, too.
+2015-03-06T14:45:18  <Dyrcona> I mean for the null dates
+2015-03-06T14:46:12  <jeff> unless you can tie them to a migration-related date, i think i'd go with setting the note create_date to match the user create_date
+2015-03-06T14:47:40  <Dyrcona> Too late.
+2015-03-06T14:48:09  <Dyrcona> Migration date just seemed to make sense, and it may be better than null.
+2015-03-06T14:48:21  * Dyrcona has mixed thoughts on null.
+2015-03-06T14:48:46  <kmlussier> Is that a potential gotcha for other sites that should be covered in an upgrade note?
+2015-03-06T14:49:25  <berick> i'm surprised usr_note allows null.  that's atypical, but could be for a reason i'm not aware of.
+2015-03-06T14:50:02  <berick> kmlussier: yes.  fixing it automatically via the upgrade script is problematic, too.
+2015-03-06T14:51:25  <berick> well, we could default to NOW() on the new usr_message's, but leave the usr_notes with a NULL creat_date
+2015-03-06T14:51:29  <Dyrcona> berick: I was just about to ask if you thought the nullability should be removed.
+2015-03-06T14:51:35  <berick> that's a little hinky, though
+2015-03-06T14:52:00  <berick> Dyrcona: yeah, i do think it should be removed.
+2015-03-06T14:52:15  <Dyrcona> I think so, too, at this point.
+2015-03-06T14:53:37  <berick> that leaves the question of what to set it to and can we do it automatically.
+2015-03-06T14:54:28  * berick sets it to the date of the first commit in the EG repo ;)
+2015-03-06T14:55:40  <kmlussier> berick++ :)
+2015-03-06T14:56:46  <Dyrcona> An upgrade script that sets it to now() would work for me, or maybe something in the release notes suggesting people use an appropriate date like a migration date or something.
+2015-03-06T14:57:06  <gmcharlt> yeah
+2015-03-06T14:57:07  <berick> yeah, an upgrade note is a good start.
+2015-03-06T14:59:13  *** krvmga_ has quit IRC
+2015-03-06T15:00:23  <kmlussier> On another note, the block message for available_copy_hold_ratio failures looks fabulous. I'll sign off on it in a few minutes.
+2015-03-06T15:00:32  <berick> kmlussier++
+2015-03-06T15:00:36  <kmlussier> I get way to happy about user-friendly block messages. I think I need to get out more.
+2015-03-06T15:01:10  <berick> um, no, we need to keep you locked away w/ a computer
+2015-03-06T15:01:32  <berick> @dessert kmlussier
+2015-03-06T15:01:32  * pinesol_green grabs some banana split for kmlussier
+2015-03-06T15:02:06  <kmlussier> :) Thank you!
+2015-03-06T15:03:41  <Dyrcona> Ooh...banana split....
+2015-03-06T15:03:46  <Dyrcona> @dessert
+2015-03-06T15:03:46  * pinesol_green grabs some Lemon Chess Pie for Dyrcona
+2015-03-06T15:03:47  <jonadab> Midnight, January 1st, 1970 ;-)
+2015-03-06T15:04:05  <Dyrcona> December 31, 1969. :)
+2015-03-06T15:05:31  *** mglass_ has joined #evergreen
+2015-03-06T15:06:32  <jonadab> (We actually have some dates in our ILS that are the date when we first automated with our previous ILS.)
+2015-03-06T15:07:16  *** mglass__ has joined #evergreen
+2015-03-06T15:08:29  *** mglass has quit IRC
+2015-03-06T15:09:33  *** TaraC has quit IRC
+2015-03-06T15:10:14  *** mglass_ has quit IRC
+2015-03-06T15:10:40  <csharp> @dessert
+2015-03-06T15:10:40  * pinesol_green grabs some Banana Puddin' for csharp
+2015-03-06T15:11:02  *** TaraC_ has joined #evergreen
+2015-03-06T15:11:27  <kmlussier> @dessert [someone]
+2015-03-06T15:11:27  * pinesol_green grabs some Pecan Pie for gsams
+2015-03-06T15:12:42  * kmlussier finally turns her attention to the 2.8 doc sprint.
+2015-03-06T15:18:44  *** ericar has joined #evergreen
+2015-03-06T15:35:37  * berick wonders if there are any objections to back-porting bug 1234220
+2015-03-06T15:35:37  <pinesol_green> Launchpad bug 1234220 in Evergreen "Renewal blocked due to holds ratio does not display block message" (affected: 2, heat: 10) [Medium,Confirmed] https://launchpad.net/bugs/1234220
+2015-03-06T15:35:55  <berick> it's bug fix, but has new functionality in the sense you can override hold/ratio blocks
+2015-03-06T15:36:18  <berick> the lack of which was arguably a bug
+2015-03-06T15:36:36  <berick> yeah, we should backport.  i'll note in the ticket
+2015-03-06T15:48:39  *** gsams has quit IRC
+2015-03-06T15:49:53  *** gsams has joined #evergreen
+2015-03-06T16:01:37  *** collum has quit IRC
+2015-03-06T16:08:15  <pinesol_green> [evergreen|Yamil Suarez] Docs: Add authority section and Authority subject heading thesaurus - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3001751>
+2015-03-06T16:10:28  <csharp> oooh - the version of ejabberd on Fedora 21 has totally different config files than our traditional /etc/ejabberd/ejabberd.cfg
+2015-03-06T16:11:48  <csharp> it's a YAML file rather than a normal conf file
+2015-03-06T16:13:26  <jeff> yeah, that's new with 13.mumble
+2015-03-06T16:13:54  * csharp muses that if there's more and more divergence between the distros we support that we should consider breaking out the README into per-distro instructions
+2015-03-06T16:13:59  <jeff> there's an "ejabberdctl convert_to_yaml" to convert old-style to new.
+2015-03-06T16:14:12  <csharp> oh - that's handy
+2015-03-06T16:14:24  <kmlussier> Rather than trying to fit in the two new bill OU settings in the Circ/Bills section of the docs, I think I'm going to create a new section under Library Settings editor that addresses all settings related to bills.
+2015-03-06T16:14:43  <kmlussier> csharp / jeff: Whenever I see yaml, I keep thinking you're talking about yboston
+2015-03-06T16:14:45  <jeff> blog post from 2013 claims ``You are now pleased to use ejabberd community as reference for stable releases of ejabberd, from the master branch. ejabberd 2.1.x support is discontinued.''
+2015-03-06T16:15:20  <csharp> kmlussier: heh - I was wondering why he wasn't answering :-P
+2015-03-06T16:15:31  <gmcharlt> csharp: I hope that evil day does not come (split installation instructions)
+2015-03-06T16:15:43  <Dyrcona> Actually, Process One, the main force behind ejabberd are looking for erlang programmers.
+2015-03-06T16:15:45  <csharp> gmcharlt: I was pondering asciidoc includes
+2015-03-06T16:15:48  <yboston> :)
+2015-03-06T16:16:01  <gmcharlt> csharp: ah, that sounds better
+2015-03-06T16:16:04  <Dyrcona> I saw it on G+ yesterday.
+2015-03-06T16:16:12  <jeff> on the Debian side of things, Jessie and up ship with ejabberd 14.
+2015-03-06T16:16:34  <csharp> so ejabberd changes and systemd - sounds like fun!
+2015-03-06T16:19:26  <csharp> for now I will create a branch for Fedora 21 README changes in the as-is file
+2015-03-06T16:22:06  <jeff> csharp: and of course there are outstanding systemd-related bugs against the ejabberd package in Debian. :-)
+2015-03-06T16:23:15  * mmorgan scratches head ...
+2015-03-06T16:23:27  <mmorgan> http://catalog.noblenet.org/eg/opac/record/3053965
+2015-03-06T16:23:36  <mmorgan> http://evergreen.noblenet.org/eg/opac/record/3053965
+2015-03-06T16:23:49  <mmorgan> both of these links go to the same place, but "catalog" shows links to Novelist while "evergreen" does not. Not sure why this would be.
+2015-03-06T16:25:09  <jeff> at least some Novelist add-ons are enabled by environment variables set in the Apache config. That config is likely different between those two hostnames?
+2015-03-06T16:26:07  <jeff> if that's not it, then it's possible that the novelist product in question is configured for a specific hostname.
+2015-03-06T16:27:17  <mmorgan> will poke around some more. To confuse things further, we have 4 bricks, and connecting to them directly shows the links. evergreen is the only hostname that doesn't
+2015-03-06T16:28:41  *** rjackson_isl has quit IRC
+2015-03-06T16:30:21  <pinesol_green> [evergreen|Yamil Suarez] Docs: Eliminate accidental invalid level 5 AsciiDoc headings - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=38a6db4>
+2015-03-06T16:33:25  <remingtron> yboston++ #hope that fixes the PDF!
+2015-03-06T16:33:51  <yboston> I could not resist trying to fix that :(
+2015-03-06T16:34:29  <remingtron> no need to frown, fixing things is good
+2015-03-06T16:35:12  <csharp> huh - no reference to maxrate in the new ejabberd
+2015-03-06T16:35:34  *** jboyer-isl has quit IRC
+2015-03-06T16:35:38  <csharp> I'll confess that I don't really know what that button does anyway :-)
+2015-03-06T16:40:08  *** maryj has quit IRC
+2015-03-06T16:40:38  * csharp reads the included docs
+2015-03-06T16:42:31  <csharp> ah - it's "shaper"
+2015-03-06T16:43:13  <berick> csharp: what version?
+2015-03-06T16:46:29  *** jeff has quit IRC
+2015-03-06T16:47:20  *** jeff has joined #evergreen
+2015-03-06T16:47:21  *** jeff has joined #evergreen
+2015-03-06T16:47:49  *** hopkinsju has quit IRC
+2015-03-06T16:48:13  *** hopkinsju has joined #evergreen
+2015-03-06T16:48:18  *** Bmagic has quit IRC
+2015-03-06T16:48:43  *** Bmagic has joined #evergreen
+2015-03-06T16:51:14  <csharp> berick: ejabberd version is 14.07
+2015-03-06T16:51:27  <csharp> here are my README changes so far: http://git.evergreen-ils.org/?p=working/OpenSRF.git;a=commit;h=e5ff2480d51feffee388e52104c2c592d37205d3
+2015-03-06T16:51:41  * csharp runs off to pick up his daughter from dance class
+2015-03-06T16:52:27  <kmlussier> yboston: So we should try to avoid the use of those level-4 headings in our doc files?
+2015-03-06T16:52:27  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-06T16:52:34  <kmlussier> Uh oh
+2015-03-06T16:53:07  <yboston> kmlussier: no, this was a special circumstance
+2015-03-06T16:53:21  <kmlussier> OK, thanks!
+2015-03-06T16:54:30  <berick> csharp: crazy, was there a big version jump?  seeing ubuntu (eventually) go 2.1.11 to 14.07
+2015-03-06T16:59:23  <Dyrcona> berick: They probably changed the number scheme.
+2015-03-06T16:59:30  *** Dyrcona has quit IRC
+2015-03-06T17:00:43  <jeff> i think 3.x became 13.x
+2015-03-06T17:09:14  <gmcharlt> mmorgan: I've taken a look at it, and I don't see anything in the vhost config that explains it
+2015-03-06T17:09:34  <gmcharlt> and since both catalog.* and evergreen.* do pull in Novelist content
+2015-03-06T17:09:45  <kmlussier> The default item price library setting - is it used for long overdue as well as lost transactions?
+2015-03-06T17:09:46  <gmcharlt> my suspicion is that the issue is no Novellist's end
+2015-03-06T17:10:16  <gmcharlt> specifically since the novelist plus link is going to http://evergreen.noblenet.org/cgi-bin/ezproxy/...
+2015-03-06T17:11:06  <gmcharlt> novelist's code may be assuming that requests whose referrer is evergreen.nobenet.org don't need the ezproxy link
+2015-03-06T17:11:26  <mmorgan> gmcharlt: Thanks for looking. I was trying to decide whether it was a Novelist issue or not, and thinking it was not. But I'll contact them given this info.
+2015-03-06T17:11:26  * kmlussier may need to finish up doc work later if her son wants to eat dinner tonight.
+2015-03-06T17:11:49  * mmorgan must dash now, as the week has ended.
+2015-03-06T17:11:54  <mmorgan> gmcharlt++
+2015-03-06T17:12:04  *** mmorgan has left #evergreen
+2015-03-06T17:21:19  *** mrpeters has quit IRC
+2015-03-06T17:24:43  <jeff> yeah, it's the difference in these two calls:
+2015-03-06T17:24:45  <jeff> http://novselect.ebscohost.com/Configuration/ProfileSettings?finalCall=true&callback=novSelect.clbkConfig&profile=noble.main.novselstaf&password=[omitted -jeff]&siteToken=evergreen.noblenet.org&childProfile=true
+2015-03-06T17:24:49  <jeff> http://novselect.ebscohost.com/Configuration/ProfileSettings?finalCall=true&callback=novSelect.clbkConfig&profile=noble.main.novselstaf&password=[omitted -jeff]&siteToken=catalog.noblenet.org&childProfile=true
+2015-03-06T17:24:56  <jeff> I'd guess that there's a novelist-side config interface to turn features on/off
+2015-03-06T17:30:04  *** Bmagic has quit IRC
+2015-03-06T17:30:42  *** hopkinsju has quit IRC
+2015-03-06T17:39:37  <csharp> bleh - just hit this bug https://bugzilla.redhat.com/show_bug.cgi?id=1163812
+2015-03-06T17:40:38  <vlewis> I need to create a new user, one without permissions, to test a grant permission function.  I'm in a developer environment.  Is there a set of instructions I could look at?  Thanks.
+2015-03-06T17:42:32  <csharp> vlewis: can you explain what you mean by "without permissions"?
+2015-03-06T17:43:02  <csharp> vlewis: all users have to belong to a permission group
+2015-03-06T17:46:11  <vlewis> One without admin permissions
+2015-03-06T17:49:17  <csharp> vlewis: sorry, not trying to be obtuse, but do you mean a user that is not *the* "admin" user (that is, a superuser)?
+2015-03-06T17:52:06  <vlewis> I think that's what I need.  I'm going to grant permission to the admin user and I need to make sure I exclude other users.
+2015-03-06T17:53:00  <vlewis> There are certain pages I only want the admin to be able to get to because they can set delete flags in the database from that page.
+2015-03-06T17:54:39  <csharp> vlewis: we might be talking past each other here... to clarify from my side, there is a single "admin user" that is a special administrative user created when Evergreen is installed to perform server setup functions that are not available to library staff users
+2015-03-06T17:55:31  <vlewis> I'm talking about staff client users that have admin permissions.
+2015-03-06T17:55:37  <csharp> then there are "local admins" or "global admins" (depending on your setup) that will be privileged users that are actually human beings (but who still don't have *every* permission assigned)
+2015-03-06T17:55:41  <csharp> ah
+2015-03-06T17:55:41  *** gsams has quit IRC
+2015-03-06T17:56:25  *** Newziky has quit IRC
+2015-03-06T17:56:47  *** gsams has joined #evergreen
+2015-03-06T17:56:52  <csharp> okay - then that sort of permission setup would be done in Admin -> Server Administration -> Permission Groups (to create the perm group you want) and the user is created in the staff client Circulation -> Register Patron, then assign the group
+2015-03-06T17:57:39  <csharp> but depending on what you're doing, you may be able to assign an existing group
+2015-03-06T17:58:07  <vlewis> csharp: Do I need to set library locations.  I'm not at a specific location.
+2015-03-06T17:58:32  <csharp> vlewis: yes, each staff member needs a working location assigned for perms to work
+2015-03-06T17:58:58  <csharp> *some* perms work without that, but many/most don't (or shouldn't, by design)
+2015-03-06T17:59:09  <vlewis> csharp: I'm in a development environment.  I don't have a location.
+2015-03-06T17:59:24  <csharp> vlewis: did you install the sample data?
+2015-03-06T17:59:47  <csharp> and I'm pretty sure example org units are set up by default
+2015-03-06T18:00:00  <csharp> e.g. BR1, BR2, etc.
+2015-03-06T18:00:51  <vlewis> csharp:  I have data in my database.
+2015-03-06T18:01:33  <csharp> vlewis: okay, then you should have the example org units set up - you can see them in Admin -> Server Administration -> Organizational Units
+2015-03-06T18:04:49  <vlewis> csharp:  I have a long list of org units  under Organizational Units.
+2015-03-06T18:05:50  <csharp> vlewis: okay - then those can be working locations as long as they can have users
+2015-03-06T18:06:27  <csharp> vlewis: in the user (patron) account, you can go to Other -> User Permission Editor and add a working location there
+2015-03-06T18:15:10  <vlewis> Just to back up a little. When I make a user (patron)  account will they be able to access the staff client?
+2015-03-06T18:18:52  <jeffdavis> /usr/bin/ld: cannot find -ldbdpgsql
+2015-03-06T18:18:54  <csharp> vlewis: yes, if they are assigned a permission profile with the STAFF_LOGIN permission
+2015-03-06T18:19:08  <jeffdavis> ^ I get the above error when trying to install EG 2.8 beta on Ubuntu 14.04
+2015-03-06T18:27:04  <jeffdavis> ah! old install script used ./configure's --with-dbi option, but pointed in the wrong place - so a local issue only. whew!
+2015-03-06T18:30:24  <vlewis> csharp: Thanks for your help.  I may ask some more questions on Monday when I really dive into this.
+2015-03-06T18:36:57  *** vlewis has quit IRC
+2015-03-06T18:38:21  *** ningalls has quit IRC
+2015-03-06T18:38:52  *** sarabee has quit IRC
+2015-03-06T18:40:40  *** ningalls has joined #evergreen
+2015-03-06T18:44:10  *** ericar has quit IRC
+2015-03-06T18:54:11  *** akilsdonk has quit IRC
+2015-03-06T19:01:43  *** yboston has quit IRC
+2015-03-06T19:23:11  *** mglass__ has quit IRC
+2015-03-06T19:35:33  *** akilsdonk has joined #evergreen
+2015-03-06T20:07:20  *** kbutler has quit IRC
+2015-03-06T20:11:53  *** buzzy has quit IRC
+2015-03-06T20:16:23  *** akilsdonk has quit IRC
+2015-03-06T20:47:29  *** sandbergja has quit IRC
+2015-03-06T20:48:43  *** bmills has quit IRC
+2015-03-06T20:55:28  *** jihpringle has quit IRC

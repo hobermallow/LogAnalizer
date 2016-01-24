@@ -1,0 +1,252 @@
+2015-05-06T00:25:32  *** bmills has joined #evergreen
+2015-05-06T00:33:16  *** sandbergja2 has joined #evergreen
+2015-05-06T00:34:42  *** sandbergja has quit IRC
+2015-05-06T01:49:03  *** book` has quit IRC
+2015-05-06T02:05:04  *** book` has joined #evergreen
+2015-05-06T02:35:39  *** ningalls_ has quit IRC
+2015-05-06T02:36:05  *** ningalls_ has joined #evergreen
+2015-05-06T03:32:27  *** kmlussier has quit IRC
+2015-05-06T03:33:27  *** bshum has quit IRC
+2015-05-06T03:35:08  *** kmlussier has joined #evergreen
+2015-05-06T03:37:34  *** bshum has joined #evergreen
+2015-05-06T03:47:35  <bshum> "Wily Werewolf" no, seriously?
+2015-05-06T04:58:07  *** gsams has quit IRC
+2015-05-06T04:58:07  *** pmurray has quit IRC
+2015-05-06T04:58:08  *** b_bonner has quit IRC
+2015-05-06T05:00:37  *** gsams has joined #evergreen
+2015-05-06T05:00:37  *** pmurray has joined #evergreen
+2015-05-06T05:00:37  *** b_bonner has joined #evergreen
+2015-05-06T07:28:52  <csharp> bshum: LOL
+2015-05-06T07:30:17  <csharp> bshum: actually worse than "Beefy Miracle" https://beefymiracle.org/
+2015-05-06T07:30:57  *** graced has joined #evergreen
+2015-05-06T07:32:55  <csharp> oh - interesting - Fedora 8's release name was "Werewolf"
+2015-05-06T07:33:38  <csharp> so nothing new under the Linux-distro-naming sun ;-)
+2015-05-06T07:36:41  <csharp> hmm - and apparently release-naming in Fedora is no more: https://lists.fedoraproject.org/pipermail/advisory-board/2013-October/012209.html
+2015-05-06T07:36:58  * csharp is behind the times ;-)
+2015-05-06T07:51:28  *** collum has joined #evergreen
+2015-05-06T07:57:41  *** rjackson_isl has joined #evergreen
+2015-05-06T07:58:04  *** mrpeters has joined #evergreen
+2015-05-06T08:00:38  *** _bott_ has quit IRC
+2015-05-06T08:02:44  *** _bott_ has joined #evergreen
+2015-05-06T08:08:26  *** jboyer-isl has joined #evergreen
+2015-05-06T08:10:34  *** pmurray has left #evergreen
+2015-05-06T08:30:28  *** TaraC has joined #evergreen
+2015-05-06T08:36:32  *** mrpeters has quit IRC
+2015-05-06T08:38:47  *** akilsdonk has joined #evergreen
+2015-05-06T08:44:26  *** mrpeters has joined #evergreen
+2015-05-06T08:46:42  *** Shae has joined #evergreen
+2015-05-06T09:00:14  *** Dyrcona has joined #evergreen
+2015-05-06T09:04:19  *** Newziky has joined #evergreen
+2015-05-06T09:05:05  *** Shae has quit IRC
+2015-05-06T09:06:11  *** Shae has joined #evergreen
+2015-05-06T09:08:29  *** mrpeters has quit IRC
+2015-05-06T09:11:36  *** sarabee has quit IRC
+2015-05-06T09:12:47  *** mmorgan has joined #evergreen
+2015-05-06T09:20:26  *** Shae has quit IRC
+2015-05-06T09:23:45  *** Shae has joined #evergreen
+2015-05-06T09:26:47  *** maryj has joined #evergreen
+2015-05-06T09:27:00  *** mrpeters has joined #evergreen
+2015-05-06T09:33:07  *** yboston has joined #evergreen
+2015-05-06T09:38:22  <kmlussier> Maybe we should name our Evergreen releases.
+2015-05-06T09:38:50  <kmlussier> Actually, I take that back. The last thing I want to do is enter into another discussion that might lead to the release numbering debate again.
+2015-05-06T09:39:23  <bshum> What? No "Amazing Acorn" for 3.0?
+2015-05-06T09:39:33  <mmorgan> Oh, I was going to suggest 'widdlepuppy' for the first named release:)
+2015-05-06T09:41:46  <kmlussier> bshum: Don't you think we should pick something more Evergreen-ish as opposed to deciduous?
+2015-05-06T09:42:22  <bshum> If Ubuntu can use fake animals like Unicorns and Werewolves, then I don't know what to believe.
+2015-05-06T09:42:51  <bshum> mmorgan++
+2015-05-06T09:44:55  <Dyrcona> I recall someone suggesting Dashing Dewey.
+2015-05-06T09:45:28  <csharp> or Dashing Dui
+2015-05-06T09:47:52  *** akilsdonk has quit IRC
+2015-05-06T09:49:59  <dbwells> When I was RM, I thought about starting a practice of naming releases after after pop/rock tunes.  2.5 would have been "Ob-La-Di, Ob-La-Da", 2.6 would have been "Let It Be", and 3.0 will of course be "Stairway to Heaven".
+2015-05-06T09:51:54  <csharp> dbwells++
+2015-05-06T09:53:53  *** akilsdonk has joined #evergreen
+2015-05-06T10:07:49  <Dyrcona> dbwells++
+2015-05-06T10:09:11  <dbs> kmlussier++ # avoiding release numbering debate instigation
+2015-05-06T10:18:38  <csharp> bshum: found a rid (you may have seen) - thanks again for the offer :-)
+2015-05-06T10:18:45  <csharp> s/rid/ride/
+2015-05-06T10:19:00  <bshum> csharp: Sounds good!
+2015-05-06T10:46:28  *** mrpeters has quit IRC
+2015-05-06T10:54:22  *** mrpeters has joined #evergreen
+2015-05-06T11:01:47  *** mllewellyn has joined #evergreen
+2015-05-06T11:21:26  *** bmills has joined #evergreen
+2015-05-06T11:42:33  *** Stompro has joined #evergreen
+2015-05-06T12:25:12  *** buzzy has joined #evergreen
+2015-05-06T12:25:36  *** mrpeters1 has joined #evergreen
+2015-05-06T12:25:39  *** buzzy has quit IRC
+2015-05-06T12:27:59  *** mrpeters has quit IRC
+2015-05-06T12:39:51  *** jwoodard has joined #evergreen
+2015-05-06T13:02:04  *** Newziky has quit IRC
+2015-05-06T13:02:12  *** bbqben has joined #evergreen
+2015-05-06T13:02:45  *** sarabee has joined #evergreen
+2015-05-06T13:09:41  *** mrpeters has joined #evergreen
+2015-05-06T13:12:55  *** jihpringle has joined #evergreen
+2015-05-06T13:13:37  *** mrpeters1 has quit IRC
+2015-05-06T13:16:26  *** sarabee has quit IRC
+2015-05-06T13:16:40  *** rjackson_isl has quit IRC
+2015-05-06T13:17:00  *** rjackson_isl has joined #evergreen
+2015-05-06T13:17:09  *** mrpeters has quit IRC
+2015-05-06T13:18:57  *** mrpeters has joined #evergreen
+2015-05-06T13:32:56  <csharp> okay, so we're interested in getting the OPAC translated into Spanish, and I'm looking at the Launchpad translation tools...
+2015-05-06T13:33:43  <csharp> where do these strings come from?  I'm seeing serveral that look like code entries
+2015-05-06T13:33:55  <csharp> (as opposed to public-facing text)
+2015-05-06T13:34:29  <berick> csharp: sometimes html tags will make their way into the strings.  is that what you're seeing?
+2015-05-06T13:34:56  <csharp> example:
+2015-05-06T13:34:56  <csharp> (pubdate_clean)
+2015-05-06T13:34:56  <csharp> (copyright_clean)
+2015-05-06T13:34:58  <bshum> csharp: Sometimes also, the translation is intentionally variabled
+2015-05-06T13:34:58  <berick> and some of it is interpolation variables, like [_1] or %$1 or some such
+2015-05-06T13:35:08  <bshum> Like how berick says
+2015-05-06T13:35:19  <csharp> ok
+2015-05-06T13:35:33  <csharp> maybe I need to back up and learn how it works from scratch
+2015-05-06T13:35:42  *** buzzy has joined #evergreen
+2015-05-06T13:36:02  <csharp> we're hoping to hand this off to a third party who we don't expect to know anything about code or even Launchpad
+2015-05-06T13:36:11  <bshum> csharp: So normally, what I would do is to get a PO from Launchpad
+2015-05-06T13:36:18  <bshum> And then have them replace strings in the file.
+2015-05-06T13:36:24  <berick> so, pubdate_clean is definitely a variable, whose value is inserted into the string after translation
+2015-05-06T13:36:25  <csharp> ah
+2015-05-06T13:36:26  <bshum> But yeah, those files tend to be a little odd.
+2015-05-06T13:36:53  <bshum> mceraso has a long-term project to work on Spanish too, but I'm not sure where she's at with it.
+2015-05-06T13:37:09  <csharp> we think it would be a huge win here
+2015-05-06T13:37:25  <bshum> It's undoubtly the biggest thing we need to re-achieve.
+2015-05-06T13:37:35  <bshum> Spanish JSPAC took us a little bit of work to get done back in the day.
+2015-05-06T13:37:46  <bshum> End of the day, having some translations to start is better than none.
+2015-05-06T13:37:58  <bshum> And engages new users to help suggest alternatives for the future.
+2015-05-06T13:38:04  <bshum> With nothing, it's hard to start at all.
+2015-05-06T13:38:12  <csharp> terran is already working with a locally-based translation service on another project, so we're trying to see how many words need translating (as they charge by the word)
+2015-05-06T13:38:17  <bshum> So for my money, I'd say, give them the file, ask them to do their best, and see how it goes.
+2015-05-06T13:38:34  <bshum> And deal with nuances later on.
+2015-05-06T13:38:37  * csharp wishes it was that simple
+2015-05-06T13:38:39  <bshum> Ah, gotcha.
+2015-05-06T13:38:49  <csharp> we have to create an estimate before we can do anything
+2015-05-06T13:38:58  <bshum> I guess I just mean to say perfect isn't to be expected.
+2015-05-06T13:39:27  <mceraso> csharp: my initial hesitation was the variations of dialectic
+2015-05-06T13:40:04  <csharp> mceraso: you mean dialects?  if so, yeah, I've thought about that too
+2015-05-06T13:40:15  <mceraso> Yes, exactly
+2015-05-06T13:40:20  <csharp> I would imagine es-MX is proabably our best bet
+2015-05-06T13:40:27  <csharp> at least here in Georgia
+2015-05-06T13:40:49  <mceraso> I know Castilian Spanish well enough
+2015-05-06T13:40:55  <csharp> nice!
+2015-05-06T13:40:58  <mceraso> But yeah, looking at what's already there
+2015-05-06T13:41:07  <mceraso> es-MX seems more useful
+2015-05-06T13:42:14  <mceraso> csharp: when were you looking to have the translation completed by?
+2015-05-06T13:43:34  <csharp> mceraso: actually, the conversation right now is "we have leftover funds for this fiscal year and want to spend them as fast as possible", but I'm not sure if that means the actual translation would have to be complete by a certain time
+2015-05-06T13:43:43  * csharp hopes not
+2015-05-06T13:44:52  <mceraso> Well, I agree that it's definitely something that is needed :)
+2015-05-06T13:52:44  <gmcharlt> dbs: bug 1452352 may be of interest to you
+2015-05-06T13:52:44  <pinesol_green> Launchpad bug 1452352 in Evergreen "TPAC: coded values labels can come from wrong locale" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1452352
+2015-05-06T13:53:11  *** vlewis has joined #evergreen
+2015-05-06T13:53:43  *** vlewis_ has joined #evergreen
+2015-05-06T13:53:50  <dbs> gmcharlt: very much so. I thought there was a really old bug already for that but maybe I just complained about it here or on the list...
+2015-05-06T13:54:20  <dbs> very exciting that you have a potential fix though!
+2015-05-06T13:57:30  <Bmagic> I want to make sure this is not a feature of Evergreen: Patron puts an item on hold from "my lists" and the item is removed from said list
+2015-05-06T13:58:00  <bshum> I feel conflicted about that based on what the purpose of a list is.
+2015-05-06T13:58:13  <bshum> On the one hand, if I were making a list for stuff to put on hold
+2015-05-06T13:58:28  <bshum> I might like it removing it from my list so that I don't try doing another hold on the same thing later.
+2015-05-06T13:58:34  <bshum> But if it was just a reading list or whatnot
+2015-05-06T13:58:40  <bshum> That seems.... wrong.
+2015-05-06T13:58:45  <gmcharlt> dbs: bah, I just noticed I crossed streams; you'll want to also look at 1452366 vis-a-vis the new_editor() changes in init_ro_object_cache
+2015-05-06T13:59:03  <Bmagic> so it's not a feature, right?
+2015-05-06T13:59:03  <bshum> Maybe not automagically would be the key, I think.  Maybe some sort of prompt or user setting to make that happen.
+2015-05-06T13:59:11  <bshum> Bmagic: I don't know.  :)
+2015-05-06T13:59:25  <bshum> One person's feature is another person's bug?  Or so the saying goes?
+2015-05-06T14:00:14  <bshum> Bmagic: Are you asking because it's doing this on your system now?  Or are you asking whether it's an idea someone else has and would be cool to have as a new feature of the future?
+2015-05-06T14:00:29  <Bmagic> the ladder
+2015-05-06T14:00:38  <bshum> Oh, then that's different.
+2015-05-06T14:00:39  <bshum> :)
+2015-05-06T14:00:51  <bshum> And you ignore my whole "is it a bug? is a feature?" spiel
+2015-05-06T14:01:23  <bshum> My opinion then is that if you want to make that a thing, I'd make it an option for users to enact if they opt into it.
+2015-05-06T14:01:39  <bshum> Just because I'd rather not make that the default action.
+2015-05-06T14:01:44  <bshum> But others may have other opinions.
+2015-05-06T14:01:55  <Bmagic> bshum: yeah, it should be a setting if such a thing existed
+2015-05-06T14:03:47  <bshum> Bmagic: What might be good is to describe the idea for a new feature like that and send it out on the list for feedback.
+2015-05-06T14:04:03  <bshum> I imagine there might be lots of helpful ideas from staff / evergreen users.
+2015-05-06T14:07:23  *** Newziky has joined #evergreen
+2015-05-06T14:26:44  <bshum> The patches are multiplying.
+2015-05-06T14:29:54  *** dMiller_ has joined #evergreen
+2015-05-06T14:36:42  <jeff> @decide get the patches wet or feed the patches after midnight
+2015-05-06T14:36:42  <pinesol_green> jeff: Leave me alone, I'm busy right now.
+2015-05-06T14:39:36  <jonadab> jeff: Both, of course.  But in which order?
+2015-05-06T14:43:09  *** akilsdonk has quit IRC
+2015-05-06T14:47:57  *** buzzy has quit IRC
+2015-05-06T14:48:00  *** gsams has quit IRC
+2015-05-06T14:48:00  *** b_bonner has quit IRC
+2015-05-06T14:48:01  *** mllewellyn has quit IRC
+2015-05-06T14:48:01  *** TaraC has quit IRC
+2015-05-06T14:48:05  *** book` has quit IRC
+2015-05-06T14:49:28  *** akilsdonk_ has joined #evergreen
+2015-05-06T14:49:28  *** mllewellyn has joined #evergreen
+2015-05-06T14:49:28  *** TaraC has joined #evergreen
+2015-05-06T14:49:28  *** book` has joined #evergreen
+2015-05-06T14:49:41  *** buzzy has joined #evergreen
+2015-05-06T14:49:41  *** gsams has joined #evergreen
+2015-05-06T14:49:41  *** b_bonner has joined #evergreen
+2015-05-06T15:18:48  *** akilsdonk_ has quit IRC
+2015-05-06T15:18:49  *** mllewellyn has quit IRC
+2015-05-06T15:18:49  *** TaraC has quit IRC
+2015-05-06T15:19:07  *** vlewis has quit IRC
+2015-05-06T15:19:09  *** vlewis_ has quit IRC
+2015-05-06T15:19:12  *** akilsdonk_ has joined #evergreen
+2015-05-06T15:19:12  *** mllewellyn has joined #evergreen
+2015-05-06T15:19:12  *** TaraC has joined #evergreen
+2015-05-06T15:31:44  <jwoodard> Ok weird question.
+2015-05-06T15:32:45  <jwoodard> More so a n00b question. How do you filter out barcodes that are inactive in reports? Say if you give a patron a new card and the old card is marked inactive.
+2015-05-06T15:39:48  <jeff> depends on what you're reporting on
+2015-05-06T15:40:14  <jeff> but typically, the library cards in actor.card can be filtered on "active" being true or false.
+2015-05-06T15:42:13  <tsbere> jwoodard: If you want just their "current" barcode you want to go off of the "card" entry on actor.usr, instead of the "all barcodes" IDL link.
+2015-05-06T15:42:33  <tsbere> (given that a single user may have multiple "active" barcodes, but they can only have one "primary")
+2015-05-06T15:42:34  * jeff nods
+2015-05-06T15:43:13  <csharp> jwoodard: what tsbere said is probably what you're after
+2015-05-06T15:43:25  *** yboston has quit IRC
+2015-05-06T15:43:41  <csharp> jwoodard: in the reporter it's ILS User -> Current Library Card -> Barcode
+2015-05-06T15:44:21  <jwoodard> That is what I was doing wrong
+2015-05-06T15:44:46  <jwoodard> I was using all library cards. Thanks!
+2015-05-06T15:54:38  <jeff> tsbere++ csharp++
+2015-05-06T16:08:13  *** collum has quit IRC
+2015-05-06T16:27:33  *** rjackson_isl has quit IRC
+2015-05-06T16:30:27  *** jboyer-isl has quit IRC
+2015-05-06T16:45:10  *** bmills has quit IRC
+2015-05-06T16:50:36  *** bmills has joined #evergreen
+2015-05-06T16:54:29  *** Newziky has quit IRC
+2015-05-06T16:56:29  *** jonadab_znc has quit IRC
+2015-05-06T16:56:55  *** jonadab_znc has joined #evergreen
+2015-05-06T16:59:30  *** Dyrcona has quit IRC
+2015-05-06T17:03:25  *** vlewis has joined #evergreen
+2015-05-06T17:06:04  *** graced has quit IRC
+2015-05-06T17:06:14  *** Shae has quit IRC
+2015-05-06T17:15:09  *** mmorgan has left #evergreen
+2015-05-06T17:31:37  *** maryj has quit IRC
+2015-05-06T17:32:05  *** mllewellyn has quit IRC
+2015-05-06T17:35:13  *** eady has quit IRC
+2015-05-06T17:35:41  *** jonadab_znc has quit IRC
+2015-05-06T17:37:11  *** eady has joined #evergreen
+2015-05-06T17:40:58  *** jonadab_znc has joined #evergreen
+2015-05-06T18:03:20  <jwoodard> reports--
+2015-05-06T18:13:28  *** mrpeters has quit IRC
+2015-05-06T18:29:20  *** remingtron_ has joined #evergreen
+2015-05-06T18:31:33  *** frank_mx has joined #evergreen
+2015-05-06T18:32:41  *** remingtron has quit IRC
+2015-05-06T18:33:00  *** frank_mx has quit IRC
+2015-05-06T18:35:35  *** buzzy has quit IRC
+2015-05-06T18:39:22  *** jihpringle_ has joined #evergreen
+2015-05-06T18:42:11  *** jihpringle has quit IRC
+2015-05-06T18:42:16  *** jihpringle_ is now known as jihpringle
+2015-05-06T18:44:22  *** maryj has joined #evergreen
+2015-05-06T18:47:02  *** jihpringle has quit IRC
+2015-05-06T18:47:29  *** vlewis has quit IRC
+2015-05-06T18:53:09  *** maryj has quit IRC
+2015-05-06T19:07:38  *** nuentoter has joined #evergreen
+2015-05-06T19:13:07  *** nuentoter has quit IRC
+2015-05-06T19:31:46  *** dMiller_ has quit IRC
+2015-05-06T19:39:36  *** akilsdonk_ has quit IRC
+2015-05-06T19:45:08  *** jihpringle has joined #evergreen
+2015-05-06T19:59:46  *** dcook has joined #evergreen
+2015-05-06T20:01:07  *** jwoodard has quit IRC
+2015-05-06T20:36:02  *** bbqben has quit IRC
+2015-05-06T20:38:04  *** bmills has left #evergreen
+2015-05-06T20:45:59  *** _whitni has joined #evergreen
+2015-05-06T20:46:35  <_whitni> Hi All - wondering if anyone might be able to give me some insight as to what I missed for the ./configure
+2015-05-06T20:49:16  <jihpringle> _whitni: the channel is usually very quiet at this time of day.  Between 9am and 5pm Eastern Standard Time there is more likely to be someone who can help you
+2015-05-06T20:49:31  <jihpringle> you could also try one of the mailing lists: http://evergreen-ils.org/communicate/mailing-lists/
+2015-05-06T20:50:01  *** jihpringle has quit IRC
+2015-05-06T20:50:12  *** _whitni has left #evergreen
+2015-05-06T23:22:05  *** akilsdonk has joined #evergreen

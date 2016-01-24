@@ -1,0 +1,551 @@
+2015-04-23T01:02:00  *** DPearl has quit IRC
+2015-04-23T01:04:53  *** DPearl has joined #evergreen
+2015-04-23T04:14:09  <kmlussier> jonadab: Well, there is the Douglas county model for purchasing ebooks - http://douglascountylibraries.org/content/ebooks-and-DCL
+2015-04-23T04:53:40  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-23T07:35:15  *** pmurray_away is now known as pmurray
+2015-04-23T07:35:46  *** rjackson_isl has joined #evergreen
+2015-04-23T07:45:59  *** graced has joined #evergreen
+2015-04-23T07:50:44  *** mrpeters has joined #evergreen
+2015-04-23T07:51:36  *** graced is now known as gdunbar
+2015-04-23T07:51:39  *** gdunbar is now known as graced
+2015-04-23T07:58:23  <csharp> kmlussier: thanks for sharing that.  I love that they took that stand.
+2015-04-23T07:59:28  * csharp is curious about how other EG libraries are dealing with ebooks logistically
+2015-04-23T07:59:59  <csharp> there's been a long-standing impasse here about whether we are to batchload in ebook MARC records
+2015-04-23T08:00:22  <csharp> most of the issue is that they are non-OCLC records and we're a single-bib-source shop
+2015-04-23T08:01:32  <csharp> but I wonder how we would deal with the fact that the ebook providers are constantly changing who has access to what - specifically, do sys admins just constantly add and delete bibs at the same rate they are provided by the ebook vendor?
+2015-04-23T08:02:18  <csharp> also, we have several ebook providers throughout the consortium with different policies
+2015-04-23T08:02:51  <csharp> anyway, just musing aloud here because it's something we're discussing internally
+2015-04-23T08:03:28  *** jboyer-isl has joined #evergreen
+2015-04-23T08:03:48  <csharp> my pie-in-the-sky hope is that we could tie into the ebook providers' APIs (assuming they exist) so that we can load ebook results alongside other catalog results without them actually being in EG
+2015-04-23T08:04:00  <csharp> @monologue
+2015-04-23T08:04:00  <pinesol_green> csharp: Your current monologue is at least 9 lines long.
+2015-04-23T08:10:05  <csharp> huh - I just had the idea to have a "catalog tips" widget with random/rotating ideas about searching (customizable via TT2, maybe?)
+2015-04-23T08:10:46  <csharp> "Did you know that e-books are available via GALILEO?  Learn more (link)"
+2015-04-23T08:11:07  <csharp> dunno if that would seem too spammy/corporate
+2015-04-23T08:15:27  *** collum has joined #evergreen
+2015-04-23T08:25:21  *** akilsdonk has joined #evergreen
+2015-04-23T08:26:45  <kmlussier> csharp: I know C/W MARS and NOBLE have different workflows for loading their ebook records. If you send that question to the list, I'm guessing they'll send a response.
+2015-04-23T08:27:40  <kmlussier> They both have academics, so getting those ebook records in the catalog is an important service for their libraries.
+2015-04-23T08:27:56  <csharp> kmlussier: thanks - I'll consider that... it's kind of a sensitive issue around here right now, so I need to check around here before asking
+2015-04-23T08:32:59  *** mmorgan has joined #evergreen
+2015-04-23T08:35:44  *** remingtron has quit IRC
+2015-04-23T08:36:30  *** Dyrcona has joined #evergreen
+2015-04-23T08:41:12  *** remingtron has joined #evergreen
+2015-04-23T08:46:24  *** Shae has joined #evergreen
+2015-04-23T08:53:06  *** Newziky has joined #evergreen
+2015-04-23T08:53:24  *** jwoodard has joined #evergreen
+2015-04-23T09:07:15  *** maryj has joined #evergreen
+2015-04-23T09:12:23  *** neopsyche has quit IRC
+2015-04-23T09:35:42  *** DPearl has left #evergreen
+2015-04-23T09:41:22  *** yboston has joined #evergreen
+2015-04-23T09:58:18  *** mllewellyn has joined #evergreen
+2015-04-23T10:01:45  *** montgoc1 has joined #evergreen
+2015-04-23T10:28:40  <dbs> csharp: we tend not to load records for constantly-changing ebook providers. Then again, we try not to purchase subscriptions for content we don't have control over.
+2015-04-23T10:29:11  <dbs> Nothing pisses off our faculty and students more than an ebook that's there one day (say, when the faculty member prescribes a reading at the start of the academic year)
+2015-04-23T10:29:22  <dbs> and gone the next (say, when the student goes to actually read it)
+2015-04-23T10:29:46  <dbs> Otherwise, we load records for any ebooks to which we've purchased permanent access.
+2015-04-23T10:52:34  *** Newziky has left #evergreen
+2015-04-23T11:04:38  <eeevil> csharp: so, your "tips" idea existed from day 1, but was tossed out with the TPAC
+2015-04-23T11:06:14  <eeevil> and I wrote a federated search prototype in the long long ago ... all client side JS+xslt, with a proxy shim on the server to get around cross-site XHR restrictions
+2015-04-23T11:06:36  <eeevil> I think the code's in the evergreen repo...
+2015-04-23T11:07:53  <eeevil> csharp: and, the original use case for bib source is to easily segregate records coming from different places, so you could purge ebook records easily at update time, for instance
+2015-04-23T11:16:48  <jeffdavis> hmm, that reminds me to have a look at bug 1178377 ...
+2015-04-23T11:16:48  <pinesol_green> Launchpad bug 1178377 in Evergreen "Expose bib source in TPAC" (affected: 2, heat: 10) [Wishlist,Incomplete] https://launchpad.net/bugs/1178377
+2015-04-23T11:23:11  <jeffdavis> All the pieces are there but the latest branch is based on 2.4.  Let me see if I can apply those changes to master.
+2015-04-23T11:33:41  *** bmills1 has joined #evergreen
+2015-04-23T11:51:56  *** akilsdonk has quit IRC
+2015-04-23T11:52:38  *** dMiller_ has joined #evergreen
+2015-04-23T12:01:07  <jeffdavis> ok, now there's a branch that can be pulled into master, bug has been updated
+2015-04-23T12:05:29  *** gsams has quit IRC
+2015-04-23T12:05:38  <csharp> dbs: that sounds like a sound policy
+2015-04-23T12:05:42  <csharp> I'll suggest that here
+2015-04-23T12:06:43  *** gsams has joined #evergreen
+2015-04-23T12:06:43  <jeff> jeffdavis++
+2015-04-23T12:07:13  <csharp> eeevil: interesting about the "tips" idea; excellent about bib source
+2015-04-23T12:07:34  <csharp> I was just musing about "huh, I wonder if there's some way we could mark the ebook records...."
+2015-04-23T12:09:10  <Dyrcona> We use bib sources for our Overdrive and Safari Books Online records.
+2015-04-23T12:09:27  <Dyrcona> Other ebook providers have not really made it into the database, yet.
+2015-04-23T12:30:52  <csharp> so to resume a thread from a number of weeks ago, we're seriously considering OSTicket as our Helpdesk software - anyone else using that?
+2015-04-23T12:31:49  <csharp> we're evaluating RT as well, but so far setup is pretty non-intuitive and all the "user" docs read like Linux man pages
+2015-04-23T12:32:12  <csharp> "setup" = "configuration within the UI", btw
+2015-04-23T12:32:15  <tsbere> We use RT by choice of our members.
+2015-04-23T12:32:47  * tsbere can help with setting RT up as a result
+2015-04-23T12:32:56  <csharp> tsbere: that's nice to know
+2015-04-23T12:33:41  <csharp> well, one of the selling points on our end for RT is that it's in use by other EG sites, which might lead to some EG/RT integration ideas in the future?
+2015-04-23T12:33:41  *** bmills1 has quit IRC
+2015-04-23T12:34:23  <csharp> one of the originally envisioned features of Evergreen was helpdesk integration, but it didn't get very far
+2015-04-23T12:38:01  <bshum> You know, speaking of bib sources...
+2015-04-23T12:38:14  <bshum> Anyone got a test server with 2.8/master around and can test something for me
+2015-04-23T12:38:36  <bshum> So I got a report from our staff that loading bibs is causing the bib source to change to the latest source on merges.
+2015-04-23T12:38:56  <bshum> Instead of staying at the original source.
+2015-04-23T12:39:11  <bshum> During match-only merge.
+2015-04-23T12:39:47  <bshum> I'm getting into it shortly, but curious to see if I can verify that it's not just our systems.
+2015-04-23T12:39:51  <Dyrcona> I could test it, but I'm too busy to do that today.
+2015-04-23T12:47:48  *** bmills1 has joined #evergreen
+2015-04-23T12:54:48  *** sandbergja has joined #evergreen
+2015-04-23T13:13:33  <bshum> Aha
+2015-04-23T13:13:33  <bshum> http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=62510da3171c54bfeb2b34478c4e4a6c2c05acb1
+2015-04-23T13:13:33  <pinesol_green> [evergreen|Remington Steed] LP#957466: Update editor/edit_date/source on overlay - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=62510da>
+2015-04-23T13:14:49  * mmorgan was going to point bshum to lp 957466
+2015-04-23T13:14:49  <pinesol_green> Launchpad bug 957466 in Evergreen "overlaying a record from vandelay does not update editor/edit_date" (affected: 7, heat: 34) [Medium,Fix released] https://launchpad.net/bugs/957466
+2015-04-23T13:15:07  <bshum> Well, apparently having the source updated is highly undesirable for our current cataloging workflows.
+2015-04-23T13:15:25  <kmlussier> I'm guessing the bib record edit date is updated too?
+2015-04-23T13:15:43  <bshum> Probably
+2015-04-23T13:16:17  <mllewellyn> I like the edit date update
+2015-04-23T13:16:25  <mllewellyn> just want control over the bib source update
+2015-04-23T13:17:49  <mllewellyn> we have acq vendor records labeled with a different bib source, and when they match, they're changing our OCLC bib source
+2015-04-23T13:18:26  <mllewellyn> I use that source to identify records I need to overlay to full OCLC records
+2015-04-23T13:20:16  <bshum> So I think I see the part in the vandelay database function that changes the source.  For the short term, mllewellyn, I think I can safely rip it out of our database.
+2015-04-23T13:20:29  <bshum> But long-term, it sounds like we should file a bug to make this some sort of setting controlled option.
+2015-04-23T13:21:00  <mllewellyn> like a bib source hierarchy
+2015-04-23T13:24:22  <Dyrcona> The bib source change was intended to make records get the bib source selected in the vandelay import because we had fresh records loading (not overlay records) and getting a null bib source.
+2015-04-23T13:24:57  <Dyrcona> The branch was evaluated on that basis, and overlay was not on my radar in the testing that I did.
+2015-04-23T13:26:47  <bshum> I could see avoiding that being helpful.
+2015-04-23T13:27:36  * bshum rips it out for now so that mllewellyn's work isn't disrupted.
+2015-04-23T13:27:47  <bshum> I'll file a new bug on the subject in a bit.
+2015-04-23T13:28:33  <kmlussier> mllewellyn: I was thinking the edit date update was only useful if you were actually updating the bib record. With a match-only merge, it seems like the date should stay the same.
+2015-04-23T13:29:02  <kmlussier> BTW, bshum, welcome back!
+2015-04-23T13:29:28  <bshum> kmlussier: Thanks!  Sadly I did not actually get to merge anything new while I was abroad :(
+2015-04-23T13:30:51  <mllewellyn> kmlussier: in this case, it was helpful to find those bibs with the changed source to narrow down what was going on
+2015-04-23T13:31:58  <Dyrcona> Given that this all happens in a database trigger, I believe the amount of information available for it to determine what to do is limited.
+2015-04-23T13:32:21  <bshum> Indeed.
+2015-04-23T13:32:28  <Dyrcona> It would need more arguments or a new implementation to be smarter.
+2015-04-23T13:34:45  <bshum> I was wondering about that too
+2015-04-23T13:34:51  <bshum> How best to implement some sort of toggle
+2015-04-23T13:35:10  <bshum> But it seems annoying to check that every time.
+2015-04-23T13:35:30  <bshum> I'll have to ponder that more later... next fire.
+2015-04-23T13:36:39  <kmlussier> A sticky toggle might be useful
+2015-04-23T13:42:05  <kmlussier> I'm not able to log into webby today. Does webby need a kick or is it just happening to me?
+2015-04-23T13:42:33  *** akilsdonk has joined #evergreen
+2015-04-23T13:58:16  <Dyrcona> Dunno, but amazingly enough, I've not had a problem with the wifi yet.
+2015-04-23T13:58:40  <bshum> And................
+2015-04-23T13:58:45  <bshum> Nope, still there.
+2015-04-23T13:59:01  <bshum> You dare the fates to conspire against you Dyrcona.  Beware their wrath.
+2015-04-23T13:59:21  <Dyrcona> heh
+2015-04-23T14:03:12  <bshum> csharp: I changed the milestones on https://bugs.launchpad.net/evergreen/+bug/1446860 so that it targets all the current round of maintenance release milestones.
+2015-04-23T14:03:13  <pinesol_green> Launchpad bug 1446860 in Evergreen "staff users can edit their own accounts" (affected: 2, heat: 10) [High,Confirmed] - Assigned to Chris Sharp (chrissharp123)
+2015-04-23T14:03:18  <bshum> I figure that the fix should be applied everywhere.
+2015-04-23T14:03:31  <bshum> I'll review it in a bit and get it pushed along.
+2015-04-23T14:09:56  <bshum> mllewellyn: I filed https://bugs.launchpad.net/evergreen/+bug/1447746 to make sure I didn't forget it.
+2015-04-23T14:09:56  <pinesol_green> Launchpad bug 1447746 in Evergreen "Do not update bib source on match-only merge" (affected: 1, heat: 6) [Undecided,New]
+2015-04-23T14:10:59  <kmlussier> berick (or anyone else who knows the answer): I've seen instructions to install hatch on linux and on windows. Will it also work on macs?
+2015-04-23T14:11:34  <jeff> it is intended to, but I've not been able to test that becase of my ancient version of OS X.
+2015-04-23T14:12:00  <kmlussier> jeff: OK, thank you!
+2015-04-23T14:15:30  <mllewellyn> bshum: thank you
+2015-04-23T14:15:42  <bshum> mllewellyn++ # getting the word out
+2015-04-23T14:17:23  <berick> kmlussier: yes, i have gotten it to work on a mac before.
+2015-04-23T14:17:54  <kmlussier> berick: Great! Thank you!
+2015-04-23T14:21:57  <jeff> Question: Where is 905$u use common?
+2015-04-23T14:22:01  <jeff> (perhaps not a simple question)
+2015-04-23T14:24:51  <jeff> oh, we appear to have maintained 905$u on a handful of records.
+2015-04-23T14:26:36  <csharp> bshum: great - thanks.  I don't appear to have access to add more than one version to target.
+2015-04-23T14:27:17  <bshum> csharp: Easy enough to grant you
+2015-04-23T14:27:33  <bshum> Do you want the power?  (with great power comes great responsibility)
+2015-04-23T14:28:51  <bshum> csharp: The group you want is https://launchpad.net/~evergreen-drivers
+2015-04-23T14:29:02  <bshum> If you apply to join that, then you can have series targeting powers.
+2015-04-23T14:32:31  <csharp> <he_man>I HAVE THE POWER!!!</he_man>
+2015-04-23T14:34:38  <bshum> And done.
+2015-04-23T14:35:51  <jeff> Okay, so while commit 7a39120 has been around since 2010, it wasn't until recently that we started seeing evergreen maintain 905$u
+2015-04-23T14:35:51  <pinesol_green> [evergreen|miker] support 905u (editor by barcode or usrname) in vandelay overlay/merge rules - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7a39120>
+2015-04-23T14:39:38  <jeff> looks like 905$u is now being set for any records that we're bringing in via vandelay.
+2015-04-23T14:44:13  *** dMiller_ has quit IRC
+2015-04-23T15:02:54  *** bmills1 has quit IRC
+2015-04-23T15:04:39  * csharp looks around for a dev meeting...
+2015-04-23T15:05:21  <csharp> bshum++ # thanks
+2015-04-23T15:07:52  * jeffdavis is also here for the dev meeting
+2015-04-23T15:10:30  * jeffdavis should learn how to facilitate meetings in IRC
+2015-04-23T15:11:32  * kmlussier can't run a meeting today.
+2015-04-23T15:11:37  <jeff> jeffdavis: no time like the present? http://wiki.evergreen-ils.org/doku.php?id=community:using-meetbot
+2015-04-23T15:12:03  * berick finally arrives
+2015-04-23T15:12:07  * dbs kicks visitor out of office
+2015-04-23T15:13:07  <dbwells> #startmeeting Development Meeting, 23 April 2015
+2015-04-23T15:13:07  <pinesol_green> Meeting started Thu Apr 23 15:13:07 2015 US/Eastern.  The chair is dbwells. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-04-23T15:13:07  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-04-23T15:13:07  <pinesol_green> The meeting name has been set to 'development_meeting__23_april_2015'
+2015-04-23T15:13:34  <berick> dbwells++
+2015-04-23T15:13:39  <dbwells> #info Agenda is http://evergreen-ils.org/dokuwiki/doku.php?id=dev:meetings:2015-04-23
+2015-04-23T15:13:46  <dbwells> #topic Introductions
+2015-04-23T15:14:06  <dbwells> #info dbwells = Dan Wells, Hekman Library (Calvin College)
+2015-04-23T15:14:14  <remingtron> #info remingtron = Remington Steed, Hekman Library (Calvin College)
+2015-04-23T15:14:19  <jeffdavis> #info jeffdavis = Jeff Davis, Sitka
+2015-04-23T15:14:23  <berick> #info berick Bill Erickson
+2015-04-23T15:14:28  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-04-23T15:14:36  <csharp> #info csharp = Chris Sharp, GPLS
+2015-04-23T15:14:39  <berick> oops, forgot to add KCLS
+2015-04-23T15:14:54  <csharp> #info berick is with KCLS, y'all
+2015-04-23T15:15:08  <dbs> #info dbs = Dan Scott, Laurentian University
+2015-04-23T15:15:12  <jeff> #info jeff = Jeff Godin, Traverse Area District Library (TADL)
+2015-04-23T15:15:16  <phasefx> #info phasefx = Jason Etheridge, Equinox
+2015-04-23T15:15:17  <berick> heh
+2015-04-23T15:15:27  <bshum> #info bshum = Ben Shum, Bibliomation
+2015-04-23T15:16:25  <dbwells> ok
+2015-04-23T15:16:36  <dbwells> #topic Action Items from Last Meeting
+2015-04-23T15:16:51  <dbwells> #info berick, gmcharlt, and eeevil will add a response to the chromium localhost ws bug
+2015-04-23T15:17:02  <berick> yeah, they shut everyone out
+2015-04-23T15:17:22  <eeevil> #info eeevil Mike Rylander, ESI
+2015-04-23T15:17:25  <gmcharlt> #info gmcharlt Galen Charlton, ESI
+2015-04-23T15:17:44  <dbwells> berick: What exactly does that mean for our concerns?
+2015-04-23T15:18:04  <dbwells> We're out of luck, or something else?
+2015-04-23T15:18:09  <berick> that we have limited (no?) ability to affect change
+2015-04-23T15:18:13  <jeff> https://code.google.com/p/chromium/issues/detail?id=378566#c77 is the best summary.
+2015-04-23T15:18:14  <eeevil> dbwells: honestly, not much, given https://news.ycombinator.com/item?id=9210484
+2015-04-23T15:18:22  <dbs> "Star the bug and maybe we'll think about it"
+2015-04-23T15:18:27  <eeevil> IMO, I should say
+2015-04-23T15:18:52  <jeff> > we will not be making action to block these loads until there is a viable, standards-track (although perhaps not necessarily yet standardized) solution that enhances security and preserves utility
+2015-04-23T15:18:58  <jeff> > If you currently rely on such communication, you MUST be prepared to update your products at a point in the future to whatever is developed to mitigate these issues. The current solution IS NOT viable long-term.
+2015-04-23T15:20:05  <jeff> The sentence before that is a bit annoying:
+2015-04-23T15:20:07  <jeff> > Discussion about what a viable long-term path means will happen in the W3C. The most likely place for this discussion is where it was first considered - public-webappsec@. However, public-webappsec@ is presently not chartered for this discussion.
+2015-04-23T15:20:29  <jeff> essentially, "the list where we think this discussion belongs is not currently charted for this discussion"
+2015-04-23T15:21:11  <dbwells> Does someone want to summarize an update with a #info tag?  I'm not qualified to comment on this at all, I think.
+2015-04-23T15:21:25  <berick> so when this discussion, which has no place to exist, happens, we can potentially contribute.
+2015-04-23T15:22:10  <dbwells> Ok, I'm starting to understand the situation now
+2015-04-23T15:22:16  <berick> jeff: where are you reading that?
+2015-04-23T15:22:17  <jeff> There were some alternate approaches brainstormed in Boston (useful for cases where you're not able to run Hatch but still want receipt printing) which could bear further brainstorming. For the most part, we're in a "wait and see, remain aware, star the issue and keep our ears/eyes open" mode.
+2015-04-23T15:22:31  <berick> right
+2015-04-23T15:22:50  <jeff> berick: mostly from comment 77 on the issue in question -- I linked above: https://code.google.com/p/chromium/issues/detail?id=378566#c77
+2015-04-23T15:23:04  <berick> jeff: oh, duh, thanks
+2015-04-23T15:24:05  <dbwells> ok, so
+2015-04-23T15:24:10  <dbwells> #info For the most part, we're in a "wait and see, remain aware, star the issue and keep our ears/eyes open" mode.
+2015-04-23T15:24:25  <dbwells> Any more on this before moving ahead?
+2015-04-23T15:24:31  <jeff> Not from me.
+2015-04-23T15:24:39  <berick> nor from me
+2015-04-23T15:24:49  <jeff> I'm interested in further discussions on the subject at the conference.
+2015-04-23T15:25:13  <eeevil> +1 to that
+2015-04-23T15:25:25  <dbwells> #topic OpenSRF Release Update
+2015-04-23T15:25:48  <dbwells> Nothing in the agenda, any update on that? (gmcharlt, or others)?
+2015-04-23T15:26:29  <gmcharlt> #info gmcharlt will cut an OpenSRF release by the EG conference - or AT the conference, if it comes to it
+2015-04-23T15:26:51  <dbwells> gmcharlt++ # thank you
+2015-04-23T15:27:14  <dbwells> moving on...
+2015-04-23T15:27:16  <dbwells> #topic Evergreen Release Updates
+2015-04-23T15:28:05  <dbwells> berick: please go ahead, even just to reiterate what's already in the agenda, if you don't mind.
+2015-04-23T15:28:13  <berick> sure thing
+2015-04-23T15:28:25  <berick> 2.8.0 was set loose upon the world
+2015-04-23T15:28:39  <berick> 2.8.1 probably after the EG conf, unlesss there's a need to do it sooner
+2015-04-23T15:29:38  <kmlussier> If there were no conference, what we typically be the point release date?
+2015-04-23T15:29:57  <bshum> So actually I was hoping to get a release out sooner for 2.7
+2015-04-23T15:30:03  <dbwells> berick: There was the bug I worked on with bshum affecting fine generation for catch-up fines on lost-returned items.  I'd hope to see that out sooner rather than later.
+2015-04-23T15:30:05  <bshum> Since there's some backlog of stuff
+2015-04-23T15:30:14  <jeff> kmlussier: calendar says April 15, May 20
+2015-04-23T15:30:15  <bshum> And yeah, some pretty critical fixes for 2.8
+2015-04-23T15:30:19  <kmlussier> IIRC, there has been a fine generator fix since the release, which seemed like it might be important to get out.
+2015-04-23T15:30:26  <bshum> That we probably don't want people upgrading into
+2015-04-23T15:30:35  <kmlussier> Oh, sorry. dbwells is too quick for me. :)
+2015-04-23T15:30:50  <eeevil> and there's the common-attribute search speed fix
+2015-04-23T15:30:52  <berick> kmlussier: 3rd Wed. of each month, I believe
+2015-04-23T15:30:58  <eeevil> which is running nicely in production
+2015-04-23T15:31:14  <kmlussier> eeevil: That's good news.
+2015-04-23T15:31:18  <bshum> We're a bit behind schedule, but maybe we can commit to getting a release cut this month anyways.
+2015-04-23T15:31:23  <berick> alright.. sounds like we may have a release to cut sooner than later
+2015-04-23T15:32:01  * jeff bookmarks the descripton on commit 749e63f
+2015-04-23T15:32:01  <pinesol_green> [evergreen|Dan Wells] LP#1443952 Move overdue restore above lost void/adjustment - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=749e63f>
+2015-04-23T15:32:03  <csharp> eeevil: were you able to assuage your concerns about the inverse use case with uncommon attributes still working quickly?
+2015-04-23T15:32:10  <kmlussier> Also, when I did the web site updates, I didn't put 2.6 in security release only mode because we hadn't reached a full year after its release. Should it get one more point release before we move it to security only?
+2015-04-23T15:32:21  <dbwells> We've got one more standard release for 2.6.  I'm game to cut it whenever bshum and berick are ready with theirs.
+2015-04-23T15:32:57  <berick> next week works for me
+2015-04-23T15:33:00  <eeevil> csharp: in a word: yep
+2015-04-23T15:33:08  <csharp> eeevil++ # awesome
+2015-04-23T15:33:20  <bshum> Next week sounds good to me too actually.  Wednesday?
+2015-04-23T15:33:42  <dbwells> Wednesday works for me.
+2015-04-23T15:33:45  <berick> same here
+2015-04-23T15:34:28  <dbwells> #info 2.8.0 was set loose upon the world
+2015-04-23T15:35:02  <dbwells> #agreed 2.8.1 and other maintenance releases will be cut on Wednesday, April 29
+2015-04-23T15:35:49  <dbwells> #topic QA Discussion
+2015-04-23T15:36:00  <berick> i added that...
+2015-04-23T15:36:05  <jeff> berick++
+2015-04-23T15:36:18  <berick> so, it didin't really take hold for 2.8 for various reasons.
+2015-04-23T15:36:32  <berick> i'd really like some input on the wiki doc before we start forcing anything
+2015-04-23T15:37:15  <berick> and if we're goign to start requiring QA contributions for 2.9, we need to solidify the plan now-ish
+2015-04-23T15:37:41  <jeff> short of boiling the ocean, what do you think our approach should be for "this changes the behavior of something large and complex which has no existing tests"?
+2015-04-23T15:37:57  <jeff> (not that this particular ocean doesn't deserve boiling...)
+2015-04-23T15:38:16  <berick> jeff: do you mean areas of the code where there is no test structure?
+2015-04-23T15:38:19  <jeff> case-by-case exception with a high bar, but discretion to the RM?
+2015-04-23T15:38:26  <jeff> berick: yes, exactly.
+2015-04-23T15:38:50  <berick> honestly, if we could people started on using the test structure we have, that would be a big win
+2015-04-23T15:38:58  <bshum> Speaking of RM, who'll that be for 2.9 :)
+2015-04-23T15:39:43  <berick> bshum: yeah, this conversation makes me think again about nominating RM's earlier in the process
+2015-04-23T15:40:02  <bshum> Yeah, I think we should start thinking like that.
+2015-04-23T15:40:16  <dbwells> If we want the RM to make calls on "tested enough"-ness, we'll more or less need the RM to approve everything.  That's pretty far from what we've done before, but certainly exists in other projects, from what I'm told.
+2015-04-23T15:40:40  <kmlussier> I don't feel qualified to comment on the wiki page, but if there is anything somebody like me can do to help with this, let me know.
+2015-04-23T15:41:18  <jeff> dbwells: I was thinking more along the lines of "has tests == good, anyone can merge", vs "no tests because REASONS, merge is at RM discretion"
+2015-04-23T15:41:38  <dbwells> jeff: makes sense, thanks for clarifying
+2015-04-23T15:41:48  <gmcharlt> dbwells: from somebody who has been RM in such a kind of project... that is a big burden to put on the RM
+2015-04-23T15:42:54  <dbs> Are tests in place for the web staff client, along the lines of https://docs.angularjs.org/guide/unit-testing ?
+2015-04-23T15:42:55  <dbwells> gmcharlt: I can imagine.
+2015-04-23T15:43:02  <berick> expanding on jeff's last comment.. "no tests because no framework exists to test this" would cover a lot things
+2015-04-23T15:43:26  <berick> that would leave a fairly limited number of cases where the RM would have to decide
+2015-04-23T15:43:37  <gmcharlt> now giving the RM more mental space to throw things back if not done enough -- and have those decisions not be nibbled to death by the Ducks of Merge It Now -- is something that would be a step forward
+2015-04-23T15:44:15  <dbwells> the endless nibbling!
+2015-04-23T15:44:34  <csharp> probably an obvious point, but it also raises the bar for a qualified RM
+2015-04-23T15:44:40  <jeffdavis> Is there a tag in LP meaning "has code, needs tests"?
+2015-04-23T15:44:57  <bshum> jeffdavis: needsignoff ?
+2015-04-23T15:45:55  <jeffdavis> Do we want something more specific?
+2015-04-23T15:46:12  * gmcharlt is inclined to think so - at least to try it out
+2015-04-23T15:46:15  <jeffdavis> Signoff to me implies "I've tried this, it works on my system."
+2015-04-23T15:46:16  <gmcharlt> "needstest"?
+2015-04-23T15:46:22  <jeff> needstests? needsqa?
+2015-04-23T15:46:22  <gmcharlt> er, needstests
+2015-04-23T15:46:33  <gmcharlt> (not One Test To Rule Them All)
+2015-04-23T15:46:35  * csharp is having deja vu
+2015-04-23T15:46:57  <jeff> csharp: that might be bad. is it bad?
+2015-04-23T15:47:10  <dbs> #qualityisjob1
+2015-04-23T15:47:22  <jeffdavis> heh
+2015-04-23T15:47:22  <kmlussier> dbs++
+2015-04-23T15:47:43  <csharp> jeff: I thought we'd had this same discussion, but it was probably for another LP tag :-)
+2015-04-23T15:48:25  <gmcharlt> csharp: different tag
+2015-04-23T15:48:31  <dbwells> Well, this topic could be a meeting unto itself, but we need to keep moving.   These are good thoughts, so feel free to add them as ideas to the wiki document, or keep chewing on them, and we can reconvene the conversation during the conference.  Does that sound alright?
+2015-04-23T15:48:34  <csharp> gmcharlt: thanks ;-)
+2015-04-23T15:49:00  <bshum> dbwells: +1 to discussing at the next dev meeting (which is likely at conference)
+2015-04-23T15:49:12  * gmcharlt tosses out a wild idea
+2015-04-23T15:49:24  *** yboston has quit IRC
+2015-04-23T15:49:25  <gmcharlt> do we want to make QA the Official Theme (TM) of the dev portion of hackfest/
+2015-04-23T15:49:28  <gmcharlt> ?
+2015-04-23T15:49:30  <jeff> dbs: there are some tests for the angular bits, using karma. commit 75e466e contains one example. i can't say what coverage is like.
+2015-04-23T15:49:30  <pinesol_green> [evergreen|Bill Erickson] LP#1402797 browser client interval parser - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=75e466e>
+2015-04-23T15:50:12  *** bmills1 has joined #evergreen
+2015-04-23T15:50:34  <jeff> gmcharlt: if nothing came out of the hackfest but every interested contributor was better equipped to write tests... i'm not sure i'd be disappointed.
+2015-04-23T15:51:01  * gmcharlt sources a troop of cats to give out at the conferences
+2015-04-23T15:51:06  <gmcharlt> very special cats
+2015-04-23T15:51:24  <gmcharlt> cats who hiss ... if one does a git push with adding something to t/
+2015-04-23T15:51:33  <gmcharlt> *without
+2015-04-23T15:51:47  <jeffdavis> "hiss" is, fortunately, gentler than I had anticipated
+2015-04-23T15:51:57  * eeevil dons his headphones of hiss avoidance
+2015-04-23T15:52:17  <dbwells> gmcharlt: I'd be up for QA time during the hackfest.
+2015-04-23T15:52:48  <csharp> #info gmcharlt's Cats of Doom: http://cat.evergreen-ils.org.meowbify.com/
+2015-04-23T15:52:54  <jeff> "QA time" might be easier to pull off. :-)
+2015-04-23T15:53:04  <jboyer-isl> I could certainly use an intro. I felt a little bad about how much went into the "delete acpl" commits without any tests but human ones.
+2015-04-23T15:53:27  * gmcharlt is more than happy to put together some starting material for a QA time
+2015-04-23T15:53:41  <dbwells> #action AllTheDevs will read and think about berick's QA page, and come to the conference ready to discuss and take action
+2015-04-23T15:53:57  <berick> you_all++
+2015-04-23T15:54:07  <kmlussier> you_all++
+2015-04-23T15:54:35  <jeff> too late for meetbot, but there is a thread on the localhost websockets thing that might be worth reading for those keeping tabs: https://lists.w3.org/Archives/Public/public-webappsec/2015Mar/0135.html
+2015-04-23T15:54:41  <dbwells> New Business
+2015-04-23T15:54:57  <dbwells> #topic berick proposes we vote on a set day / time for monthly meetings
+2015-04-23T15:55:04  <jeff> +1
+2015-04-23T15:55:30  <bshum> +1
+2015-04-23T15:55:35  <bshum> We used to do that though.
+2015-04-23T15:55:42  <bshum> It didn't always work out, but we can try again.
+2015-04-23T15:56:36  <jeffdavis> +1
+2015-04-23T15:56:46  <berick> i'm happy to post a poll
+2015-04-23T15:57:01  <gmcharlt> +1
+2015-04-23T15:57:03  <berick> to see if we can get a decent looking time
+2015-04-23T15:57:13  <bshum> berick++
+2015-04-23T15:57:18  <berick> if it's all over the place, maybe reconsider
+2015-04-23T15:57:34  <dbwells> They have all recently been at 3:00pm Eastern, but the day shifts around.  Can we agree on 3:00pm already?
+2015-04-23T15:57:44  <kmlussier> I'm in favor of it, but I think we should monitor it. If it looks like people forget about meetings (which is what previously happened), we may want to reconsider.
+2015-04-23T15:57:50  <csharp> dbwells: works for me
+2015-04-23T15:57:53  <kmlussier> However, meeting reminders should help with that issue.
+2015-04-23T15:58:29  <dbwells> I guess we can just wait for the poll, too.
+2015-04-23T15:59:01  <jeff> or possibly a single-option doodle poll to help determine if a given month's meeting will be lightly attended and thus should be re-scheduled. dunno. let's try a change and see.
+2015-04-23T15:59:12  <dbwells> #action berick will set up a poll for a set meeting day/time for dev meetings
+2015-04-23T15:59:32  <dbwells> #topic Release notes for point releases (kmlussier)
+2015-04-23T15:59:43  <berick> cool, thanks everyone
+2015-04-23T15:59:59  <kmlussier> I'll keep this quick. There has been some discussion here recently about adding point releases to the release notes.
+2015-04-23T16:00:32  <kmlussier> I wonder if there is general consensus that we should move in this direction.
+2015-04-23T16:01:01  <kmlussier> If so, I would be willing to work with berick on the 2.8 point releases to get the release notes added.
+2015-04-23T16:01:08  <csharp> +1
+2015-04-23T16:01:45  <jeff> +1
+2015-04-23T16:02:29  <berick> kmlussier: like, at the bottom of the 2.8 release notes, we would append the 2.8.1. notes, then 2.8.2, etc.?
+2015-04-23T16:02:39  <berick> instead of overwriting the 2.8 original notes
+2015-04-23T16:02:46  <dbwells> I was going to ask something similar.
+2015-04-23T16:03:11  <kmlussier> Yes, I think bshum had suggested that approach at one point. I like that idea.
+2015-04-23T16:03:13  <csharp> that's what I had in my mind
+2015-04-23T16:03:13  <bshum> Right, I started a new section concept for it in the rel's
+2015-04-23T16:03:22  <bshum> But we have to adopt it permanently, etc.
+2015-04-23T16:03:32  <dbwells> Looking at this page: http://docs.evergreen-ils.org/2.8/ , would they show up as addenda in section II?
+2015-04-23T16:03:34  * bshum could have named it better
+2015-04-23T16:03:37  <kmlussier> I dont' think we want to run a script every time we have a point release like we do for the major releases.
+2015-04-23T16:04:03  <bshum> Right, I just called it "Bug Fixes"
+2015-04-23T16:04:11  <bshum> But didn't name the exact number release of when they occur
+2015-04-23T16:04:33  <gmcharlt> well, if it's actually fully scripted...
+2015-04-23T16:04:35  <jeff> grouping by point release would probably be helpful.
+2015-04-23T16:04:58  <kmlussier> Yes, I was thinking having a 2.8.1 as a section under bug fixes, then 2.8.2, etc.
+2015-04-23T16:05:06  <dbs> top (most recent first) rather than bottom is more typical I think?
+2015-04-23T16:05:07  <csharp> this is what postgres does: http://www.postgresql.org/docs/9.4/static/release.html
+2015-04-23T16:05:09  <jeff> it's nice to have something other than launchpad/git logs confirm in which point release we think a specific bug was fixed.
+2015-04-23T16:05:27  <kmlussier> dbs: Ah, yes, right. That would make sense.
+2015-04-23T16:05:36  <dbs> but +1
+2015-04-23T16:06:01  <dbwells> Ok, it seems like we're generally all on the same page, and we can wait and see what kmlussier, et al come up with.
+2015-04-23T16:06:06  <berick> +1
+2015-04-23T16:06:20  <dbwells> kmlussier++
+2015-04-23T16:06:43  <dbwells> Moving on to Feedback for New Features Under Development
+2015-04-23T16:06:59  <dbwells> #topic Web client: Keyboard shortcut issues
+2015-04-23T16:07:38  <eeevil> That's mine
+2015-04-23T16:08:00  <eeevil> so, they exist. and work. except ... when an input form element is selected
+2015-04-23T16:08:31  <eeevil> I'd like to get more eyes on that problem
+2015-04-23T16:08:36  <jeff> since you've raised it as an issue, i'm guessing that's an inherent limitation and not just a bug?
+2015-04-23T16:09:10  <eeevil> jeff: right. it seems to be, at least, a limitation of the angular wrapper to mousetrap
+2015-04-23T16:09:57  <eeevil> as mousetrap itself supplies a way to make them work when form input elements (specifically, text, textarea, and select) are focused
+2015-04-23T16:10:16  <eeevil> but, because angular builds the interface in stages
+2015-04-23T16:10:49  <eeevil> inner-scope form elements don't get the appropriate event handlers injected
+2015-04-23T16:10:53  <eeevil> (AFAICT)
+2015-04-23T16:11:00  <jeff> do you have a branch or bug for those with interest?
+2015-04-23T16:11:34  <eeevil> it's just all of the code. it's existed since sprint1
+2015-04-23T16:11:38  <berick> eeevil: i'm curious if you've tried stock cfp.hotkeys stuff without the local eg-navbar-template stuff in navbar.js
+2015-04-23T16:11:52  <jeff> eeevil: ah, even easier
+2015-04-23T16:12:32  <dbwells> #info keyboard shortcuts are failing when an input form element is selected.  Suspected cause is the angular wrapper to mousetrap.  eeevil is asking for more eyes on the problem.
+2015-04-23T16:12:40  <eeevil> berick: since it's not creating an isolate-scope, I haven't
+2015-04-23T16:12:48  <berick> so, there's hotkeys, hotkeys within angular, then our local directive to make hotkeys look a little more like how they looked in the xul client.  if that last part is the problem, we could remove/modify that pretty easily, i imagine
+2015-04-23T16:12:52  <berick> eeevil: k
+2015-04-23T16:12:52  <jeff> Hrm. webby doesn't like F1/F2. I get a 404. Will poke further.
+2015-04-23T16:13:34  <kmlussier> F1 works for me
+2015-04-23T16:13:38  <eeevil> berick: right, I don't think it's your wrapper.
+2015-04-23T16:13:45  <berick> eeevil: ah, ok
+2015-04-23T16:13:47  <eeevil> WFM also... :)
+2015-04-23T16:14:16  <jeff> logging in at https://webby.evergreencatalog.com/eg/staff/ and hitting F1 takes me to https://webby.evergreencatalog.com/circ/patron/bcsearch/webby.evergreencatalog.com/eg/staff/
+2015-04-23T16:14:23  <jeff> (off topic for meeting)
+2015-04-23T16:14:25  * berick remapped F1 to 'switch to desktop 1' locally because I can't be bothered with modifier keys
+2015-04-23T16:15:14  <eeevil> my one idea so far is to use mousetrap directly and have hotkeys wire themselves up after the UI is fully rendered
+2015-04-23T16:15:53  <dbwells> Sounds like we have a couple parties interested in offering assistance here, but we should try to wrap up the meeting before we get too deep, I think.  Is that alright?
+2015-04-23T16:16:07  <berick> hm, it's an angular package
+2015-04-23T16:16:20  <berick> i mean, it's designed for angular.
+2015-04-23T16:16:32  <berick> i'm not sure how it would work w/o angular
+2015-04-23T16:16:36  <eeevil> dbwells: yep, that's fine
+2015-04-23T16:16:43  *** montgoc1 has quit IRC
+2015-04-23T16:16:58  <dbwells> eeevil: thanks, moving along for now...
+2015-04-23T16:17:00  <dbwells> #topic ACQ blanket orders proposal
+2015-04-23T16:18:08  <dbwells> berick: It sounds interesting.  I don't think we do anything like that here.
+2015-04-23T16:18:45  <kmlussier> I think we might have some libraries that might be interested in using it.
+2015-04-23T16:19:03  <berick> so, yeah, just curious if anyone else does this kind of thing. i could swear i heard the concept from non-kcls people
+2015-04-23T16:19:06  <berick> but i could be crazy
+2015-04-23T16:19:18  <kmlussier> One question that was raised here was what happens at end of fiscal year if they are configured to roll over encumbrances. Will the direct charges roll over too?
+2015-04-23T16:19:44  <berick> kmlussier: yes, all fund debits (encumbrances in this case) are treated equally for rollover
+2015-04-23T16:20:11  <jeffdavis> I'll pass along the bug to our acq folks for comment.
+2015-04-23T16:20:16  <berick> thanks, jeffdavis
+2015-04-23T16:20:34  <kmlussier> berick: We do have libraries that do blanket invoices. I'm thinking they might like to add then to the PO so that the funds could be encumbered before the items are received.
+2015-04-23T16:20:40  <csharp> same here
+2015-04-23T16:20:43  <kmlussier> s/then/them
+2015-04-23T16:21:05  <berick> kmlussier: cool, that's the idea
+2015-04-23T16:21:17  * kmlussier plans to load it on a VM when she has time
+2015-04-23T16:22:32  <berick> kmlussier++
+2015-04-23T16:22:39  <berick> thanks everyone.
+2015-04-23T16:22:49  <dbwells> berick: I'll ask our acq people about it, too.  You never know what they might be doing to make things work :)
+2015-04-23T16:22:56  <berick> dbwells: :)
+2015-04-23T16:23:17  <dbwells> so, last but not least
+2015-04-23T16:23:20  <dbwells> #topic Overdrive API
+2015-04-23T16:23:38  <kmlussier> I added that one to the agenda. I'm still not clear as to what steps need to be taken to move it forward.
+2015-04-23T16:23:56  <kmlussier> We have a lot of interest here in seeing it merged to Evergreen.
+2015-04-23T16:24:17  <jeff> there were some missing parts last i looked, with regard to support in consortium and different auth methods
+2015-04-23T16:24:34  <jeff> i looked just enough to say "this won't work for us", but didn't go much further.
+2015-04-23T16:24:41  <jeff> have others reviewed it more?
+2015-04-23T16:25:05  <jeffdavis> jeff: Would you be willing to file a bug report about that? I've done a small amount of tweaking in that regard but not a lot.
+2015-04-23T16:25:06  <kmlussier> I suspect our auth methods would line up with what Sitka's using.
+2015-04-23T16:25:40  <jeffdavis> LP project page is https://launchpad.net/overdrive-eg-opac, bugs can be filed there
+2015-04-23T16:26:05  <jeffdavis> I can think of two pieces that might help to get more folks trying it out.
+2015-04-23T16:26:14  <jeffdavis> 1. Documentation. This has been on my todo list for a while.
+2015-04-23T16:26:27  <jeff> jeffdavis: can you summarize your environment with regard to auth methods, what patron identifier is used, and if you have just a single overdrive account for the entire consortium or if you have per-system, and if there's any use of "overdrive advantage" (where systems participate in a large collection but can then ALSO add items that only their patrons get)?
+2015-04-23T16:26:29  <jeffdavis> 2. Testing credentials that can be shared among EG developers.
+2015-04-23T16:26:35  <dbwells> #link https://launchpad.net/overdrive-eg-opac
+2015-04-23T16:27:08  *** rjackson_isl has quit IRC
+2015-04-23T16:28:10  <dbwells> jeffdavis: I think testing credentials would be great.  I'm not sure how many of us have access otherwise to OverDrive.
+2015-04-23T16:28:33  * csharp might be able to get credentials, but not sure if he could share them :-/
+2015-04-23T16:28:44  <jeffdavis> I can commit to contacting Overdrive about that.
+2015-04-23T16:29:01  <jeff> My experience with getting API access from them (prod and/or testing) has been... yeah.
+2015-04-23T16:29:44  <dbwells> #info jeffdavis suggests that any potential testers file bugs at the link given above
+2015-04-23T16:30:12  <jeffdavis> They do have a testing environment which in theory shold not be tied to anyone's "real" OverDrive accounts, so it's at least a theoretical possibility, IIUC.
+2015-04-23T16:30:17  <kmlussier> Thanks all!
+2015-04-23T16:30:27  * kmlussier needs to disappear
+2015-04-23T16:30:38  <dbwells> #action jeffdavis will pursue contacting OverDrive to ask about test credentials / a test environment
+2015-04-23T16:30:41  * csharp too
+2015-04-23T16:31:01  <dbwells> Ok, wrapping things up unless someone speaks up...
+2015-04-23T16:31:19  *** jboyer-isl has quit IRC
+2015-04-23T16:31:22  <jeffdavis> jeff: we have two OverDrive accounts, each used by a different chunk of our libraries
+2015-04-23T16:31:32  *** maryj has quit IRC
+2015-04-23T16:31:35  <jeffdavis> I should add that we have this code in production for all our OD subscriber libraries
+2015-04-23T16:32:00  <jeffdavis> auth is based on patron barcode, some libraries require PIN to be checked and others don't
+2015-04-23T16:32:27  <jeffdavis> happy to go into more detail, but dunno if we want to do that as part of this meeting?
+2015-04-23T16:32:42  <jeff> just after is fine. let's let dbwells #endmeeting :-)
+2015-04-23T16:33:11  <dbwells> jeffdavis: I'm interested in at least seeing this in action at some point.
+2015-04-23T16:33:35  <dbwells> Ok, thanks all.
+2015-04-23T16:33:36  <dbwells> #endmeeting
+2015-04-23T16:33:36  <pinesol_green> Meeting ended Thu Apr 23 16:33:36 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-04-23T16:33:36  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-23-15.13.html
+2015-04-23T16:33:36  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-23-15.13.txt
+2015-04-23T16:33:36  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-23-15.13.log.html
+2015-04-23T16:33:38  <bshum> dbwells++
+2015-04-23T16:33:41  <jeff> dbwells++
+2015-04-23T16:33:46  <jeffdavis> dbwells++
+2015-04-23T16:33:46  *** mglass_ has joined #evergreen
+2015-04-23T16:33:58  *** collum has quit IRC
+2015-04-23T16:33:59  <jeff> jeffdavis: what method do you use for overdrive to auth your patrons?
+2015-04-23T16:34:17  <remingtron> dbwells++
+2015-04-23T16:34:28  <jeff> (i may have asked this before -- i should check logs)
+2015-04-23T16:35:54  <jeffdavis> the API code follows the patron auth process described here: http://developer.overdrive.com/apis/patron-auth
+2015-04-23T16:36:03  <jeff> checked logs, don't see that i've asked.
+2015-04-23T16:36:18  <jeffdavis> Overdrive itself has historically authenticated against our SIP server
+2015-04-23T16:36:22  <jeff> jeffdavis: outside of the integration you've done, or before you did that integration, how did you auth?
+2015-04-23T16:36:25  <jeff> ah.
+2015-04-23T16:36:25  *** mglass has quit IRC
+2015-04-23T16:36:30  <jeff> [involuntary cringe]
+2015-04-23T16:36:47  <jeff> do you still maintain a SIP connection with OverDrive?
+2015-04-23T16:37:17  <jeffdavis> yes
+2015-04-23T16:38:14  <jeffdavis> the API integration should allow patrons to do checkouts etc via the TPAC, so in theory no SIP would be required
+2015-04-23T16:38:14  <jeff> and in your environment, when you make the POST to /patrontoken, does OverDrive then make a SIP query to verify the values you provided for username= and password=?
+2015-04-23T16:38:56  *** Shae has quit IRC
+2015-04-23T16:39:17  <jeffdavis> er, sorry I'm wrong there
+2015-04-23T16:39:30  <jeff> If there's no call (SIP or otherwise) being made on the backend by OverDrive to Evergreen, then why does the value of password_required matter?
+2015-04-23T16:39:33  <jeff> Ah, okay.
+2015-04-23T16:39:49  <jeffdavis> (trying to order my thoughts, which is always a pain where OD is concerned :)
+2015-04-23T16:40:03  *** TaraC has quit IRC
+2015-04-23T16:40:22  <jeffdavis> we have some libraries where password is required, and some where it is not
+2015-04-23T16:40:35  *** mglass has joined #evergreen
+2015-04-23T16:40:36  <jeff> we require patrons to log in with their evergreen username+password or barcode+password, but OverDrive never sees anything other than an opaque token representing the patron (they also get their email address if the patron provides it when making a hold request)
+2015-04-23T16:40:59  <jeff> so the ways in which i've thought about overdrive integration are different from the current implementation that you have in production.
+2015-04-23T16:41:15  <jeff> i'm just trying to wrap my head around how it works in your environment vs ours.
+2015-04-23T16:41:35  *** TaraC has joined #evergreen
+2015-04-23T16:41:56  <jeffdavis> I know the Co-op manages OD subscription some libraries where "authentication" is based on barcode pattern, rather than on a list of actual valid barcodes or live authentication via SIP.
+2015-04-23T16:43:08  <jeff> They [OverDrive] have begun actively discouraging that.
+2015-04-23T16:43:29  *** mglass_ has quit IRC
+2015-04-23T16:43:54  <jeffdavis> I'm actually not sure whether it's true for any Sitka libraries (the Co-op handles OD licensing for some non-Sitka libraries). I should double-check that.
+2015-04-23T16:48:36  <jeffdavis> I wonder if the OD API "granted auth" method is a good fit for the "opaque token" approach: http://developer.overdrive.com/granted-auth
+2015-04-23T16:50:58  <jeff> Likely.
+2015-04-23T16:51:02  <jeff> Looks... ugly.
+2015-04-23T16:51:12  <jeff> especially "Each time users access a digital collection through EZProxy or Federated Authentication, they must select Allow Once when approving your service."
+2015-04-23T16:51:28  <jeff> I'm going to re-open our dialog with OverDrive and see if I can get anywhere this time.
+2015-04-23T16:52:44  <eeevil> jeff: I fixed the splash-page hotkey issue
+2015-04-23T16:52:49  <jeff> eeevil++ thanks!
+2015-04-23T16:56:11  <jeff> eeevil: do you know who/what uses 905$u? asking since i see your name on a commit from back in 2010 adding support for it
+2015-04-23T16:56:23  <jeff> commit 7a39120
+2015-04-23T16:56:23  <pinesol_green> [evergreen|miker] support 905u (editor by barcode or usrname) in vandelay overlay/merge rules - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7a39120>
+2015-04-23T16:59:26  *** Dyrcona has quit IRC
+2015-04-23T17:00:20  <eeevil> jeff: IIRC, there's a way to cause that to turn into the editing and creating user of the bib
+2015-04-23T17:00:50  <eeevil> 905 is used for overlay/edit templates
+2015-04-23T17:01:02  *** bbqben has joined #evergreen
+2015-04-23T17:02:21  <jeff> I'm just wondering if it's something a particular library / workflow / vendor makes use of...
+2015-04-23T17:02:50  <jeff> but it was 2010, so that information may be difficult to track down :-)
+2015-04-23T17:03:06  *** graced has quit IRC
+2015-04-23T17:04:48  <eeevil> it was, IIRC, for kcls in conjunction with marc_stream_importer
+2015-04-23T17:06:01  <jeff> thanks!
+2015-04-23T17:06:09  <jeff> now i can move on to pestering berick! ;-)
+2015-04-23T17:08:47  <eeevil> jeff++
+2015-04-23T17:11:43  *** mmorgan has left #evergreen
+2015-04-23T17:11:56  *** bmills1 has quit IRC
+2015-04-23T17:22:07  *** bmills1 has joined #evergreen
+2015-04-23T17:35:48  *** sbrylander has quit IRC
+2015-04-23T17:39:58  *** buzzy has joined #evergreen
+2015-04-23T18:23:04  *** mglass_ has joined #evergreen
+2015-04-23T18:24:45  *** mllewellyn has quit IRC
+2015-04-23T18:25:40  *** mglass has quit IRC
+2015-04-23T18:27:26  *** mglass has joined #evergreen
+2015-04-23T18:30:39  *** mglass_ has quit IRC
+2015-04-23T19:02:49  *** akilsdonk has quit IRC
+2015-04-23T19:08:23  *** BigRig has quit IRC
+2015-04-23T19:20:27  *** akilsdonk has joined #evergreen
+2015-04-23T19:25:43  *** buzzy has quit IRC
+2015-04-23T19:49:55  *** bbqben has quit IRC
+2015-04-23T20:00:40  *** jwoodard has quit IRC
+2015-04-23T20:47:05  *** sandbergja has quit IRC
+2015-04-23T20:55:09  *** akilsdonk has quit IRC
+2015-04-23T21:47:16  <kmlussier> @later tell eeevil is c4859aa loaded on webby? I just retested bug 1442836 and still see the same problem.
+2015-04-23T21:47:16  <pinesol_green> kmlussier: The operation succeeded.
+2015-04-23T21:47:39  <kmlussier> bug 1442836
+2015-04-23T21:47:39  <pinesol_green> Launchpad bug 1442836 in Evergreen "Web staff client: Checkout for item with open circulation fails" (affected: 1, heat: 6) [Undecided,Fix committed] https://launchpad.net/bugs/1442836
+2015-04-23T21:50:04  <eeevil> kmlussier: I have personally had trouble with browser caching. I often have to open the dev tools and then shift-refresh to get everything to clear. including across browser restarts
+2015-04-23T21:50:56  <kmlussier> eeevil: So if I clear my cache, you think it will resolve the issue?
+2015-04-23T21:51:11  * kmlussier generally clears her cache on a regular basis, but can try again.
+2015-04-23T21:51:35  <eeevil> yes. same thing happened to me this afternoon in that ui
+2015-04-23T21:53:09  <eeevil> I'll take a screencast of it working tomorrow. and of the browser buttons working for me in firefox on linux, if you like. more data points and all that
+2015-04-23T21:53:38  * eeevil heads away from the keyboard...
+2015-04-23T21:55:32  * kmlussier wishes she could head away from the keyboard. :)
+2015-04-23T22:03:28  *** akilsdonk has joined #evergreen
+2015-04-23T22:52:12  *** bmills1 has quit IRC
+2015-04-23T23:14:58  *** akilsdonk has quit IRC

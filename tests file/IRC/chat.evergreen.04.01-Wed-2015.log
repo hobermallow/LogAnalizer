@@ -1,0 +1,360 @@
+2015-04-01T01:35:49  *** jwoodard has quit IRC
+2015-04-01T03:19:30  *** dcook has quit IRC
+2015-04-01T05:14:12  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-01T07:20:12  *** Newziky has joined #evergreen
+2015-04-01T07:43:21  *** graced has joined #evergreen
+2015-04-01T07:48:04  *** rjackson_isl has joined #evergreen
+2015-04-01T08:00:19  *** pmurray_away is now known as pmurray
+2015-04-01T08:02:59  *** Shae has joined #evergreen
+2015-04-01T08:16:12  *** pmurray is now known as pmurray_away
+2015-04-01T08:16:25  *** Shae has quit IRC
+2015-04-01T08:20:05  *** collum has joined #evergreen
+2015-04-01T08:20:32  *** pmurray_away is now known as pmurray
+2015-04-01T08:21:57  *** Shae has joined #evergreen
+2015-04-01T08:25:20  *** ericar has joined #evergreen
+2015-04-01T08:29:09  *** remingtron has quit IRC
+2015-04-01T08:30:18  *** mmorgan has joined #evergreen
+2015-04-01T08:32:06  *** remingtron has joined #evergreen
+2015-04-01T08:33:15  *** akilsdonk has joined #evergreen
+2015-04-01T08:34:21  *** mrpeters has joined #evergreen
+2015-04-01T08:46:04  <dbwells> berick++ # 2.8
+2015-04-01T09:09:35  *** maryj has joined #evergreen
+2015-04-01T09:22:30  *** RoganH has joined #evergreen
+2015-04-01T09:34:39  *** yboston has joined #evergreen
+2015-04-01T09:49:36  <kmlussier> gmcharlt++ http://evergreen-ils.org/evergreen-web-team-extends-protocol-support/
+2015-04-01T09:51:04  *** Newziky has quit IRC
+2015-04-01T09:54:17  *** akilsdonk has quit IRC
+2015-04-01T09:54:54  *** ericar_ has joined #evergreen
+2015-04-01T09:56:33  *** ericar has quit IRC
+2015-04-01T09:56:46  *** ericar_ is now known as ericar
+2015-04-01T10:02:15  *** jwoodard has joined #evergreen
+2015-04-01T10:03:30  <berick> gmcharlt++
+2015-04-01T10:07:58  *** RoganH has quit IRC
+2015-04-01T10:08:35  *** RoganH has joined #evergreen
+2015-04-01T10:11:43  *** Newziky has joined #evergreen
+2015-04-01T10:13:27  *** graced has quit IRC
+2015-04-01T10:14:43  *** ThatGuy has joined #evergreen
+2015-04-01T10:15:41  <ThatGuy> Hate to be "that guy" but does anyone know why whenever Evergreen prints to a receipt printer it takes 8ft of receipt paper?
+2015-04-01T10:16:34  <ThatGuy> Tried reinstalling Evergreen, tried reinstalling the receipt printer and even getting a different one connect to the computer I am currently on.
+2015-04-01T10:17:54  *** graced has joined #evergreen
+2015-04-01T10:21:56  <kmlussier> ThatGuy: In your workstation printer settings, if you click the Page Setup button, do you have anything entered for margins?
+2015-04-01T10:22:17  <kmlussier> That is, Page Settings
+2015-04-01T10:25:56  <ThatGuy> .5 all around
+2015-04-01T10:28:07  <kmlussier> ThatGuy: Did you have receipt selected when you checked the Page Settings? Also, I would recommend 0 there, but I don't know that .5 would make that much of a difference.
+2015-04-01T10:28:39  <mmorgan> ThatGuy: Also, try blanking out anything in the Header & Footer section of Page setup.
+2015-04-01T10:33:39  * kmlussier tries to imagine an alternate universe where gmcharlt is a dog person.
+2015-04-01T10:35:40  <ThatGuy> That seems to have done it. Thank you!!
+2015-04-01T10:36:46  *** ThatGuy has quit IRC
+2015-04-01T10:37:04  * kmlussier wonders what "that" ended up being. 
+2015-04-01T10:39:36  <berick> kmlussier: "that" was imagining gmcharlt as a dog person
+2015-04-01T10:39:48  * kmlussier chuckles
+2015-04-01T10:40:00  <mmorgan> "that" makes my head hurt.
+2015-04-01T10:40:19  <mmorgan> unless of course the dogs are purple ;-)
+2015-04-01T10:41:55  * bshum idly wonders if Darth Tater likes dogs and will strike back later today now. 
+2015-04-01T10:42:45  * gmcharlt starts a kickstarter for suits of armor
+2015-04-01T10:44:14  <csharp> @quote random
+2015-04-01T10:44:14  <pinesol_green> csharp: Quote #91: "< eeevil> one tiny chunk of code for a man, one giant step toward unified APIs for mankind" (added by csharp at 06:04 PM, September 10, 2014)
+2015-04-01T10:49:21  *** tater-laptop has joined #evergreen
+2015-04-01T10:51:01  *** Darth_Tater has joined #evergreen
+2015-04-01T10:51:24  <Darth_Tater> Banthas. I like banthas.
+2015-04-01T10:51:31  *** Darth_Tater has quit IRC
+2015-04-01T10:52:19  *** sandbergja has joined #evergreen
+2015-04-01T10:52:32  <bshum> Heh
+2015-04-01T10:53:08  <tsbere> kmlussier: Removing header/footer, given the average "length" of a page when using roll paper on most receipt printers not having the footer would allow the automatic "don't print several feet of blank paper" function of the driver to kick in.
+2015-04-01T10:53:27  * tsbere just came back from a meeting >_>
+2015-04-01T10:59:52  <jonadab> I was not aware receipt printers _had_ a concept of "page".
+2015-04-01T11:00:18  <jonadab> TIL.
+2015-04-01T11:07:01  *** mmorgan has quit IRC
+2015-04-01T11:08:54  *** ericar_ has joined #evergreen
+2015-04-01T11:10:15  *** ericar has quit IRC
+2015-04-01T11:10:16  *** ericar_ is now known as ericar
+2015-04-01T11:10:22  <csharp> yeah, the receipt printer needs to know it's roll paper both at the windows (or OS of choice) level *and* at the Evergreen level
+2015-04-01T11:12:13  <jonadab> Oh, for the days of DOS, when you could just chuck ASCII text in the general direction of LPT1 and it would Just Work.
+2015-04-01T11:12:32  * jonadab is not entirely serious.  But partly.
+2015-04-01T11:12:46  <jeff> then Windows, where apps doing that approach often resulted in one windows print job per line.
+2015-04-01T11:12:56  <jonadab> Heh.
+2015-04-01T11:13:05  <jeff> ...and AV software would sometimes eat or cause the lines to be re-ordered, especially on slower hardware...
+2015-04-01T11:13:24  <jonadab> Now *that* is a complication I never experienced.
+2015-04-01T11:14:50  *** bmills has joined #evergreen
+2015-04-01T11:16:12  <jcamins> jeff: I spent too much time in libraries. "AV" stands for "Audio/Visual" in my mind.
+2015-04-01T11:16:24  <tsbere> I never had the "print job per line" issue unless there was not, in fact, a printer on LPT1.
+2015-04-01T11:17:11  <jeff> tsbere: yes, this would have been with DOS and Windows apps and physical printers on LPT1
+2015-04-01T11:17:25  <tsbere> "print job per page" though came up several times.....which was fine until you were dealing with a network printer of some kind and things got mixed together.
+2015-04-01T11:17:36  <jeff> i suspect it was at least partially to do with the apps (probably) internally writing each line to the LPT1 device.
+2015-04-01T11:18:04  <jonadab> Yes, likely.
+2015-04-01T11:18:19  <jonadab> Which isn't what they were really _supposed_ to do under DOS, but it _did_ work...
+2015-04-01T11:18:24  <tsbere> jeff: If they open LPT1, write a single line, and then close LPT1 I could see "one job per line" - I only ever saw "open LPT1, write out a whole page, close LPT1" in practice, but different programs....
+2015-04-01T11:18:42  <jonadab> tsbere: Yes, that's how apps were _supposed_ to do it.
+2015-04-01T11:18:53  <jonadab> But, you know.
+2015-04-01T11:19:39  <tsbere> jonadab: I personally viewed the best bet as "open LPT1, write your *entire print job*, close LPT1"
+2015-04-01T11:20:19  <tsbere> "Each page is a print job" creates issues with shared printers. Though I suppose not as many issues as "each *line* is a print job" >_>
+2015-04-01T11:20:24  <jonadab> tsbere: Yes, right.  I was thinking sub-page-length print jobs, but yeah.
+2015-04-01T11:21:02  <jonadab> ASCII defines a form feed character for a reason.
+2015-04-01T11:21:47  <tsbere> actually, I can recall one program that wrote one character at a time to LPT1.....but I don't believe it closed LPT1 each time, so it wasn't as big a deal. Just weird.
+2015-04-01T11:22:20  <jonadab> That sounds like something an assembly-language program would do as an optimization.
+2015-04-01T11:22:51  <jonadab> "We think our hand-rolled loop is faster than the string-copying interrupt."
+2015-04-01T11:23:29  <jonadab> "And being 6% faster is way more important than doing things in a standard way that will be maintainable in the future."
+2015-04-01T11:24:26  <tsbere> I think it was actually more for "If we run into certain control characters we check to see if we are configured to do special things instead of them" than anything else.
+2015-04-01T11:24:34  <jonadab> Ah.
+2015-04-01T11:24:49  <tsbere> Not really sure anymore. Haven't worked with that kind of thing in years.
+2015-04-01T11:28:02  *** mmorgan has joined #evergreen
+2015-04-01T11:29:46  <jcamins> tsbere: and it sounds like your life is better for it.
+2015-04-01T11:31:28  <tsbere> jcamins: I dunno. My last foray involved getting what I think was 8bit cash register software to run in a networked windows XP and 2003 server environment. >_>
+2015-04-01T11:32:04  <jeff> Hrm. Any danger with adding custom entries in action.hold_request_cancel_cause? Doesn't look like there's a sequence, so I suppose local causes starting at id 101 or 1001 would be a good idea...
+2015-04-01T11:32:10  <tsbere> Hmmm....or was the hospital patient software after that.....same idea, though
+2015-04-01T11:32:48  <tsbere> jeff: I don't think there is a danger (they would show up in the staff client interface) but bumping the default ID up a bit for people doing so wouldn't hurt, IMO
+2015-04-01T11:33:34  <tsbere> jcamins: Either way, in both cases of "get ancient software to run on newer hardware" I actually ended up installing an emulator intended for DOS games. To get cash registers and hospital patient systems working. :D
+2015-04-01T11:38:43  *** mllewellyn has joined #evergreen
+2015-04-01T11:38:58  <jeff> hrm. in a future release, we should probably have an option for hold cancel causes that are not selectable by staff.
+2015-04-01T11:50:50  <mmorgan> jeff++
+2015-04-01T11:51:52  *** akilsdonk has joined #evergreen
+2015-04-01T11:55:20  *** akilsdonk has quit IRC
+2015-04-01T11:56:46  <jeff> system-only, and all that
+2015-04-01T12:26:16  *** darshana has joined #evergreen
+2015-04-01T12:27:34  * dbs dives back into the waters of trying to figure out why holds aren't being captured opportunistically one day, but will get captured the next day.
+2015-04-01T12:27:48  <dbs> Time to see if someone's been playing around with YAOUS like hold stalling
+2015-04-01T12:28:53  <tsbere> jeff: "Patron via OPAC" being a good one for that. ;)
+2015-04-01T12:29:56  <tsbere> dbs: Half the time we get that I find out that the copy either didn't exist the previous day or was marked as not holdable the previous day. In both cases the copy isn't in the hold copy map table at opportunistic capture time.
+2015-04-01T12:30:22  <tsbere> (doesn't help if you are dealing with "this brand new hold won't capture this copy..." issues, mind you, but we don't get many of those questions anymore)
+2015-04-01T12:30:39  <dbs> tsbere: Yeah, the "marked as not holdable" has come up a number of times.
+2015-04-01T12:31:07  * dbs curses copy attribute templates that mark items as "not holdable" for belt & suspenders because they never get unset
+2015-04-01T12:31:54  <dbs> Also we're in the netherland of still using script-based circ so there's plenty of sharp edges now
+2015-04-01T12:32:37  <tsbere> Ahhh. But "not in the hold copy map table" still trumps all hold rules. Because the rules aren't checked if the copy isn't in the table for the hold.
+2015-04-01T12:37:27  <mmorgan> We initially had confusion with items in non-holdable statuses not capturing.
+2015-04-01T12:37:41  <mmorgan> An item in a nonholdable status is checked in, it doesn't capture, even with retargeting modifiers on.
+2015-04-01T12:37:54  <mmorgan> A second checkin with retargeting modifiers on will capture it.
+2015-04-01T12:38:08  <mmorgan> We changed the holdability flag of a number of statuses because of this.
+2015-04-01T12:42:37  <tsbere> mmorgan: That can be a problem, yea. "This is going to go holdable after checkin" can create headaches.
+2015-04-01T12:49:22  <jeff> dbs: QA reports that flag copies with holdable/circulate/visible false can help. :-)
+2015-04-01T12:50:07  <jeff> dbs: i.e., "don't use these, use the shelving location level attributes (and/or circ mod for holdable) instead", and treat their being set as an error to correct :-)
+2015-04-01T12:57:00  <gmcharlt> web team meeting in five minutes
+2015-04-01T13:01:55  <gmcharlt> #startmeeting Evergreen Web Team meeting 1 April 2015
+2015-04-01T13:01:55  <pinesol_green> Meeting started Wed Apr  1 13:01:55 2015 US/Eastern.  The chair is gmcharlt. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-04-01T13:01:55  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-04-01T13:01:55  <pinesol_green> The meeting name has been set to 'evergreen_web_team_meeting_1_april_2015'
+2015-04-01T13:02:01  <gmcharlt> #info Agenda at http://wiki.evergreen-ils.org/doku.php?id=webteam:meetings:agenda:2015-04-01
+2015-04-01T13:02:11  <gmcharlt> #topic Introductions
+2015-04-01T13:02:16  <gmcharlt> introduce yourself with #info
+2015-04-01T13:02:19  <bshum> #info bshum = Ben Shum, Bibliomation
+2015-04-01T13:02:21  <gmcharlt> #info gmcharlt = Galen Charlton, ESI
+2015-04-01T13:02:38  <bshum> I apologize in advance, cause I'll have to skip out around 1:30 for another conflicting meeting :\
+2015-04-01T13:03:13  <RoganH> #info RoganH = Rogan Hamby, Grue Hunter With One Torch Left
+2015-04-01T13:03:21  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-04-01T13:03:26  <gmcharlt> RoganH++
+2015-04-01T13:03:34  <gmcharlt> (everybody, breathe shallowly!)
+2015-04-01T13:04:00  <RoganH> gmcharlt++
+2015-04-01T13:04:29  <gmcharlt> #topic Announcements
+2015-04-01T13:04:56  <gmcharlt> #info Evergreen now has a site in the gophersphere: http://evergreen-ils.org/evergreen-web-team-extends-protocol-support/
+2015-04-01T13:05:11  <gmcharlt> #info visit it at gopher://gopher.evergreen-ils.org/
+2015-04-01T13:05:16  <kmlussier> We're on the cutting edge now!
+2015-04-01T13:05:54  <gmcharlt> #info If anybody with a login to the web server has absolutely nothing better to do with their time, play around in /var/gopher to edit content ;)
+2015-04-01T13:06:38  <gmcharlt> though seriously, anybody who makes the effort to load up a gopher client and visit will be rewarded with a couple easter eggs from Evergreen's early history
+2015-04-01T13:06:58  <bshum> it is entertaining :)
+2015-04-01T13:07:02  <gmcharlt> any other announcements?
+2015-04-01T13:07:24  <bshum> gmcharlt++
+2015-04-01T13:08:31  <gmcharlt> so, moving on
+2015-04-01T13:08:39  <gmcharlt> #topic Evergreen hashtag
+2015-04-01T13:08:44  <gmcharlt> kmlussier: bshum: GO!
+2015-04-01T13:09:15  <kmlussier> bshum and I are using the #evgils hashtag now for our Evergreen-related tweets.
+2015-04-01T13:09:46  <kmlussier> Because the #egils hashtag is being used for a few different purposes outside of the Evergreen world.
+2015-04-01T13:10:08  <kmlussier> One of which is beer, which is never a bad thing to see in my Evergreen stream.
+2015-04-01T13:10:39  <kmlussier> I have also updated Twitterfeed to use both #evgils and #egils for any Planet Evergreen tweets.
+2015-04-01T13:11:14  <kmlussier> With the intent of eventually moving to just #evgils in the not-too-distant future.
+2015-04-01T13:11:22  <bshum> I figure if we make this change, we should also do some sort of media thingy on the website telling people what the official hashtag is.  And maybe do some stream plugin or something to Wordpress.  I imagine that sort of thing exists.
+2015-04-01T13:11:41  <gmcharlt> what do you mean by stream lugin?
+2015-04-01T13:11:43  <bshum> "official" with quotes.  Since Twitter being Twitter, anyone can tweet whatever they want.
+2015-04-01T13:11:44  <gmcharlt> *plugin
+2015-04-01T13:12:12  <RoganH> What would the plugin for Wordpress do?
+2015-04-01T13:12:33  <kmlussier> Something that displays all #evgils posts maybe?
+2015-04-01T13:12:43  <bshum> In retrospect, let me do more investigation on how/why/what that might actually entail.
+2015-04-01T13:12:54  <bshum> It was more of a random thought that hadn't fully manifested in my head yet.
+2015-04-01T13:13:10  <gmcharlt> there's the potential for minor dragons with putting up a hashtag widget unless it's watched
+2015-04-01T13:13:32  <bshum> True.
+2015-04-01T13:14:19  <gmcharlt> FWIW, I don't mind #evgils, and I"m happy to do my bit to ensure that it gets used along with #egils
+2015-04-01T13:14:25  <bshum> That might be beyond what we need to do then.
+2015-04-01T13:14:28  <gmcharlt> and if #egils goes away organically, great
+2015-04-01T13:14:55  <RoganH> There is one use of #egils I worry about.  I haven't seen anything too bad from it so I welcome the change.
+2015-04-01T13:14:59  <gmcharlt> and if somebody wants to make a post on the evgils.org blog ;) advocating for it, well... go for it!
+2015-04-01T13:15:02  <kmlussier> Looking at my Twitter feed, it looks like bshum, gmcharlt and I are the ones who primarily use the hashtag.
+2015-04-01T13:15:20  <RoganH> I don't tweet much but I'll make sure I use the new one when I do.
+2015-04-01T13:15:21  <kmlussier> If bshum and I stop using #egils, it should go away organically soon enough. :)
+2015-04-01T13:15:49  <kmlussier> I can post something to the blog.
+2015-04-01T13:15:51  *** jihpringle has joined #evergreen
+2015-04-01T13:16:00  <bshum> kmlussier++
+2015-04-01T13:16:07  <gmcharlt> just don't overpolice it please if somebody uses the "wrong" #hashtag
+2015-04-01T13:16:37  <gmcharlt> hmm, potentially we could use twarc or something to archive the hashtag
+2015-04-01T13:16:40  <RoganH> Now, you know librarians never get anal about exacting terminology.
+2015-04-01T13:16:46  <kmlussier> Nope. I have no intention of policing the Internets
+2015-04-01T13:17:04  <gmcharlt> though that might be a little too Big Brotherish
+2015-04-01T13:17:37  <gmcharlt> so, fair to say that we've got a consensus to advocate for #evgils and see what ahppens?
+2015-04-01T13:17:47  <kmlussier> Archiving the hashtag might not be a terrible idea. I often have a need to search out old posts I saw on Twitter.
+2015-04-01T13:17:49  <RoganH> I wouldn't bother archiving it but I tend to think of twitter as an ephemeral thing.
+2015-04-01T13:19:08  <gmcharlt> ok,
+2015-04-01T13:19:21  <gmcharlt> #action We shall march forth under the #evgils banner!
+2015-04-01T13:19:35  <gmcharlt> #topic Doc testing VM
+2015-04-01T13:20:04  <gmcharlt> #info This has moved forward a bit - gmcharlt has an IP address courtesy of csharp, access to the main docs server, and now just needs to create the VM
+2015-04-01T13:21:07  <gmcharlt> #topic Evergreen library directory
+2015-04-01T13:21:16  <gmcharlt> #info Erica has been making updates to it
+2015-04-01T13:21:17  <bshum> gmcharlt++ csharp++
+2015-04-01T13:21:18  <gmcharlt> ericar++
+2015-04-01T13:21:21  <bshum> ericar++
+2015-04-01T13:21:34  * bshum is just going to give karma to everybody who's awesome today :)
+2015-04-01T13:21:42  <bshum> ... and everyday
+2015-04-01T13:22:05  <gmcharlt> #topic Trademark page
+2015-04-01T13:22:53  <gmcharlt> #action gmcharlt will pursue this in April, and request that it be put on the EOB meeting agenda this month if there's anything that can't be handled over me
+2015-04-01T13:23:01  <gmcharlt> (though I anticipate that email will suffice)
+2015-04-01T13:23:32  <kmlussier> gmcharlt: I'm happy to help if you need any.
+2015-04-01T13:23:41  <gmcharlt> kmlussier++
+2015-04-01T13:24:08  <gmcharlt> #topic Moving the planet
+2015-04-01T13:24:16  <gmcharlt> I'm inclined to back-burner that for now
+2015-04-01T13:25:12  <gmcharlt> bshum: since you said that you need to leave at 1:30, if you want to bring up anything before you go... you now have the floor
+2015-04-01T13:25:36  <bshum> The only thing that I keep promising to work on is getting our past IRC logs into the same logging instance that we're using now.
+2015-04-01T13:26:04  <bshum> So that continues to be a longstanding side project for me.
+2015-04-01T13:26:41  <gmcharlt> k
+2015-04-01T13:26:42  <bshum> Past logs remain fully searchable of course, via google indexing or whatnot.  But it'd just be nice if it was all ported properly.
+2015-04-01T13:26:52  <gmcharlt> #action (carry-over) bshum to complete move of the old IRC logs
+2015-04-01T13:27:50  <gmcharlt> kmlussier: RoganH: any new business you want to bring up before we go over the task spreadsheet?
+2015-04-01T13:28:09  <RoganH> gmcharlt: Not at this time, it's been quiet on my end, at least as far as the website goes.
+2015-04-01T13:28:39  <kmlussier> I have a potential blue sky item that we talked about last week - a page specifically addressing third-party integration.
+2015-04-01T13:28:50  <kmlussier> Maybe it's something that can be added to the task spreadsheet.
+2015-04-01T13:29:41  <gmcharlt> kmlussier: indeed, and done
+2015-04-01T13:29:56  <gmcharlt> kmlussier: could you say a little more about your idea for the minutes?
+2015-04-01T13:30:38  <kmlussier> I think when third-party vendors want to integrate with Evergreen, they don't really know what to do with us. Because they are used to working in a model where they contact a vendor to get a dialog started.
+2015-04-01T13:31:15  <kmlussier> I'm thinking this could be a place that might describe a bit how such work can be done, how to work with a library to get the work done, who to reach out to for help.
+2015-04-01T13:31:38  <kmlussier> It ideally would linke to API docs too. But I think we need to improve our documentation there too.
+2015-04-01T13:33:22  <kmlussier> I think it could serve as a resource for both vendors or for libraries that want to get Evergreen to work with a particular product.
+2015-04-01T13:33:39  <gmcharlt> kmlussier: ok; I've tweaked the bluesky tab just now; does that better represent your idea/
+2015-04-01T13:33:40  <gmcharlt> ?
+2015-04-01T13:34:22  <kmlussier> Yes, it does.
+2015-04-01T13:34:44  <kmlussier> The last bit is probably a DIG thing more than a web team thing. Either way, I would be happy to work with any developer in the room on getting those API docs done.
+2015-04-01T13:34:54  <gmcharlt> kmlussier++
+2015-04-01T13:35:20  <gmcharlt> jeff: ^^ the API doc discussion may be relevant to your interests
+2015-04-01T13:35:29  <gmcharlt> other new items?
+2015-04-01T13:37:18  <gmcharlt> #topic website task review
+2015-04-01T13:37:27  <gmcharlt> so, starting from the bottom up for variety's sake
+2015-04-01T13:37:31  <gmcharlt> we've mentioned the planet
+2015-04-01T13:37:34  <gmcharlt> and the IRC logs
+2015-04-01T13:37:52  <jeff> gmcharlt++ gracias!
+2015-04-01T13:37:55  <gmcharlt> kmlussier: where do you stand with the get involved page?
+2015-04-01T13:38:10  <kmlussier> gmcharlt: I think I'm done with it.
+2015-04-01T13:38:21  <kmlussier> But I welcome anyone to improve, tweak, add to it.
+2015-04-01T13:38:37  <gmcharlt> kmlussier: I had a feeeling... I've marked that task as completed, then
+2015-04-01T13:38:42  <gmcharlt> thanks!
+2015-04-01T13:38:44  <kmlussier> gmcharlt: Thank you!
+2015-04-01T13:39:06  * gmcharlt also has too many e's, it seems
+2015-04-01T13:39:14  <gmcharlt> I blame eeevil
+2015-04-01T13:39:48  <gmcharlt> I think we've done what we can with the images on old blog posts, so I'm marking that complete as well
+2015-04-01T13:39:50  <kmlussier> I don't know how Erica is doing with the LP page, but I might be willing to take that one on if she doesn't have the tuits.
+2015-04-01T13:40:44  <kmlussier> The representative library profiles might be something the new PR committee could help with too.
+2015-04-01T13:40:52  <gmcharlt> I'm not sure where she with it is either, but thanks for the offer, and I"ll leave it to you two to talk it out
+2015-04-01T13:41:37  <gmcharlt> kmlussier: re the representative library profiles, sure, let us know what you find out
+2015-04-01T13:42:06  <gmcharlt> hsa that committee met yet?
+2015-04-01T13:42:26  <RoganH> I volunteered for it but I never heard anything about it so I don't know.
+2015-04-01T13:44:01  <gmcharlt> #action (carry-over) gmcharlt will security an Akimsmet key
+2015-04-01T13:44:03  <kmlussier> No, I just put out the call for volunteers last week.
+2015-04-01T13:44:30  <RoganH> kmlussier: maybe I'm thinking of a past effort in that direction, my memory is of much longer past
+2015-04-01T13:44:42  <RoganH> kmlussier: though I volunteered for your's too now that I think about it
+2015-04-01T13:44:45  <kmlussier> RoganH: You did volunteer. I just never replied to your email. :)
+2015-04-01T13:44:57  <RoganH> kmlussier: history repeats itself
+2015-04-01T13:45:09  <kmlussier> Technically, the EOB is supposed to appoint members, but I think it's safe to say you're in.
+2015-04-01T13:47:00  <gmcharlt> ok
+2015-04-01T13:47:10  <gmcharlt> any other old business - or new business, for tha tmatter?
+2015-04-01T13:49:09  *** TaraC has quit IRC
+2015-04-01T13:49:36  <kmlussier> None from me
+2015-04-01T13:49:49  <jeff> ssl certs. is that something gmcharlt and i could just work on together?
+2015-04-01T13:49:57  <jeff> or does that require web team interaction/etc?
+2015-04-01T13:50:08  <gmcharlt> jeff: yep, indeed, and I think you and I can just do it
+2015-04-01T13:50:26  <gmcharlt> #action jeff and gmcharlt to procure SSL cert for the website
+2015-04-01T13:50:27  <jeff> great. wanted to at least ask in an actual meeting, since i had the chance. :-)
+2015-04-01T13:51:59  <gmcharlt> ok, last chance...
+2015-04-01T13:53:32  <gmcharlt> thanks, everybody!
+2015-04-01T13:53:37  <gmcharlt> #endmeeting
+2015-04-01T13:53:37  <pinesol_green> Meeting ended Wed Apr  1 13:53:37 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-04-01T13:53:37  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-01-13.01.html
+2015-04-01T13:53:37  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-01-13.01.txt
+2015-04-01T13:53:37  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-01-13.01.log.html
+2015-04-01T13:54:06  <kmlussier> gmcharlt++
+2015-04-01T14:18:03  *** TaraC has joined #evergreen
+2015-04-01T14:22:55  *** ericar_ has joined #evergreen
+2015-04-01T14:23:06  <csharp> ok - so if I were to set the "Workstation Required" setting for Self Check to True, how would I create a workstation for that self-check station?
+2015-04-01T14:24:39  *** ericar has quit IRC
+2015-04-01T14:24:48  *** ericar_ is now known as ericar
+2015-04-01T14:25:30  * dbs is going to fork Evergreen, call it Evening, and start court challenges over the #evgils tag
+2015-04-01T14:25:36  <csharp> oh - I see from the code that it should force me to register one
+2015-04-01T14:25:37  <eeevil> csharp: berick can correct me if I'm wrong, but I think you reg a regular WS, then use the name in a "ws" cgi param
+2015-04-01T14:27:03  <csharp> eeevil: yeah - that's right
+2015-04-01T14:27:15  <csharp> it allowed me to register one
+2015-04-01T14:27:17  <kmlussier> gmcharlt: I seem to recall there was something in our trademark policy that references egils. Am I remembering that correctly?
+2015-04-01T14:27:49  <berick> yeah, ws=<name> is what you want.
+2015-04-01T14:27:57  <csharp> eeevil: berick: thanks
+2015-04-01T14:28:00  <dbs> kmlussier: http://comments.gmane.org/gmane.education.libraries.open-ils.general/7097 ?
+2015-04-01T14:28:02  <berick> does look like it will let you register one right there, though
+2015-04-01T14:28:08  <berick> as you said, csharp
+2015-04-01T14:28:11  <csharp> yeah, it was very convenient
+2015-04-01T14:28:46  <kmlussier> dbs++
+2015-04-01T14:29:35  <kmlussier> I wonder at one point #evgils becomes official enough to change the policy.
+2015-04-01T14:29:42  <kmlussier> Provided that dbs doesn't win his court challenge. ;)
+2015-04-01T14:29:57  *** dreuther has quit IRC
+2015-04-01T14:30:09  *** dreuther has joined #evergreen
+2015-04-01T14:32:45  <RoganH> kmlussier: Does that get resolved in Canadian or US Court?
+2015-04-01T14:34:42  <gmcharlt> RoganH: you're not thinking expansively enough. /Clearly/ the WIPO Abitration and Mediation Center is the appropriate venue
+2015-04-01T14:35:02  <RoganH> gmcharlt: so silly of me :)
+2015-04-01T14:55:23  <dbs> No no, #evgils is the whole reason I kicked off the Trans-Pacific Partnership rounds of negotiations
+2015-04-01T14:56:21  <dbs> 4 years of secrecy after the participants in the talks come to an agreement, during which time the involved nations have to institute the agreed-upon trade rules without informing their citizens
+2015-04-01T14:56:35  <dbs> (Sadly, that is entirely true and not at all an April 1 joke)
+2015-04-01T14:56:58  <RoganH> dbs: I was going to say, that's way too much a reality.
+2015-04-01T14:57:40  <dbs> https://wikileaks.org/tpp-investment/press.html in case anyone feels like getting enraged
+2015-04-01T14:57:49  <dbs> sorry for #offtopic
+2015-04-01T15:02:47  <jeff> When transforming a 490 tag, MODS seems to construct a relatedItem of type="series" with title element that contains the 490$a and 490$v. it then seems to call out to a template to create a "part" based on subfield n, which is a 440 thing, not a 490 thing.
+2015-04-01T15:02:51  <jeff> grr.
+2015-04-01T15:03:25  <dbs> jeff: Is that just our frozen version of MODS, or does current MODS versions do that as well?
+2015-04-01T15:03:43  <jeff> sorry, should have specified that. i'm looking at 3.5, which seems to be latest.
+2015-04-01T15:04:36  <dbs> OK. They've been pretty responsive to bug reports recently, and 3.6 was just announced for testing purposes
+2015-04-01T15:04:39  <jeff> behavior seems to date back to the 3.0 version, also.
+2015-04-01T15:04:45  <jeff> dbs: oh, good!
+2015-04-01T15:05:08  * jeff looks at http://www.loc.gov/standards/mods/changes-3-6.html
+2015-04-01T15:05:30  <dbs> "Changes include updates to hierarchicalGeographic, relatedItem and cartographics, among others."
+2015-04-01T15:05:33  <dbs> Yeah
+2015-04-01T15:06:25  <dbs> They do maintain multiple versions, so entirely possible they would fix 3.something through 3.6
+2015-04-01T15:10:32  *** RoganH has quit IRC
+2015-04-01T15:19:24  <jeff> dbs: any insight on if there is a source for the different revisions of each MODS version's marcxml -> mods xslt?
+2015-04-01T15:19:40  <dbs> hahaha
+2015-04-01T15:19:51  <jeff> versions 1.02 through 1.106 of http://www.loc.gov/standards/mods/v3/MARC21slim2MODS3-5.xsl, for example?
+2015-04-01T15:20:03  <jeff> yeah, that's enough insight to confirm my suspicions. :-)
+2015-04-01T15:20:09  <dbs> only very recently did the MODS committee acquiesce to the community requests for version control
+2015-04-01T15:20:31  <dbs> (to say something like "Right, we'll look into starting to use github"
+2015-04-01T15:20:48  *** bmills has quit IRC
+2015-04-01T15:27:26  <jeff> yeah, i've seen ksclarke/etc ask about that, but hadn't seen any positive reaction from the committee
+2015-04-01T15:30:03  *** bmills has joined #evergreen
+2015-04-01T15:33:48  *** jwoodard_ has joined #evergreen
+2015-04-01T15:34:36  <dbs> http://comments.gmane.org/gmane.comp.text.mods/1656
+2015-04-01T15:47:23  *** ningalls has quit IRC
+2015-04-01T16:02:12  *** vlewis has joined #evergreen
+2015-04-01T16:08:23  *** collum has quit IRC
+2015-04-01T16:13:18  <jeff> dbs++ thanks!
+2015-04-01T16:28:58  *** rjackson_isl has quit IRC
+2015-04-01T16:30:54  *** ericar_ has joined #evergreen
+2015-04-01T16:32:43  *** ericar has quit IRC
+2015-04-01T16:32:47  *** ericar_ is now known as ericar
+2015-04-01T16:33:28  *** yboston has quit IRC
+2015-04-01T16:35:20  <jeff> dbs: no idea why that didn't show up in the listserv search i did, other than "listserv"
+2015-04-01T16:39:24  *** Shae has quit IRC
+2015-04-01T16:39:25  *** Newziky has left #evergreen
+2015-04-01T16:56:44  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-01T17:11:21  *** ericar has quit IRC
+2015-04-01T17:11:32  *** mmorgan has left #evergreen
+2015-04-01T17:13:43  *** maryj has quit IRC
+2015-04-01T17:39:46  *** mrpeters has left #evergreen
+2015-04-01T17:48:37  *** mllewellyn has quit IRC
+2015-04-01T18:00:01  *** dcook has joined #evergreen
+2015-04-01T18:28:34  *** jihpringle has quit IRC
+2015-04-01T19:02:51  *** darshana has quit IRC
+2015-04-01T19:04:08  *** vlewis has quit IRC
+2015-04-01T19:08:59  *** graced has quit IRC
+2015-04-01T19:21:53  *** jihpringle has joined #evergreen
+2015-04-01T20:02:31  *** jwoodard_ has quit IRC
+2015-04-01T20:03:13  *** jwoodard has quit IRC
+2015-04-01T20:04:20  *** jihpringle has quit IRC
+2015-04-01T20:47:35  *** bmills has quit IRC
+2015-04-01T20:48:30  *** sandbergja has quit IRC
+2015-04-01T20:52:00  *** bmills has joined #evergreen

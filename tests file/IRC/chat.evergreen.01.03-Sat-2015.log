@@ -1,0 +1,32 @@
+2015-01-03T01:24:18  *** abowling has left #evergreen
+2015-01-03T03:42:38  *** pie_ has joined #evergreen
+2015-01-03T04:26:16  *** mnsri is now known as mnsri_away
+2015-01-03T05:38:38  *** pie_ has quit IRC
+2015-01-03T05:38:38  *** pie_ has joined #evergreen
+2015-01-03T06:54:09  *** rjackson-home has joined #evergreen
+2015-01-03T09:00:52  *** pie_ has quit IRC
+2015-01-03T11:31:08  *** nhilton has joined #evergreen
+2015-01-03T12:42:16  *** pie_ has joined #evergreen
+2015-01-03T13:27:28  *** Griff`Ron has joined #evergreen
+2015-01-03T14:25:39  *** artunit_ has joined #evergreen
+2015-01-03T14:26:43  *** artunit has quit IRC
+2015-01-03T14:26:53  *** artunit_ is now known as artunit
+2015-01-03T14:58:28  *** nhilton has quit IRC
+2015-01-03T16:29:17  *** artunit_ has joined #evergreen
+2015-01-03T16:30:42  *** artunit has quit IRC
+2015-01-03T16:30:55  *** artunit_ is now known as artunit
+2015-01-03T16:47:15  *** artunit_ has joined #evergreen
+2015-01-03T16:48:57  *** artunit has quit IRC
+2015-01-03T16:49:08  *** artunit_ is now known as artunit
+2015-01-03T17:16:32  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-03T18:16:26  *** Griff`Ron is now known as Driff`Ron
+2015-01-03T18:18:54  *** Driff`Ron is now known as Dick`Ron
+2015-01-03T18:54:46  *** mnsri_away is now known as mnsri
+2015-01-03T18:55:46  *** mnsri is now known as mnsri_away
+2015-01-03T19:23:29  *** Dick`Ron is now known as Griff
+2015-01-03T20:59:37  *** sarabee has quit IRC
+2015-01-03T21:02:16  *** sarabee has joined #evergreen
+2015-01-03T21:08:45  *** Griff has quit IRC
+2015-01-03T21:49:23  *** artunit has quit IRC
+2015-01-03T21:51:07  *** artunit has joined #evergreen
+2015-01-03T23:48:07  *** pie_ has quit IRC

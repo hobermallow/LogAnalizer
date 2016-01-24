@@ -1,0 +1,347 @@
+2015-01-28T00:46:46  *** abowling has quit IRC
+2015-01-28T04:59:52  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-28T07:11:43  *** BigRig_ has joined #evergreen
+2015-01-28T07:14:08  *** BigRig has quit IRC
+2015-01-28T07:46:39  *** rjackson-isl has joined #evergreen
+2015-01-28T07:55:45  *** jboyer-isl has joined #evergreen
+2015-01-28T08:07:50  *** collum has joined #evergreen
+2015-01-28T08:16:28  *** mrpeters has joined #evergreen
+2015-01-28T08:34:58  <csharp> ok - I'm trying to decide if this is a bug or a feature and whether it deserves a launchpad report....
+2015-01-28T08:35:39  <csharp> current behavior is that if a patron pays for a lost item, it drops off the lower "alternate" window on the Items Out screen
+2015-01-28T08:36:12  <csharp> however, if a patron pays for a longoverdue item, that circ is still being displayed on the lower window of Items Out
+2015-01-28T08:36:26  <csharp> and that's confusing our circ staff
+2015-01-28T08:36:41  *** graced has joined #evergreen
+2015-01-28T08:38:15  <csharp> the settings berick created in http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a0ee19f899f038594fea496c2032b9fbeaffa63d do not affect this behavior
+2015-01-28T08:38:15  <pinesol_green> [evergreen|Bill Erickson] LP 1212456 customize items out display - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a0ee19f>
+2015-01-28T08:38:54  <csharp> because those settings only care about whether an item is checked in and still owes fines
+2015-01-28T08:48:43  <kmlussier> csharp: Does the "leave transaction open when long overdue balance equals zero" OU setting affect whether it displays?
+2015-01-28T08:50:59  <csharp> kmlussier: no difference, no
+2015-01-28T08:51:19  <csharp> and we don't want to close those transactions (we don
+2015-01-28T08:51:28  <csharp> 't have that setting on for lost either)
+2015-01-28T08:53:21  <kmlussier> Hmmm...ok. I had been thinking that's what removed it from that window for lost items, but I could be misremembering.
+2015-01-28T08:55:57  <bshum> csharp: What is the setting set to for longoverdue?
+2015-01-28T08:56:31  <bshum> And/or lost
+2015-01-28T08:56:32  <csharp> bshum: unset, but when I set it to False and paid for another LO item, it still displayed
+2015-01-28T08:56:37  <csharp> unset for lost too
+2015-01-28T08:56:39  <eeevil> csharp: the short version (of the original reasoning) is that longoverdue is still overdue (though specially marked), and not the same as lost
+2015-01-28T08:56:42  <csharp> and lost drops off
+2015-01-28T08:57:15  <csharp> eeevil: that makes sense - Elaine and I were just having the same discussion here
+2015-01-28T08:58:05  <csharp> however, staff are confused because 1) it doesn't act like Lost and 2) they apply a payment and nothing visually changes from their point of view, which is making them think it's a "glitch"
+2015-01-28T08:58:12  <bshum> csharp: aren't the settings you linked to numerical values?
+2015-01-28T08:58:26  <bshum> Or are we talking about other settings
+2015-01-28T08:58:34  <csharp> bshum: oh - sorry - I was referring to the setting kmlussier asked about
+2015-01-28T08:59:06  <csharp> bshum: we're unset for the customized views, so that would be default behavior too
+2015-01-28T09:01:43  <csharp> kmlussier: bshum: eeevil: thanks for the input/interest - I think that gives me enough to go on
+2015-01-28T09:14:30  <jboyer-isl> csharp, I remember looking into this when I made some changes to how claims returned items are displayed. The default logic behind both claims ret and longoverdue is that they display in that list until they’re checked in, regardless of bills. The reasoning (as I understand it) being that they claimed it was reutned but it still hasn’t been found.
+2015-01-28T09:15:05  *** abowling has joined #evergreen
+2015-01-28T09:16:00  *** julialima_ has joined #evergreen
+2015-01-28T09:16:21  <jboyer-isl> For instance, here you’re allowed to claim you’ve returned 3 things before it’s time to pull out your checkbook. It helps to always have the list of items claimed returned in that case.
+2015-01-28T09:21:04  <dbwells> Good morning all.  The OPW group is just starting phase two of our project, where we hope to focus on "controls", so we're looking for input (no pun intended :) ).
+2015-01-28T09:22:06  <dbwells> Our first topic of consideration is that of buttons.
+2015-01-28T09:22:12  <julialima_> Good morning!
+2015-01-28T09:23:31  <kmlussier> Good morning julialima_
+2015-01-28T09:24:10  <dbwells> I'd like to say a few things about where we are, then we'll probably mostly listen and occasionally prod to see what others think.
+2015-01-28T09:24:40  *** pmurray_away is now known as pmurray
+2015-01-28T09:25:11  <dbwells> Right now, the web staff client is using Bootstrap for most of its styles.  Here's some info on Bootstrap buttons: http://getbootstrap.com/css/#buttons
+2015-01-28T09:26:38  <dbwells> Another place we've been looking for inspiration is Google's recent design guide, so here is Google's current take on buttons: http://www.google.com/design/spec/components/buttons.html#
+2015-01-28T09:27:40  <dbwells> Now, they are not worlds apart, but there are some important distinctions.
+2015-01-28T09:29:35  <dbwells> We'd love to hear some overall reactions or comments about these styles.  We're also eager to consider other button styles/features if there is something else out there which does things even better.
+2015-01-28T09:33:36  <jboyer-isl> The strongest feeling I have about buttons is that “flat” buttons are a terrible idea. Borders on buttons or underlined links are the way to go there.
+2015-01-28T09:34:42  <jboyer-isl> And I guess a shadow counts as a border in that case.
+2015-01-28T09:35:03  <dbwells> jboyer-isl: Are you specifically referring to Google's "flat" button version?
+2015-01-28T09:35:16  <jboyer-isl> And Apple’s, yes.
+2015-01-28T09:35:35  <dbwells> Not as familiar with Apple's, but ok :)
+2015-01-28T09:35:53  <jboyer-isl> They’re the same. ;)
+2015-01-28T09:36:35  *** ningalls has quit IRC
+2015-01-28T09:37:35  * gmcharlt tends to agree with jboyer-isl
+2015-01-28T09:37:56  <dbwells> I'm not saying this in support, but I think the idea is that there are certain instances (e.g. a dialog box) where position and context are enough to tell you something is a "button" so the additional styling is a distraction.
+2015-01-28T09:40:32  <dbwells> I've personally not made up my mind about it, but it's an interesting concept, and when I look at the examples, it isn't without merit.
+2015-01-28T09:41:53  *** ningalls has joined #evergreen
+2015-01-28T09:41:59  <jboyer-isl> That is the idea, but I think it requires a level of pattern matching that I don’t think most users care to apply. There’s another convention as to which side is ok vs. cancel (or safety vs data loss) that I don’t think even fairly advanced users can remember off hand.
+2015-01-28T09:42:16  <phasefx> yuo can raed tihs bceuase of ohter cleus <- but having more information for your brain to process is not necessarily a distraction
+2015-01-28T09:42:33  <jboyer-isl> I’m certainly no fan of the Windows 3.1 days where the border could take up 15% of the space, don’t get me wrong.
+2015-01-28T09:43:57  *** pmurray has quit IRC
+2015-01-28T09:48:56  <julialima_> I think they maybe work better on a touch device, but I also consider this type of buttons can be confusing. I don´t think the web staff client is suitable for this type of resource by the amount of information handling, but I do not rule out the possibility of trying it if necessary
+2015-01-28T09:49:34  <dbwells> So, on Google's guide page linked above, looking at the Do/Don't "Travel stream" example, does anyone agree with Google that the raised buttons here are more "heavy" than necessary?
+2015-01-28T09:50:49  <dbwells> It's about a third of the way down the page.
+2015-01-28T09:50:52  *** pmurray_away has joined #evergreen
+2015-01-28T09:51:15  *** pmurray_away is now known as Guest40224
+2015-01-28T09:52:14  <phasefx> dbwells: I don't have a strong opinion there, but I think I'm used to what Google is doing, and I'm very adaptable.  Presumably they've done actual user testing (I'd pretty much bet on it)
+2015-01-28T09:52:35  <dbwells> I'm presuming that as well.
+2015-01-28T09:53:08  <phasefx> I think the words being verbs and all caps invite them to be interpreted as actions
+2015-01-28T09:53:56  <dbwells> But even with zillions of dollars, there is always going to be a certain subjectivity to really subtle design choices which is hard to measure, so I'm not going to go all in on Google, either :)
+2015-01-28T09:54:00  <phasefx> something like Actions for this Record would probably be horrible there :)
+2015-01-28T09:54:36  *** Guest40224 is now known as pmurray
+2015-01-28T09:54:47  *** pmurray has quit IRC
+2015-01-28T09:54:47  *** pmurray has joined #evergreen
+2015-01-28T09:55:05  <phasefx> dbwells: and also potential bureaucratic craziness/bias
+2015-01-28T09:55:15  *** Shae has joined #evergreen
+2015-01-28T09:55:33  <phasefx> I doubt any company is purely rational and numbers driven
+2015-01-28T09:55:39  <jboyer-isl> My issue with that example (took me a while to find it) is they are comparing completely flat with raised. There’s a level in between, which is just the color border, no shadow. That’s the one I’d prefer in that situation.
+2015-01-28T09:56:19  <jboyer-isl> phasefx: Google may be as close as can be on that front. (Que stories about the 47 shades of blue A/B testing, etc.)
+2015-01-28T09:56:54  <phasefx> mmm
+2015-01-28T09:57:06  <gmcharlt> I also think we can't dismiss that firms like Google, while I do believe that they can and do more actual UX testing... are also under a marketing impetus to refresh their look periodically
+2015-01-28T09:57:16  <phasefx> as opposed to Yahoo with the CEO changing colors at the last minute :)
+2015-01-28T10:00:34  <dbwells> jboyer-isl: So do you think you would generally support the idea of a "lighter" button style for cases where button-ness is easily identifiable from context, but a "heavier" style when you need a button to stand out due to placement or generally screen busy-ness?
+2015-01-28T10:01:13  <dbwells> That question is for everyone else too, of course.
+2015-01-28T10:01:15  <jboyer-isl> gmcharlt: True. End users don’t see the back-end changes, just UI. Not as much an issue for specialty software (ILSs!)
+2015-01-28T10:03:00  <jboyer-isl> dbwells: Yes. I don’t have anything against multiple styles (so long as there are well defined guidelines on their use, i.e. why does this button look X, but that one Y?) My issue is specifically flat style, because it only uses placement and occasionally color.
+2015-01-28T10:03:59  <gmcharlt> dbwells: yes, although I might turn it around: a general not-to-heavy button style for most buttons, and a less commonly-used one for when the button should get special emphasis
+2015-01-28T10:05:23  *** sarabee has quit IRC
+2015-01-28T10:05:24  <dbwells> Thanks, I think these are good clarifications.  I also share concerns about applicability guidelines, so we don't end up with "use this style when it /feels/ like you should"
+2015-01-28T10:05:37  <phasefx> does the orange in that example mean thats a default action if you're in an environment where you can press enter?
+2015-01-28T10:05:43  *** jwoodard has joined #evergreen
+2015-01-28T10:06:37  <dbwells> phasefx: I think that's the idea.
+2015-01-28T10:06:59  * phasefx has been using android x86 in a vm lately, and misses some keyboard/mouse niceties
+2015-01-28T10:07:39  <dbwells> The default or most likely choices are generally on the right, likely due to general right-thumbedness.
+2015-01-28T10:08:48  <dbwells> It does seem a little odd when you combine that with left alignment.
+2015-01-28T10:09:18  <dbwells> Design is always a compromise of some kind; you just can't win em all.
+2015-01-28T10:09:38  <phasefx> maybe the image is "Correct use of flat buttons.*" * - Incorrect use of alignment :)
+2015-01-28T10:11:56  *** Stompro has quit IRC
+2015-01-28T10:15:57  *** gsams has quit IRC
+2015-01-28T10:17:04  * phasefx knows good keyboard support has always been a goal for Evergreen's staff client, and so much design these days is catering to keyboardless devices
+2015-01-28T10:22:56  <eeevil> just my opinion, but I think google-style flat buttons are a non-starter for a web UI ... I think break from normal "web page" expectations most users have, and their use on google pages has been painful for me to adjust to.  See: the new Drive interfaces, and Inbox. on mobile, they're mostly OK, but there are different assumptions there, IMO
+2015-01-28T10:23:35  <eeevil> I like the raised ones fine, but I also like the bootstrap buttons a lot
+2015-01-28T10:24:48  * kmlussier chimes in to say good keyboard support is critical for the client.
+2015-01-28T10:27:07  <collum> kmlussier++
+2015-01-28T10:29:27  <dbwells> Thank again to everyone for the input.  Changing the subject a little, how do we feel about all caps vs mixed case on the buttons?  Assuming we could overcome technical hurdles (I know there have been concerns about foreign character support in past uses of all caps), do we like it as a style choice?  It seems meant as a visual cue to stand out from surrounding content.
+2015-01-28T10:32:00  <collum> Mixed case with an easy option to change to all caps via CSS.
+2015-01-28T10:32:18  <jboyer-isl> I DO NOT CARE FOR ALL THE SHOUTING. Also, I find the “shape” of mixed case easier on the eyes.
+2015-01-28T10:32:22  <eeevil> I don't think it's necessary (or more usable) if the buttons are visually deliniated.  and, to my eye, it looks like yelling to have ALL CAPS sprinkled on the screen. that said ... heh... what collum beat me to ;)
+2015-01-28T10:32:29  * phasefx agrees on use CSS for it if done at all
+2015-01-28T10:32:44  <jboyer-isl> And as collum mentions, if a location would like to make them all caps, that’s an easy customization
+2015-01-28T10:34:07  <eeevil> super easy, actually, for current web staff code: #btn { text-transform: uppercase; }
+2015-01-28T10:34:52  <julialima_> Caps in buttons are somewhat "violent" I think
+2015-01-28T10:35:32  <graced> julialima_++   I agree
+2015-01-28T10:36:58  <dbwells> To help explain why it's often done, another advantage is that all caps is generally the same height, and also generally lacks decenders.  This makes it much easier to vertically align in a consistent way.  It is easy for mixed case buttons to look "off" depending on the text content.
+2015-01-28T10:39:03  <eeevil> dbwells: it seems that would apply primarily to the flat-style buttons, yes?
+2015-01-28T10:39:25  <dbwells> It also can lend things a certain "industrial" quality.  For instance, looking at my stereo, every control is labeled in all caps.  I've never noticed or even thought about it, because so many things are labeled that way.
+2015-01-28T10:40:10  * kmlussier agrees with julialima_
+2015-01-28T10:42:54  <dbwells> Again, I'm not trying to support one side or the other, just trying to represent the "other" side.  We're obviously a very conservative bunch :)
+2015-01-28T10:43:58  * phasefx burns dbwells in effigy :)
+2015-01-28T10:44:09  <eeevil> dbwells: the role of "devil's advocate" is very important ... please don't take my comments as an attack on /you/ :)
+2015-01-28T10:46:58  <dbwells> It's also funny how thinking about things can be different than actually experiencing them.  For instance, many of us have seen and clicked the button a huge number of times, but can anyone tell me (without looking) whether Gmail's compose button is all caps?  As you might guess from the conversation, it is, but I'd be lying if I said I ever really noticed or cared, or that it ever seemed wrong.
+2015-01-28T10:47:48  <phasefx> in Inbox it's a + sign in the lower right.. I keep looking for it
+2015-01-28T10:48:20  <phasefx> so they obviously don't have everything right in my case, n=1  :)
+2015-01-28T10:49:04  <dbwells> Yeah, I should have specified, the browser version.  That whole plus-sign thing on mobile is a pretty dramatic gamble of a UI choice, that's for sure :)
+2015-01-28T10:49:33  <phasefx> the browser version of INbox as well
+2015-01-28T10:50:38  <dbwells> ah, ok.  I'm still on the old-school Gmail.
+2015-01-28T10:51:21  *** julialima_ has left #evergreen
+2015-01-28T10:51:33  * phasefx uses Inbox for personal, Gmail for work, so there's some dissonance there keeping me from adapting in this case :)
+2015-01-28T10:51:44  <dbwells> eeevil: no worries.  I understand the risks :)
+2015-01-28T10:52:06  *** julialima_ has joined #evergreen
+2015-01-28T10:54:34  <dbwells> So Google almost certainly put the "action button" in the lower right for thumb's sake, then tries to carry the idea to the desktop, where lower right is not exactly a historically sensible place to put important things.  Again, a pretty big gamble in my eyes, and another good example of why design is all about compromise.
+2015-01-28T10:56:14  <dbwells> From my perspective, Google's putting cross-device consistency above 20 or 30 years of desktop GUI history.  An interesting decision, and I wish them luck!
+2015-01-28T10:56:35  <phasefx> does Google say anything about multiple or single entry points for a given action or workflow?
+2015-01-28T10:58:03  <phasefx> or anyone else for that matter?
+2015-01-28T10:58:11  <dbwells> I'm not sure if they address that directly, but I haven't read the whole guide straight through.
+2015-01-28T10:59:20  <dbwells> You're thinking like both a "compose" button and the plus button?
+2015-01-28T11:01:07  <phasefx> well, not something so obviously redundant. Early on in EG history, i had a mock staff client that had the normal menu bar along the top that we see now, but an extra menu bar along the bottom that was centered around nouns, like Items and Patrons.  No one liked it, but since then I've been hearing different opinions on the notion of multiple ways to do something in EG
+2015-01-28T11:02:14  <phasefx> one example might be the dedicated interface for scanning in a patron barcode vs entering a barcode in the patron search interface
+2015-01-28T11:03:14  <phasefx> or Retrieve Record by TCN in a staff client menu vs using Advanced Search to do it in the embedded OPAC
+2015-01-28T11:03:48  <phasefx> so maybe some obvious redundancies as well :)
+2015-01-28T11:04:15  <dbwells> phasefx: If it's any consolation concerning your mock client, I really like that idea :)  Having not seen it (obviously), I still think I know exactly what you were going for, at least in spirit.
+2015-01-28T11:04:47  <phasefx> dbwells: but we're programmers ;) a subset of the population
+2015-01-28T11:09:07  <dbwells> phasefx: In general, these questions are really great.  It's pretty obvious (despite your programmer goggles) that you've giving UI design a lot of thought.  It's probably outside the scope of the guide project, but we should find a way to talk through these ideas more over the next few months.
+2015-01-28T11:16:45  <dbwells> Well, thanks again to everyone who chimed in.  This is very valuable feedback.
+2015-01-28T11:20:14  <phasefx> opw++
+2015-01-28T11:20:19  <julialima_> I join Dan, thank you all!
+2015-01-28T11:20:30  <dbwells> I think we'll try to bring up similar topics in channel weekly, as it's a lot to take in and digest.
+2015-01-28T11:23:01  <kmlussier> I have a question about search relevance. My understanding is that an exact match on a search term is a little weightier in terms of relevancy than a match on a stemmed term. Is my understanding correct?
+2015-01-28T11:23:40  <kmlussier> In looking at the 2.4 release notes on search changes, it seems like this is the case. http://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_4.html#_opac
+2015-01-28T11:25:15  *** sarabee has joined #evergreen
+2015-01-28T11:26:21  *** sandbergja has joined #evergreen
+2015-01-28T11:26:35  *** Stompro has joined #evergreen
+2015-01-28T11:28:50  *** neutral has joined #evergreen
+2015-01-28T11:29:23  *** neutral is now known as Guest82373
+2015-01-28T11:33:22  *** bmills has joined #evergreen
+2015-01-28T11:41:48  *** b_bonner has joined #evergreen
+2015-01-28T11:41:58  *** mnsri_away has joined #evergreen
+2015-01-28T11:41:58  *** rashma_away has joined #evergreen
+2015-01-28T11:42:13  *** rashma_away is now known as rashma
+2015-01-28T11:42:18  *** mnsri_away is now known as mnsri
+2015-01-28T11:50:40  * bshum hates snow days/closed dates/backdating schenanigans and explanations.
+2015-01-28T11:52:18  <csharp> bshum: right there with you
+2015-01-28T11:52:48  <bshum> I feel like I end up having the same conversations every year during this time of winter.  :)
+2015-01-28T11:53:10  <csharp> bshum: if voiding fines is an issue, I have a (fairly crude) bash script that does the job: http://git.evergreen-ils.org/?p=contrib/pines.git;a=blob;f=batch_void_fines.sh;h=eb84c27b09b03e92275c1447e765d4ad93e4cb8e;hb=HEAD
+2015-01-28T11:53:38  *** Jake___ has joined #evergreen
+2015-01-28T11:54:02  <Jake___> Hello, just a quick question. Is the Evergreen staff client okay to use with Windows 8?
+2015-01-28T11:54:14  <csharp> Jake___: sure - it installs and runs fine
+2015-01-28T11:54:19  <bshum> Jake___: Shouldn't be a problem, I'm using the client on Win 8.1 right now.
+2015-01-28T11:54:40  <bshum> You might have to tell it to allow if Microsoft complains when you a) download it, b) try to install it.
+2015-01-28T11:54:52  <bshum> Since the OS might not recognize its authenticity.
+2015-01-28T11:55:33  <Jake___> Oh awesome! Thanks! Expanding on that, when the free upgrade to Windows 10 happens do you think it should still work fine? Speculatively, of course.
+2015-01-28T11:55:43  <csharp> Jake___: probably
+2015-01-28T11:56:11  <bshum> I think mrpeters was experimenting with the Win10 preview and had good things to say on it.  But I don't anticipate any big woes there.
+2015-01-28T11:56:19  <csharp> hopefully we'll be closer to a browser based client by the time Windows 10 is in common usage, though
+2015-01-28T11:56:28  <mrpeters> it was working fine
+2015-01-28T11:56:33  <bshum> mrpeters++
+2015-01-28T11:56:39  <mrpeters> i used it for a day to test our standalone debs for Evergreen
+2015-01-28T11:56:40  <bshum> Testing the future.
+2015-01-28T11:56:50  <mrpeters> win 10 is going to be pretty solid i think
+2015-01-28T11:56:54  <mrpeters> may get me to upgrade from win 7
+2015-01-28T11:57:01  <Jake___> Thats great to hear
+2015-01-28T11:57:59  <Jake___> Thank you all for the answers! You're awesome! Now I got to get back to work! Bye!
+2015-01-28T12:01:05  *** Jake___ has quit IRC
+2015-01-28T12:01:56  <bshum> csharp: Interesting script.  Requires heavy modifications before we could use it :)
+2015-01-28T12:02:18  <bshum> Stuff like the backup schema and the branch/system name checking I guess are unique to you
+2015-01-28T12:02:20  <bshum> Though quite fun
+2015-01-28T12:02:34  <bshum> csharp++ # thanks for sharing, maybe I'll play with it more later.
+2015-01-28T12:02:49  <csharp> yeah
+2015-01-28T12:03:51  <csharp> bshum: happy to assist, I'd like the script better if it were tied into the actual opensrf calls, but it was done under pressure and I had to use the tools I knew
+2015-01-28T12:04:17  <bshum> csharp: I used to do more stuff via SQL back in the day.
+2015-01-28T12:04:24  <csharp> pressure = nearly every PINES system wanting specific dates' fines voided
+2015-01-28T12:04:25  <bshum> But nowadays we just tell libs to backdate more liberally.
+2015-01-28T12:10:02  *** nhilton has joined #evergreen
+2015-01-28T12:10:15  *** buzzy has joined #evergreen
+2015-01-28T12:13:24  *** bmills1 has joined #evergreen
+2015-01-28T12:13:48  *** bmills1 has joined #evergreen
+2015-01-28T12:13:51  *** bmills has quit IRC
+2015-01-28T12:23:19  *** mmorgan has joined #evergreen
+2015-01-28T12:25:06  <gmcharlt> to avoid a potential race condition, I'd appreciate eyes on bug 1415572 soonish
+2015-01-28T12:25:06  <pinesol_green> Launchpad bug 1415572 in Evergreen 2.7 "outdated version of authority.normalize_heading can be present in certain upgraded databases" (affected: 1, heat: 6) [High,New] https://launchpad.net/bugs/1415572
+2015-01-28T12:28:12  <jboyer-isl> mrpeters, I meant to ask earlier: were you going to take care of the Mac clients for the web team? I didn’t want to duplicate any efforts, but I didn’t know if you were helping out that one location or building each release’s clients.
+2015-01-28T12:30:44  <mrpeters> I offered to, but didnt really hear any resounding response to start posting them on the website so I haven't yet.
+2015-01-28T12:30:52  *** mmorgan has quit IRC
+2015-01-28T12:31:38  *** nhilton_ has joined #evergreen
+2015-01-28T12:32:37  <jboyer-isl> It would probably help, but I think that the people that need it most either track SITKA or build their own so we don’t know how big a group it is.
+2015-01-28T12:33:35  <mrpeters> yeah, i dont know either.  plus, do we want to offer support for them?  i can't commit to supporting them
+2015-01-28T12:34:57  *** mmorgan has joined #evergreen
+2015-01-28T12:35:10  <jboyer-isl> It would definitely be a “at your own risk” thing.
+2015-01-28T12:36:21  <gmcharlt> "up to and including coming to the library one day and finding the collection reshelved in order of descreasing size..." ;)
+2015-01-28T12:36:59  <jboyer-isl> Do not taunt Evergreen Staff Client.
+2015-01-28T12:37:04  <gmcharlt> heh
+2015-01-28T12:37:59  <gmcharlt> but from the webteam POV, it's not a big deal to provide credentials and place to upload the clients and a WP login for updating the downloads page
+2015-01-28T12:38:11  *** jihpringle has joined #evergreen
+2015-01-28T12:38:12  <gmcharlt> just need somebody to contact me or bshum when they're ready to say go
+2015-01-28T12:38:41  <mrpeters> i'd probably need someone to tell me when one is needed, and then i'd upload the file and let someone update the downloads page when they update the rest of the clients
+2015-01-28T12:38:42  <gmcharlt> and for that matter... I'm happen to simply be sent the clients, and I can put them in place
+2015-01-28T12:55:15  *** nhilton has quit IRC
+2015-01-28T12:59:11  <csharp> gmcharlt: testing your fix now
+2015-01-28T12:59:37  <gmcharlt> csharp: did you all run into the issue?
+2015-01-28T12:59:40  * csharp recalls running into NOHEADING several months ago
+2015-01-28T12:59:44  <gmcharlt> snap
+2015-01-28T12:59:52  <csharp> yeah, but I don't recall the details
+2015-01-28T13:00:06  <csharp> we have ~9000 affected auth record entries
+2015-01-28T13:00:35  <csharp> I think I was researching see from/also tracings and saw many records with NOHEADING
+2015-01-28T13:01:22  <csharp> yep: http://irc.evergreen-ils.org/evergreen/2014-12-12#i_144668
+2015-01-28T13:01:50  <csharp> looks like yboston was affected too
+2015-01-28T13:02:26  <gmcharlt> #startmeeting Web Team Meeting, 2015-01-28
+2015-01-28T13:02:26  <pinesol_green> Meeting started Wed Jan 28 13:02:26 2015 US/Eastern.  The chair is gmcharlt. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-01-28T13:02:26  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-01-28T13:02:26  <pinesol_green> The meeting name has been set to 'web_team_meeting__2015_01_28'
+2015-01-28T13:02:33  <gmcharlt> #info Agenda is http://wiki.evergreen-ils.org/doku.php?id=webteam:meetings:agenda:2015-01-28
+2015-01-28T13:02:38  <gmcharlt> #topic Roll call
+2015-01-28T13:02:43  <gmcharlt> #info gmcharlt = Galen Charlton, ESI
+2015-01-28T13:05:35  <kmlussier> Sorry, I wasn't paying attention.
+2015-01-28T13:05:49  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-01-28T13:05:52  <gmcharlt> :)
+2015-01-28T13:06:03  <kmlussier> Small meeting? :)
+2015-01-28T13:06:12  <gmcharlt> appears so...
+2015-01-28T13:06:17  <gmcharlt> #topic Updates
+2015-01-28T13:06:58  <gmcharlt> #action gmcharlt will install (or verify that it was installed) the libc6 fixes for the "GHOST" vulnerability today on the evergreen-ils.org boxes
+2015-01-28T13:08:06  <gmcharlt> #action after ALA Midwinter, gmcharlt will get the documentation test VM provisioned
+2015-01-28T13:08:17  <gmcharlt> kmlussier: any quick updates from you?
+2015-01-28T13:08:36  <kmlussier> gmcharlt: No, I haven't done anything for the web site this month.
+2015-01-28T13:08:58  <gmcharlt> I saw that ericar has sent out a query about updated the roster
+2015-01-28T13:09:07  <gmcharlt> I believe she's on the road today, though
+2015-01-28T13:10:42  <gmcharlt> kmlussier: any topics/queries you'd like to bring up?
+2015-01-28T13:10:56  <gmcharlt> actually, here's another from me
+2015-01-28T13:11:09  <kmlussier> Nothing that I can think of.
+2015-01-28T13:11:28  <gmcharlt> #info There's discussion about one or more folks building Mac staff clients; the web team has extended an offer to assist with mechanics of getting them on the webserver for download
+2015-01-28T13:11:58  <gmcharlt> kmlussier: in that case, I'm inclined to carry every else to February
+2015-01-28T13:12:17  <gmcharlt> and send scheduling ninjas to track people down to attend the February meeting :)
+2015-01-28T13:13:21  <gmcharlt> kmlussier: thanks!
+2015-01-28T13:13:23  <gmcharlt> #endmeeting
+2015-01-28T13:13:23  <pinesol_green> Meeting ended Wed Jan 28 13:13:22 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-01-28T13:13:23  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-28-13.02.html
+2015-01-28T13:13:23  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-28-13.02.txt
+2015-01-28T13:13:23  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-28-13.02.log.html
+2015-01-28T13:13:32  <kmlussier> gmcharlt++
+2015-01-28T13:13:39  <kmlussier> Shortest meeting ever
+2015-01-28T13:19:02  <tsbere> kmlussier: I disagree! Comes close, though.
+2015-01-28T13:24:22  <dbwells> fits on one screen for me, that's pretty impressive
+2015-01-28T13:26:04  <kmlussier> tsbere: I want to see proof of this other, shorter meeting you speak of.
+2015-01-28T13:27:41  <tsbere> kmlussier: I believe the shortest *I* have ever been involved with went "Ok, who's here?" *raise my hand* "Ok, our rules state we need more people than this to accomplish anything. I move we thus leave everything until we can actually vote on stuff." *I voice agreement* "Ok then, meeting over." - Total elapsed time was about a minute and a half.
+2015-01-28T13:28:20  <kmlussier> I would argue that since there wasn't a quorum, the meeting didn't actually take place. ;)
+2015-01-28T13:28:59  <csharp> one_screenful_meetings++
+2015-01-28T13:29:20  <tsbere> kmlussier: Ah, but to discuss things we didn't need a quorum. Just to actually vote on stuff. Our decision was more along the lines of "why discuss things if we can't vote on them anyway?" :P
+2015-01-28T13:29:50  <csharp> #vote ulitmate power to the web team: Yes
+2015-01-28T13:30:11  <csharp> er.. ultimate power, even
+2015-01-28T13:30:41  <csharp> gmcharlt: I tested your branch - signoff branch on the way
+2015-01-28T13:31:15  <bshum> For fun, http://evergreen-ils.org/irc_logs/evergreen/2011-07/%23evergreen.08-Fri-2011.log was when I thought I had the shortest meeting ever for the community meetings (back when we were doing those).  The timestamps put it at14 minutes.  So yes, that meeting I missed was shorter :)
+2015-01-28T13:31:42  <bshum> gmcharlt: Apologies for missing things, I was stuck talking while retrieving my lunch :(
+2015-01-28T13:32:24  *** vlewis has joined #evergreen
+2015-01-28T13:35:04  <gmcharlt> bshum: no worries
+2015-01-28T13:39:32  <kmlussier> Ah. I do miss community meetings.
+2015-01-28T13:40:36  *** kbutler has joined #evergreen
+2015-01-28T13:42:06  <bshum> kmlussier: Do you?  Do you really?  :)
+2015-01-28T13:43:04  <kmlussier> I do. Every once in a while, I talk about scheduling them. But then I get distracted by something else. But I think it's good to bring the community together between conferences to talk about stuff.
+2015-01-28T13:51:40  *** nhilton has joined #evergreen
+2015-01-28T14:18:58  *** edoceo has joined #evergreen
+2015-01-28T14:42:10  *** collum has quit IRC
+2015-01-28T14:47:02  *** sarabee has quit IRC
+2015-01-28T15:03:46  *** rashma is now known as rashma_away
+2015-01-28T15:12:55  <gmcharlt> there will be a brief website outage in five minutes for security updates
+2015-01-28T15:17:17  *** julialima_ has quit IRC
+2015-01-28T15:23:51  <gmcharlt> maintenance complete
+2015-01-28T15:28:07  <gmcharlt> now performance similar maintenance on the git server
+2015-01-28T15:33:17  <gmcharlt> maintenance complete
+2015-01-28T15:37:27  <jeff> gmcharlt++
+2015-01-28T15:37:39  *** sarabee has joined #evergreen
+2015-01-28T15:39:03  <jboyer-isl> gmcharlt++
+2015-01-28T15:39:29  <jboyer-isl> security_bugs—
+2015-01-28T15:39:49  <jboyer-isl> security_bugs--
+2015-01-28T15:40:28  <jboyer-isl> really, now. you autocorrect that, but not my spelling.
+2015-01-28T15:42:44  <kmlussier> autocorrect--
+2015-01-28T15:44:13  <gmcharlt> the em-dashes are coming to take their rightful place!
+2015-01-28T16:04:43  *** jwoodard has quit IRC
+2015-01-28T16:05:19  *** Shae has quit IRC
+2015-01-28T16:11:16  *** jwoodard has joined #evergreen
+2015-01-28T16:13:27  *** rashma_away is now known as rashma
+2015-01-28T16:16:36  <Bmagic> can anyone think of a reason that the fine generator would ignore the grace period and go ahead and start applying fines at the due_date? Or do I have it wrong? When the action.circulation row is created, does the due_date include the grace?
+2015-01-28T16:20:11  <jboyer-isl> Bmagic: due_date doesn’t include grace day, but I think if you keep an item past the grace period the fines are backdated until the due date. Are you seeing people with fines before the grace period is over?
+2015-01-28T16:20:52  <Bmagic> jboyer-isl: that's it, the billing_ts date is NOT the real time when the fine generator applied the fine
+2015-01-28T16:22:22  <jboyer-isl> I imagine the reasoning goes that it would be confusing if you had 2-3 billings for the same date, when 1-2 of them were actually for past dates.
+2015-01-28T16:26:19  <Bmagic> joboyer-isl: understandable. In my development machine, I manually edited my circ to have a due_date of now(). then noticed that the fine generated, did in fact wait 15 minutes. When it finally fired, the date on billing_ts was equal to the circulation due_date+'1 hour' which is the checkout period duration
+2015-01-28T16:28:31  <Bmagic> I found it strange that the billing_ts was not exactly equal to the due_date+grace period
+2015-01-28T16:29:17  *** rjackson-isl has quit IRC
+2015-01-28T16:37:46  <jboyer-isl> Are grace periods actually multiples of the circ duration? So a grace period of 1 for a checkout of 1 hour, you only get a grace hour. does that match up with what you’re seeing?
+2015-01-28T16:38:41  *** graced has quit IRC
+2015-01-28T16:40:47  *** jboyer-isl has quit IRC
+2015-01-28T16:40:56  <Bmagic> jboyer-isl: it's 1 hour checkout, with 15 minutes grace, 2 dollars per hour over
+2015-01-28T16:41:53  <Bmagic> jboyer-isl: so, the first fine will trigger at the 1 hour 15 minute mark, and it will set the billing_ts= due_date+duration (I think) at least that is what I saw in devel
+2015-01-28T16:43:04  <bshum> Bmagic: billing_ts is the next time before a check occurs I think?  Meaning wait till then before applying the next fine via the generator script.
+2015-01-28T16:43:26  <bshum> Not the actual moment when the billing occurs
+2015-01-28T16:43:41  <Bmagic> bshum: with that logic, then we don't know when the fine was applied from the DB columns
+2015-01-28T16:43:51  <bshum> Bmagic: I believe that is correct.
+2015-01-28T16:44:03  <Bmagic> bshum: It's exactly what I am seeing in practice
+2015-01-28T16:44:24  <bshum> Yes, exactly
+2015-01-28T16:44:32  * bshum had to relook at the table
+2015-01-28T16:44:54  <bshum> billing_ts is only the time for the script to wait till applying the next fine
+2015-01-28T16:45:05  <bshum> It doesn't specify when the billing is actually applied.
+2015-01-28T16:49:38  *** mrpeters has left #evergreen
+2015-01-28T16:52:02  *** dMiller_ has joined #evergreen
+2015-01-28T16:57:25  * phasefx forgot he had mapped ils.org to git.evergreen-ils.org in his hosts file, so was pleasently surprised when a gmail butchered git link still worked when clicked
+2015-01-28T16:59:11  *** kbutler has quit IRC
+2015-01-28T17:10:01  <Bmagic> bshum: jboyer-isl: some interesting things have come from these queries. For example, I have a query that shows me everyones fines on transactions that were overdue. This query shows me that nobody received a fine inside of the grace period. However, those that did get a fine after the grace period received double SOMETIMES. I wonder....
+2015-01-28T17:13:16  *** mmorgan has left #evergreen
+2015-01-28T17:17:17  <Bmagic> due date= "2014-09-18 15:33:53-05" checkin time = "2014-09-18 16:00:13.952411-05" which means they were late by "00:26:20.952411" and they received 2 fines at 2 dollars each. The circulation is using a rule that says "2 dollars per hour". So why oh why did this xact get slapped with 2 hours worth of fees
+2015-01-28T17:20:32  <Bmagic> The stop_fines_time = "2014-09-18 16:00:13.952411-05" and yet it received a fine dated "2014-09-18 17:33:53-05"
+2015-01-28T17:52:29  *** dreuther has quit IRC
+2015-01-28T18:13:48  *** dreuther has joined #evergreen
+2015-01-28T18:17:28  *** dMiller_ has quit IRC
+2015-01-28T18:17:31  *** bmills1 has quit IRC
+2015-01-28T18:17:45  *** bmills has joined #evergreen
+2015-01-28T18:26:40  *** nhilton has quit IRC
+2015-01-28T18:40:28  *** dbwells has quit IRC
+2015-01-28T18:40:44  *** dbwells has joined #evergreen
+2015-01-28T19:08:27  *** nhilton_ has quit IRC
+2015-01-28T19:11:53  *** vlewis has quit IRC
+2015-01-28T19:16:25  *** jihpringle has quit IRC
+2015-01-28T20:05:52  *** jwoodard has quit IRC
+2015-01-28T20:59:33  *** bmills has quit IRC
+2015-01-28T21:50:08  *** BigRig has joined #evergreen
+2015-01-28T21:52:46  *** BigRig_ has quit IRC
+2015-01-28T22:46:53  *** sandbergja has quit IRC
+2015-01-28T23:32:10  *** abowling has left #evergreen

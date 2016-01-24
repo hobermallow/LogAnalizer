@@ -1,0 +1,231 @@
+2015-04-06T07:40:48  *** rjackson_isl has joined #evergreen
+2015-04-06T07:43:25  *** mrpeters has joined #evergreen
+2015-04-06T07:43:27  *** jboyer-isl has joined #evergreen
+2015-04-06T08:16:53  *** Newziky1 has joined #evergreen
+2015-04-06T08:31:04  *** collum has joined #evergreen
+2015-04-06T08:36:04  *** mmorgan has joined #evergreen
+2015-04-06T08:41:39  *** RoganH has joined #evergreen
+2015-04-06T08:46:30  *** ericar has joined #evergreen
+2015-04-06T08:47:06  *** krvmga has joined #evergreen
+2015-04-06T08:47:44  *** krvmga has joined #evergreen
+2015-04-06T08:51:07  *** pmurray_away is now known as pmurray
+2015-04-06T08:51:59  *** Shae has joined #evergreen
+2015-04-06T09:10:36  *** Dyrcona has joined #evergreen
+2015-04-06T09:12:48  *** graced has joined #evergreen
+2015-04-06T09:19:42  *** sarabee has joined #evergreen
+2015-04-06T09:20:27  *** maryj has joined #evergreen
+2015-04-06T09:32:38  *** yboston has joined #evergreen
+2015-04-06T09:53:12  *** ericar has quit IRC
+2015-04-06T09:53:13  *** sarabee has quit IRC
+2015-04-06T09:53:13  *** book` has quit IRC
+2015-04-06T09:53:14  *** Dyrcona has quit IRC
+2015-04-06T09:53:14  *** Shae has quit IRC
+2015-04-06T09:53:16  *** b_bonner has quit IRC
+2015-04-06T09:53:17  *** Bmagic has quit IRC
+2015-04-06T09:53:17  *** hopkinsju has quit IRC
+2015-04-06T09:53:17  *** BigRig has quit IRC
+2015-04-06T09:53:17  *** dbwells has quit IRC
+2015-04-06T09:53:19  *** berick has quit IRC
+2015-04-06T09:53:20  *** serflog has quit IRC
+2015-04-06T09:53:22  *** remingtron_ has quit IRC
+2015-04-06T09:53:24  *** mceraso has quit IRC
+2015-04-06T09:53:25  *** mtate has quit IRC
+2015-04-06T09:53:29  *** graced has quit IRC
+2015-04-06T09:53:31  *** dkyle1 has quit IRC
+2015-04-06T09:53:32  *** dbs has quit IRC
+2015-04-06T09:53:33  *** Sato has quit IRC
+2015-04-06T09:53:33  *** eeevil has quit IRC
+2015-04-06T09:53:34  *** substack has quit IRC
+2015-04-06T09:53:34  *** csharp has quit IRC
+2015-04-06T09:53:35  *** yboston has quit IRC
+2015-04-06T09:53:35  *** krvmga has quit IRC
+2015-04-06T09:53:37  *** rashma has quit IRC
+2015-04-06T09:53:38  *** jeff_ has quit IRC
+2015-04-06T09:55:19  *** remingtron_ has joined #evergreen
+2015-04-06T09:55:19  *** mceraso has joined #evergreen
+2015-04-06T09:55:19  *** mtate has joined #evergreen
+2015-04-06T09:56:42  *** graced has joined #evergreen
+2015-04-06T09:56:42  *** dkyle1 has joined #evergreen
+2015-04-06T09:56:42  *** dbs has joined #evergreen
+2015-04-06T09:56:42  *** Sato has joined #evergreen
+2015-04-06T09:56:42  *** eeevil has joined #evergreen
+2015-04-06T09:56:42  *** substack has joined #evergreen
+2015-04-06T09:56:42  *** csharp has joined #evergreen
+2015-04-06T09:57:58  *** sarabee has joined #evergreen
+2015-04-06T09:57:58  *** book` has joined #evergreen
+2015-04-06T09:58:18  *** Dyrcona has joined #evergreen
+2015-04-06T09:58:18  *** Shae has joined #evergreen
+2015-04-06T09:58:18  *** b_bonner has joined #evergreen
+2015-04-06T09:58:18  *** Bmagic has joined #evergreen
+2015-04-06T09:58:18  *** hopkinsju has joined #evergreen
+2015-04-06T09:58:18  *** BigRig has joined #evergreen
+2015-04-06T09:58:18  *** dbwells has joined #evergreen
+2015-04-06T09:58:18  *** berick has joined #evergreen
+2015-04-06T09:58:18  *** serflog has joined #evergreen
+2015-04-06T09:58:41  *** ericar has joined #evergreen
+2015-04-06T09:58:44  *** yboston has joined #evergreen
+2015-04-06T09:58:44  *** krvmga has joined #evergreen
+2015-04-06T09:58:44  *** rashma has joined #evergreen
+2015-04-06T09:58:44  *** jeff_ has joined #evergreen
+2015-04-06T10:00:22  *** sarabee has quit IRC
+2015-04-06T10:00:22  *** book` has quit IRC
+2015-04-06T10:01:05  *** sarabee has joined #evergreen
+2015-04-06T10:01:05  *** book` has joined #evergreen
+2015-04-06T10:33:30  <kmlussier> Good morning #evergreen
+2015-04-06T10:34:14  <jeff> good morning!
+2015-04-06T10:57:43  *** darshana has joined #evergreen
+2015-04-06T10:57:47  <Bmagic> GOOOOOOD morning!
+2015-04-06T11:01:28  *** vlewis has joined #evergreen
+2015-04-06T11:06:56  <kmlussier> Bmagic: You sound way too enthusiastic for a Monday morning.
+2015-04-06T11:07:29  <Bmagic> haha
+2015-04-06T11:08:07  <Bmagic> I like this community and I am excited to be apart of it! (Ghostbusters)
+2015-04-06T11:08:53  <kmlussier> Bmagic++
+2015-04-06T11:19:23  *** pmurray is now known as pmurray_away
+2015-04-06T11:22:52  *** pmurray_away is now known as pmurray
+2015-04-06T11:24:36  *** mglass has joined #evergreen
+2015-04-06T11:59:36  <kmlussier> berick++ #fix for bug 1436906
+2015-04-06T11:59:36  <pinesol_green> Launchpad bug 1436906 in Evergreen "Direct charges are not disencumbered when they are removed from a PO or if the PO is canceled" (affected: 1, heat: 6) [Medium,Confirmed] https://launchpad.net/bugs/1436906
+2015-04-06T11:59:51  <kmlussier> I'll see if I can test that one today.
+2015-04-06T12:00:20  <berick> cool
+2015-04-06T12:14:06  *** krvmga has quit IRC
+2015-04-06T12:17:56  *** chatley has joined #evergreen
+2015-04-06T12:27:58  *** buzzy has joined #evergreen
+2015-04-06T13:12:32  *** sandbergja has joined #evergreen
+2015-04-06T13:25:24  * berick issues last call on april dev meeting poll http://doodle.com/4atuzyq4f4s7nsdu
+2015-04-06T13:26:11  * jeff consults calendar
+2015-04-06T13:27:52  <jeff> ``This poll is bigger than usual''
+2015-04-06T13:28:20  <jeff> "usual" is perhaps not the best choice of words there.
+2015-04-06T13:30:45  <kmlussier> Our polls are always bigger than usual
+2015-04-06T13:31:22  <kmlussier> Ooh! It looks like it might be a Thursday meeting. That's new and different.
+2015-04-06T13:31:45  <jeff> thrills! excitement!
+2015-04-06T13:41:56  <jboyer-isl> \away
+2015-04-06T13:43:47  <Dyrcona> \up
+2015-04-06T13:43:53  <Dyrcona> \up
+2015-04-06T13:43:58  <Dyrcona> \& away
+2015-04-06T13:43:59  <Dyrcona> :)
+2015-04-06T13:44:20  <rjackson_isl> into the wild blue yonder
+2015-04-06T13:46:51  <jboyer-isl> I need to find some better clients. At home I have to use the / commands, at work I have to use the menus.
+2015-04-06T13:48:46  <rjackson_isl> at least you have an excuse - I just interrupt mtgs by typing in the wrong window! :(
+2015-04-06T14:03:19  <jeff> open-ils.circ.mark_item_missing_pieces requires the permission MARK_ITEM_MISSING_PIECES, but depending on circumstances and configuration, will fail if the calling user does not also have CIRC_OVERRIDE_DUE_DATE.
+2015-04-06T14:08:21  <jeff> this probably isn't the only example of "this action requires multiple permissions", and that in and of itself isn't bad, and the scenario of "staff member who should have MARK_ITEM_MISSING_PIECES but should not have CIRC_OVERRIDE_DUE_DATE" might be uncommon.
+2015-04-06T14:09:14  <Dyrcona> I believe our generic circ accounts have both.
+2015-04-06T14:09:15  <jeff> it does have me wondering if there's a good method of "require user to have this perm or require that this method be being called internally" (over-simplifying the idea for purposes of brevity)
+2015-04-06T14:09:53  <Dyrcona> I'm not sure what you're saying there.
+2015-04-06T14:10:52  <jboyer-isl> jeff: Are you basically saying there should be a parameter that says “The user has a more important permission for the task at hand, don’t worry if they’re lacking one that you’re about to check for”
+2015-04-06T14:11:12  <jboyer-isl> kind of like an .override, but for permission checks?>
+2015-04-06T14:12:18  <jeff> if I grant a user MARK_ITEM_MISSING_PIECES but not CIRC_OVERRIDE_DUE_DATE, I'm setting things up for failure. It might be interesting to have a way for open-ils.circ.mark_item_missing_pieces's checkout call not require the user to have CIRC_OVERRIDE_DUE_DATE by nature of the missing pieces api method being the "caller".
+2015-04-06T14:12:38  <jeff> I'm not yet certain that it would be THAT useful, I'm just thinking out loud. :-)
+2015-04-06T14:13:35  <Dyrcona> Well, I'm not certain why mark item missing pieces would mess with the due date.
+2015-04-06T14:14:37  <jeff> More immediately relevant, I'm starting to think it would be useful to have some additional developer-focused documentation on things like "assumptions made / conventions with regard to stop_fines reasons", etc.
+2015-04-06T14:15:48  <jeff> Dyrcona: mark item missing pieces finds the most recent circ of a copy, and either attempts a renewal (if the circ is still open) or creates a new checkout. If the copy is needed for a hold, the checkout is passed today's date to make it "due now".
+2015-04-06T14:16:44  <Dyrcona> I'm not gonna ask why.
+2015-04-06T14:17:42  <jeff> It is undesired behavior in our environment.
+2015-04-06T14:19:07  <jeff> But something which is desired is for the items (which have usually been checked in already) to be checked back out to the patron for a fixed one week duration involving no usual fines, then after that time they will be billed for the missing pieces / item as a whole.
+2015-04-06T14:20:07  *** BigRig has quit IRC
+2015-04-06T14:20:29  <jeff> I'm thinking to think of approaches that create the least amount of acrobatics.
+2015-04-06T14:21:20  <csharp> missing pieces appears to already be pretty acrobatic ;-)
+2015-04-06T14:21:29  <csharp> at least last time I looked ;-)
+2015-04-06T14:22:44  <csharp> it doesn't work for us because of the "bring up the copy editor to add a copy note" step - we don't want circ people to have the power to edit copy attributes
+2015-04-06T14:22:50  <jeff> sure.
+2015-04-06T14:23:12  <csharp> and last I looked, there wasn't a way to just add a note without the full copy editor
+2015-04-06T14:24:12  <jeff> I've also considered not checking the item back out, and just setting the copy status to Missing Pieces, eventually adding a billing, etc.
+2015-04-06T14:26:47  <kmlussier> csharp: Hmmm...the alert development that PINES and MassLNC are jointly funding will let people add a temporary note for purposes like this one. However, I didn't even think to add something to the requirements that would make Mark Missing Pieces add the note that way instead of the traditional way.
+2015-04-06T14:27:17  <jeff> Then need to determine the timeline/process by which the item will be billed either asset.copy.price or a manual partial amount. The circ may have overdue billings anyway, then a full payment would set xact_finish, which would then need to be cleared (re-opening the xact) when the item was actually billed...
+2015-04-06T14:27:32  *** BigRig has joined #evergreen
+2015-04-06T14:27:39  <csharp> kmlussier: even if it doesn't become a requirement for that project, building the bridge between one and the other would probably be possible later
+2015-04-06T14:27:49  <kmlussier> Yes indeed!
+2015-04-06T14:27:53  <jeff> And determining what to key off of for the timing of the bill (copy edit date? checkin date?) is problematic also.
+2015-04-06T14:28:14  <jeff> Some part of me wants per-circ messaging/event logging.
+2015-04-06T14:28:27  <jeff> which we have in a way with A/T records.
+2015-04-06T14:33:02  <jeff> as it currently stands, checking the item back out to a patron with a due date 1 week in the future, notifying them that they have a week to contact us to determine what's missing, how to get it back, etc...
+2015-04-06T14:33:16  <jeff> (we'd need to add that "1 week in the future" bit)
+2015-04-06T14:35:08  <Dyrcona> Well, the circus comes to town when other systems want a different functionality.
+2015-04-06T14:51:42  <bshum> kmlussier: I generated out the asciidoc html and put up the newest iteration of the RELEASE_NOTES_2_8 to the website:  http://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_8.html
+2015-04-06T14:52:23  <bshum> kmlussier++ # filling in the blanks
+2015-04-06T14:54:07  <kmlussier> bshum++ #Thanks!
+2015-04-06T14:54:07  <jeff> then if the disc/whatever doesn't come back, we bill the price of the item on file and... set MAXFINES? set a new stop_fines of MISSINGPIECES? check the item in and then re-set the copy status to Missing Pieces?
+2015-04-06T14:54:40  <Dyrcona> Berklee is spelled wrong.
+2015-04-06T14:54:58  <jeff> anyway.``Berkless College of Music''
+2015-04-06T14:55:02  *** ericar_ has joined #evergreen
+2015-04-06T14:55:07  <Dyrcona> The acknowledgments have "Berkless"
+2015-04-06T14:55:18  <kmlussier> Oops
+2015-04-06T14:55:21  <yboston> :)
+2015-04-06T14:55:26  <kmlussier> So much for the proof-reading I did at the end.
+2015-04-06T14:56:16  *** ericar has quit IRC
+2015-04-06T14:56:21  <kmlussier> That kind of error would make me suspect auto-correct if I were actually using something that used spellcheck.
+2015-04-06T14:56:24  *** ericar_ is now known as ericar
+2015-04-06T14:57:27  * bshum did a manual edit to correct it on the webpage.
+2015-04-06T14:57:34  <bshum> Someone else can push a change to git :)
+2015-04-06T14:59:54  <csharp> @who will push it to git?
+2015-04-06T14:59:54  <pinesol_green> jeffdavis will push it to git.
+2015-04-06T15:01:01  *** mllewellyn has joined #evergreen
+2015-04-06T15:23:45  <jeff> hah. so, for future reference...
+2015-04-06T15:24:00  <jeff> er, nevermind.
+2015-04-06T15:31:13  *** collum has quit IRC
+2015-04-06T15:33:27  *** akilsdonk has joined #evergreen
+2015-04-06T15:40:48  *** collum has joined #evergreen
+2015-04-06T16:12:34  <kmlussier> bshum: I can do that. I got pulled away to a conference call.
+2015-04-06T16:18:37  *** collum has quit IRC
+2015-04-06T16:21:04  *** Shae has quit IRC
+2015-04-06T16:29:01  <mmorgan> *Sigh* 23 incarnations of precats in our database with single character barcodes.
+2015-04-06T16:29:16  <mmorgan> These precats have had 55 circs and 32 transits.
+2015-04-06T16:29:29  *** rjackson_isl has quit IRC
+2015-04-06T16:29:34  <mmorgan> I delete them but they keep coming back :-(
+2015-04-06T16:30:20  <Dyrcona> Misscanned barcodes.
+2015-04-06T16:31:04  *** ericar_ has joined #evergreen
+2015-04-06T16:32:12  <jboyer-isl> Database triggers will 1. prevent that issue from occuring, and 2. cause some minor confusion / unhappiness in the client because it won’t know what’s up with that.
+2015-04-06T16:32:36  <Dyrcona> We have 8 deleted copies with the barcode of "3".
+2015-04-06T16:32:40  *** ericar has quit IRC
+2015-04-06T16:32:42  *** ericar_ is now known as ericar
+2015-04-06T16:32:49  <Dyrcona> I was gonna count circulations, but got lazy.
+2015-04-06T16:33:04  <kmlussier> mmorgan: Does it help if people use the strict barcode checkbox?
+2015-04-06T16:33:23  <Dyrcona> kmlussier: Probably not.
+2015-04-06T16:33:34  <jboyer-isl> kmlussier: staff have to be getting the “misscanned / not cataloged
+2015-04-06T16:33:40  <mmorgan> kmlussier: We instruct them to use strict barcode, but it still happens.
+2015-04-06T16:34:20  <Dyrcona> They get the misscanned / not cataloged dialog and click through it without reading/paying attention/understanding.
+2015-04-06T16:34:38  <Dyrcona> Because they're working circ and usually feel rushed.
+2015-04-06T16:34:38  <jboyer-isl> “ box and telling it to go ahead, (provided strict barcode can be used at all, we’ve got several locations using barcodes with missing check digits. :( )
+2015-04-06T16:34:44  <kmlussier> Yeah, a bad barcode doesn't stop them from using it. It just gives them one more alert to click through.
+2015-04-06T16:34:55  <mmorgan> They get the misscanned/not cataloged pop-up  - unless the precat already exists.
+2015-04-06T16:35:18  *** jboyer-isl has quit IRC
+2015-04-06T16:38:37  * kmlussier decides to test a bug fix because bug fixes put her in a happy place.
+2015-04-06T16:38:58  * bshum wants to be in a happy place too.
+2015-04-06T16:40:40  <kmlussier> @dessert bshum
+2015-04-06T16:40:40  * pinesol_green grabs some Coconut Cream Pie for bshum
+2015-04-06T16:40:47  <bshum> Gah....
+2015-04-06T16:40:50  <bshum> No, thank you.
+2015-04-06T16:40:53  <kmlussier> Coconut Cream Pie would put me in a happy place too.
+2015-04-06T16:41:22  <kmlussier> bshum: You are way too picky when it comes to desserts.
+2015-04-06T16:42:17  <bshum> kmlussier: I'm picky about lots of things.
+2015-04-06T16:42:22  <kmlussier> @dessert 3 bshum
+2015-04-06T16:42:22  * pinesol_green grabs some Mint Chocolate Chip Ice Cream for bshum
+2015-04-06T16:42:37  <bshum> That, on the other hand, does make me happy.
+2015-04-06T16:42:37  <bshum> :D
+2015-04-06T16:43:38  <kmlussier> I know you all too well bshum :)
+2015-04-06T16:43:51  <berick> @bartender me
+2015-04-06T16:43:51  * pinesol_green fills a pint glass with Rio Blanco Pale Ale, and sends it sliding down the bar to me (http://beeradvocate.com/beer/profile/458/2298/)
+2015-04-06T16:46:09  *** maryj has quit IRC
+2015-04-06T16:46:45  *** ericar has quit IRC
+2015-04-06T16:59:14  *** RoganH has quit IRC
+2015-04-06T17:00:17  *** Dyrcona has quit IRC
+2015-04-06T17:00:25  *** jonadab has quit IRC
+2015-04-06T17:06:41  *** jonadab has joined #evergreen
+2015-04-06T17:11:19  *** mmorgan has left #evergreen
+2015-04-06T17:32:52  *** darshana has quit IRC
+2015-04-06T17:39:43  <bshum> jeffdavis: For fun note, I just compared our PG 9.3 and 9.4 databases, and found that metabib_keyword_field_entry_index_vector_idx was definitely smaller.  From 1690 to 890 MB or so, roughly.  Which is nice.
+2015-04-06T17:40:21  <bshum> I'm still continuing my tests with 9.4, but so far, it hasn't exploded yet.  So that keeps me hopeful.
+2015-04-06T17:44:15  *** graced has quit IRC
+2015-04-06T17:47:49  <bshum> Oh, that's of course, assuming that one has used gin there instead of gist I guess...
+2015-04-06T17:54:33  <bshum> We changed most of our metabib indexes from gist to gin during a past upgrade.
+2015-04-06T17:54:47  <bshum> But I guess that's not stock setup.
+2015-04-06T17:57:51  *** mrpeters has quit IRC
+2015-04-06T18:13:52  *** yboston has quit IRC
+2015-04-06T18:40:32  *** buzzy has quit IRC
+2015-04-06T18:47:22  *** mllewellyn has quit IRC
+2015-04-06T19:06:29  *** gsams has quit IRC
+2015-04-06T19:09:09  *** gsams has joined #evergreen
+2015-04-06T19:10:55  *** vlewis has quit IRC
+2015-04-06T19:31:38  *** dcook has joined #evergreen
+2015-04-06T19:55:52  *** akilsdonk has quit IRC
+2015-04-06T20:50:26  *** sandbergja has quit IRC
+2015-04-06T20:59:06  <csharp> bleh - lp isn't letting me post a comment

@@ -1,0 +1,675 @@
+2015-01-15T00:01:45  *** bmills has quit IRC
+2015-01-15T00:33:35  *** abowling has quit IRC
+2015-01-15T02:08:28  *** aubjordan has quit IRC
+2015-01-15T03:26:45  *** DPearl1 has quit IRC
+2015-01-15T03:27:49  *** sbrylander has quit IRC
+2015-01-15T06:10:33  *** phasefx has quit IRC
+2015-01-15T06:10:53  *** maryj has quit IRC
+2015-01-15T06:11:29  *** graced has quit IRC
+2015-01-15T06:11:35  *** mtate has quit IRC
+2015-01-15T06:11:35  *** eeevil has quit IRC
+2015-01-15T06:11:49  *** BigRig has quit IRC
+2015-01-15T06:11:54  *** TaraC has quit IRC
+2015-01-15T06:11:54  *** Callender has quit IRC
+2015-01-15T06:22:32  *** Callender has joined #evergreen
+2015-01-15T07:05:51  *** StomproJ has joined #evergreen
+2015-01-15T07:06:21  *** Stompro has quit IRC
+2015-01-15T07:09:04  *** eeevil has joined #evergreen
+2015-01-15T07:12:22  *** Callender_ has joined #evergreen
+2015-01-15T07:12:26  *** Callender has quit IRC
+2015-01-15T07:12:35  *** Callender_ is now known as Callender
+2015-01-15T07:31:28  *** graced has joined #evergreen
+2015-01-15T07:53:16  *** TaraC has joined #evergreen
+2015-01-15T07:55:04  *** julialima_ has joined #evergreen
+2015-01-15T07:59:57  *** julialima_ has quit IRC
+2015-01-15T08:00:16  *** pmurray_away is now known as pmurray
+2015-01-15T08:00:22  *** pmurray is now known as pmurray_away
+2015-01-15T08:02:16  *** julialima_ has joined #evergreen
+2015-01-15T08:02:59  *** pmurray_away is now known as pmurray
+2015-01-15T08:03:00  *** ericar has joined #evergreen
+2015-01-15T08:03:35  *** julialima_ has quit IRC
+2015-01-15T08:10:53  *** Dyrcona has joined #evergreen
+2015-01-15T08:11:52  *** _bott_ has quit IRC
+2015-01-15T08:14:45  *** _bott_ has joined #evergreen
+2015-01-15T08:15:59  *** collum has joined #evergreen
+2015-01-15T08:18:45  *** akilsdonk has joined #evergreen
+2015-01-15T08:27:17  *** mrpeters has joined #evergreen
+2015-01-15T08:37:51  *** julialima_ has joined #evergreen
+2015-01-15T08:40:15  *** abowling has joined #evergreen
+2015-01-15T08:41:07  *** mtate has joined #evergreen
+2015-01-15T08:42:13  *** mmorgan has joined #evergreen
+2015-01-15T08:50:25  *** jwoodard has joined #evergreen
+2015-01-15T09:11:10  *** phasefx has joined #evergreen
+2015-01-15T09:19:05  *** rjackson-isl has joined #evergreen
+2015-01-15T09:26:24  <eeevil> berick: coming to you first as 2.8 RM ... because we need the fixes from sprint 1 when working on sprint 2, I've been pushing new webby features to the collab branch.  Ideally, I'd like to see the sprint 1 fixes in master. how do you want to make that happen, since nobody but you, me, and gmcharlt are looking at that code
+2015-01-15T09:26:50  <eeevil> where "that" is "get the collab branch stuff merged into master", obv
+2015-01-15T09:29:59  *** sarabee has joined #evergreen
+2015-01-15T09:30:55  *** maryj has joined #evergreen
+2015-01-15T09:37:18  *** yboston has joined #evergreen
+2015-01-15T09:37:21  *** RoganH has joined #evergreen
+2015-01-15T09:42:06  *** mllewellyn has joined #evergreen
+2015-01-15T09:44:42  *** BigRig has joined #evergreen
+2015-01-15T09:52:23  <berick> eeevil: ideally w/ an LP listing what to test.  i'm happy to review, test, sign-off
+2015-01-15T09:53:18  <eeevil> berick: you mean you want an lp bug for each bug/fix, or a listing of what's fixed on one bug
+2015-01-15T09:53:29  <berick> i think one bug is fine
+2015-01-15T09:57:23  <eeevil> k
+2015-01-15T10:02:47  *** akilsdonk has quit IRC
+2015-01-15T10:03:08  *** akilsdonk has joined #evergreen
+2015-01-15T10:17:06  <bshum> eeevil: berick: For the rest of us following along from home, is this the same stuff you've mentioned already in https://bugs.launchpad.net/evergreen/+bug/1402797
+2015-01-15T10:17:06  <pinesol_green> Launchpad bug 1402797 in Evergreen "Browser client sprint1 miscellaneous repairs" (affected: 1, heat: 8) [Undecided,New]
+2015-01-15T10:19:52  <berick> bshum: that's only part of it
+2015-01-15T10:20:12  <eeevil> bshum: that's just berick's few. there are a lot more. I'm adding to that bug, though, to keep it in one place
+2015-01-15T10:20:43  <bshum> I had a feeling, I know it was awhile since I asked about whether we were needing to merge any fixes for web client.
+2015-01-15T10:23:59  <bshum> Cool deal, thanks guys.
+2015-01-15T10:30:37  <Dyrcona> jboyer-isl: Regarding misc_util.tt2: One person's bug is another's feature. :)
+2015-01-15T10:34:26  <jboyer-isl> Sure. I can certainly see the point as well, it's a nasty thing for just a "template." I just dislike making code changes for the opac.
+2015-01-15T10:34:53  <dbs> Yeah, I need to reply in the bug itself, but the idea is that you could still have local MARC stuff in the TT2 layer if you want
+2015-01-15T10:34:55  <berick> jboyer-isl: i don't think anyone's proposing that you have to change code to modify how a field is extracted
+2015-01-15T10:35:31  <berick> unless i'm misunderstanding
+2015-01-15T10:35:59  <Dyrcona> I didn't mean to start a big discussion. I just find it amusing that what could be considered a bug by some is a feature to others (from the appearances).
+2015-01-15T10:35:59  <dbs> and using display_fields, you should be able to add a new display field in the database without touching Perl
+2015-01-15T10:36:13  <dbs> It's probably just poor communication on my part of the intent.
+2015-01-15T10:37:06  <jboyer-isl> It depends on how much (and how directly) misc_util is pulled into a module. I'm probably not giving it the necessary level of thought myself. (I came across that bug while looking for another bug that I apparently never filed)
+2015-01-15T10:40:12  <jboyer-isl> display fields would probably take care of any potential issues I have with misc_util going away, I was just thinking of all of the hard-coded tags and fields from that file being pulled behind the scenes, which I suppose isn't really the intent.
+2015-01-15T11:34:16  *** RoganH_ has joined #evergreen
+2015-01-15T11:37:28  *** RoganH has quit IRC
+2015-01-15T11:37:31  <abowling> i'm trying to test changes on the place_hold.js script that affects the place_hold.xul template. i clear my cache, restart apache, and restart services, but it seemingly has no effect. i looked to see if the javascript exists on my local machine, and it doesn't. any ideas?
+2015-01-15T11:40:42  <bshum> abowling: So to be clear, you're making changes to that file in the server side installed version?
+2015-01-15T11:40:50  <bshum> Somewhere in /openils/var/web/xul/server/...
+2015-01-15T11:40:53  <abowling> bshum: yes.
+2015-01-15T11:41:01  <bshum> And then you're restarting your staff client
+2015-01-15T11:41:20  <abowling> yep. that's where i'm changing it. restarting all services and staff client. still having no effect.
+2015-01-15T11:41:57  <dbs> You don't need to restart any services
+2015-01-15T11:42:04  <bshum> What dbs said, yeah
+2015-01-15T11:42:12  <Dyrcona> Shouldn't have to restart apache, either.
+2015-01-15T11:42:41  <bshum> Are you sure that the staff client version of your client is matching to where server links to for the files server-side?
+2015-01-15T11:42:45  <abowling> didn't think i'd need to restart apache. just making sure it wasn't cached on the server somewhere.
+2015-01-15T11:43:08  <bshum> Or did you try editing the specific version's installed folder content
+2015-01-15T11:43:08  <abowling> bshum: yes. it's the EDN master we use for testing.
+2015-01-15T11:43:37  <bshum> Well, it sounds like you got all your bases covered to me.  Maybe the change you're expecting to happen isn't happening.
+2015-01-15T11:44:10  <abowling> bshum: i'm editing the specific installed version file, fwiw
+2015-01-15T11:44:31  <abowling> it's confounding
+2015-01-15T11:44:52  <abowling> /openils/var/web/xul/0master_4bd42e9/server/patron/place_hold.js
+2015-01-15T11:45:19  <bshum> patron?
+2015-01-15T11:45:22  <bshum> Hmm
+2015-01-15T11:45:47  <bshum> Oh right
+2015-01-15T11:45:53  <abowling> bshum: just for testing, i've commented out this line just for a simple test:
+2015-01-15T11:45:53  <abowling> //$('hold_usr_textbox').value = au_obj.card().barcode();
+2015-01-15T11:45:54  <bshum> My mind's not on XUL stuff :)
+2015-01-15T11:46:25  <abowling> understood. i'm pretty good with the perlmods and OPAC, but my XUL history is limited, and that's understating it
+2015-01-15T11:47:02  <abowling> upon restarting the staff client, $('hold_usr_textbox') is still getting a value set
+2015-01-15T11:49:21  <jboyer-isl> abowling, if you put <server>/xul/0master_4bd42e9/server/patron/place_hold.js into a web browser do you see the correct version? And is it the same version as <server>/xul/server/patron/place_hold.js?
+2015-01-15T11:51:04  <abowling> jboyer-isl: thanks for that idea, but yes. i confirm that the line is commented out on the server version
+2015-01-15T11:53:47  <jeff> abowling: when you start your client (whose cache is presumably cleared) and navigate to the interface in question, do you see a request from your client for that file appear in the apache logs?
+2015-01-15T12:00:38  <abowling> jeff: indeed. localhost:443 99.73.72.180 - - [15/Jan/2015:11:59:43 -0500] "GET /eg/opac/place_hold?hold_target=5;hold_type=M;hold_source_page=%2Feg%2Fopac%2Fresults%3Fquery%3Dguitar;usr_barcode=689086e3c0bad42e154d020c942bd8ad HTTP/1.1" 200 13088 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:14.0) Gecko/20120713 open_ils_staff_client/0master.4bd42e9"
+2015-01-15T12:00:38  <pinesol_green> [evergreen|Michael Peters] LP#1319964 "Summaries & More" displays improperly in TPAC - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4bd42e9>
+2015-01-15T12:01:15  <abowling> now. here's a question for the gallery: any chance my browser is caching the script that's being used by the staff client locally?
+2015-01-15T12:01:50  <berick> abowling: throw an alert in there.  you may be loading the right file, but it's just not doing what you expect.
+2015-01-15T12:02:25  <jeff> abowling: okay, so far it looks like your client IS grabbing the file you think -- next try making a more obvious change, especially one that's top-level, not in a function (which may not be being called when you think)
+2015-01-15T12:02:32  <jeff> abowling: like an alert(), as berick suggests.
+2015-01-15T12:03:10  <jeff> abowling: unless you're doing an action like clicking an "external" link that opens your web browser from the staff client, the web browser cache should not come into play with the staff client.
+2015-01-15T12:03:48  <jeff> abowling: if you're passing through a proxy server, that can end up being a shared setting between the staff client and your web browser, and that proxy may have a cache, but that does not seem to be the case here based on your other statements.
+2015-01-15T12:05:03  <abowling> tried the alert. no avail. issue is, it's the only place where i see this behavior. i'll keep digging.
+2015-01-15T12:05:19  <abowling> thanks for the ideas. like i said earlier, it's confounding.
+2015-01-15T12:05:45  <bshum> abowling: Hang on a second
+2015-01-15T12:05:53  <bshum> That GET you noted before
+2015-01-15T12:05:58  <bshum> That's a TPAC string it's grabbing
+2015-01-15T12:06:02  <bshum> Not a XUL/js one
+2015-01-15T12:06:19  <bshum> The area you're poking at is for staff client where you do the Place Hold on a given item
+2015-01-15T12:06:27  <bshum> But the one you logged is for TPAC
+2015-01-15T12:06:28  <abowling> yes
+2015-01-15T12:06:44  <bshum> That's a different place/file
+2015-01-15T12:06:58  <bshum> Which interface are you actually looking at?
+2015-01-15T12:07:56  <abowling> bshum: noted that too. what's odd is that is my query. i'm certain of it. and i'm not doing any of it in the TPAC.
+2015-01-15T12:08:10  <abowling> bshum: i'm looking at the Place Hold function
+2015-01-15T12:08:12  <bshum> Cause there is a place in the staff client, where you go to place a hold on behalf of a patron, and it reuses the TPAC inteface
+2015-01-15T12:08:28  <bshum> abowling: Describe the steps you take to place the hold, let me follow along to which UI you're using
+2015-01-15T12:08:33  <bshum> I think you're looking in the wrong place.
+2015-01-15T12:09:02  <berick> bshum: remember the tpac is used for holds placement in the staff client
+2015-01-15T12:09:14  <bshum> berick: Right, I know
+2015-01-15T12:09:31  <jeff> abowling: worth noting that your apache log line is NOT requesting the javascript file you stated you were editing.
+2015-01-15T12:10:15  <bshum> If so, he's probably looking for /openils/var/template/opac/place_hold.tt2 (or ../parts/place_hold.tt2 actually)
+2015-01-15T12:10:27  <abowling> i'm pulling up test records, clicking "Place Hold", and then selecting "Advanced Options"
+2015-01-15T12:10:30  <jeff> abowling: i think you want to be looking at /openils/var/web/opac/skin/default/js/holds.js and such.
+2015-01-15T12:10:34  <abowling> bshum: that now seems likley
+2015-01-15T12:10:35  <bshum> Ah, yeah, wrong place.
+2015-01-15T12:10:40  <abowling> ++jeff
+2015-01-15T12:10:51  <abowling> i think i just figured that out.
+2015-01-15T12:10:59  <bshum> jeff: Yeah maybe if he was using JSPAC :)
+2015-01-15T12:11:16  <abowling> so, is it fair to say place_hold.js is deprecated for the staff client, at least as far as this function goes?
+2015-01-15T12:11:18  <jeff> bshum: oops. bshum++
+2015-01-15T12:11:30  <berick> Open-ILS/web/js/ui/default/opac/staff.js
+2015-01-15T12:11:34  <bshum> abowling: No, that file is still used.
+2015-01-15T12:11:34  * jeff goes to find that old "remove jspac code" ticket and assign it to himself
+2015-01-15T12:11:39  <jeff> berick++ thanks
+2015-01-15T12:11:40  <abowling> yes, bshum++ too
+2015-01-15T12:11:46  <bshum> abowling: I'm pretty sure it's used for the place hold when you're working with a specific copy
+2015-01-15T12:11:50  <bshum> And you want to do force holds, etc.
+2015-01-15T12:11:57  <bshum> Stuff that only staff can do via the client.
+2015-01-15T12:12:00  <abowling> bshum: a-ha.
+2015-01-15T12:12:15  <bshum> The process you describe is public, so we stole from TPAC code to make it happen.
+2015-01-15T12:12:17  <bshum> berick++
+2015-01-15T12:12:30  <abowling> at any rate, thanks, guys. i'll try that tack and let you know. berick++, bshum++, jeff++
+2015-01-15T12:12:49  <bshum> jeff: It's already assigned to you!  :)
+2015-01-15T12:12:51  <bshum> https://bugs.launchpad.net/evergreen/+bug/1312309
+2015-01-15T12:12:51  <pinesol_green> Launchpad bug 1312309 in Evergreen "to remove last remnants of JSPAC" (affected: 2, heat: 10) [Wishlist,Confirmed] - Assigned to Jeff Godin (jgodin)
+2015-01-15T12:14:30  <jeff> hey, look at that.
+2015-01-15T12:20:49  *** jihpringle has joined #evergreen
+2015-01-15T12:21:28  *** bbqben has joined #evergreen
+2015-01-15T12:24:53  *** bmills has joined #evergreen
+2015-01-15T12:29:49  *** buzzy has joined #evergreen
+2015-01-15T12:38:25  *** bbqben_ has joined #evergreen
+2015-01-15T12:40:51  *** bbqben has quit IRC
+2015-01-15T12:40:54  *** bmills has quit IRC
+2015-01-15T12:41:05  *** bbqben_ is now known as bbqben
+2015-01-15T12:43:05  *** bmills has joined #evergreen
+2015-01-15T12:59:14  *** mtcarlson_away is now known as mtcarlson
+2015-01-15T13:03:06  *** ukelele22 has joined #evergreen
+2015-01-15T13:05:54  <eeevil> berick: https://bugs.launchpad.net/evergreen/+bug/1402797 updated
+2015-01-15T13:05:54  <pinesol_green> Launchpad bug 1402797 in Evergreen "Browser client sprint1 miscellaneous repairs" (affected: 1, heat: 8) [Undecided,New]
+2015-01-15T13:07:28  <berick> eeevil++
+2015-01-15T13:14:09  <jeff> I am pondering ways in which we could eliminate a certain class of electronic resource from appearing in in-building search results.
+2015-01-15T13:14:23  <jeff> Has anyone else here thought on this before?
+2015-01-15T13:15:04  <jeff> I'm not yet sure if we're interested in excluding all located URI results or just certain ones.
+2015-01-15T13:15:29  <jeff> But at first thought, I can see where you might want the option to do either.
+2015-01-15T13:18:11  <Dyrcona> So, you don't want them appearing if the search client is in the library, but you do want them to appear from outside the library?
+2015-01-15T13:18:47  <Dyrcona> I'm assuming it doesn't matter if it is OPAC or staff client, either.
+2015-01-15T13:19:44  <jeff> Probably "no change" with regard to staff client.
+2015-01-15T13:20:20  <jeff> But we have dedicated clients for public catalog searching, and there's a desire to have some/all electronic resources not appear on those, at least by default.
+2015-01-15T13:20:55  <jeff> We don't use "auris act like copies", and our auris are scoped to the system/district level (not top level CONS).
+2015-01-15T13:21:51  <Dyrcona> So, it's a desire to prevent patrons from using the resources on these public catalog machines?
+2015-01-15T13:21:56  <jeff> At some point it would make sense to exclude results from certain bib sources based on if the logged in user is known-(in)eligible, but that might be asking for a pony.
+2015-01-15T13:22:25  <jeff> It's an acknowledgement that patrons will not be able to use the resources on these public catalog machines, and that there is therefore little point in displaying them by default.
+2015-01-15T13:22:41  <Dyrcona> Same thing more or less.
+2015-01-15T13:23:01  <jeff> That, just like we default those to searching the local library and not the entire district, we default to displaying search results that don't include "you have to do some other things to access this content"
+2015-01-15T13:23:30  <Dyrcona> It makes sense, but I'm not sure how I'd go about doing that.
+2015-01-15T13:23:56  <jeff> Yeah.
+2015-01-15T13:24:48  <Dyrcona> Maybe something related to sources, or maybe some setting that can take JSON array of IPs that won't display URIs, or maybe some combination of the two.
+2015-01-15T13:25:00  <eeevil> jeff: here's a wrinkle to the "by default" part ... if you want to allow them to turn on display of those, reapplying the restriction later is "hard" ... particluarly within a conceptual session for one user
+2015-01-15T13:27:08  <jeff> eeevil: hard in that it requires additional UI, like library selectors and "limit to available", or hard for another deeper reason?
+2015-01-15T13:27:09  <eeevil> but, I could certainly imaging leveraging saved searches somehow ... having a flag set based on ip mapping (like ye olde "this IP gets X added to the url") that, say, sets a cookie saying "I'm in the library, apply saved search FOO to each search", and that saved search would add "and not an electronic record"
+2015-01-15T13:27:37  <eeevil> well, you want each new person sitting down to start in restricted mode, right?
+2015-01-15T13:28:12  <jeff> in our case, we have an existing "i'm in the library" flag available to the TPAC and Perl layer.
+2015-01-15T13:28:36  <jeff> and yes, patrons get a fresh session unless they grab it before the kiosk times out and resets.
+2015-01-15T13:28:37  <eeevil> but if the previous patron checked the "show me stuff I can't use here" box, how do you know that you should reset that for a new person?
+2015-01-15T13:28:47  <jeff> (which isn't a "never" thing, just a "not too often" thing)
+2015-01-15T13:28:58  <eeevil> ah, ok, so "kiosk resets" answers that :)
+2015-01-15T13:29:02  * jeff nods
+2015-01-15T13:31:16  <eeevil> so, 3 elements: new param for "additional query string" to the relevant search API; <input type=hidden> when in kiosk mode that contains the restricting query string; a param that says "don't add that" when present (akin to limit to available)
+2015-01-15T13:31:31  *** abneiman has joined #evergreen
+2015-01-15T13:32:07  <jeff> and then it's down to "how many knobs do you want" -- in terms of what the new search criteria can do.
+2015-01-15T13:32:08  <eeevil> as for how to formulate the restricting query, that's partly about cataloging quality (or lack thereof)
+2015-01-15T13:33:02  <eeevil> if it's just a query string, it's open-ended. unless you end up needing limit-to-bre.source, obv
+2015-01-15T13:33:24  <eeevil> (but that would be relatively simple to add)
+2015-01-15T13:33:27  <jeff> turn off all located uri results? limit to located uris from certain bib sources? (or, one way would be to make this entirely about bib source, and not worry about located uri or not) -- or for that matter (and I think you just went down this path) you could just key off of a specific subject/etc
+2015-01-15T13:34:21  <eeevil> sure. I could see a "must-have-actual-copies" flag, actually
+2015-01-15T13:34:30  <jeff> if i drop the "allow patrons to see the records if they want to", i could probably come up with a search fragment that would always exclude these.
+2015-01-15T13:36:11  <eeevil> then it would be just a little code to allow static fragments (see: my previous discussions about the {{}} syntax, and machine-supplied search parts) to be passed to the search app, and a template change to include said as a hidden element on search-y pages
+2015-01-15T13:36:58  <jeff> since our existing flag for "this is an in-library kiosk" is available to the perl layer, we could even hack it in there (messily)
+2015-01-15T13:37:18  <jeff> and hack in the sense that your proposals about machine-supplied search parts would be best.
+2015-01-15T13:37:22  <jeff> or at least better. ;-)
+2015-01-15T13:39:32  <eeevil> heh
+2015-01-15T13:45:22  *** nhilton has joined #evergreen
+2015-01-15T13:50:38  *** wjr has joined #evergreen
+2015-01-15T13:56:16  *** jihpringle has quit IRC
+2015-01-15T13:56:54  <bbqben> G'day. EOB meeting starts here in a few minutes. Cheers
+2015-01-15T14:01:41  <bbqben> #startmeeting Evergreen Oversight Board Meeting, 15.01.15
+2015-01-15T14:01:41  <pinesol_green> Meeting started Thu Jan 15 14:01:41 2015 US/Eastern.  The chair is bbqben. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-01-15T14:01:41  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-01-15T14:01:41  <pinesol_green> The meeting name has been set to 'evergreen_oversight_board_meeting__15_01_15'
+2015-01-15T14:01:54  <bbqben> #topic introductions
+2015-01-15T14:02:06  <bbqben> EOB members, please introduce yourself with #info
+2015-01-15T14:02:20  <bshum> #info bshum = Ben Shum, Bibliomation
+2015-01-15T14:02:28  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-01-15T14:02:35  <abneiman> #info abneiman = Andrea Buntz Neiman, Kent County Public Library
+2015-01-15T14:02:35  <graced> #info graced is Grace Dunbar, Equinox
+2015-01-15T14:03:03  <RoganH_> #info RoganH = Rogan Hamby, SCLENDS
+2015-01-15T14:03:13  <bbqben> #info bbqben is Ben Hyman, Co-op
+2015-01-15T14:03:31  <bbqben> Chauncey sends his regrets
+2015-01-15T14:03:37  *** RoganH_ is now known as RoganH
+2015-01-15T14:03:37  <csharp> #info csharp is Chris Sharp, GPLS
+2015-01-15T14:03:44  <bbqben> Looks like we have quorum :)
+2015-01-15T14:04:01  <bbqben> #topic Minutes/Actions from last meeting (18.12.14)
+2015-01-15T14:04:55  <bbqben> #info http://evergreen-ils.org/meetings/evergreen/2014/evergreen.2014-12-18-14.03.html
+2015-01-15T14:05:10  <bbqben> csharp++ for posting those / keeping us honest :)
+2015-01-15T14:05:20  <csharp> sorry they were late
+2015-01-15T14:05:27  <bbqben> pas de probleme
+2015-01-15T14:05:37  <bbqben> (French for no worries)
+2015-01-15T14:05:39  <bshum> csharp++
+2015-01-15T14:05:49  <bbqben> ok, moving on
+2015-01-15T14:05:59  <bbqben> #topic EG2015 Conference Report
+2015-01-15T14:06:23  <bbqben> buzzy - great to see registration open!
+2015-01-15T14:06:25  <buzzy> i think things are moving along swimmingly. registration is up, hotel bookings are open
+2015-01-15T14:06:56  <RoganH> Is there going to be a conference discount for the hotel?
+2015-01-15T14:06:56  <buzzy> the programming committee is getting to work, and info about sponsorships and exhibitors will be out soon. i was actually just meeting with the hotel yesterday about exhibit space
+2015-01-15T14:07:15  <buzzy> yes, if you tell them you're with the evergreen conference they should give you the conference rate
+2015-01-15T14:07:29  <abneiman> I'm also interested in knowing if there's a conference rate for the hotel.
+2015-01-15T14:07:35  <abneiman> (sorry)
+2015-01-15T14:07:39  <buzzy> our first choice keynote unfortunately was unavailable, but we have a hot lead on another
+2015-01-15T14:07:42  <kmlussier> buzzy: Do they have a link for people to register under the conference rate?
+2015-01-15T14:07:58  <RoganH> That wasn't clear from materials sent out so you may want to send that out in some form.
+2015-01-15T14:08:28  <buzzy> i don't believe they do, but i;ll check with them and try to make that happen.
+2015-01-15T14:08:39  <buzzy> yes, RoganH, i can do that. thanks for the suggestion!
+2015-01-15T14:08:44  <kmlussier> Also, when you send out that info, it might be good to identify what the conference rate is.
+2015-01-15T14:09:52  <buzzy> it depends on the room, of course, but yes, i can do that. for everything other than the suites, the range is from $109-129
+2015-01-15T14:10:14  <kmlussier> Thanks!
+2015-01-15T14:10:18  <bbqben> buzzy++ Any other questions / suggestions for the EG2015 team?
+2015-01-15T14:10:31  <kmlussier> That rate looks much more affordable than Cambridge! :)
+2015-01-15T14:10:52  <buzzy> yes, an advantage of the smaller area and still mostly being in the off-season
+2015-01-15T14:11:36  <bshum> buzzy++ # thanks for keeping us in the loop, looking forward to seeing more!
+2015-01-15T14:12:18  <bbqben> ok, moving on...
+2015-01-15T14:12:31  <bbqben> #topic Financial Report
+2015-01-15T14:12:38  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-January/000947.html
+2015-01-15T14:12:42  <bbqben> bshum++
+2015-01-15T14:13:44  <bshum> bbqben: Thanks, I'll try to remember to update before I print so that I don't get it wrong the first go next time
+2015-01-15T14:13:46  <bbqben> Did EventBrite come through with the discount?
+2015-01-15T14:14:31  <bbqben> sorry - that was a bit of a non sequitur - re: EG2015, I meant?
+2015-01-15T14:15:17  <bbqben> ok then :)
+2015-01-15T14:15:33  <kmlussier> I haven't heard anything on the Eventbrite discount.
+2015-01-15T14:15:36  <bbqben> We're in the black, and should see registration revenue trickling in soon, I suppose
+2015-01-15T14:16:03  <bbqben> thanks kmlussier - anyone have other  financial questions?
+2015-01-15T14:16:23  <bbqben> moving on...
+2015-01-15T14:16:36  <bbqben> #topic Evergreen 2.8 Release Manager's Report
+2015-01-15T14:16:46  <buzzy> re: EG2015, tony didn't mention anything about a discount or listing them as a sponsor, as with last year
+2015-01-15T14:17:01  <bbqben> berick around & about for a quick update?
+2015-01-15T14:17:21  <bbqben> thanks buzzy - worth following up with him on that
+2015-01-15T14:19:37  <bbqben> #info - a meaty thread on 2.8 scheduling http://libmail.georgialibraries.org/pipermail/open-ils-dev/2014-December/009764.html
+2015-01-15T14:20:34  <berick> *sigh* the EOB meetings conflict with another regular meeting of mine
+2015-01-15T14:20:40  <bbqben> :)
+2015-01-15T14:22:16  <bbqben> ...the other meeting is winning ;)
+2015-01-15T14:22:46  <bshum> Heh, in the future, perhaps one of us can remind berick to write us a snippet to put down for logs.
+2015-01-15T14:22:57  * bshum can happily do so.
+2015-01-15T14:23:05  <bbqben> Its ok though, for the price of a chocolate at EG2015
+2015-01-15T14:23:06  <bshum> Alternatively we move the EOB meeting, but meh
+2015-01-15T14:23:43  <bbqben> bhsum++
+2015-01-15T14:24:09  <bbqben> #action bhsum will coordinate with berick pre EOB mtgs for pithy update
+2015-01-15T14:24:27  *** buzzy has quit IRC
+2015-01-15T14:24:28  <bbqben> Moving on...
+2015-01-15T14:24:44  <bbqben> #Topic 2015 EOB Elections
+2015-01-15T14:25:04  <bbqben> Kathy, Rogan & Ben H terms are up this year
+2015-01-15T14:25:24  <bbqben> #info see:
+2015-01-15T14:25:25  <bbqben> http://evergreen-ils.org/governance/
+2015-01-15T14:25:55  <kmlussier> bbqben: Remind me. Last year, wasn't there discussion of possibly decreasing the number of seats again.
+2015-01-15T14:26:08  <bbqben> Just a heads up for now, but we'll need to pull together some nominations communications
+2015-01-15T14:26:23  <bbqben> and coordinate with SFC for polling, I suppose
+2015-01-15T14:26:35  <RoganH> I recall discussion of reducing by 2 so that we kept it an odd number.
+2015-01-15T14:26:35  <graced> kmlussier: I seem to remember that same discussion
+2015-01-15T14:26:42  <bbqben> kmlussier: IIRC you are correct
+2015-01-15T14:26:57  <bbqben> #action bbqben to check target board size
+2015-01-15T14:27:07  <kmlussier> Sorry, if I hadn't been at a meeting earlier today, I would have pulled up the minutes.
+2015-01-15T14:27:16  * bshum personally likes 9 (3 per year), but recalls the discussion to further reduce to 7.
+2015-01-15T14:27:40  <kmlussier> I think I like 9 too, but if we were to do 9, I think it would be good to evenly allocate them to 3 per year.
+2015-01-15T14:28:15  <abneiman> agreed on 9 and 3 per year.  but maybe that's just because it's nice and neat.
+2015-01-15T14:28:18  <bshum> With Shauna stepping down early and csharp moving in to fill her seat, I wasn't sure if we could make a motion to make that a permanent seat time change.
+2015-01-15T14:28:28  <kmlussier> Another question I would like to raise before we get too far with nominations is the voting system that will be used.
+2015-01-15T14:28:31  <kmlussier> bshum: +1. I was thinking the same thing.
+2015-01-15T14:28:33  <bshum> Shauna's seat was grouped with four
+2015-01-15T14:28:54  <bshum> But if we make csharp's seat part of the group that elected me and graced, then we make that a nice 3 set.
+2015-01-15T14:28:59  <bshum> And every year will be 3 from now on.
+2015-01-15T14:29:19  <abneiman> +1 to bshum's idea
+2015-01-15T14:29:35  <kmlussier> We voted something into the bylaws at the last conference on using the voting software provided by the Conservancy, but I'm still unsure about the system it uses to count votes.
+2015-01-15T14:29:36  <bshum> +1 to kmlussier's point on the voting system.  Last time, I know I was confused because I didn't properly research the method employed.
+2015-01-15T14:29:36  <csharp> that number/process works well for PINES Executive Committee
+2015-01-15T14:29:55  <csharp> I think everyone was confused :-/
+2015-01-15T14:30:13  <kmlussier> csharp: The Single Transfer Vote System?
+2015-01-15T14:30:18  <csharp> yes
+2015-01-15T14:30:29  <yboston> #info yboston is Yamil Suarez @ Berklee College of Music (sorry I am late)
+2015-01-15T14:30:43  <yboston> (I have read what I have missed so far)
+2015-01-15T14:30:52  <kmlussier> I think the reason I'm skeptical is because, when I thought about it, I realized only 1 of my votes was counted. Since my #1 vote was somebody who made it on the Board.
+2015-01-15T14:30:57  <kmlussier> It just feels a little weird to me.
+2015-01-15T14:31:35  <csharp> I think it's a bad idea to have complex voting systems for something so straightforward
+2015-01-15T14:31:47  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2014-March/000711.html
+2015-01-15T14:32:06  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2014-March/000710.html
+2015-01-15T14:32:34  <bbqben> These two links provide context for the STV voting system and for the total board compsoition
+2015-01-15T14:32:38  <abneiman> yes -- what csharp said.  Overly complex, and I was also confused by the allocations/process.
+2015-01-15T14:32:49  <bshum> So by terms of governance, it's up to the board to suggest alternatives for voting procedures.
+2015-01-15T14:33:07  <bshum> Otherwise, we use Conservancy to manage a vote process using the Scottish Single Transferable Vote system
+2015-01-15T14:33:26  *** mtcarlson is now known as mtcarlson_away
+2015-01-15T14:34:10  <kmlussier> So I guess that means we don't have to update the bylaws if we use something else?
+2015-01-15T14:34:39  <bshum> Technically not, but it might be good to amend the bylaws anyways, if we feel that it's the better direction to take long-term
+2015-01-15T14:34:55  <bshum> And not force each subsequent board to formally introduce alternatives.
+2015-01-15T14:35:13  <abneiman> Didn't we just use SurveyMonkey or Doodle in prior years?
+2015-01-15T14:35:15  <bshum> Though maybe they'll feel that way about whatever we decide this year.
+2015-01-15T14:35:18  <bshum> :)
+2015-01-15T14:35:24  <kmlussier> abneiman: I don't remember. I know gmcharlt always set it up.
+2015-01-15T14:35:33  <kmlussier> Maybe he remembers.
+2015-01-15T14:35:46  <graced> I am in agreement that the STVS is overly complex.  I also think that most community members don't know that they can vote.
+2015-01-15T14:36:17  <abneiman> According to the ol' email archive, SurveyMonkey was used in 2012 & 2013.
+2015-01-15T14:36:47  <csharp> abneiman++ # I was just looking for that
+2015-01-15T14:36:50  <kmlussier> graced: If that's true, then that's another problem we probably should try to address. I would like people to feel engaged in the process.
+2015-01-15T14:37:08  <graced> kmlussier: agreed.
+2015-01-15T14:37:28  *** jihpringle has joined #evergreen
+2015-01-15T14:37:40  *** mtcarlson_away is now known as mtcarlson
+2015-01-15T14:37:48  <graced> I'm happy to work on a document on community engagement ideas for the EOB if desired.
+2015-01-15T14:38:23  <bbqben> Ok, call for volunteers to work with me on all things 2015 elections?
+2015-01-15T14:38:37  <graced> I volunteer
+2015-01-15T14:39:17  <bbqben> To include: draft amendment to rules (#2.4) if we don't want to use STV; nominations language; get the vote out materials; review of target board size
+2015-01-15T14:39:32  <bbqben> graced++
+2015-01-15T14:39:36  <abneiman> I volunteer as well
+2015-01-15T14:39:55  <graced> abneiman++
+2015-01-15T14:40:02  <bbqben> abneiman++
+2015-01-15T14:40:06  <bshum> abneiman++ graced++
+2015-01-15T14:40:37  <bbqben> #action bbqben abneiman and graced to draft amendment to rules if we don't want to use STV; nominations language; get the vote out materials; review of target board size
+2015-01-15T14:41:34  *** krvmga has joined #evergreen
+2015-01-15T14:41:41  <bbqben> Ok, moving on if nothing further here for now
+2015-01-15T14:41:57  <bbqben> oh, and kmlussier++ for putting this agenda topic in
+2015-01-15T14:42:06  <csharp> abneiman++ graced++ bshum++
+2015-01-15T14:42:32  <csharp> bbqben++ that is (though bshum++ anyway ;-))
+2015-01-15T14:42:39  <bbqben> csharp++
+2015-01-15T14:42:42  <kmlussier> LOL
+2015-01-15T14:42:47  <bshum> Haha
+2015-01-15T14:42:55  <bbqben> #topic 2016 Conference Site Selection
+2015-01-15T14:43:04  <graced> Is it that time already?
+2015-01-15T14:43:07  <graced> ;-)
+2015-01-15T14:43:08  <bbqben> can we pick somewhere warm?
+2015-01-15T14:43:23  <csharp> Evergreen Cruise 2016!
+2015-01-15T14:43:34  <bbqben> kmlussier with another zinger agenda topic!
+2015-01-15T14:43:45  <bbqben> csharp++ with Jimmy Buffet?
+2015-01-15T14:43:45  * kmlussier likes coming up with agenda topics.
+2015-01-15T14:43:49  <yboston> csharp++
+2015-01-15T14:43:54  <kmlussier> We need an Evergreen library in the Caribbean.
+2015-01-15T14:44:12  <bbqben> # action we need an Evergree Library in the Caribbean
+2015-01-15T14:44:13  <graced> I tried to get us one in Ireland... but failed.  :(
+2015-01-15T14:44:13  <yboston> I will work on Puerto Rico
+2015-01-15T14:44:22  <abneiman> Or like, San Diego area
+2015-01-15T14:44:22  <kmlussier> yboston++
+2015-01-15T14:44:27  <bbqben> yboston++
+2015-01-15T14:44:37  <yboston> actually, I should look into it.
+2015-01-15T14:44:41  <graced> yboston++
+2015-01-15T14:44:46  <RoganH> yboston++
+2015-01-15T14:45:03  <yboston> a full spanish translation woudl help
+2015-01-15T14:45:08  <kmlussier> Anyway, since we now have a semi-standing conference planning committee, I was thinking it might make the most sense to have those people participate in conferece selection too.
+2015-01-15T14:45:13  <yboston> (somehting else for me to work on)
+2015-01-15T14:45:22  <kmlussier> Though I wouldn't object to pulling in previous conference planners too.
+2015-01-15T14:45:36  <bbqben> ok then - never too early to start planning. kmlussier, were you thinking that ideally we'd get the call for sites out such that we could name the successful response at EG2015?
+2015-01-15T14:45:52  <kmlussier> That would be a good start.
+2015-01-15T14:46:25  <graced> I think I might own that mailing list...
+2015-01-15T14:46:37  <csharp> graced: you and I are co-administrators
+2015-01-15T14:46:51  <graced> csharp++  memory
+2015-01-15T14:46:55  <bbqben> kmlussier: could the committee use a selaed envelope?
+2015-01-15T14:46:56  <kmlussier> I think in previous years we have started around now or even earlier. One year, we started in August 2 years earlier.
+2015-01-15T14:47:34  <graced> Yeah, I think we're behind (again)
+2015-01-15T14:49:23  <bbqben> so, we're thinking something like "task the site selection comm with reviewing site selection framework, and planning launch of 2016 site selection process"?
+2015-01-15T14:49:46  <graced> +1
+2015-01-15T14:50:00  <kmlussier> +1
+2015-01-15T14:50:07  <yboston> +1
+2015-01-15T14:50:09  <bshum> +1
+2015-01-15T14:50:19  <bbqben> ok then ...
+2015-01-15T14:50:47  <csharp> +1
+2015-01-15T14:50:48  <bbqben> #action site selection committee will review site selection framework, and planning launch of 2016 conference site selection process
+2015-01-15T14:51:09  <bbqben> (with special consideration for warmth)
+2015-01-15T14:51:14  * csharp can't remember if he's on that committee or not
+2015-01-15T14:51:32  <kmlussier> Just for clarification, do we have a site selection committee with current members or are we talking about the community members of the conference planning committee?
+2015-01-15T14:51:37  <csharp> I sort of end up on some conference committee each year
+2015-01-15T14:51:57  <kmlussier> csharp: Quite often, you're on programming. I guess the question is, do you want to be on site selection committee?
+2015-01-15T14:52:08  <csharp> heh - sure
+2015-01-15T14:52:17  <csharp> that is, yes, I would like to be on it
+2015-01-15T14:52:58  <bbqben> chsarp++
+2015-01-15T14:53:00  <kmlussier> bbqben: Do you want me to nail down the details on who the site selection comm is? ;)
+2015-01-15T14:53:12  <bbqben> kmlussier++ please & thanks
+2015-01-15T14:53:22  <graced> I can provide who has been on it in the past if that's helpful.
+2015-01-15T14:53:35  <bbqben> #action kmlussier will nail down the details on who the site selection comm is
+2015-01-15T14:53:42  <kmlussier> graced: Thanks!
+2015-01-15T14:53:45  <bbqben> #topic new business
+2015-01-15T14:54:03  <bbqben> Anyone have a topic / new business?
+2015-01-15T14:54:33  <kmlussier> It's not new, but I want to announce that I have heard from 6 people so far who are interested in helping out with Code of Conduct complaints.
+2015-01-15T14:54:55  <bbqben> kmlussier that's awesome
+2015-01-15T14:55:11  *** collum has quit IRC
+2015-01-15T14:55:51  <bshum> Excellent!
+2015-01-15T14:56:04  <bshum> Hope that we don't need them, but it's good that people are volunteering.
+2015-01-15T14:56:12  <bbqben> agreed
+2015-01-15T14:56:34  <bbqben> any other new business / topics / updates?
+2015-01-15T14:56:40  *** mrpeters has left #evergreen
+2015-01-15T14:57:29  <bbqben> ok then, thanks all for your time - we now return to regular programming. Reconvene on 19.02.15, same time, same place
+2015-01-15T14:57:36  <bshum> bbqben++ # thanks!
+2015-01-15T14:57:38  <yboston> bbqben++
+2015-01-15T14:57:41  <bbqben> #endmeeting
+2015-01-15T14:57:41  <pinesol_green> Meeting ended Thu Jan 15 14:57:40 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-01-15T14:57:41  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-15-14.01.html
+2015-01-15T14:57:41  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-15-14.01.txt
+2015-01-15T14:57:41  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-01-15-14.01.log.html
+2015-01-15T14:57:47  <csharp> bbqben++ # got it right this time!
+2015-01-15T14:57:48  <graced> bbqben++
+2015-01-15T14:58:05  <kmlussier> bbqben++
+2015-01-15T14:59:52  *** abneiman has quit IRC
+2015-01-15T15:08:10  *** mrpeters has joined #evergreen
+2015-01-15T15:15:58  *** mtcarlson is now known as mtcarlson_away
+2015-01-15T15:23:05  <kitteh_> Linus Torvalds is keynoting soon, you might be able to catch stream at http://timvideos.us/ if interested
+2015-01-15T15:23:16  <kitteh_> http://linux.conf.au/
+2015-01-15T15:24:57  *** krvmga has quit IRC
+2015-01-15T15:25:42  <jeff> well isn't that odd. two 2.5 systems, same mrc file, one record caught my eye because it's "Nonmusical sound recording", even though the LDR/06 is j.
+2015-01-15T15:26:07  <jeff> (newly imported record on both systems)
+2015-01-15T15:26:14  * jeff digs to further his understanding
+2015-01-15T15:27:42  *** bbqben has quit IRC
+2015-01-15T15:33:30  *** mtcarlson_away is now known as mtcarlson
+2015-01-15T15:36:37  *** bmills has quit IRC
+2015-01-15T15:43:20  *** RoganH has quit IRC
+2015-01-15T15:54:26  *** julialima_ has left #evergreen
+2015-01-15T15:54:57  *** ericar has quit IRC
+2015-01-15T15:56:06  <Dyrcona> Apparently, the key note is now over and the live feed was horrible.
+2015-01-15T15:56:19  <Dyrcona> If rangi isn't there, I'm disappointed.
+2015-01-15T15:56:32  <rangi> where should I be?
+2015-01-15T15:56:40  <rangi> lca ?
+2015-01-15T15:56:49  <rangi> naw im at the catalyst open source academy
+2015-01-15T15:57:11  <rangi> http://scoreboard.koha-community.org/
+2015-01-15T15:59:35  <Dyrcona> heh.
+2015-01-15T15:59:42  <Dyrcona> Even better.
+2015-01-15T15:59:44  <Dyrcona> ;)
+2015-01-15T16:02:16  <rangi> last day of 23 high school students working on opensource stuff
+2015-01-15T16:03:32  <rangi> they do 2 weeks, first week is learning
+2015-01-15T16:03:37  <rangi> 2nd week is project work
+2015-01-15T16:04:00  <rangi> its been Koha, Drupal, Mahara, Silverstripe and Piwik
+2015-01-15T16:09:55  * jeff returns from digging
+2015-01-15T16:10:15  <jeff> vandelay functions were in a bad state on my test instance.
+2015-01-15T16:10:16  <Dyrcona> rangi: Cool.
+2015-01-15T16:10:33  <jeff> fixed, all's well.
+2015-01-15T16:11:16  <jeff> and this is a good reminder that i need to do some more research with regard to better ways to schema-only diff postgres databases :-)
+2015-01-15T16:25:05  *** bmills has joined #evergreen
+2015-01-15T16:26:41  * bshum taps fingers waiting for piwik upgrade scripts to run...
+2015-01-15T16:26:59  *** mrpeters has left #evergreen
+2015-01-15T16:29:32  *** rjackson-isl has quit IRC
+2015-01-15T16:30:39  <jeff> eeevil: so it turns out that with the specific example in question, identifier|bibcn is a reasonable way to exclude.
+2015-01-15T16:31:42  <jeff> i can append this to the value of the search input and exclude the undesirable results: -(identifier|bibcn:"vendorname$")
+2015-01-15T16:32:49  <jeff> since each record from this vendor has an 099 matching "(eAudiobook|eMusic|eVideo) vendorname"
+2015-01-15T16:32:57  <bshum> Bmagic: I'm not sure I understand what you're describing with your new filed bug 1411422
+2015-01-15T16:32:57  <pinesol_green> Launchpad bug 1411422 in Evergreen "Copy details repeated in search results scoped to system and grouped formats" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1411422
+2015-01-15T16:36:32  <mmorgan> Could this be the same issue as described in lp 1315552?
+2015-01-15T16:36:33  <pinesol_green> Launchpad bug 1315552 in Evergreen "Duplicate initial search results where copy circ lib/call number owning lib are different" (affected: 5, heat: 26) [Medium,Confirmed] https://launchpad.net/bugs/1315552
+2015-01-15T16:37:03  <bshum> Hmm, maybe.
+2015-01-15T16:37:24  *** bbqben has joined #evergreen
+2015-01-15T16:38:23  <bshum> Certainly sounds like it's similar
+2015-01-15T16:38:52  * jeff wonders about the expected performance hit of appending -(identifier|bibcn:"vendorname$")
+2015-01-15T16:39:09  <jeff> that will be some digging for another time!
+2015-01-15T16:40:32  <bshum> mmorgan: Might be worth suggesting them to take a look at their copies/callnumbers to see if it's a similar issue.
+2015-01-15T16:42:05  <mmorgan> I can add a comment after looking a little more closely.
+2015-01-15T16:42:20  <bshum> mmorgan++
+2015-01-15T17:00:40  *** Dyrcona has quit IRC
+2015-01-15T17:03:09  *** vlewis has joined #evergreen
+2015-01-15T17:13:53  <bshum> Fixing a problem with the mysql on lupin... halting apache while I do it
+2015-01-15T17:13:53  *** serflog has quit IRC
+2015-01-15T17:16:45  *** mmorgan has left #evergreen
+2015-01-15T17:29:47  *** bmills has quit IRC
+2015-01-15T17:30:01  *** bmills has joined #evergreen
+2015-01-15T17:30:12  *** dcook__ has joined #evergreen
+2015-01-15T17:33:27  *** dcook has quit IRC
+2015-01-15T17:41:59  *** serflog has joined #evergreen
+2015-01-15T17:42:46  *** yboston_ has joined #evergreen
+2015-01-15T17:42:46  *** tsbere_ has joined #evergreen
+2015-01-15T17:43:25  *** dreuther has joined #evergreen
+2015-01-15T17:43:28  *** StomproJosh has joined #evergreen
+2015-01-15T17:43:55  *** chatley_ has joined #evergreen
+2015-01-15T17:46:09  *** remingtron_ has joined #evergreen
+2015-01-15T17:46:21  *** yboston_ has quit IRC
+2015-01-15T17:46:26  *** TaraC_ has joined #evergreen
+2015-01-15T17:46:51  *** ldw_ has joined #evergreen
+2015-01-15T17:47:03  *** csharp_ has joined #evergreen
+2015-01-15T17:48:21  *** phasefx__ has joined #evergreen
+2015-01-15T17:49:14  *** jeff__ has joined #evergreen
+2015-01-15T17:49:39  *** dbs_ has joined #evergreen
+2015-01-15T17:50:46  *** rangi` has joined #evergreen
+2015-01-15T17:51:08  *** berick_ has joined #evergreen
+2015-01-15T17:51:38  *** edoceo_ has joined #evergreen
+2015-01-15T17:51:49  *** phasefx has quit IRC
+2015-01-15T17:51:49  *** mtate has quit IRC
+2015-01-15T17:51:49  *** eeevil has quit IRC
+2015-01-15T17:51:49  *** tsbere has quit IRC
+2015-01-15T17:51:50  *** mllewellyn has quit IRC
+2015-01-15T17:51:50  *** maryj has quit IRC
+2015-01-15T17:51:50  *** mnsri_away has quit IRC
+2015-01-15T17:51:50  *** gsams has quit IRC
+2015-01-15T17:51:50  *** b_bonner has quit IRC
+2015-01-15T17:51:50  *** pmurray has quit IRC
+2015-01-15T17:51:51  *** rashma has quit IRC
+2015-01-15T17:51:51  *** paxed has quit IRC
+2015-01-15T17:51:51  *** jcamins has quit IRC
+2015-01-15T17:52:21  *** bmills has quit IRC
+2015-01-15T17:52:21  *** yboston has quit IRC
+2015-01-15T17:52:21  *** TaraC has quit IRC
+2015-01-15T17:52:21  *** chatley has quit IRC
+2015-01-15T17:52:21  *** dreuther_ has quit IRC
+2015-01-15T17:52:21  *** rangi has quit IRC
+2015-01-15T17:52:22  *** ldw has quit IRC
+2015-01-15T17:52:22  *** pastebot has quit IRC
+2015-01-15T17:52:22  *** egbuilder has quit IRC
+2015-01-15T17:52:22  *** csharp has quit IRC
+2015-01-15T17:52:31  *** RBecker_ has joined #evergreen
+2015-01-15T17:52:39  *** wjr has quit IRC
+2015-01-15T17:52:39  *** nhilton has quit IRC
+2015-01-15T17:52:39  *** akilsdonk has quit IRC
+2015-01-15T17:52:39  *** sarabee has quit IRC
+2015-01-15T17:52:39  *** StomproJ has quit IRC
+2015-01-15T17:52:39  *** kmlussier has quit IRC
+2015-01-15T17:52:39  *** mceraso has quit IRC
+2015-01-15T17:52:39  *** artunit has quit IRC
+2015-01-15T17:52:50  *** edoceo_ has quit IRC
+2015-01-15T17:52:53  *** tsbere_ has quit IRC
+2015-01-15T17:53:00  *** tsbere_ has joined #evergreen
+2015-01-15T17:53:12  *** bradl has joined #evergreen
+2015-01-15T17:53:12  *** bmills1 has joined #evergreen
+2015-01-15T17:53:12  *** gsams has joined #evergreen
+2015-01-15T17:53:12  *** b_bonner has joined #evergreen
+2015-01-15T17:53:12  *** pmurray has joined #evergreen
+2015-01-15T17:53:12  *** rashma has joined #evergreen
+2015-01-15T17:53:12  *** paxed has joined #evergreen
+2015-01-15T17:53:12  *** jcamins has joined #evergreen
+2015-01-15T17:54:04  *** dbs has quit IRC
+2015-01-15T17:54:04  *** bradl_ has quit IRC
+2015-01-15T17:54:17  *** edoceo is now known as 7JTABWWZU
+2015-01-15T17:54:22  *** edoceo has joined #evergreen
+2015-01-15T17:54:22  *** Bmagic_ has joined #evergreen
+2015-01-15T17:54:22  *** artunit_ has joined #evergreen
+2015-01-15T17:54:22  *** nhilton_ has joined #evergreen
+2015-01-15T17:54:23  *** maryj has joined #evergreen
+2015-01-15T17:54:23  *** mnsri_away has joined #evergreen
+2015-01-15T17:54:46  *** tsbere_ has quit IRC
+2015-01-15T18:06:16  *** pinesol_green has joined #evergreen
+2015-01-15T18:11:27  *** tepper.freenode.net sets mode: -o pastebot
+2015-01-15T18:11:27  -tepper.freenode.net- *** Notice -- TS for #evergreen changed from 1421363132 to 1233034046
+2015-01-15T18:11:27  *** tepper.freenode.net sets mode: +ct-s 
+2015-01-15T18:11:28  *** mnsri_away has joined #evergreen
+2015-01-15T18:11:28  *** maryj has joined #evergreen
+2015-01-15T18:11:28  *** nhilton_ has joined #evergreen
+2015-01-15T18:11:28  *** artunit_ has joined #evergreen
+2015-01-15T18:11:28  *** Bmagic_ has joined #evergreen
+2015-01-15T18:11:28  *** edoceo has joined #evergreen
+2015-01-15T18:11:28  *** dbwells has joined #evergreen
+2015-01-15T18:11:28  *** book`_ has joined #evergreen
+2015-01-15T18:11:28  *** dcook has joined #evergreen
+2015-01-15T18:11:28  *** jeff___ has joined #evergreen
+2015-01-15T18:11:28  *** rangi has joined #evergreen
+2015-01-15T18:11:28  *** mtcarlson has joined #evergreen
+2015-01-15T18:11:28  *** rashma has joined #evergreen
+2015-01-15T18:11:28  *** tepper.freenode.net sets mode: +q *!*@gw1.kohaaloha.com
+2015-01-15T18:11:28  *** tepper.freenode.net changes topic to "Welcome to the #evergreen library system channel! | We are publicly logged: http://irc.evergreen-ils.org/evergreen | Large pastes at http://paste.evergreen-ils.org"
+2015-01-15T18:13:15  *** mtcarlson is now known as mtcarlson_away
+2015-01-15T18:13:28  *** egbuilder has joined #evergreen
+2015-01-15T18:13:28  *** pmurray has joined #evergreen
+2015-01-15T18:13:28  *** mtate has joined #evergreen
+2015-01-15T18:13:28  *** eeevil has joined #evergreen
+2015-01-15T18:13:36  *** jcamins has joined #evergreen
+2015-01-15T18:13:36  *** dexap has joined #evergreen
+2015-01-15T18:13:36  *** bradl_ has joined #evergreen
+2015-01-15T18:13:36  *** dkyle has joined #evergreen
+2015-01-15T18:13:36  *** tsbere__ has joined #evergreen
+2015-01-15T18:13:36  *** gmcharlt_ has joined #evergreen
+2015-01-15T18:13:36  *** chatley has joined #evergreen
+2015-01-15T18:13:36  *** dreuther_ has joined #evergreen
+2015-01-15T18:13:36  *** TaraC has joined #evergreen
+2015-01-15T18:13:36  *** phasefx has joined #evergreen
+2015-01-15T18:13:36  *** bmills has joined #evergreen
+2015-01-15T18:13:36  *** geoffsams has joined #evergreen
+2015-01-15T18:13:36  *** vlewis_ has joined #evergreen
+2015-01-15T18:13:36  *** mmorgan1 has joined #evergreen
+2015-01-15T18:13:36  *** jeffdavi1 has joined #evergreen
+2015-01-15T18:13:36  *** jeff_ has joined #evergreen
+2015-01-15T18:13:36  *** RBecker has joined #evergreen
+2015-01-15T18:13:36  *** bbqben has joined #evergreen
+2015-01-15T18:13:36  *** BigRig has joined #evergreen
+2015-01-15T18:13:36  *** Callender_ has joined #evergreen
+2015-01-15T18:13:36  *** mtj_ has joined #evergreen
+2015-01-15T18:13:36  *** dbs_ has joined #evergreen
+2015-01-15T18:13:36  *** csharp_ has joined #evergreen
+2015-01-15T18:13:36  *** ldw_ has joined #evergreen
+2015-01-15T18:13:36  *** remingtron_ has joined #evergreen
+2015-01-15T18:13:36  *** StomproJosh has joined #evergreen
+2015-01-15T18:13:36  *** serflog has joined #evergreen
+2015-01-15T18:13:36  *** jihpringle has joined #evergreen
+2015-01-15T18:13:36  *** jwoodard has joined #evergreen
+2015-01-15T18:13:36  *** abowling has joined #evergreen
+2015-01-15T18:13:36  *** _bott_ has joined #evergreen
+2015-01-15T18:13:36  *** graced has joined #evergreen
+2015-01-15T18:13:36  *** bshum has joined #evergreen
+2015-01-15T18:13:36  *** kitteh_ has joined #evergreen
+2015-01-15T18:13:36  *** phasefx_ has joined #evergreen
+2015-01-15T18:13:36  *** jboyer-isl has joined #evergreen
+2015-01-15T18:13:36  *** hopkinsju has joined #evergreen
+2015-01-15T18:13:36  *** Sato has joined #evergreen
+2015-01-15T18:13:47  *** eby has joined #evergreen
+2015-01-15T18:13:47  *** wjr has joined #evergreen
+2015-01-15T18:13:47  *** akilsdonk has joined #evergreen
+2015-01-15T18:13:47  *** sarabee has joined #evergreen
+2015-01-15T18:13:47  *** kmlussier has joined #evergreen
+2015-01-15T18:13:47  *** mceraso has joined #evergreen
+2015-01-15T18:13:57  *** b_bonner has joined #evergreen
+2015-01-15T18:14:01  *** berick has joined #evergreen
+2015-01-15T18:14:04  *** pmurray has quit IRC
+2015-01-15T18:14:04  *** pmurray has joined #evergreen
+2015-01-15T18:14:50  *** dcook is now known as Guest94539
+2015-01-15T18:19:16  *** mtcarlson_away is now known as mtcarlson
+2015-01-15T18:23:19  *** Guest94539 has quit IRC
+2015-01-15T18:24:54  *** ldw_ is now known as ldw
+2015-01-15T18:31:13  *** eby has quit IRC
+2015-01-15T18:31:13  *** eby has joined #evergreen
+2015-01-15T18:35:52  *** jeffdavi1 is now known as jeffdavis
+2015-01-15T18:36:08  *** jeffdavis has joined #evergreen
+2015-01-15T18:42:43  *** mtcarlson is now known as mtcarlson_away
+2015-01-15T18:45:19  *** nhilton_ has quit IRC
+2015-01-15T19:00:00  *** mtcarlson_away is now known as mtcarlson
+2015-01-15T19:04:03  *** vlewis_ has quit IRC
+2015-01-15T19:04:45  *** mrpeters has joined #evergreen
+2015-01-15T19:16:54  *** mtcarlson is now known as mtcarlson_away
+2015-01-15T19:52:08  *** bbqben has quit IRC
+2015-01-15T20:05:04  *** jwoodard has quit IRC
+2015-01-15T20:23:25  *** dcook has joined #evergreen
+2015-01-15T20:25:55  *** _bott_ has quit IRC
+2015-01-15T20:46:15  *** _bott_ has joined #evergreen
+2015-01-15T20:59:09  *** _bott_ has quit IRC
+2015-01-15T21:14:45  *** abowling has quit IRC
+2015-01-15T21:25:12  *** _bott_ has joined #evergreen
+2015-01-15T21:34:21  *** mtcarlson_away is now known as mtcarlson
+2015-01-15T21:45:56  *** sbrylander has joined #evergreen
+2015-01-15T21:48:18  *** sarabee has quit IRC
+2015-01-15T21:53:54  *** mtcarlson is now known as mtcarlson_away
+2015-01-15T21:58:03  *** nhilton has joined #evergreen
+2015-01-15T22:00:34  *** _bott_ has quit IRC
+2015-01-15T22:04:51  *** nhilton has quit IRC
+2015-01-15T22:08:28  *** sarabee has joined #evergreen
+2015-01-15T22:09:28  *** akilsdonk_ has joined #evergreen
+2015-01-15T22:10:48  *** sbrylander has quit IRC
+2015-01-15T22:12:03  *** akilsdonk has quit IRC
+2015-01-15T22:12:37  *** akilsdonk has joined #evergreen
+2015-01-15T22:13:16  *** buzzy has joined #evergreen
+2015-01-15T22:15:10  *** akilsdonk_ has quit IRC
+2015-01-15T22:48:34  *** bmills has quit IRC
+2015-01-15T22:48:55  *** bmills has joined #evergreen
+2015-01-15T22:53:54  *** bmills has quit IRC

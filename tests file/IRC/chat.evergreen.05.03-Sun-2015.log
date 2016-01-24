@@ -1,0 +1,19 @@
+2015-05-03T04:54:26  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-03T09:08:19  *** Dyrcona has joined #evergreen
+2015-05-03T09:19:31  <Dyrcona> I'm looking at the we staff client installation instructions for the server and wonder if anyone has tried it with the latest stable version of Node.js?
+2015-05-03T09:19:53  <Dyrcona> that should be "web staff client"
+2015-05-03T09:20:36  <Dyrcona> Guess really it should be called browser staff client. The current client is also web-based, since it loads a number of interfaces via http off the server.
+2015-05-03T09:23:28  <Dyrcona> Oh lovely. Another project that insists on including the source for dependencies. Wonder how poorly they keep things up to date.
+2015-05-03T09:29:30  <Dyrcona> bshum: I think you're missing a sudo in front of the npm install in the staff client web directory.
+2015-05-03T09:29:38  <Dyrcona> I got tons of errors without it.
+2015-05-03T09:30:27  <Dyrcona> bower install looks like it worked without a sudo
+2015-05-03T09:30:43  <Dyrcona> Of course, I also tried the v0.12.2 tag.
+2015-05-03T09:32:23  <Dyrcona> Looks like it worked. Will restart and give it a shot.
+2015-05-03T09:35:52  <Dyrcona> After all of that, hitting https://jasondev.mvlcstaff.org/eg/staff/ with Firefox 37.0.2 for Ubuntu, I get a blank page.
+2015-05-03T09:36:42  <Dyrcona> Guess I should build a new VM tomorrow and try the recommending 0.10.28 tag.
+2015-05-03T09:36:51  <Dyrcona> gah.
+2015-05-03T09:48:11  <Dyrcona> Ah, I get "ReferenceError: angular is not defined"
+2015-05-03T09:48:39  <Dyrcona> From, like, everything.
+2015-05-03T15:22:50  <tsbere> Fun - Server crashes, syslog looks to just stop before the crash. :(
+2015-05-03T15:47:38  <Dyrcona> OOM Killer must have killed syslog first. ;(
+2015-05-03T16:04:50  *** Dyrcona has quit IRC

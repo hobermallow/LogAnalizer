@@ -1,0 +1,208 @@
+2015-02-02T00:17:43  *** mnsri_away is now known as mnsri
+2015-02-02T00:28:32  *** mnsri is now known as mnsri_away
+2015-02-02T00:28:46  *** abowling has quit IRC
+2015-02-02T02:11:34  *** remingtron__ has joined #evergreen
+2015-02-02T02:15:05  *** remingtron_ has quit IRC
+2015-02-02T02:18:14  *** nhilton_ has joined #evergreen
+2015-02-02T02:21:03  *** nhilton has quit IRC
+2015-02-02T03:03:47  *** nhilton_ has quit IRC
+2015-02-02T07:10:19  *** csharp_ has quit IRC
+2015-02-02T07:10:19  *** csharp_ has joined #evergreen
+2015-02-02T07:10:25  *** csharp_ is now known as csharp
+2015-02-02T07:36:06  *** jboyer-isl has joined #evergreen
+2015-02-02T08:07:34  *** rjackson-isl has joined #evergreen
+2015-02-02T08:07:50  *** julialima_ has joined #evergreen
+2015-02-02T08:08:16  *** collum has joined #evergreen
+2015-02-02T08:24:44  *** ericar has joined #evergreen
+2015-02-02T08:26:50  *** akilsdonk has joined #evergreen
+2015-02-02T08:30:45  <kmlussier> @weather 02771
+2015-02-02T08:30:46  <pinesol_green> kmlussier: The current temperature in Rumford, East Providence, Rhode Island is 23.5°F (8:25 AM EST on February 02, 2015). Conditions: Light Snow. Humidity: 93%. Dew Point: 21.2°F. Windchill: 15.8°F. Pressure: 29.72 in 1006 hPa (Falling).  Winter Storm Warning in effect until 1 am EST Tuesday... 
+2015-02-02T08:40:46  *** StomproJ has quit IRC
+2015-02-02T08:41:07  *** Stompro has joined #evergreen
+2015-02-02T08:55:22  *** mrpeters has joined #evergreen
+2015-02-02T08:55:24  *** maryj has joined #evergreen
+2015-02-02T09:05:48  *** Dyrcona has joined #evergreen
+2015-02-02T09:20:18  *** chick_ has joined #evergreen
+2015-02-02T09:20:31  *** chick_ has left #evergreen
+2015-02-02T09:21:22  *** Arlene has joined #evergreen
+2015-02-02T09:22:05  *** dbwells_ is now known as dbwells
+2015-02-02T09:22:21  *** abowling has joined #evergreen
+2015-02-02T09:52:02  *** berick_ is now known as berick
+2015-02-02T10:11:10  *** jboyer-isl has quit IRC
+2015-02-02T10:22:44  <dbs> good luck kmlussier & all my mvlc friends
+2015-02-02T10:23:08  <kmlussier> dbs: good luck?
+2015-02-02T10:31:19  <dbs> @weather 02771
+2015-02-02T10:31:20  <pinesol_green> dbs: The current temperature in Rumford, East Providence, Rhode Island is 28.6°F (10:25 AM EST on February 02, 2015). Conditions: Light Ice Pellets. Humidity: 95%. Dew Point: 26.6°F. Windchill: 21.2°F. Pressure: 29.60 in 1002 hPa (Falling).  Winter Storm Warning in effect until 1 am EST Tuesday... 
+2015-02-02T10:31:23  <jeff> snow reference, i believe. :-)
+2015-02-02T10:31:37  <dbs> oh, wait, you're not in Rhode Island are you?
+2015-02-02T10:31:42  <dbs> @weather p3e 2c6
+2015-02-02T10:31:43  <pinesol_green> dbs: The current temperature in Sudbury, Ontario is -8.9°F (10:17 AM EST on February 02, 2015). Conditions: Partly Cloudy. Humidity: 75%. Dew Point: -14.8°F. Windchill: -9.4°F. Pressure: 30.07 in 1018 hPa (Steady). 
+2015-02-02T10:31:47  <jeff> non-event (as expected) here.
+2015-02-02T10:35:28  <kmlussier> dbs: Ah, weather. Thanks!
+2015-02-02T10:35:39  <kmlussier> No, I'm not in RI, but my zip code is right on the state line.
+2015-02-02T10:37:31  <kmlussier> The snow here is already turning to rain. I expect the rest of my MassLNC colleagues will be getting more snow.
+2015-02-02T10:40:55  <kmlussier> ~contributing
+2015-02-02T10:41:10  <kmlussier> hmmmm
+2015-02-02T10:41:56  <kmlussier> ~contribute
+2015-02-02T10:41:56  <pinesol_green> Interested in contributing to the Evergreen project?  Please see http://www.evergreen-ils.org/dokuwiki/doku.php?id=contributing and http://evergreen-ils.org/dokuwiki/doku.php?id=eg_developer_overview.
+2015-02-02T10:46:57  <ningalls_> it was close to 60 yesterday, and today snow.  Nashville TN problems
+2015-02-02T10:47:08  *** ningalls_ is now known as ningalls
+2015-02-02T10:48:36  <kmlussier> Wow, 60! I'll take that over dbs' -8.9 anyday.
+2015-02-02T10:48:52  *** mnsri_away is now known as mnsri
+2015-02-02T10:51:30  <Dyrcona> Yep, snow here. Another foot or so expected on top the the three feet we got last week.
+2015-02-02T10:51:46  <Dyrcona> Our offices are closed, so I am at home.
+2015-02-02T10:52:25  <Dyrcona> https://plus.google.com/103336448364599016696/posts/Pxvsoouf694?pid=6111168333427802482&oid=103336448364599016696
+2015-02-02T10:52:40  <Dyrcona> That is supposedly taken in midwinter near rangi's neck of the woods.
+2015-02-02T10:52:46  <Dyrcona> I'll take that, thanks!
+2015-02-02T11:10:35  *** rjackson-isl has quit IRC
+2015-02-02T11:15:49  *** mnsri is now known as mnsri_away
+2015-02-02T11:25:35  *** vlewis has joined #evergreen
+2015-02-02T11:25:50  *** mrpeters1 has joined #evergreen
+2015-02-02T11:29:40  *** mrpeters has quit IRC
+2015-02-02T11:34:41  *** nhilton has joined #evergreen
+2015-02-02T11:36:12  *** buzzy has joined #evergreen
+2015-02-02T11:37:32  *** nhilton_ has joined #evergreen
+2015-02-02T11:37:40  *** nhilton__ has joined #evergreen
+2015-02-02T11:39:48  *** nhilton has quit IRC
+2015-02-02T11:57:15  *** buzzy has quit IRC
+2015-02-02T12:11:53  *** buzzy has joined #evergreen
+2015-02-02T12:23:51  *** nhilton has joined #evergreen
+2015-02-02T12:26:13  *** nhilton_ has quit IRC
+2015-02-02T12:29:09  *** kitteh_ has joined #evergreen
+2015-02-02T12:29:40  *** jeffdavis has quit IRC
+2015-02-02T12:29:40  *** jeffdavis has joined #evergreen
+2015-02-02T12:39:03  *** mrpeters has joined #evergreen
+2015-02-02T12:42:36  *** mrpeters1 has quit IRC
+2015-02-02T12:43:00  <kmlussier> It's a very quiet Monday.
+2015-02-02T12:43:03  <kmlussier> @quote random
+2015-02-02T12:43:03  <pinesol_green> kmlussier: Quote #90: "<jeff> I feel like I'm stuck inside of a TCP joke." (added by gmcharlt at 12:37 PM, August 27, 2014)
+2015-02-02T12:54:40  *** nhilton_ has joined #evergreen
+2015-02-02T12:56:16  *** nhilton has quit IRC
+2015-02-02T13:14:28  <rangi> Dyrcona: https://plus.google.com/u/1/108210250488836096108/posts/KjF6Aynykih?pid=6111312385202959618&oid=108210250488836096108 there's a beach near that one, mid summer
+2015-02-02T13:14:48  <rangi> (took that last week)
+2015-02-02T13:15:29  <Dyrcona> rangi: You sure you don't need another PHP/Perl/You-name-it programmer?
+2015-02-02T13:15:34  <Dyrcona> ;)
+2015-02-02T13:15:40  *** kitteh__ has joined #evergreen
+2015-02-02T13:15:51  * kmlussier is ready for summer.
+2015-02-02T13:16:19  <rangi> heh
+2015-02-02T13:16:23  <rangi> python?
+2015-02-02T13:16:26  <Dyrcona> I'm having fun figuring out how to implement something that I first though of 3 years ago.
+2015-02-02T13:16:57  <rangi> http://catalyst.net.nz/join-us/jobs
+2015-02-02T13:17:16  *** kitteh_ has quit IRC
+2015-02-02T13:18:35  <Dyrcona> rangi: Thanks for sharing. I don't do much Python.
+2015-02-02T13:19:35  <Dyrcona> And this time, I'm trying not to break things for folks who are doing it the hard way.
+2015-02-02T13:24:16  *** kitteh__ has quit IRC
+2015-02-02T13:27:14  *** kitteh_ has joined #evergreen
+2015-02-02T13:42:25  *** Arlene has quit IRC
+2015-02-02T13:57:34  *** Guest85523 has joined #evergreen
+2015-02-02T14:04:05  *** rjackson_isl has joined #evergreen
+2015-02-02T14:04:41  *** Guest85523 has left #evergreen
+2015-02-02T14:04:48  *** rjackson_isl has left #evergreen
+2015-02-02T14:05:54  <dbs> Damn google started complaining that the "expand MARC" view in the detailed catalogue record is not mobile-friendly.
+2015-02-02T14:06:01  <dbs> I guess they have a point.
+2015-02-02T14:07:27  <dbs> But really, MARC is not friendly. So...
+2015-02-02T14:07:57  *** BigRig has quit IRC
+2015-02-02T14:08:19  *** rjackson_isl has joined #evergreen
+2015-02-02T14:13:32  <dbs> have to think it's the super-long URLs in 856 fields for records like https://laurentian.concat.ca/eg/opac/record/2112983?locg=1;expand=marchtml triggering the complaint
+2015-02-02T14:15:42  * dbs looks at the table formatting for the notes in that record through Chrome's mobile device mode in devtools and... yuck
+2015-02-02T14:16:30  <dbs> dl/dt/dd markup might be more suitable. hmm
+2015-02-02T14:18:30  <kmlussier> Huh, it looks better in Firefox's responsive design view. But I see what you mean about Chrome.
+2015-02-02T14:23:27  *** jihpringle has joined #evergreen
+2015-02-02T14:25:19  *** BigRig has joined #evergreen
+2015-02-02T14:27:48  <Dyrcona> Should "POST /xml-rpc/open__ils.auth" return a 404?
+2015-02-02T14:28:02  <jeff> it might if you don't give it enough arguments.
+2015-02-02T14:28:10  <Dyrcona> I'm thinking it should not.
+2015-02-02T14:28:38  <Dyrcona> I'm trying to authenticate with a script that worked before all the mess with the dashes and underscores.
+2015-02-02T14:28:53  <Dyrcona> I'd think it would still work with dashes changed to __.
+2015-02-02T14:29:09  <jeff> yeah, that agrees with my understanding.
+2015-02-02T14:29:50  <Dyrcona> It's bascially this: https://launchpadlibrarian.net/87261010/xmlauth.pl
+2015-02-02T14:30:13  <Dyrcona> with dashes modified and the attempt to update the user commented out.
+2015-02-02T14:32:06  <Dyrcona> csharp: Are you using Ubuntu 14.04 in production?
+2015-02-02T14:32:19  <Dyrcona> I think my problem might be 14.04 on the server.
+2015-02-02T14:32:52  *** mrpeters has quit IRC
+2015-02-02T14:33:35  <Dyrcona> Never mind. The script no longer works against our production server, either.
+2015-02-02T14:34:17  * Dyrcona gives up and decides that XML-RPC isn't worth the effort.
+2015-02-02T14:39:14  *** Arlene has joined #evergreen
+2015-02-02T14:57:56  *** collum has quit IRC
+2015-02-02T15:04:36  *** collum has joined #evergreen
+2015-02-02T15:04:57  <collum> @hate Windows
+2015-02-02T15:04:57  <pinesol_green> collum: The operation succeeded.  collum hates Windows.
+2015-02-02T15:05:00  *** mnsri_away is now known as mnsri
+2015-02-02T15:08:14  <kmlussier> @whocares Windows
+2015-02-02T15:08:14  <pinesol_green> collum hates Windows
+2015-02-02T15:25:37  *** jordanwp has joined #evergreen
+2015-02-02T15:28:14  *** jordanwp has left #evergreen
+2015-02-02T15:31:35  *** mrpeters has joined #evergreen
+2015-02-02T15:37:46  *** mnsri is now known as mnsri_away
+2015-02-02T15:53:32  <eeevil> so, we have need of a real jquery object instead of the shim that angular provides.  objections to using the jquery CDN?
+2015-02-02T15:56:31  <eeevil> and, berick, do you know of any version restrictions we need to be aware of with the version of angular we're on?
+2015-02-02T15:58:05  *** julialima_ has quit IRC
+2015-02-02T15:58:59  *** nhilton has joined #evergreen
+2015-02-02T16:01:15  *** nhilton_ has quit IRC
+2015-02-02T16:03:17  <jeff> eeevil: defaulting to jquery CDN and making it reasonably easy to override?
+2015-02-02T16:03:30  <berick> eeevil: hmm, looks like we should start by testing 2.1
+2015-02-02T16:03:33  <berick> "Angular 1.3 only supports jQuery 2.1 or above. jQuery 1.7 and newer might work correctly with Angular but we don't guarantee that.
+2015-02-02T16:03:36  <berick> "
+2015-02-02T16:03:50  <eeevil> berick: yep. just saw that. I'm importing 2.1.3 from the cdn
+2015-02-02T16:04:13  <berick> jeff: I assume we'd want to eventually deploy it ourselves, in the same manner we deploy angular and other deps
+2015-02-02T16:04:14  <eeevil> jeff: it's just a template ... so, as long as it loads
+2015-02-02T16:04:45  <berick> .. so we can scrunch it all into a single file
+2015-02-02T16:04:57  *** collum has quit IRC
+2015-02-02T16:06:14  <berick> we'd probably have to deploy it locally for unit tests, too
+2015-02-02T16:06:30  <berick> i'm sure there's a bower target for jquery, though, so that's easy enough
+2015-02-02T16:08:42  *** Arlene has quit IRC
+2015-02-02T16:22:41  *** rjackson_isl has quit IRC
+2015-02-02T16:31:08  *** maryj has quit IRC
+2015-02-02T16:46:00  *** ericar has quit IRC
+2015-02-02T17:06:00  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-02-02T17:32:20  *** nhilton_ has joined #evergreen
+2015-02-02T17:35:27  *** nhilton has quit IRC
+2015-02-02T17:41:21  *** mnsri_away is now known as mnsri
+2015-02-02T17:54:44  <csharp> Dyrcona: using 14.04 on our DBs but 12.04 everywhere else
+2015-02-02T17:55:07  <Dyrcona> csharp: Thanks.
+2015-02-02T17:55:24  <Dyrcona> Turns out whatever my problem is, it is not with Ubuntu 14.04.
+2015-02-02T17:55:56  <csharp> yeah, like I mentioned on that bug report, our vendor coded around the issue
+2015-02-02T18:02:30  *** mrpeters has quit IRC
+2015-02-02T18:04:41  *** BigRig has quit IRC
+2015-02-02T18:12:35  <Dyrcona> The snow is really coming down, now.
+2015-02-02T18:12:50  <Dyrcona> Guess I'll wait to walk out to the street and check the mail.
+2015-02-02T18:49:32  *** vlewis has quit IRC
+2015-02-02T18:51:57  *** nhilton_ has quit IRC
+2015-02-02T18:51:57  *** buzzy has quit IRC
+2015-02-02T19:31:52  *** julialima_ has joined #evergreen
+2015-02-02T19:37:10  *** julialima_ has left #evergreen
+2015-02-02T19:44:21  <Dyrcona> csharp: You said they worked around it. Do you know what the vendor did?
+2015-02-02T20:12:26  *** mnsri is now known as mnsri_away
+2015-02-02T20:14:14  *** mnsri_away is now known as mnsri
+2015-02-02T20:17:43  *** mnsri is now known as mnsri_away
+2015-02-02T20:34:10  <csharp> Dyrcona: aside from changing open-ils.whatever to open__ils.whatever, I don't know
+2015-02-02T20:34:31  <Dyrcona> Thanks. I did that and it doesn't work.
+2015-02-02T20:34:52  <Dyrcona> AFAIK, only Library Elf uses XML-RPC.
+2015-02-02T20:36:01  <Dyrcona> Crazy. I see them posting without the the dash in the URL.
+2015-02-02T20:36:12  <Dyrcona> Grr. I meant with the dash.
+2015-02-02T20:36:26  <csharp> our vendor is Unique Management
+2015-02-02T20:37:03  <csharp> e.g. 'open__ils.collections.users_with_activity.retrieve'
+2015-02-02T20:39:31  <Dyrcona> OK. So it works on my production box with '-' in the URL, but __ in the function name.
+2015-02-02T20:39:42  <Dyrcona> I'll try this again on my development vm.
+2015-02-02T20:40:39  <Dyrcona> And that works on my development vm, too. I must have botched my file up more than necessary earlier.
+2015-02-02T20:41:02  *** jihpringle has quit IRC
+2015-02-02T21:01:09  *** mnsri_away is now known as mnsri
+2015-02-02T21:05:35  <Dyrcona> Looking at the code for unwrap_perl in XMLRPCGateway, again, and I don't even see how you could possibly pass a Fieldmapper object into that without lots of client side magic.
+2015-02-02T21:06:13  <Dyrcona> I'm trying to add the ability to use the structs that XMLRPCGateway returns without having to use Fieldmapper on the client.
+2015-02-02T21:06:41  <Dyrcona> I had a branch, since deleted, that did this, but IIRC, it broke anyone who might currently have this working correctly.
+2015-02-02T21:06:55  <Dyrcona> I'm trying not to break things for existing users.
+2015-02-02T21:07:26  <Dyrcona> That's always the hardest part of this sort of thing.
+2015-02-02T21:32:18  <Dyrcona> Actually, I can't even figure out how you would call an update method using the current code....
+2015-02-02T21:32:32  <Dyrcona> Just trying to change the case in my own name isn't work.
+2015-02-02T21:32:44  <Dyrcona> working....
+2015-02-02T21:37:37  <Dyrcona> I also think unwrap_perl suffers from extra recursion.
+2015-02-02T21:59:43  <Dyrcona> Ah, crazy.
+2015-02-02T22:00:29  <Dyrcona> Apparently, I am making it into the open-ils.actor.patron.update method, but it is blowing up on addresses.
+2015-02-02T22:00:46  <Dyrcona> I didn't flesh addresses, 'cause I just wanted to change the name for a test.
+2015-02-02T22:05:38  <Dyrcona> Interesting. It's blowing up on the user object that it pulled from the database and not the one that I passed in via XML-RPC.
+2015-02-02T22:08:39  <Dyrcona> Also, unwrap_perl seems to be making a proper Fielmapper::actor:_user object from what I am giving it via XML-RPC.
+2015-02-02T22:08:57  <Dyrcona> Not as neat as taking what the server gives me, modifying that, and handing it back.
+2015-02-02T22:11:17  <Dyrcona> Ah well, that's enough for tonigh.
+2015-02-02T22:11:31  *** Dyrcona has quit IRC
+2015-02-02T23:47:00  *** bradl has quit IRC
+2015-02-02T23:47:07  *** bradl has joined #evergreen

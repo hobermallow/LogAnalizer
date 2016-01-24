@@ -1,0 +1,212 @@
+2015-01-23T00:52:13  *** abowling has quit IRC
+2015-01-23T02:55:56  *** dcook has quit IRC
+2015-01-23T03:20:21  *** sarabee has joined #evergreen
+2015-01-23T03:23:18  *** sbrylander has quit IRC
+2015-01-23T07:28:41  *** goood has quit IRC
+2015-01-23T07:35:37  *** graced has joined #evergreen
+2015-01-23T07:39:20  *** mrpeters has joined #evergreen
+2015-01-23T07:43:58  *** rjackson-isl has joined #evergreen
+2015-01-23T07:56:46  *** collum has joined #evergreen
+2015-01-23T08:11:27  *** _bott_ has quit IRC
+2015-01-23T08:15:06  *** _bott_ has joined #evergreen
+2015-01-23T08:22:59  *** akilsdonk has joined #evergreen
+2015-01-23T08:23:43  *** krvmga has joined #evergreen
+2015-01-23T08:24:38  <kmlussier> g'morning!
+2015-01-23T08:35:22  *** ericar has joined #evergreen
+2015-01-23T08:40:19  *** Shae has joined #evergreen
+2015-01-23T08:41:55  *** mmorgan has joined #evergreen
+2015-01-23T08:46:44  *** abowling has joined #evergreen
+2015-01-23T08:51:14  <kmlussier> @coffee [someone]
+2015-01-23T08:51:14  * pinesol_green brews and pours a cup of El Salvador Pacamara Finca Los Alpes The Bank, and sends it sliding down the bar to serflog
+2015-01-23T08:51:24  <bshum> Hah
+2015-01-23T08:51:37  <kmlussier> Is serflog a bot?
+2015-01-23T08:51:54  <bshum> That's the ilbot IRC logger.
+2015-01-23T08:51:56  <bshum> Yes.
+2015-01-23T08:52:15  <kmlussier> pinesol_green has a habit of sending coffee and desserts to other bots
+2015-01-23T08:52:15  <pinesol_green> kmlussier: Evergreen Command Center http://apod.nasa.gov/apod/image/1204/EndeavourFlightDeck_cooper_1050.jpg
+2015-01-23T08:52:16  <pinesol_green> kmlussier: I am only a bot, please don't think I'm intelligent :)
+2015-01-23T08:52:57  <kmlussier> @coffee [someone]
+2015-01-23T08:52:57  * pinesol_green brews and pours a cup of Guatemala El Diamante, and sends it sliding down the bar to graced
+2015-01-23T08:52:59  <mmorgan> The bots are conspiring to get all the coffee and dessert ;-)
+2015-01-23T08:53:10  <kmlussier> That's better. graced deserves a nice cup of coffee. :)
+2015-01-23T08:56:23  <kmlussier> Hmmm...the serials batch receive interface doesn't seem to auto-generate barcodes anymore. Has anyone else noticed that?
+2015-01-23T08:56:27  <kmlussier> Or maybe I'm just using it wrong.
+2015-01-23T08:58:22  *** mdriscoll has joined #evergreen
+2015-01-23T09:01:56  <dbwells> Good morning all.  For any who didn't see it, or as a reminder, we're going to be discussing the OPW style guide project over in #opw-evergreen.  We sometimes have specific topics, but it is pretty wide open today.  Please feel free to join us!
+2015-01-23T09:04:29  <jboyer-isl> pinesol_green, are you bot-ist?
+2015-01-23T09:04:29  <pinesol_green> jboyer-isl: Yeah, well, you know, that's just, like, your opinion, man.
+2015-01-23T09:04:30  <pinesol_green> jboyer-isl: I am only a bot, please don't think I'm intelligent :)
+2015-01-23T09:25:24  <abowling> ++pinesol_green: careful, man. there's a beverage here!
+2015-01-23T09:25:43  *** maryj has joined #evergreen
+2015-01-23T09:26:01  <abowling> i'm down with any bot that's down with the dude
+2015-01-23T09:36:23  *** goood has joined #evergreen
+2015-01-23T09:37:04  <krvmga> i'm surprise how much my work desk looks like the space shuttle flight deck.
+2015-01-23T09:37:20  <krvmga> as designed by a little kid
+2015-01-23T09:38:50  * krvmga thinks my desk looks like the Calvin & Hobbes version of the shuttle flight deck.
+2015-01-23T09:43:45  *** yboston has joined #evergreen
+2015-01-23T09:52:34  *** RoganH has joined #evergreen
+2015-01-23T09:56:06  *** alynn26 has joined #evergreen
+2015-01-23T09:58:11  *** akilsdonk has quit IRC
+2015-01-23T09:58:27  *** kbutler has joined #evergreen
+2015-01-23T10:01:00  *** finnx has quit IRC
+2015-01-23T10:07:30  *** finnx has joined #evergreen
+2015-01-23T10:20:45  <dbs> berick: I'm opening bugs that I'm targeting at 2.8 with the goal of creating branches to support them in early February. Is that about right, or will that be too late for the code?
+2015-01-23T10:21:13  <berick> dbs: no, that's fine
+2015-01-23T10:21:23  <berick> the only real deadline is the late feb. beta cutoff
+2015-01-23T10:23:31  *** graced has quit IRC
+2015-01-23T10:36:46  <dbs> cool, thanks berick
+2015-01-23T10:51:40  *** mnsri_ has quit IRC
+2015-01-23T11:10:42  *** ying has joined #evergreen
+2015-01-23T11:28:33  *** ying has quit IRC
+2015-01-23T11:31:30  *** akilsdonk has joined #evergreen
+2015-01-23T11:38:17  *** graced has joined #evergreen
+2015-01-23T11:56:51  *** chatley_ has joined #evergreen
+2015-01-23T11:59:57  *** chatley has quit IRC
+2015-01-23T12:05:24  *** chatley has joined #evergreen
+2015-01-23T12:08:43  *** chatley_ has quit IRC
+2015-01-23T12:16:12  *** ToeKnee has joined #evergreen
+2015-01-23T12:18:20  *** ToeKnee has quit IRC
+2015-01-23T12:20:39  <berick> not done yet, but FYI http://wiki.evergreen-ils.org/doku.php?id=dev:contributing:qa
+2015-01-23T12:21:18  <jeff> berick++
+2015-01-23T12:29:15  *** krvmga has quit IRC
+2015-01-23T12:32:38  <kmlussier> berick++
+2015-01-23T12:33:17  <dbs> berick++
+2015-01-23T12:36:34  <RoganH> berick++
+2015-01-23T12:39:04  <dbwells> berick++  I was just looking for the live test info yesterday!  I stumbled my way through it...
+2015-01-23T12:53:39  *** rfrasur has joined #evergreen
+2015-01-23T13:06:02  *** Dyrcona has joined #evergreen
+2015-01-23T13:10:49  * Dyrcona just signed in to say, "Hey!"
+2015-01-23T13:12:45  <berick> Dyrcona just called... to say... he loooooves us
+2015-01-23T13:13:00  <Dyrcona> :)
+2015-01-23T13:19:59  *** RoganH has quit IRC
+2015-01-23T13:22:11  <phasefx_> berick++
+2015-01-23T13:25:55  <kmlussier> Ha ha.
+2015-01-23T13:26:02  <kmlussier> Now that song will be stuck in my head all day.
+2015-01-23T13:26:20  *** jcamins__ is now known as jcamins
+2015-01-23T13:26:23  <kmlussier> @blame berick
+2015-01-23T13:26:23  <pinesol_green> kmlussier: berick caused the white screen of death!
+2015-01-23T13:44:05  *** jihpringle has joined #evergreen
+2015-01-23T13:47:48  <kmlussier> Mark your calendars - March 2 will be our next Bug Squashing Day!
+2015-01-23T13:50:00  <kmlussier> All release do include a linux client, don't they?
+2015-01-23T13:50:23  <goood> kmlussier: I believe so
+2015-01-23T13:50:45  <bshum> kmlussier: We do put up the linux clients nowadays.
+2015-01-23T13:51:18  <kmlussier> Sorry, I was just remarking on a list email in channel.
+2015-01-23T13:56:02  <jboyer-isl> kmlussier, You have to build them yourself, but yes, they're in there. As someone who has built a couple Mac clients, it is a very manual process (And requires a Mac at minimum, possibly a Windows machine too, because you've got to use the Window's client's guts).
+2015-01-23T13:56:21  <jboyer-isl> 'too 'much 'like 'scheme...
+2015-01-23T13:57:18  <dbs> Linux clients are a cinch to build.
+2015-01-23T13:57:33  <dbs> tsbere++
+2015-01-23T13:57:34  <bshum> kmlussier: Yeah on the downloads page, we have links to the 32 and 64-bit linux clients
+2015-01-23T13:57:51  <bshum> And you basically just rip out the innards of an Evergreen app on a Mac and put the 64-bit linux files in there.
+2015-01-23T13:57:57  <bshum> And edit the info file
+2015-01-23T13:58:02  <bshum> To make it compatible.
+2015-01-23T13:58:47  <kmlussier> I don't have a Mac, so it's hard for me to picture it, but it might be a fun thing to try doing someday. If I had a Mac, that is.
+2015-01-23T13:58:48  <jboyer-isl> Ah, that's better than installing the Windows version and digging through folders.
+2015-01-23T13:58:50  <bshum> I would build Mac clients, but I don't officially own a mac anymore.
+2015-01-23T13:59:09  <bshum> I used to do it, back when I had a Mac of my own.
+2015-01-23T13:59:22  <bshum> If Ashbury bought me a Mac, I would guarantee community Mac clients for them :)
+2015-01-23T13:59:29  *** ToeKnee has joined #evergreen
+2015-01-23T14:01:41  <jboyer-isl> I don't mind doing it if release maintainers ping me when new releases are out.
+2015-01-23T14:02:49  <Dyrcona> You could theoretically build a mac client on Linux. It just isn't easy.
+2015-01-23T14:03:09  <Dyrcona> XulRunner on Mac OS X is very iffy, though.
+2015-01-23T14:03:24  <bshum> It's brittle.
+2015-01-23T14:03:24  <jeff> s/on Mac OS X /
+2015-01-23T14:03:25  <Dyrcona> I've had all kinds of problems in the past with the UI being broken.
+2015-01-23T14:03:25  <kmlussier> bshum: You should extend the offer to them. Sounds like a bargain to me. :)
+2015-01-23T14:03:28  <jeff> s/on Mac OS X // even
+2015-01-23T14:04:00  <Dyrcona> jeff: heh.
+2015-01-23T14:04:02  <bshum> Dyrcona: It's still broken in certain places.  Like backgrounds not being filled in.  or rendering errors.
+2015-01-23T14:04:14  <jeff> the transparent errors quirk is fun.
+2015-01-23T14:04:29  <kmlussier> If we took jboyer-isl up on his offer, then, would we put Mac clients on the download page too?
+2015-01-23T14:05:06  <Dyrcona> bshum If you try running a XUL app via command line: xulrunner --app /path/to/whatever.whateverextension, then anything you type goes to the console, and not the text widgets.
+2015-01-23T14:05:26  <tsbere> As a general note on client building: The "generic client" is probably the best one to grab for mac builds. In part because the resulting file has no binaries.
+2015-01-23T14:05:27  <jboyer-isl> I have to say I've not noticed too many issues with it, but that's at home and I may not be hitting the same things that other people run into.
+2015-01-23T14:06:04  <Dyrcona> It might work better if run via firefox --app ....
+2015-01-23T14:06:14  <bshum> kmlussier: I have mixed feelings, but I guess it's not different than what we do now for "official releases" where volunteers make everything anyways.
+2015-01-23T14:06:16  <bshum> :D
+2015-01-23T14:06:50  <jboyer-isl> tsbere, that is a good tip. I've never bothered grabbing a windows install dir in the past because it has to be the same release as the one on my laptop, but this would be different.
+2015-01-23T14:07:02  <jboyer-isl> "never been bothered," that is.
+2015-01-23T14:07:25  <kmlussier> bshum: Why the mixed feelings?
+2015-01-23T14:07:42  <bshum> kmlussier: Mostly in that if something went wrong with the client, I couldn't help to support it.
+2015-01-23T14:07:47  <bshum> Since I don't have a Mac.
+2015-01-23T14:07:54  <Dyrcona> I've found taking the generic client and running the xulrunner --install_app or whatever option on it, creates a Mac OS X .app that seems to work OK>
+2015-01-23T14:08:15  <Dyrcona> You have to do that on a Mac, of course.
+2015-01-23T14:08:21  <tsbere> jboyer-isl: Oh, and supposedly there is a way to take said generic client, run with the appropriate xulrunner version and specific command lines, and turn it into an installed mac app.
+2015-01-23T14:08:22  <bshum> So if we build it, people use it, and they say "X is broken", we can't help them.
+2015-01-23T14:08:22  <kmlussier> bshum: Ah, I see what you're saying. So it's a question of whether there are enough people in the community who can support issues that arise with a Mac client?
+2015-01-23T14:08:23  * Dyrcona no longer has a Mac that works.
+2015-01-23T14:08:47  <tsbere> jboyer-isl: Ahh, what Dyrcona was just talking about
+2015-01-23T14:08:55  <Dyrcona> Well, I do, but it's a "Grape" iMac sitting in the attic. The Mac Books are all in various states of dead.
+2015-01-23T14:09:57  * Dyrcona isn't so sure the grape still works, either. It probably needs a new motherboard battery at least.
+2015-01-23T14:14:07  <Dyrcona> Hmm.. Does a 6100 count? It actually has 72MB of RAM!
+2015-01-23T14:15:20  <jboyer-isl> Dyrcona, Luxury!
+2015-01-23T14:16:04  <Dyrcona> For 1992, it was luxury.
+2015-01-23T14:16:16  <Dyrcona> I don't recall if the CPU was 60 or 66 MHz.
+2015-01-23T14:17:02  <Dyrcona> It hasn't been used since 2002, and it last ran MkLinux.
+2015-01-23T14:17:45  <Dyrcona> It made a decent dial-on-demand gateway for a while.
+2015-01-23T14:19:51  *** maryj_ has joined #evergreen
+2015-01-23T14:21:39  *** maryj has quit IRC
+2015-01-23T14:21:45  *** maryj_ is now known as maryj
+2015-01-23T14:28:37  *** rfrasur has quit IRC
+2015-01-23T14:30:17  <jboyer-isl> I had an old DEC Alpha running NetBSD doing my dial on demand for a while, until the static from a sweeper wrecked it's serial port. :-/ (Probably for the best, as far as the power bill is concerned)
+2015-01-23T14:31:05  *** ToeKnee has quit IRC
+2015-01-23T14:31:12  <kmlussier> tsbere: Does the fine generator run  in a cron job on the MassLNC VM's?
+2015-01-23T14:32:05  <tsbere> kmlussier: Er, I don't recall if cron jobs in general end up running on the VMs. Probably not. Running crontab <path to example crontab file> from the command line would fix it, though.
+2015-01-23T14:33:24  <kmlussier> No, that's okay. I don't need to fix it. I'm just trying to figure out why I'm looking at the same patron record on 2 different VM's and saw that the fines accrued on one, but not the other.
+2015-01-23T14:33:46  <kmlussier> The one that shows the fines was built yesterday, so an overnight cron job would explain it.
+2015-01-23T14:34:12  <jboyer-isl> kmlussier, or certain circ activities, depending on what's been done with that account.
+2015-01-23T14:35:24  <kmlussier> jboyer-isl: Maybe, but they're both using the Concerto dataset, so I suspect the circ activites should be the same for each.
+2015-01-23T14:35:53  <tsbere> kmlussier: Huh, apparently I *did* rig the cronjobs to run. Go figure. Apparently you asked me to.
+2015-01-23T14:36:10  <kmlussier> tsbere: Sounds like something I would do. ;)
+2015-01-23T14:36:28  <kmlussier> OK, then everything is as it should be.
+2015-01-23T14:37:31  <kmlussier> bshum: At first glance, the lost and paid fix looks good. I just want to check a couple of other things first before signing off on it.
+2015-01-23T14:37:44  <kmlussier> But it will have to wait until after I pick my daughter up from school.
+2015-01-23T14:45:50  *** remingtron has quit IRC
+2015-01-23T14:51:35  <bshum> kmlussier: That's fine, I might push off cutting till next Monday at the rate I'm going.  Plus releasing on a Friday seems weirdly like shoving things out when nobody's watching.
+2015-01-23T14:53:58  <jcamins> bshum: Friday releases are the best.
+2015-01-23T14:54:12  <jcamins> Two and a half days of everything spontaneously breaking.
+2015-01-23T14:54:17  *** remingtron has joined #evergreen
+2015-01-23T14:55:11  <tsbere> Nah. Day before you go on vacation with no expectation of anyone being able to contact you. ;)
+2015-01-23T14:57:49  <jcamins> tsbere: touché.
+2015-01-23T15:02:58  <Dyrcona> Speaking of breaking...
+2015-01-23T15:03:50  <Dyrcona> False alarm. It was a text from my daughter's school, not from icinga.
+2015-01-23T15:29:57  <jeff> "oh, school burned down (no injuries). phew. i thought the SAN had gone down or something."
+2015-01-23T15:39:06  <Dyrcona> Nah, just a routine thing about an upcoming event.
+2015-01-23T15:39:21  *** graced has quit IRC
+2015-01-23T15:39:28  <Dyrcona> Fine Arts Night
+2015-01-23T15:42:22  <jeff> i should probably test this report with a query that completes in less than 31s.
+2015-01-23T16:05:25  *** chatley_ has joined #evergreen
+2015-01-23T16:06:34  *** collum has quit IRC
+2015-01-23T16:08:22  *** chatley has quit IRC
+2015-01-23T16:11:33  *** chatley has joined #evergreen
+2015-01-23T16:14:31  *** chatley_ has quit IRC
+2015-01-23T16:16:37  *** bmills has joined #evergreen
+2015-01-23T16:20:10  *** mdriscoll has left #evergreen
+2015-01-23T16:27:53  *** abowling has quit IRC
+2015-01-23T16:29:48  *** rjackson-isl has quit IRC
+2015-01-23T16:31:11  <kmlussier> Have a great weekend everyone!
+2015-01-23T16:33:24  *** ericar has quit IRC
+2015-01-23T16:36:55  <bshum> kmlussier++ # thanks for testing my fix for lost&paid :)
+2015-01-23T16:37:22  <bshum> Have a nice weekend.
+2015-01-23T16:38:21  *** jboyer-isl has quit IRC
+2015-01-23T16:40:31  *** Shae has quit IRC
+2015-01-23T16:41:47  <mmorgan> kmlussier++ bshum++
+2015-01-23T16:43:48  *** sarabee has quit IRC
+2015-01-23T16:49:18  <pinesol_green> [evergreen|Ben Shum] LP#1412893: Only apply lost and paid status with the proper transactions - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=609db84>
+2015-01-23T16:53:24  *** maryj has quit IRC
+2015-01-23T17:10:40  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-23T17:13:15  *** mmorgan has left #evergreen
+2015-01-23T17:36:36  *** alynn26 has quit IRC
+2015-01-23T17:45:31  *** kbutler has quit IRC
+2015-01-23T17:58:26  *** mrpeters has quit IRC
+2015-01-23T18:02:06  *** dbwells has quit IRC
+2015-01-23T18:11:10  *** dbwells has joined #evergreen
+2015-01-23T18:18:14  *** bmills has quit IRC
+2015-01-23T18:18:40  *** dbwells_ has joined #evergreen
+2015-01-23T18:22:03  *** dbwells has quit IRC
+2015-01-23T18:29:31  *** dbwells_ is now known as dbwells
+2015-01-23T18:50:06  *** bmills has joined #evergreen
+2015-01-23T18:58:14  *** Dyrcona has quit IRC
+2015-01-23T19:02:40  *** dreuther has quit IRC
+2015-01-23T20:00:12  *** jihpringle has quit IRC
+2015-01-23T20:03:55  *** yboston has quit IRC
+2015-01-23T20:13:28  *** sandbergja has quit IRC

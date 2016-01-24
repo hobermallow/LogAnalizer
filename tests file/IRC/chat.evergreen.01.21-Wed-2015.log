@@ -1,0 +1,427 @@
+2015-01-21T00:29:36  *** dbs has quit IRC
+2015-01-21T00:29:43  *** dbs has joined #evergreen
+2015-01-21T00:43:00  *** gmcharlt has quit IRC
+2015-01-21T00:44:06  *** gmcharlt has joined #evergreen
+2015-01-21T00:56:18  *** mmorgan1 has joined #evergreen
+2015-01-21T01:22:29  *** abowling has quit IRC
+2015-01-21T07:34:05  *** rjackson-isl has joined #evergreen
+2015-01-21T08:10:54  *** akilsdonk has joined #evergreen
+2015-01-21T08:14:28  *** collum has joined #evergreen
+2015-01-21T08:16:47  *** collum has quit IRC
+2015-01-21T08:22:53  *** ericar has joined #evergreen
+2015-01-21T08:30:34  *** mrpeters has joined #evergreen
+2015-01-21T08:31:10  *** collum has joined #evergreen
+2015-01-21T08:37:32  *** Shae has joined #evergreen
+2015-01-21T08:42:34  *** mmorgan1 has left #evergreen
+2015-01-21T08:43:42  *** mmorgan has joined #evergreen
+2015-01-21T08:46:44  *** Dyrcona has joined #evergreen
+2015-01-21T08:50:43  *** abowling has joined #evergreen
+2015-01-21T09:09:50  <bshum> csharp++ # governance list archive restored
+2015-01-21T09:31:12  *** jboyer-isl has joined #evergreen
+2015-01-21T09:31:43  *** yboston has joined #evergreen
+2015-01-21T09:56:27  *** ericar_ has joined #evergreen
+2015-01-21T09:57:41  *** RoganH has joined #evergreen
+2015-01-21T09:58:19  *** ericar has quit IRC
+2015-01-21T09:58:20  *** ericar_ is now known as ericar
+2015-01-21T10:00:37  *** jwoodard has joined #evergreen
+2015-01-21T10:19:17  *** RoganH has quit IRC
+2015-01-21T10:20:12  <Dyrcona> So, I have a question.
+2015-01-21T10:20:52  <Dyrcona> In looking into cstoreeditor and "hanging" transactions, I see a lot of code in booking that follows a similar pattern.
+2015-01-21T10:21:19  <Dyrcona> Create the cstoreeditor with xact=>1.
+2015-01-21T10:21:29  <Dyrcona> Do a search or retrieve or a json query or two.
+2015-01-21T10:21:37  <Dyrcona> call cstoreditor->disconnect.
+2015-01-21T10:21:57  <Dyrcona> The problem is that disconnect does not rollback the transaction.
+2015-01-21T10:22:11  <Dyrcona> I see two possible ways to fix this.
+2015-01-21T10:22:45  <Dyrcona> 1. change the booking code to do cstoreeditor->rollback, which does the rollback and calls disconnect.
+2015-01-21T10:22:49  <pinesol_green> [evergreen|Dan Wells] LP#1408803 Add 'persist' login type to auth_proxy sample config - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7267934>
+2015-01-21T10:23:19  <Dyrcona> 2. change cstoreeditor::disconnect to check for an open transaction and do a rollback if it finds one.
+2015-01-21T10:23:52  <Dyrcona> Advantage of 1 is it doesn't change cstoreeditor. Disadvantage of 1 is we have more places to change the code.
+2015-01-21T10:24:13  <Dyrcona> Advantage of 2 is we change code in one place and have less overall code to change.
+2015-01-21T10:24:33  <Dyrcona> Disadvantage of 2 is we change cstoreeditor which gets used in a lot of places.
+2015-01-21T10:25:08  <dbs> #2 is generally how database connections are expected to work; if you don't explicitly commit an open transaction, then you should expect it to be rolled back at disconnect time. Normally.
+2015-01-21T10:25:14  <Dyrcona> However, it looks like the transaction is actually useless to cstoreeditor after the disconnect, so it seems logical that disconnect should clean up any transactions.
+2015-01-21T10:25:19  <Dyrcona> dbs++
+2015-01-21T10:25:31  <Dyrcona> or should I say "jinx?"
+2015-01-21T10:25:45  <dbs> It's weird that disconnect doesn't actually force the rollback anyway, I guess it doesn't really disconnect at the db level?
+2015-01-21T10:26:29  <Dyrcona> dbs: y'know I should look more closely. maybe it does in the c code that cstoreditor eventually calls, but it isn't evident from the perl.
+2015-01-21T10:28:04  <Dyrcona> cstoreeditor also has finish, which commits any open transactions, and calls reset. reset calls disconnect.
+2015-01-21T10:28:35  <Dyrcona> but commit, calls xact_commit and then disconnect.
+2015-01-21T10:28:52  * Dyrcona thinks cstoreeditor could use some attention.
+2015-01-21T10:29:52  * tsbere hasn't found an obvious "when opensrf disconnects tell cstore to close down transactions" but, then again, finds the opensrf C code to be convoluted enough that it may not be possible to find something like that at a quick glance
+2015-01-21T10:31:35  <Dyrcona> well, disconnect and connect are related to session which appears to only be concerned with OpenSRF sessions and not database sessions.
+2015-01-21T10:32:38  <jeff> Unless there are reasons that we're missing as to why you'd ever want the ability to ->disconnect without implicit ->rollback, it sounds like the proposed change to cstoreeditor is the way to go. Nothing preventing a belt-and-suspenders approach of doing 1 also -- almost like taking time to close your file handles rather than leaving it up to the interpreter.
+2015-01-21T10:34:28  <eeevil> Dyrcona: that rings a bell... there may be a fix for that already?  in any case, +1 to rollback-on-disconnect
+2015-01-21T10:34:30  *** sandbergja has joined #evergreen
+2015-01-21T10:37:35  <Dyrcona> Thanks for the feedback. I will see if I can find an existing branch via Launchpad.
+2015-01-21T10:40:04  <eeevil> Dyrcona: oh, I was thinking of this: http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/user/dbwells/lp1379824_fix_pcrud_disconnects
+2015-01-21T10:43:16  <Dyrcona> Ah, OK.
+2015-01-21T10:43:23  <Dyrcona> I'll make a new branch and bug then.
+2015-01-21T10:44:08  <eeevil> but, I suspect something similar is going on in cstore, because we call void userDataFree( void* blob ) on opesrf-level disconnect, and that does issue a rollback
+2015-01-21T10:44:52  <dbs> Dyrcona++
+2015-01-21T10:45:22  <tsbere> eeevil: Aha, I somehow missed that one. >_>
+2015-01-21T10:51:50  *** phasefx has quit IRC
+2015-01-21T10:51:52  *** maryj has quit IRC
+2015-01-21T10:51:57  *** graced has quit IRC
+2015-01-21T10:52:20  *** BigRig has quit IRC
+2015-01-21T10:53:23  *** eeevil has quit IRC
+2015-01-21T10:53:54  *** Callender has quit IRC
+2015-01-21T10:54:07  <Dyrcona> Something is definitely going on with cstore, 'cause we go from 200 drones down to 30 in an hour.
+2015-01-21T10:55:58  *** mtate has quit IRC
+2015-01-21T10:55:58  *** TaraC has quit IRC
+2015-01-21T11:00:18  <Dyrcona> Something is definitely going on with ESI's internet connection.
+2015-01-21T11:02:22  <phasefx_> well, with Quasselcore, not our internet
+2015-01-21T11:02:45  *** eeevil has joined #evergreen
+2015-01-21T11:06:35  *** eeevil has quit IRC
+2015-01-21T11:06:47  *** mtate has joined #evergreen
+2015-01-21T11:06:47  *** eeevil has joined #evergreen
+2015-01-21T11:06:47  *** phasefx has joined #evergreen
+2015-01-21T11:06:48  *** BigRig has joined #evergreen
+2015-01-21T11:06:48  *** Callender has joined #evergreen
+2015-01-21T11:08:28  *** ericar_ has joined #evergreen
+2015-01-21T11:09:53  *** phasefx has quit IRC
+2015-01-21T11:09:53  *** eeevil has quit IRC
+2015-01-21T11:09:54  *** BigRig has quit IRC
+2015-01-21T11:09:54  *** Callender has quit IRC
+2015-01-21T11:09:54  *** mtate has quit IRC
+2015-01-21T11:10:15  *** ericar has quit IRC
+2015-01-21T11:10:20  *** ericar_ is now known as ericar
+2015-01-21T11:15:32  *** nhilton has joined #evergreen
+2015-01-21T11:17:54  <Dyrcona> @later tell eeevil I see where a drone exit will roll back, but I'm not seeing where a disconnect of a cstore session will call userDataFree(). Could you point out what I'm missing, please?
+2015-01-21T11:17:54  <pinesol_green> Dyrcona: The operation succeeded.
+2015-01-21T11:24:30  <Dyrcona> Ah!
+2015-01-21T11:24:57  <Dyrcona> @later tell eeevil Never mind, with tsbere's help, I think I found how that gets set up.
+2015-01-21T11:24:57  <pinesol_green> Dyrcona: The operation succeeded.
+2015-01-21T11:25:53  <Dyrcona> For the curious, it looks like initSessionCache in oils_sql.c sets the callback to free the data at disconnect time.
+2015-01-21T11:26:37  <Dyrcona> So, I should probably focus on cstoreeditors that create transactions and don't disconnect.
+2015-01-21T11:27:03  <Dyrcona> However, since I don't like magical code, I'll still add the rollback in cstoreeditor disconnect.
+2015-01-21T11:28:39  *** goood has joined #evergreen
+2015-01-21T11:29:06  <goood> Dyrcona: logs suggest this didn't come through ... http://paste.evergreen-ils.org/26
+2015-01-21T11:30:21  *** kbutler has joined #evergreen
+2015-01-21T11:37:59  <berick> to be clear, if either $e->rollback or $e->disconnect are called (in a timely fashion), the cstore drone is free and is no longer contributing to the drone pileup.
+2015-01-21T11:38:58  <berick> adding a rollback inside of disconnect won't have any effect on it.
+2015-01-21T11:41:07  <berick> if you go that route, though, beware $e->rollback == $e->xact_rollback + $e->disconnect.  IOW, watch out for a disconnect loop.
+2015-01-21T11:42:34  <berick> $e->xact_[rollback|commit] are the non-magical versions
+2015-01-21T11:43:01  <Dyrcona> berick: I'm aware of that. I was going to do $self->xact_rollback if ($self->{xact});
+2015-01-21T11:43:25  <berick> in the end, though, i doubt the cstore explosions have anything to do with cstoreeditor and everything to do with calling code failing to disconnect/rolllback in a timely fashion.
+2015-01-21T11:44:07  <Dyrcona> berick: I think it does, and I think specifically it is relates to lines like return new_editor(xact=>1)->search .... in Trigger.pm.
+2015-01-21T11:44:27  <berick> Dyrcona: oh, yeah, that's bad
+2015-01-21T11:44:36  <Dyrcona> Although, I agree it isn't cstoreditor per se, just some misuse of it.
+2015-01-21T11:45:04  <berick> exactly
+2015-01-21T11:45:19  <Dyrcona> I'll bet we have the problem 'cause we run triggers on our production server and most others run them on a utility server.
+2015-01-21T11:46:05  <berick> that could def. affect it
+2015-01-21T11:46:47  <berick> and just to reiterate, nothing you do to CStoreEditor will fix new_editor(xact=>1)->search...  That has to be fixed in Trigger.pm.
+2015-01-21T11:49:21  <jeff> is the underlying intent of something (bad, misguided, whatever) like new_editor(xact=>1)->search to effect an "authoritative" search in a pgpool-type environment?
+2015-01-21T11:49:37  <berick> jeff: yeah
+2015-01-21T11:49:41  <jeff> k.
+2015-01-21T11:51:05  <jeff> related, and not currently relevant to me, but istr newer pgpool versions changing behavior such that BEGIN doesn't automatically mean you get the master db -- did we do something to work around that, or is that just a "be sure to configure newer pgpool versions to disable that new 'optimization'"?
+2015-01-21T11:51:16  * jeff looks
+2015-01-21T11:52:01  *** RoganH has joined #evergreen
+2015-01-21T11:53:18  <jeff> http://list.georgialibraries.org/pipermail/open-ils-dev/2011-August/007472.html is the last reference i was able to find (and the first one, actually)
+2015-01-21T11:56:25  <Dyrcona> berick: Yep. I'm well aware of that. I think I'll hold off messing with cstoreeditor and focus on Trigger.pm.
+2015-01-21T11:57:15  <Dyrcona> It just seems that for the sake of clarity and symmetry, cstoreeditor disconnect ought to explicity roll back, kind of like how commit and rollback explicitly disconnect.
+2015-01-21T11:57:33  <Dyrcona> Relying on behavior in the c code seems a bit magical to me.
+2015-01-21T11:59:16  <berick> Dyrcona: i'm not opposed to a $e->xact_rollback inside $e->disconnect.  just didn't want you spinning your wheels on something that probably won't help your situation
+2015-01-21T11:59:33  <jeff> and /*NO LOAD BALANCE*/ seems to be the magic SQL comment to work around that pgpool-II >= 3.0 behavior
+2015-01-21T12:00:43  <Dyrcona> berick: Cool.
+2015-01-21T12:01:03  * Dyrcona feels like he had a minor epiphany today, which is kind of scary in one respect.
+2015-01-21T12:11:30  *** jihpringle has joined #evergreen
+2015-01-21T12:14:19  <Dyrcona> mmmm... Chili.
+2015-01-21T12:16:37  <Dyrcona> Ah ha!
+2015-01-21T12:17:22  <Dyrcona> How's about adding a DESTROY to CstoreEditor, that checks for a xact and a session and does a rollback and disconnect?
+2015-01-21T12:17:57  <Dyrcona> If you're managing transactions and objects properly, it should cause no problems.
+2015-01-21T12:18:06  <Dyrcona> If you're not, it should clean up your mess.
+2015-01-21T12:18:26  <Dyrcona> Then, you can go right on writing sloppy code.
+2015-01-21T12:18:30  <berick> Dyrcona: it already has one
+2015-01-21T12:19:23  <Dyrcona> It just calls reset.
+2015-01-21T12:19:36  <berick> which calls disconnect, which frees the cstore drone
+2015-01-21T12:19:39  <Dyrcona> which calls disconnect.
+2015-01-21T12:19:42  <Dyrcona> Well, crap.
+2015-01-21T12:19:53  <Dyrcona> Then we shouldn't be having this problem, should we?
+2015-01-21T12:20:54  <berick> in the case of new_editor(xact=>1)->search, it's not obvious to me when DESTROY would actually get called.
+2015-01-21T12:21:43  <berick> but in other cases, where we retain a reference to $e in a long-running function w/o disconnecting, DESTROY won't get called until the $e is out of scope, which could be well after the problem exists
+2015-01-21T12:23:08  <Dyrcona> berick in the first case it *should* be called immediately after the return, but Perl's garbage collector might be lazy.
+2015-01-21T12:23:42  <Dyrcona> berick most of the long running cases that I've looked at handle the transactions correctly.
+2015-01-21T12:24:10  <Dyrcona> Granted, I've not looked at every instance of cstoreeditor use so far.
+2015-01-21T12:24:10  <berick> yeah, the lazy garbage collector is my concern there, too
+2015-01-21T12:27:24  <Dyrcona> and, relying on garbage collection is relying on magical code that you don't normally control.
+2015-01-21T12:37:15  <Dyrcona> In some cases, particularly in booking, the transactions appear to be used to get authoritative data.
+2015-01-21T12:37:44  <Dyrcona> It seems it might be a good idea to remove the transactions and have authoritative methods created.
+2015-01-21T12:38:09  <Dyrcona> Anyway, that's just a thought for later.
+2015-01-21T12:40:52  *** Callender has joined #evergreen
+2015-01-21T12:41:09  *** eeevil has joined #evergreen
+2015-01-21T12:43:53  <jeff> Dyrcona: the "might be a good idea to remove the transactions and have authoritative methods created" thought for later almost ties back into the pgpool thread from years ago :-)
+2015-01-21T12:44:52  *** mtcarlson_away is now known as mtcarlson
+2015-01-21T12:45:34  * eeevil reads up from goood's web session
+2015-01-21T12:49:13  <eeevil> fwiw, DESTROY is called when an object goes out of scope. GC is orthogonal ...
+2015-01-21T12:49:26  <eeevil> ah ha!
+2015-01-21T12:50:28  <eeevil> $xact_ed_cache
+2015-01-21T12:50:47  *** akilsdonk has quit IRC
+2015-01-21T12:53:48  <eeevil> that holds a ref to transaction-y sessions. it's called from the authoritative wrapper in Application.pm, and nowhere else
+2015-01-21T12:53:59  <eeevil> and blocks DESTROY
+2015-01-21T12:56:00  <jeff> said authoritative wrapper seems to call OpenILS::Utils::CStoreEditor->flush_forced_xacts();
+2015-01-21T12:56:28  <jeff> but maybe that doesn't do enough to prevent DESTROY from being blocked?
+2015-01-21T12:56:43  <eeevil> maybe not. always_xact is only set from auth_wrap, and that has to be set to cause the xact_ed_cache ref
+2015-01-21T12:57:24  <eeevil> jeff: yeah... it /shouldn't/ prevent the ref. may not be ... could be a circular ref in the data structure (there are plenty)
+2015-01-21T12:57:38  <jeff> right -- if always_xact wasn't set, the editors don't end up in $xact_ed_cache to begin with...
+2015-01-21T12:59:53  *** nhilton_ has joined #evergreen
+2015-01-21T13:00:42  <eeevil> Dyrcona: are you only getting a pileup of "idle in transaction" backends?
+2015-01-21T13:01:31  <Dyrcona> eeevil: Not only, but yeah we get a number of those. And a number of the disconnected after waiting for 6 seconds in osrfsys.log.
+2015-01-21T13:02:22  *** nhilton has quit IRC
+2015-01-21T13:02:28  <bshum> gmcharlt: Are we skipping this web team meeting today?
+2015-01-21T13:02:43  <gmcharlt> bshum: yep; I'll send a note rescheudled for next week
+2015-01-21T13:03:27  <eeevil> a/t, sip, authproxy, circ/holds.pm, actor ... all use new_editor()->search_..., but only 10 instances according to grep
+2015-01-21T13:04:00  <bshum> gmcharlt: Okie dokey, thanks
+2015-01-21T13:04:13  <eeevil> Dyrcona: if you're not already tackling all of that, I'd be happy to help squash some. just let me know what you've grabbed
+2015-01-21T13:04:33  <Dyrcona> OK. I've not actually started editing any code, yet.
+2015-01-21T13:06:08  <Dyrcona> If you want to collaborate, I'll start a collab branch.
+2015-01-21T13:09:21  <eeevil> cool
+2015-01-21T13:12:14  *** maryj has joined #evergreen
+2015-01-21T13:18:38  *** mtate has joined #evergreen
+2015-01-21T13:21:36  <Dyrcona> I'll start with a/t.
+2015-01-21T13:23:55  *** mtate has quit IRC
+2015-01-21T13:23:56  <eeevil> Dyrcona: you see one in Trigger.pm and one in Reactor.pm, yes?
+2015-01-21T13:24:12  *** mtate has joined #evergreen
+2015-01-21T13:24:39  <eeevil> (and sip was a red herring ...)
+2015-01-21T13:24:48  <eeevil> and Vaidator
+2015-01-21T13:24:55  <eeevil> (not a red herring)
+2015-01-21T13:25:20  <Dyrcona> Well there are potentially more than that, but yeah, I see those.
+2015-01-21T13:26:02  <jeff> hrm. an ack-grep that runs code through some normalization...
+2015-01-21T13:26:09  <jeff> </tangent>
+2015-01-21T13:28:12  <eeevil> ah, well, there are lots of "not disconnecting editors" beyond new_editor()->search... I see
+2015-01-21T13:28:24  <Dyrcona> I did this: grep -P -R -A 1 "new_editor *\( *\"?'?xact\"?'? *=\> *1 *\)" ~/Src/Evergreen/Open-ILS/src/perlmods/lib/OpenILS
+2015-01-21T13:28:46  <Dyrcona> Just to find where new_editor was called with xact set.
+2015-01-21T13:29:17  <Dyrcona> I started looking through those files yesterday and could rule some out.
+2015-01-21T13:32:42  <Dyrcona> Well, originally, I did something more like this: grep -P -R -A 1 "\"?'?xact\"?'? *=\> *1" ~/Src/Evergreen/Open-ILS/src/perlmods/lib/OpenILS
+2015-01-21T13:40:49  <Dyrcona> Guess I'll file a launchpad bug....
+2015-01-21T13:53:37  *** julialima_ has joined #evergreen
+2015-01-21T13:56:42  *** kateb has joined #evergreen
+2015-01-21T13:57:03  <dbs> I order you to cut down the tallest tree in the forest with... a (red) herring!
+2015-01-21T13:57:30  *** graced has joined #evergreen
+2015-01-21T13:57:39  *** kbutler has quit IRC
+2015-01-21T13:57:48  *** kateb is now known as kbutler
+2015-01-21T14:03:23  <Dyrcona> eeevil: lp 1413336
+2015-01-21T14:03:23  <pinesol_green> Launchpad bug 1413336 in Evergreen "Making Better Use of CStoreEditor" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1413336
+2015-01-21T14:03:53  <RoganH> http://files.sharenator.com/monty_python_holy_grail_019_knight_NI_shrubberies_for_dawn_O-s592x320-322154-580.jpg
+2015-01-21T14:06:52  <csharp> @who is one of the Knights who until recently said NI?
+2015-01-21T14:06:52  <pinesol_green> Dyrcona is one of the Knights who until recently said NI.
+2015-01-21T14:07:37  * Dyrcona now says, "Ecky-ecky-k'tang-zip-boing-warble."
+2015-01-21T14:07:45  <csharp> Dyrcona++
+2015-01-21T14:07:58  <berick> @who says NI to [someone]
+2015-01-21T14:07:58  <pinesol_green> Sato says NI to RoganH.
+2015-01-21T14:08:04  <RoganH> Dyrcona++
+2015-01-21T14:12:43  *** nhilton has joined #evergreen
+2015-01-21T14:15:16  *** nhilton_ has quit IRC
+2015-01-21T14:15:19  <Dyrcona> Ah.. here's a question.
+2015-01-21T14:15:52  <Dyrcona> What happens to results from a substream search if the transaction is rolled back and the editor disconnected?
+2015-01-21T14:16:30  <Dyrcona> S'pose I can write a test program to find out.
+2015-01-21T14:18:53  <berick> cseditor does everything synchronously, so you couldn't disconnect/rollback until all results had been retrieved.
+2015-01-21T14:19:27  <berick> in which case they're no different than non-substream data
+2015-01-21T14:19:33  <Dyrcona> OK/
+2015-01-21T14:19:35  <Dyrcona> ok.
+2015-01-21T14:27:19  *** akilsdonk has joined #evergreen
+2015-01-21T14:30:11  *** goood has quit IRC
+2015-01-21T14:35:29  *** krvmga has joined #evergreen
+2015-01-21T14:44:52  *** chatley__ has quit IRC
+2015-01-21T14:46:01  *** chatley has joined #evergreen
+2015-01-21T14:59:29  <bshum> Aww, Google Maps engine is going away?
+2015-01-21T15:04:44  <jeff> looks like GME goes away sometime next Jan (2016), and they're returning focus to the Maps API.
+2015-01-21T15:12:08  *** krvmga has quit IRC
+2015-01-21T15:21:55  <bshum> mmorgan: Thanks for confirming bug 1412893 with your findings.
+2015-01-21T15:21:55  <pinesol_green> Launchpad bug 1412893 in Evergreen "Applying lost and paid status at the wrong time" (affected: 2, heat: 10) [Undecided,Confirmed] https://launchpad.net/bugs/1412893
+2015-01-21T15:22:43  <mmorgan> bhsum: You're welcome!
+2015-01-21T15:28:06  <bshum> I'm contemplating some ways of trying to pin it to only apply closing the transactions on Lost or Longoverdue (the other status)
+2015-01-21T15:28:37  <bshum> But I'm just not sure about what if a stop_fines get added before either of those reasons.  For some reason.  But the end result is still some sort of lost thingy.
+2015-01-21T15:30:42  <mmorgan> So if a transaction already has a stop_fines reason, and then it's marked lost, doesn't stop_fines get changed to LOST?
+2015-01-21T15:31:43  <bshum> That's what I'm not sure of.
+2015-01-21T15:31:49  <bshum> I think it doesn't change.
+2015-01-21T15:32:07  <bshum> But I might be wrong on that.
+2015-01-21T15:32:22  <kmlussier> I thought it did get changed when it's marked as lost.
+2015-01-21T15:32:34  <bshum> If so, then that seems like an easy thing to check for in the logic...
+2015-01-21T15:32:50  <bshum> Well "easy"
+2015-01-21T15:33:15  <mmorgan> Just delared a MAXFINES transaction lost on our training system and the stop_fines changed to LOST
+2015-01-21T15:33:45  <kmlussier> But another thing you might want to check is what happens to that stop fines reason when the item is checked in again.
+2015-01-21T15:34:11  <kmlussier> I knew the answer to that question a few months ago.
+2015-01-21T15:34:12  <tsbere> I believe marking as claims returned will overwrite the lost stop fines reason as well.
+2015-01-21T15:34:20  <tsbere> Just as an extra data point
+2015-01-21T15:35:16  <bshum> Then I feel better about looking at the stop_fine reason to decide whether to set the lost&paid status
+2015-01-21T15:35:33  <bshum> mmorgan++ # testing
+2015-01-21T15:42:08  * dbs moves onto trying to find out why "Add to list" is failing silently (at least client side), wonders whether our HTTPS-everything config may be a factor.
+2015-01-21T15:44:41  <dbs> "GET /eg/opac/mylist/add?locg=105;record=830689 HTTP/1.0" 302 4896 "http://laurentian.concat.ca/eg/opac/mylist/add?locg=105;record=830689" says yes.
+2015-01-21T15:45:00  <dbs> 302 = "go to HTTPS dummy!"
+2015-01-21T15:45:38  <kmlussier> For those who missed the email, the scheduling poll for our next Bug Squashing Day is at http://doodle.com/umc27afh7akqczft
+2015-01-21T15:46:24  * dbs squints at ctx.opac_root
+2015-01-21T15:47:35  * Dyrcona pushed a commit to fix a/ts to the collab branch.
+2015-01-21T15:47:55  <Dyrcona> Tested it on dev with a hold notification and it still works.
+2015-01-21T15:48:28  <Dyrcona> We're going to load it into production next time we have to restart services.
+2015-01-21T15:49:22  <dbs> $ctx->{base_path} = $r->dir_config('OILSWebBasePath'); # getting there
+2015-01-21T15:51:07  *** vlewis has joined #evergreen
+2015-01-21T15:58:23  <dbs> but of course it works fine for me. what the...
+2015-01-21T16:00:12  *** ericar has quit IRC
+2015-01-21T16:00:55  <gsams> I have two reports related questions(SQL is alright as well, but reports would help more of less acquainted.)
+2015-01-21T16:01:09  <gsams> Has anyone had to pull information on merged patrons before?
+2015-01-21T16:01:32  <gsams> as in, identify patrons that have been merged over time
+2015-01-21T16:02:08  <bshum> gsams++ # trying to help Ashbury with their ILS witchery :\
+2015-01-21T16:02:27  *** vlewis_ has joined #evergreen
+2015-01-21T16:03:21  <gsams> heh, that one was a single easy part of a much murkier whole.
+2015-01-21T16:03:22  <bshum> gsams: If they were merged via the staff client or with the corresponding SQL function, there wouldn't be much evidence of the separate accounts.
+2015-01-21T16:03:37  <bshum> How would you identify them as having been merged?
+2015-01-21T16:03:44  *** julialima_ has left #evergreen
+2015-01-21T16:03:53  <bshum> What are you trying to prove/disprove/gather intel on?
+2015-01-21T16:04:03  <gsams> bshum: my assumption would be finding multiple cards referencing the same id from the usr table
+2015-01-21T16:04:17  <gsams> but that would also include replacement cards if I'm not mistaken
+2015-01-21T16:04:23  <bshum> gsams: Correct.
+2015-01-21T16:04:32  <bshum> So that might not be the best indicator.
+2015-01-21T16:04:50  <gsams> I think the libraries that are asking are looking for a way to make sure patrons are being merged appropriately
+2015-01-21T16:05:24  <gsams> Of course, I felt that the patrons could be easily switched after the fact which would negate the problem entirely
+2015-01-21T16:05:40  <Dyrcona> You might also find cases of patrons who legitimately have more than one card, though you can't really do that via the client.
+2015-01-21T16:05:52  <bshum> Dyrcona: Well you can now.
+2015-01-21T16:06:02  <bshum> I think there's an active toggle on all cards in the client.
+2015-01-21T16:06:19  <Dyrcona> I meant more than one active card.
+2015-01-21T16:06:34  <RoganH> I can think of lots of reasons for patrons to have more than one active card, especially in consortiums.
+2015-01-21T16:07:06  <gsams> We try to avoid that within the group, which I suppose is why this question formed
+2015-01-21T16:07:07  <bshum> Dyrcona: Plus I think it's a YAOUS to configure to deactivate / delete cards.  Otherwise, it might keep them all active on the user post-merge?
+2015-01-21T16:07:36  <gsams> technically the cards from both of the original records work on the merged record
+2015-01-21T16:07:46  <RoganH> So, there are staff level concerns that it's not working correctly?  Because of an incident or because they are concerned about something they haven't observed?
+2015-01-21T16:07:51  <gsams> and appear to be active, at least in my experience here
+2015-01-21T16:07:59  <bshum> gsams: Well, technically they both retrieve the user, but only the "active" card can be checked out to.
+2015-01-21T16:08:12  <gsams> bshum: ah.
+2015-01-21T16:08:36  <gsams> RoganH: I think they are concerned that the patron's wishes are not being kept in mind when merging and they wish to double check the work in some fashion
+2015-01-21T16:08:36  <bshum> If they're both active, then I think it's the YAOUS
+2015-01-21T16:09:17  <gsams> I am unfamiliar with YAOUS
+2015-01-21T16:09:26  <bshum> ~yaous
+2015-01-21T16:09:26  <pinesol_green> yaous is an acronym for Yet Another Org Unit Setting
+2015-01-21T16:09:34  <gsams> ha
+2015-01-21T16:09:37  <RoganH> I'd do this as a controlled experiment.
+2015-01-21T16:09:51  <bshum> The setting in question being in group Circulation "Patron Merge Deactivate Card"
+2015-01-21T16:10:03  <bshum> If that's set to TRUE for a given org unit, it'll deactivate the cards on patron merge.
+2015-01-21T16:10:13  <bshum> Otherwise, I think it'll leave any merged cards as active.
+2015-01-21T16:10:20  <RoganH> Merge two known accounts and show them the before and after to show them what happens.  I wouldn't put too much research into what sounds like a vaguely defined concern.
+2015-01-21T16:10:37  *** mtcarlson is now known as mtcarlson_away
+2015-01-21T16:11:10  <gsams> bshum: What is the default for that setting?  It appears to be blank in my group.
+2015-01-21T16:11:22  <bshum> gsams: I don't believe there is a default.
+2015-01-21T16:11:23  *** mnsri_ has joined #evergreen
+2015-01-21T16:11:26  *** mtcarlson has joined #evergreen
+2015-01-21T16:11:27  <gsams> RoganH: I was actually planning to do just that in case this came up.
+2015-01-21T16:11:33  <bshum> If it's unset, I would assume it would leave all barcodes active on the user post-merge
+2015-01-21T16:11:53  <bshum> If you set it to TRUE, then only the primary card of the winning account post-merge stays active, other cards are deactivated.
+2015-01-21T16:12:26  <gsams> Okay, thanks for helping out on that
+2015-01-21T16:12:28  <gsams> Dyrcona++
+2015-01-21T16:12:30  <gsams> bshum++
+2015-01-21T16:12:34  <gsams> RoganH++
+2015-01-21T16:12:58  <bshum> gsams: If you really wanted to get a list of all users with multiple cards though, that ought to be simple enough :)
+2015-01-21T16:13:05  <bshum> With SQL anyways
+2015-01-21T16:13:08  <bshum> :D
+2015-01-21T16:13:26  <bshum> @love SQL
+2015-01-21T16:13:26  <pinesol_green> bshum: The operation succeeded.  bshum loves SQL.
+2015-01-21T16:13:28  <gsams> bshum: I have that list actually.  From the effort that took I would suggest it isn't reasonable to pull it through reports
+2015-01-21T16:13:39  <gsams> but I had to ask!
+2015-01-21T16:14:05  *** maryj has left #evergreen
+2015-01-21T16:15:20  <gsams> second question: Our state recently requested collection age information in the annual report.  I've been messing around with various methods of doing this within reports and none of them come out clean.
+2015-01-21T16:15:24  *** mnsri is now known as mnsri_away
+2015-01-21T16:15:24  <gsams> I was actually wondering if anyone had a query that pull a count of the collection broken down by age.
+2015-01-21T16:15:40  <gsams> relatively cleanly, I might add
+2015-01-21T16:16:19  <gsams> I'm more afraid this is a problem due to poor cataloging than anything else.
+2015-01-21T16:16:43  <bshum> gsams: Assuming you mean age in terms of when the material was published... then yeah, probably cataloging is not your friend there.
+2015-01-21T16:18:17  <gsams> bshum: apologies, yes by publication date indeed
+2015-01-21T16:18:34  <gsams> I'm getting a lot of garbage no matter the way I try within reports.
+2015-01-21T16:18:49  <gsams> There is mostly correct information, just a lot of oddities.
+2015-01-21T16:20:28  <Dyrcona> Yeah, the dates are often messy.
+2015-01-21T16:20:40  <Dyrcona> strike often, replace with always.
+2015-01-21T16:21:55  *** nhilton_ has joined #evergreen
+2015-01-21T16:22:40  <bshum> Yep.
+2015-01-21T16:22:51  <gsams> Dyrcona: indeed, I'll just run with what pulls the best.  Currently within the group there are probably somewhere around 80 different botched Date1 variants.
+2015-01-21T16:23:15  <gsams> Which could easily be worse...
+2015-01-21T16:28:34  <bshum> Dyrcona++ # "No and no, basically."  :D
+2015-01-21T16:29:27  *** rjackson-isl has quit IRC
+2015-01-21T16:29:47  <gsams> Dyrcona++ #indeed
+2015-01-21T16:30:20  *** jboyer-isl has quit IRC
+2015-01-21T16:30:25  *** collum has quit IRC
+2015-01-21T16:31:19  <RoganH> I feel like there needs to be  warning label on the reporter "Dear Librarian Used to Old Proprietary Weeding Solution: This is Both More Powerful and Less User Friendly Than You're Used To.  Have a Nice Day."
+2015-01-21T16:31:42  <RoganH> er, reporting not weeding.  I shouldn't glance over at other emails while typing
+2015-01-21T16:32:49  <jeff> only 40 distinct values (across 2501 records) for this query: select count(*), attrs->'date1' from metabib.record_attr where attrs->'date1' !~ '^[ |u0-9]{4}$' group by 2 order by 2;
+2015-01-21T16:33:36  <jeff> my favorite may be '197l' -- lowercase l instead of number 1 being an old typewriter convention.
+2015-01-21T16:37:27  * dbs determines that the http 302 redirects for lists are from yandex web crawler. *sigh*
+2015-01-21T16:38:50  <bshum> mmorgan: I added a new comment with a potential working branch for https://bugs.launchpad.net/evergreen/+bug/1412893/comments/2
+2015-01-21T16:38:50  <pinesol_green> Launchpad bug 1412893 in Evergreen "Applying lost and paid status at the wrong time" (affected: 2, heat: 10) [Undecided,Confirmed]
+2015-01-21T16:39:19  <bshum> mmorgan: If you get time later to try tossing that in some test environment and seeing if it handles the lost&paid situation better, let me know what you can find out.
+2015-01-21T16:39:34  <bshum> I plan to try it out more when I can get it on a system too.
+2015-01-21T16:39:52  <bshum> Dyrcona++ # helping me fix my sucky perl
+2015-01-21T16:42:25  *** mrpeters has left #evergreen
+2015-01-21T16:46:57  <mmorgan> bhum: I will give it a try at some point soon.
+2015-01-21T16:47:01  <mmorgan> bhsum++
+2015-01-21T16:47:08  <gsams> jeff: that pulled 137 distinct values for me
+2015-01-21T16:48:11  <mmorgan> er, bshum++
+2015-01-21T16:48:21  <jeff> @karma bhsum
+2015-01-21T16:48:21  <pinesol_green> jeff: Karma for "bhsum" has been increased 3 times and decreased 0 times for a total karma of 3.
+2015-01-21T16:48:27  <jeff> heh.
+2015-01-21T16:48:29  <bshum> Heh
+2015-01-21T16:48:30  *** mtcarlson has quit IRC
+2015-01-21T16:48:35  *** mtcarlson_away is now known as mtcarlson
+2015-01-21T16:48:35  *** RoganH has quit IRC
+2015-01-21T16:54:09  *** mmorgan1 has joined #evergreen
+2015-01-21T16:54:09  *** Shae has quit IRC
+2015-01-21T16:54:09  *** mmorgan has quit IRC
+2015-01-21T16:54:37  *** Shae has joined #evergreen
+2015-01-21T16:54:46  *** vlewis_ has quit IRC
+2015-01-21T16:59:32  <jeff> hrm. opac.hold_notify user settings of "email|phone" and "phone:email"
+2015-01-21T17:01:57  <tsbere> jeff: I think either works. I also think "emailphone" and "phonemail" might result in the same thing, but am less positive about that.
+2015-01-21T17:03:59  <tsbere> aka, no delimiters get looked for, just the strings "email", "phone", and "sms"
+2015-01-21T17:04:13  <dbs> Weird. Person just tried adding about 10 different records to lists using a mix of IE and Firefox, and I see a total of 4 requests on the server. WTH.
+2015-01-21T17:05:08  <jeff> tsbere: yeah, doesn't seem to break, i'm just curious where the variation originated. :-)
+2015-01-21T17:05:55  *** graced has quit IRC
+2015-01-21T17:06:19  *** kbutler has quit IRC
+2015-01-21T17:10:13  *** Dyrcona has quit IRC
+2015-01-21T17:10:21  *** Shae has quit IRC
+2015-01-21T17:24:09  *** nhilton_ has quit IRC
+2015-01-21T17:24:26  *** mmorgan1 has left #evergreen
+2015-01-21T18:12:50  *** nhilton_ has joined #evergreen
+2015-01-21T18:26:13  *** mceraso has quit IRC
+2015-01-21T18:26:13  *** kmlussier has quit IRC
+2015-01-21T18:26:13  *** bshum has quit IRC
+2015-01-21T18:26:41  *** ying has joined #evergreen
+2015-01-21T18:27:57  *** kmlussier has joined #evergreen
+2015-01-21T18:27:58  *** mceraso has joined #evergreen
+2015-01-21T18:28:01  *** bshum has joined #evergreen
+2015-01-21T18:44:22  *** nhilton_ has quit IRC
+2015-01-21T18:56:23  *** mtcarlson is now known as mtcarlson_away
+2015-01-21T19:01:55  *** ying has quit IRC
+2015-01-21T19:07:52  *** vlewis has quit IRC
+2015-01-21T19:08:47  *** gmcharlt has quit IRC
+2015-01-21T19:08:47  *** gmcharlt has joined #evergreen
+2015-01-21T19:14:08  *** nhilton has quit IRC
+2015-01-21T19:25:47  *** wsmoak has joined #evergreen
+2015-01-21T19:26:28  <wsmoak> Firefox search widget *and* hold notifications via text message!
+2015-01-21T19:27:00  <wsmoak> is there a page of release notes for what got added to PINES ?
+2015-01-21T19:30:21  <bshum> wsmoak: only thing I see is http://pines.georgialibraries.org/news-2015-01-upgradevideo
+2015-01-21T19:31:06  <bshum> Not sure what else may exist.
+2015-01-21T19:31:47  <bshum> In theory, they went from some 2.5 to 2.7
+2015-01-21T19:32:30  <bshum> So you could also read the release notes for 2.6 and 2.7 from the Evergreen pages and it'd be a close approximation of new things too.
+2015-01-21T19:33:03  <bshum> Though every site implements their own way and may not carry every new feature.
+2015-01-21T19:33:56  <bshum> csharp can probably say more, of course ;)
+2015-01-21T19:38:35  <wsmoak> thanks bshum.  I think that covers it.
+2015-01-21T19:59:13  *** jwoodard has quit IRC
+2015-01-21T20:00:12  <dbs> wsmoak: btw, after upgrading to a new version of firefox on a windows machine, it offered a "new search experience" and that seems to align with what you were seeing
+2015-01-21T20:01:44  <wsmoak> dbs: the missing icon ?
+2015-01-21T20:02:51  <dbs> yeah. maybe a firefox bug
+2015-01-21T20:08:26  <dbs> I guess we could add an <Image> element to the opensearch description though
+2015-01-21T20:16:08  <dbs> http://www.opensearch.org/Specifications/OpenSearch/1.1#The_.22Image.22_element
+2015-01-21T20:16:51  *** jihpringle has quit IRC
+2015-01-21T20:18:20  *** yboston has quit IRC
+2015-01-21T20:35:45  *** sandbergja has quit IRC
+2015-01-21T20:52:40  *** wsmoak has quit IRC
+2015-01-21T20:57:37  *** remingtron has quit IRC
+2015-01-21T20:57:56  *** remingtron has joined #evergreen
+2015-01-21T21:01:12  *** jcamins__ has joined #evergreen
+2015-01-21T21:06:03  *** jcamins has quit IRC
+2015-01-21T21:13:43  *** akilsdonk has quit IRC
+2015-01-21T22:46:34  *** dcook has quit IRC
+2015-01-21T22:46:45  *** dcook has joined #evergreen
+2015-01-21T22:48:24  *** sbrylander has joined #evergreen
+2015-01-21T22:50:48  *** sarabee has quit IRC
+2015-01-21T23:02:37  *** pmurray is now known as pmurray_away
+2015-01-21T23:35:07  *** akilsdonk has joined #evergreen
+2015-01-21T23:40:25  *** artunit_ has joined #evergreen
+2015-01-21T23:40:30  *** dreuther_ has quit IRC
+2015-01-21T23:40:49  *** dreuther has joined #evergreen
+2015-01-21T23:42:05  *** artunit has quit IRC
+2015-01-21T23:42:19  *** artunit_ is now known as artunit

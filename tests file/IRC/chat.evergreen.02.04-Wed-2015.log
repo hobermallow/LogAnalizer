@@ -1,0 +1,274 @@
+2015-02-04T00:56:19  *** akilsdonk has joined #evergreen
+2015-02-04T02:03:27  *** akilsdonk has quit IRC
+2015-02-04T02:38:41  *** abowling has quit IRC
+2015-02-04T03:10:23  *** edoceo has quit IRC
+2015-02-04T05:04:45  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-02-04T06:02:25  *** edoceo has joined #evergreen
+2015-02-04T07:14:41  *** hopkinsju has joined #evergreen
+2015-02-04T07:15:37  *** jeff__ has joined #evergreen
+2015-02-04T07:20:52  *** b_bonner_ has joined #evergreen
+2015-02-04T07:20:55  *** hopkinsju_ has quit IRC
+2015-02-04T07:20:55  *** jeff_ has quit IRC
+2015-02-04T07:20:55  *** b_bonner has quit IRC
+2015-02-04T07:20:56  *** b_bonner_ is now known as b_bonner
+2015-02-04T07:57:53  *** rjackson_isl has joined #evergreen
+2015-02-04T08:05:36  *** akilsdonk has joined #evergreen
+2015-02-04T08:19:31  *** graced has joined #evergreen
+2015-02-04T08:20:58  *** ericar has joined #evergreen
+2015-02-04T08:25:42  *** Dyrcona has joined #evergreen
+2015-02-04T08:33:32  *** kshitij has joined #evergreen
+2015-02-04T08:34:31  *** mrpeters has joined #evergreen
+2015-02-04T08:35:17  *** kshitij has left #evergreen
+2015-02-04T08:48:23  *** gmcharlt_ is now known as gmcharlt
+2015-02-04T08:48:29  *** gmcharlt has joined #evergreen
+2015-02-04T09:01:37  *** maryj has joined #evergreen
+2015-02-04T09:05:43  *** abowling has joined #evergreen
+2015-02-04T09:08:36  *** julialima_ has joined #evergreen
+2015-02-04T09:09:48  *** mmorgan has joined #evergreen
+2015-02-04T09:13:12  *** sarabee has joined #evergreen
+2015-02-04T09:34:56  *** RoganH has joined #evergreen
+2015-02-04T09:41:29  *** ericar_ has joined #evergreen
+2015-02-04T09:43:57  *** ericar has quit IRC
+2015-02-04T09:44:07  *** ericar_ is now known as ericar
+2015-02-04T10:02:22  <bshum> RoganH++
+2015-02-04T10:06:04  <dbwells> Good morning, all.  Last Wednesday for the OPW project we talked a lot about buttons, today we want to talk at least a little about tables.
+2015-02-04T10:07:34  <dbwells> Here is a mockup julialima_ has developed for us of some proposed style changes for client tables.  It also shows (roughly) the same table in the current design for reference: http://www.calvin.edu/library/images/table_mockup.png
+2015-02-04T10:11:18  *** yboston has joined #evergreen
+2015-02-04T10:11:58  <dbwells> We are certainly interested in overall reactions, but can also take some time to point out some of the differences once people have had a chance to look it over.
+2015-02-04T10:19:48  <dbwells> It seems we are light on opinions this morning :)  julialima_ and I will be around until 11:00am, but we'll also send this same concept to the list for discussion.
+2015-02-04T10:19:59  * jeff grins
+2015-02-04T10:21:30  <jeff> both the old and the new lack a "last page" button, which may simply be due to underlying bits -- say, the expense of calculating the last page, etc.
+2015-02-04T10:21:51  <jeff> but the new has "Page 1/1" and still lacks a "last page" button.
+2015-02-04T10:22:11  <jeff> anything intentional/noteworthy there, or am i reading too much into it?
+2015-02-04T10:23:10  <dbwells> jeff: Yes, I think you're reading too much into it :)
+2015-02-04T10:23:23  <jeff> I do like the removal of "total paid", but mostly because it can be confusing when the bulk of the "paid" is "Forgive" payments. :-)
+2015-02-04T10:25:44  <jeff> But sorry, I forgot to state my overall reaction: looks like a nice improvement!
+2015-02-04T10:26:21  <dbwells> Sorry, I know the tables aren't perfectly analogous, but that's really just chance.  The project is focused on the style elements.
+2015-02-04T10:26:30  <mmorgan> Do I see that "Actions" has turned into that "stack" in the upper right?
+2015-02-04T10:27:23  <jeff> "hamburger menu" is the term I've seen most often, and that's started to see use around here. :-)
+2015-02-04T10:27:32  <dbwells> mmorgan: yes, that is one concept we've been exploring.
+2015-02-04T10:28:02  <jeff> dbwells: are the column picker and actions both under the hamburger menu?
+2015-02-04T10:28:49  <mmorgan> That was my next question :)
+2015-02-04T10:29:26  <dbwells> jeff: julialima_ might be able to answer that better, but that is how I understood it.  It would be a submenu in there, I think.
+2015-02-04T10:29:29  <jeff> (realizing that it's a mockup, and that neither are likely actually in existence under the hamburger...)
+2015-02-04T10:32:14  <julialima_> jeff and mmorgan: Yes, it will display the same options
+2015-02-04T10:33:18  <dbwells> I think it is a sensible compromise, but maybe others would argue that column configuration is a first class action deserving it's own widget.
+2015-02-04T10:34:24  <jeff> julialima_: thanks!
+2015-02-04T10:34:53  *** dreuther has quit IRC
+2015-02-04T10:34:56  <julialima_> I even eliminate columns options, and perhaps would present in a separate popup. Of course it is debatable.https://raw.githubusercontent.com/JuliaLima/OPWInternship/master/tables-01.png
+2015-02-04T10:34:56  <jeff> dbwells: That was my initial thought (regarding column-picker "demotion"), but perhaps that's just an argument for finding ways to make the need for the column picker less frequent.
+2015-02-04T10:36:11  <jeff> (three ideas there would be: 1) reasonable defaults, 2) default->org->workstation/user prefs hierarchy/overrides/whatever 3) easier access to more columns for a given row)
+2015-02-04T10:36:28  <mmorgan> IMO, column config is far less used than Actions, so having it tucked in the hamburger makes sense to me.
+2015-02-04T10:37:20  <dbwells> julialima_'s second pic there doesn't actually show the actions yet, but they would be in there above the column stuff.
+2015-02-04T10:38:12  <gmcharlt> jeff: one thing I'm doing in my own webstaff dev is actively picking reasonable default columns for tables
+2015-02-04T10:38:47  <gmcharlt> but just to toss something out: if anybody wants to send me their (customized) column configurations, that's data I'm willing to look at
+2015-02-04T10:39:20  <jeff> gmcharlt: yay! and the fact that work has been done to fix the old xul-client issue of "ahr columns are ahr columns, no matter the surrounding context" also has helped.
+2015-02-04T10:40:13  <jeff> when viewing holds on a patron's account, you're far less likely to find the patron name a helpful bit of info, but seeing patron last/first/alias is helpful when viewing holdshelf at a library.
+2015-02-04T10:40:59  <jeff> similar, very little reason to see the title/author on each hold when viewing holds on a title, but that info is relevant when looking at holds on a patron account or browsing the holdshelf. :-)
+2015-02-04T10:41:25  <gmcharlt> Shut down the Department of Redudancy Department!
+2015-02-04T10:42:20  <jeff> something else i find myself doing (and have no idea if it's something others do often) is adding a column when i'm interested in only a single additional field on a single row -- a faster way to see full details for a given row (some interfaces already have this) would avoid the column picker dance there also.
+2015-02-04T10:42:52  * mmorgan agrees with jeff. Better defaults would be a huge improvement and make customization less of a requirement. As things are now, customization is essentially required.
+2015-02-04T10:43:05  <dbwells> gmcharlt: Thanks for that offer.  I really hope you get some responses, as that kind of feedback will make a huge difference in overall OOTB usability, in my opinion.
+2015-02-04T10:43:29  <dbwells> It sounds like we are all of similar opinion :)
+2015-02-04T10:43:57  * mmorgan would be willing to share tree_column files. How would gmcharlt like them shared?
+2015-02-04T10:45:17  <gmcharlt> mmorgan: email is fine, or put up a zipfile on a public webserver and post the link
+2015-02-04T10:45:48  <mmorgan> ok, will gather up some files.
+2015-02-04T10:47:22  <mmorgan> Back to the navigation in the mockup - would anyone else prefer to see the forward/back last/first page arrows just to the left of the hamburger rather than where they are now?
+2015-02-04T10:50:16  <gmcharlt> I'm neutral on that question
+2015-02-04T10:51:04  <gmcharlt> I like the styling in general, but one thing that bothers me a bit is the potential for very common actions to end up hidden under the hamburger
+2015-02-04T10:51:05  <gmcharlt> (as it were)
+2015-02-04T10:52:38  <dbwells> gmcharlt: I agree.  How do you feel about dedicated buttons in the title bar for the most common actions?
+2015-02-04T10:53:23  <gmcharlt> dbwells: that seems reasonable; that, or an action bar below the title bar
+2015-02-04T10:55:52  <dbwells> gmcharlt: that's a good idea and very useful feedback, thanks!
+2015-02-04T10:56:20  <mmorgan> If individual actions turn into dedicated buttons, I'd favor the action bar concept rather than adding them to the title bar.
+2015-02-04T10:57:38  <mmorgan> Maybe pie in the sky, but an option to expand the hamburger into an action bar?
+2015-02-04T10:58:29  *** ericar_ has joined #evergreen
+2015-02-04T10:58:44  <dbwells> mmorgan: Yes, maybe pie in the sky, but still an excellent idea.
+2015-02-04T10:59:03  <gmcharlt> that may be an achievable piece of pie (making no promises though), as each item on an action bar and/or the hamburger menu would still just be a menu item
+2015-02-04T10:59:25  <gmcharlt> the common ones would just be decorated differently to indicate that they should get priority in the display
+2015-02-04T10:59:56  <dbwells> I think the ideal style will allow for various levels of progressive expansion/compression based on interface need and user preference.
+2015-02-04T11:00:12  <dbwells> That seems to be what we're describing, I think.
+2015-02-04T11:00:13  *** ericar has quit IRC
+2015-02-04T11:00:22  *** ericar_ is now known as ericar
+2015-02-04T11:01:04  <dbwells> The initial goal will need to be a middle ground of sorts, but with our eye still on that pie :)
+2015-02-04T11:03:56  <eeevil> we do have an analog to the idea of an actions bar right now, actually.  the billing history interface (IIRC) has buttons left-justified on the same row as the pagination and actions bar
+2015-02-04T11:04:24  <eeevil> or, maybe the top-level billing interface?
+2015-02-04T11:04:38  <dbwells> eeevil: Yes, I know what you are talking about.
+2015-02-04T11:05:37  <dbwells> The billing interface in general has been our primary focus, as it is a rich set of screens with a lot of good ideas.
+2015-02-04T11:05:40  <eeevil> anyway, we can move those elements around easily in the grid widget template. I think someone could come close to julialima_'s mockup today just by doing that much
+2015-02-04T11:05:57  <gmcharlt> indeed
+2015-02-04T11:06:11  <eeevil> (that someone is not me right this moment, though ... TUITS!)
+2015-02-04T11:09:09  <gmcharlt> $a Tuits $x Dearth $y 2015
+2015-02-04T11:11:44  <dbwells> Well, it's past 11:00am so I need to retreat.  Thanks all, once again, for the feedback.  We're doing our best to identify and codify existing ideas, then trying to apply them to various places in the client and see what works most broadly.
+2015-02-04T11:12:51  <jeff> julialima_++ dbwells++
+2015-02-04T11:13:02  <mmorgan> julialima_++ dbwells++
+2015-02-04T11:13:57  <julialima_> Thank you all :)
+2015-02-04T11:29:26  *** nhilton has joined #evergreen
+2015-02-04T11:48:44  *** bmills has joined #evergreen
+2015-02-04T11:59:18  *** julialima_ has quit IRC
+2015-02-04T12:07:27  *** vlewis has joined #evergreen
+2015-02-04T12:08:19  *** maryj has quit IRC
+2015-02-04T12:13:15  *** maryj has joined #evergreen
+2015-02-04T12:31:42  <Dyrcona> Head Up: I just ran the 0905 upgrade script and it ended with a rollback. Details to follow.
+2015-02-04T12:33:09  <Dyrcona> ERROR:  cannot ALTER TABLE "record_entry" because it
+2015-02-04T12:33:10  <Dyrcona>  has pending trigger events
+2015-02-04T12:33:18  <bshum> Bleh
+2015-02-04T12:33:41  <Dyrcona> I'll make a fix and post it to Launchpad.
+2015-02-04T12:33:49  <Dyrcona> After lunch.
+2015-02-04T12:34:21  <bshum> Dyrcona++ # thanks for testing that in your system.
+2015-02-04T12:40:19  *** nhilton has quit IRC
+2015-02-04T12:46:37  *** maryj has quit IRC
+2015-02-04T12:55:11  *** nhilton has joined #evergreen
+2015-02-04T12:56:37  *** nhilton has quit IRC
+2015-02-04T12:58:01  *** jihpringle has joined #evergreen
+2015-02-04T13:08:34  *** graced has quit IRC
+2015-02-04T13:10:30  *** chatley_ has joined #evergreen
+2015-02-04T13:10:32  *** chatley has quit IRC
+2015-02-04T13:11:46  *** buzzy has joined #evergreen
+2015-02-04T13:18:50  <pinesol_green> Showing latest 5 of 7 commits to Evergreen...
+2015-02-04T13:18:51  <pinesol_green> [evergreen|Josh Stompro] LP#1390138: Another update for install/update docs - added make install - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=0d739da>
+2015-02-04T13:18:52  <pinesol_green> [evergreen|Josh Stompro] LP#1390138: Updating Upgrade and Install docs for 2.7 - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3c7bd0b>
+2015-02-04T13:18:53  <pinesol_green> [evergreen|Josh Stompro] LP#1390138: Updating Upgrade and Install docs for 2.7 - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=b671b65>
+2015-02-04T13:18:54  <pinesol_green> [evergreen|Ben Shum] LP#1390138: Remove references to Ubuntu Lucid Lynx 10.04 as this is not supported - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7331f82>
+2015-02-04T13:18:55  <pinesol_green> [evergreen|Ben Shum] LP#1390138: Clarify 2.6-2.7 upgrade path - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=1dc77fa>
+2015-02-04T13:19:27  *** collum has joined #evergreen
+2015-02-04T13:19:29  <bshum> Stompro++ # I did some light rebasing to get things all squared away
+2015-02-04T13:19:37  <bshum> But thanks for your contribution on getting us upgrade docs
+2015-02-04T13:19:42  <bshum> For 2.7
+2015-02-04T13:20:10  <bshum> When the docs are rebuilt overnight (and we actually cut and release 2.7.3) I'll go ahead and update the downloads page on the main Evergreen site accordingly.
+2015-02-04T13:23:48  *** jwoodard has joined #evergreen
+2015-02-04T13:27:53  *** maryj has joined #evergreen
+2015-02-04T13:27:54  *** nhilton has joined #evergreen
+2015-02-04T13:28:58  *** dMiller_ has joined #evergreen
+2015-02-04T13:39:56  *** bmills has quit IRC
+2015-02-04T13:41:26  *** mglass has joined #evergreen
+2015-02-04T13:46:23  *** bmills has joined #evergreen
+2015-02-04T13:48:56  <pinesol_green> [evergreen|Bill Erickson] LP#1261777 repair cloned addr owner link - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=f48b1bc>
+2015-02-04T13:50:43  <bshum> Alrighty, that's that.  Just waiting for Dyrcona's results from https://bugs.launchpad.net/evergreen/+bug/1418164 and then I think we're in ready shape to cut 2.7.3 today.
+2015-02-04T13:50:43  <pinesol_green> Launchpad bug 1418164 in Evergreen "0905.schema.use_current_normalize_heading.sql fails with SQl Error" (affected: 1, heat: 6) [Undecided,New]
+2015-02-04T13:58:52  <kmlussier> @dessert bshum
+2015-02-04T13:58:52  * pinesol_green grabs some coffee frappes for bshum
+2015-02-04T13:59:06  <bshum> Coffee?  Bleh
+2015-02-04T13:59:07  <kmlussier> Brrrrr...way too cold for coffee frappes.
+2015-02-04T13:59:14  *** kbutler has joined #evergreen
+2015-02-04T13:59:16  <kmlussier> Even though I just had one a few nights ago. :)
+2015-02-04T14:01:30  *** nhilton_ has joined #evergreen
+2015-02-04T14:02:04  *** graced has joined #evergreen
+2015-02-04T14:03:41  *** nhilton has quit IRC
+2015-02-04T14:09:28  <tsbere> I invite others to decide how important this is: https://bugs.launchpad.net/evergreen/+bug/1418177
+2015-02-04T14:09:28  <pinesol_green> Launchpad bug 1418177 in Evergreen "Part Holds ignore boundaries after placement" (affected: 1, heat: 6) [Undecided,New]
+2015-02-04T14:09:52  <tsbere> MVLC doesn't use boundaries, so I don't see it as that important. I just happened to run into it when looking for a solution to a different issue.
+2015-02-04T14:09:56  *** nhilton has joined #evergreen
+2015-02-04T14:12:47  <kmlussier> I'm guessing it's important to those sites using boundaries.
+2015-02-04T14:13:01  *** nhilton_ has quit IRC
+2015-02-04T14:13:54  *** mrpeters has left #evergreen
+2015-02-04T14:15:10  <tsbere> kmlussier: At least I saw it as important enough to test and post to launchpad, right?
+2015-02-04T14:27:54  *** krvmga has joined #evergreen
+2015-02-04T14:36:00  <bshum> Dyrcona++
+2015-02-04T14:38:45  *** mrpeters has joined #evergreen
+2015-02-04T14:40:20  <bshum> Okay, off to cut 2.7.3
+2015-02-04T14:41:08  <pinesol_green> [evergreen|Jason Stephenson] LP#1418164: Fix 0905.schema.user_currnet_normalize_heading.sql. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=c9ee432>
+2015-02-04T14:45:05  <Stompro> bshum++, thanks for fixing up the upgrade docs and committing them.
+2015-02-04T14:52:03  <bshum> dbwells: So I think that when we make the upgrade scripts for 2.7.3 and 2.6.5, it's a matter of moving the last bits of ALTER TABLE out of the transaction body.  Kind of like how Dyrcona repaired 0905 in master.
+2015-02-04T14:52:44  <Dyrcona> That feeling you get when you notice typos in your commit message when you read the commit email.....
+2015-02-04T14:52:46  <bshum> Just something to watch out for, I haven't done that sort of editing for a version-upgrade script in a long time.
+2015-02-04T14:53:53  <dbwells> bshum: If we're including a bigger reingest step anyway (full or metabib.reingest_metabib_field_entries style), we don't need that last chunk of 905 at all, I think.
+2015-02-04T14:54:39  <dbwells> bshum: nevermind, this is authority stuff
+2015-02-04T14:54:43  <dbwells> sorry
+2015-02-04T14:54:44  <Dyrcona> dbwells: I think the triggers were dropped to speed things up, but I'm just guessing.
+2015-02-04T14:55:05  <dbwells> Dyrcona: I am sure you are right.
+2015-02-04T14:55:07  <bshum> dbwells: Ah right, I forgot about the reingest step.  Should I just add verbiage for that at the end of the upgrade script?
+2015-02-04T14:55:13  <Dyrcona> Problem is FK relationships are triggers, and you can't always drop those.
+2015-02-04T14:55:53  *** krvmga has quit IRC
+2015-02-04T14:59:12  <dbwells> Dyrcona: I think for similar problems in the past we've also had some success doing "SET CONSTRAINTS ALL IMMEDIATE;" in the transaction before altering the table;
+2015-02-04T15:03:11  <dbwells> bshum: I'm planning to steal stuff from the bottom of the 2.5.0 upgrade script.  Let me whip up a paste and see what you think.
+2015-02-04T15:03:55  <bshum> dbwells: Sounds good.  I'll finish editing my working branch and then manually tweak the tarball with the final changes for the upgrade scripts then.
+2015-02-04T15:06:03  *** mrpeters has left #evergreen
+2015-02-04T15:08:34  <bshum> dbwells: Maybe more the variant at the end of the 2.6.0 script is better
+2015-02-04T15:10:18  <bshum> Oh, funny, the 2.5 to 2.6.0 upgrade script does the same thing with the authority table triggers.
+2015-02-04T15:10:27  <bshum> Puts them outside the COMMIT main transaction body
+2015-02-04T15:10:33  <bshum> Guess we're repeating history there, heh
+2015-02-04T15:10:44  <bshum> Again.
+2015-02-04T15:10:47  <dbwells> bshum: Is metabib.reingest_metabib_field_entries not enough?  I need to check to remember what exactly it does and doesn't do.
+2015-02-04T15:11:59  <bshum> dbwells: I'm unsure.
+2015-02-04T15:15:30  <dbwells> It's not the right piece.
+2015-02-04T15:18:19  <dbwells> I think we need metabib.reingest_record_attributes() in this case.  Let me see if I can test it out a bit.
+2015-02-04T15:26:33  <dbwells> bshum: based on my testing, SELECT metabib.reingest_record_attributes(id); is sufficient for this situation.  Paste forthcoming...
+2015-02-04T15:30:45  <pastebot> "dbwells" at 64.57.241.14 pasted "Partial Reingest Addendum For Upgrade Script" (24 lines) at http://paste.evergreen-ils.org/30
+2015-02-04T15:35:05  <Dyrcona> Is there a test script floating around to see if Python is working correctly with Evergreen?
+2015-02-04T15:35:27  <Dyrcona> I did --enable-python 'cause I eventually want to see if I can get constrictor working.
+2015-02-04T15:35:33  <bshum> dbwells++
+2015-02-04T15:35:44  <bshum> I'll tack that on and get the tarball finished to push up to the website
+2015-02-04T15:36:20  * Dyrcona decides to look at constrictor in the mean time.
+2015-02-04T15:38:20  <jeff> Dyrcona: there's osrfsh.py -- that's a start.
+2015-02-04T15:38:50  <Dyrcona> jeff: yeah. I just tried srfsh.py and that worked.
+2015-02-04T15:39:43  <jeff> er, yeah. i was about to verify that filename but went with what came to mind first because i figured you'd get the point. :-)
+2015-02-04T15:40:59  <Dyrcona> There's also opensrf.py for managing python services.
+2015-02-04T15:41:18  <Dyrcona> It lists nothing available when I ask it, as I expect.
+2015-02-04T15:42:07  <Dyrcona> I also found this: http://wiki.evergreen-ils.org/doku.php?id=opensrf:python
+2015-02-04T15:45:20  <dbs> Dyrcona: I'm still using Python to do all of our LDAP auto-create users from LDAP stuff
+2015-02-04T15:45:42  <Dyrcona> dbs: Cool.
+2015-02-04T15:46:08  <Dyrcona> I assume the <plugins> entry goes inside the <srfsh> block in .srfsh.xml.
+2015-02-04T15:46:31  <Dyrcona> Or, is that even necessary?
+2015-02-04T15:48:44  <dbs> I don't use srfsh.py, sorry
+2015-02-04T15:49:11  <Dyrcona> Well srfsh.py worked without the link or the configuration, so that's why I asked.
+2015-02-04T15:49:24  <Dyrcona> I imagine that wiki page may be out of date.
+2015-02-04T15:49:52  <dbs> That untrustworthy dbs guy wrote it 6 years ago, so maybe
+2015-02-04T15:50:33  <dbs> And it looks... unfinished
+2015-02-04T15:52:04  <Dyrcona> I assume that I could enable python on a utility server and run python scripts on that server against a production server without python enabled, and the python scripts would still work.
+2015-02-04T15:52:25  <dbs> Yep
+2015-02-04T15:52:44  <Dyrcona> Cool.
+2015-02-04T15:53:50  *** vlewis_ has joined #evergreen
+2015-02-04T15:54:14  <Dyrcona> I was going to try Java again, too, but decided not to deal with that today.
+2015-02-04T16:05:25  <Dyrcona> I would say that wiki page is out of date.
+2015-02-04T16:05:57  <Dyrcona> Python packages get installed to /usr/local/lib/python2.7/dist-packages/ or equivalent these days.
+2015-02-04T16:07:01  <bshum> Okay, 2.7.3 is up
+2015-02-04T16:07:17  <bshum> Tomorrow after the docs server updates, I'll add the link to the upgrades chapter too.
+2015-02-04T16:07:50  <Dyrcona> bshum++
+2015-02-04T16:13:33  <pinesol_green> [evergreen|Ben Shum] Forward-port 2.7.2-2.7.3 upgrade script - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4ef6f4b>
+2015-02-04T16:13:55  <bshum> After the whole tagging in OpenSRF experience, going back to these fake tags and branches feels more annoying :)
+2015-02-04T16:14:04  <bshum> Just saying.
+2015-02-04T16:14:40  *** jboyer-isl has quit IRC
+2015-02-04T16:15:08  *** jboyer-isl has joined #evergreen
+2015-02-04T16:16:23  <gmcharlt> bshum++ # tilting at those hashtag windmills
+2015-02-04T16:16:42  <bshum> Bring back evgils I say.  I'm tired of all these unrelated tweets :(
+2015-02-04T16:24:14  <Dyrcona> @love git tag
+2015-02-04T16:24:14  <pinesol_green> Dyrcona: The operation succeeded.  Dyrcona loves git tag.
+2015-02-04T16:24:52  <jboyer-isl> #evergreenopensourceintegratedlibrarysystem - still leaves 116 characters.
+2015-02-04T16:24:55  * Dyrcona has visions of guis writting in PyQT, linking to PyUNO to produce odt and ods documents.
+2015-02-04T16:25:43  <Dyrcona> "Writting? Really, fingers?"
+2015-02-04T16:27:41  <bshum> Heh
+2015-02-04T16:30:04  *** rjackson_isl has quit IRC
+2015-02-04T16:33:34  *** ericar has quit IRC
+2015-02-04T16:39:42  *** maryj has quit IRC
+2015-02-04T16:43:03  *** RoganH has quit IRC
+2015-02-04T16:58:36  <kmlussier> Have a nice night #evergreen!
+2015-02-04T16:59:11  <kmlussier> And +1 to evgils. I'm also tired of those beer drinkers and e-girls hiijacking our hashtag. :)
+2015-02-04T17:02:33  *** Dyrcona has quit IRC
+2015-02-04T17:10:53  *** graced has quit IRC
+2015-02-04T17:15:30  *** kbutler has quit IRC
+2015-02-04T17:18:15  *** mmorgan has left #evergreen
+2015-02-04T17:28:26  *** mdriscoll has left #evergreen
+2015-02-04T17:36:50  * berick wonders if anyone is going to be sticking around in Hood River Saturday evening after the conference.
+2015-02-04T17:50:18  *** yboston has quit IRC
+2015-02-04T18:09:26  *** ningalls has quit IRC
+2015-02-04T18:34:17  <bshum> berick: We will be.
+2015-02-04T18:34:39  <bshum> "We" being a contingent from Biblio
+2015-02-04T18:35:38  <bshum> Easier to fly home early Sunday morning.
+2015-02-04T18:35:57  <bshum> Otherwise getting back east tends to suck
+2015-02-04T18:59:35  <eeevil> berick: so, I'm getting doubled pcrud commits from .update() in the pcrud.js ng service ... thoughts?
+2015-02-04T19:00:50  *** vlewis has quit IRC
+2015-02-04T19:01:21  *** vlewis_ has quit IRC
+2015-02-04T19:14:06  *** jihpringle has quit IRC
+2015-02-04T19:20:21  *** nhilton has quit IRC
+2015-02-04T19:26:01  *** mglass has quit IRC
+2015-02-04T19:42:25  *** bmills has quit IRC
+2015-02-04T19:46:09  *** dMiller_ has quit IRC
+2015-02-04T20:00:58  *** jwoodard has quit IRC
+2015-02-04T20:24:00  *** buzzy has quit IRC
+2015-02-04T20:25:35  *** bmills has joined #evergreen
+2015-02-04T22:06:22  *** bmills has quit IRC
+2015-02-04T22:14:04  *** bmills has joined #evergreen
+2015-02-04T23:03:01  *** pmurray is now known as pmurray_away
+2015-02-04T23:13:42  *** nhilton has joined #evergreen
+2015-02-04T23:33:16  *** nhilton has quit IRC

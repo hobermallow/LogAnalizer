@@ -1,0 +1,297 @@
+2015-05-01T05:00:16  *** collum has joined #evergreen
+2015-05-01T05:04:46  *** collum has quit IRC
+2015-05-01T05:14:26  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-01T07:48:52  <kmlussier> Good morning #evergreen
+2015-05-01T07:49:17  <kmlussier> @coffee y'all
+2015-05-01T07:49:17  * pinesol_green brews and pours a cup of Kenya Ndaroini Microlot, and sends it sliding down the bar to y'all
+2015-05-01T07:55:17  <jboyer-isl> 'morning!
+2015-05-01T07:59:03  *** ericar has joined #evergreen
+2015-05-01T08:00:13  *** pmurray_away is now known as pmurray
+2015-05-01T08:00:25  *** pmurray is now known as pmurray_away
+2015-05-01T08:06:53  *** mrpeters has joined #evergreen
+2015-05-01T08:08:40  *** pmurray_away is now known as pmurray
+2015-05-01T08:16:16  *** rjackson_isl has joined #evergreen
+2015-05-01T08:35:01  *** mmorgan has joined #evergreen
+2015-05-01T08:50:02  *** collum has joined #evergreen
+2015-05-01T08:52:43  *** Dyrcona has joined #evergreen
+2015-05-01T08:53:26  * kmlussier just realized that all of the EOB nominations so far have come from each of the EOB members who will be rotating off of the board this year.
+2015-05-01T09:05:33  * Dyrcona only noticed two nominations, did I miss some?
+2015-05-01T09:10:38  <kmlussier> tspindler, rfrasur, and Sharon Herbert from Sitka
+2015-05-01T09:12:14  <Dyrcona> I missed the last one.
+2015-05-01T09:12:25  <Dyrcona> Must have not read the email.
+2015-05-01T09:13:54  * kmlussier wonders if she'll be able to keep her mouth shut during EOB meetings when she's off the board.
+2015-05-01T09:17:58  <jboyer-isl> I may be biased (because I certainly can't shut up at meetings here), but I've never seen an issue with a little bit of discussion at public meetings.
+2015-05-01T09:18:23  <jboyer-isl> kmlussier may want to avoid trying to #vote during the meetings, though. ;)
+2015-05-01T09:18:47  <kmlussier> Heh
+2015-05-01T09:25:16  *** yboston has joined #evergreen
+2015-05-01T09:45:34  <Dyrcona> Does anyone have sample .desktop files for X to start the staff client that they could throw up in a paste site?
+2015-05-01T09:46:05  <Dyrcona> I "lost" mine after not using 'em for a couple of years and decided this morning that I want 'em back.
+2015-05-01T09:46:19  <Dyrcona> If not, I'll remake 'em from scratch.
+2015-05-01T09:51:59  *** ericar has quit IRC
+2015-05-01T10:14:03  <bshum> Dyrcona: I did something like http://pastie.org/10123644
+2015-05-01T10:14:14  <bshum> You'll want to edit your own paths.
+2015-05-01T10:14:59  <Dyrcona> bshum: Thanks, that saves me half an hour at least. :)
+2015-05-01T10:16:45  <bshum> Dyrcona: As far as where to put it, I think it goes somewhere in ~/.local/share/applications/*
+2015-05-01T10:17:00  <Dyrcona> Yep.
+2015-05-01T10:20:59  <Dyrcona> bshum++ # I wasn't thinking about the Unity integration, but after seeing your example, I can do in launcher what I was going to do with three.
+2015-05-01T10:21:28  * bshum likes right-click
+2015-05-01T10:21:50  * bshum misses running Ubuntu. Maybe I'll switch back from Windows again.
+2015-05-01T10:22:02  <Dyrcona> I mostly like Unity.
+2015-05-01T10:22:28  <bshum> I've gotten used to it over time.
+2015-05-01T10:22:32  <Dyrcona> My biggest gripe is the launcher is hard coded on the left. It ought to be movable to the right side without needing a code patch.
+2015-05-01T10:23:03  <Dyrcona> Canonical explained why, and their excuse is bull shit: "It makes support easier."
+2015-05-01T10:25:28  <jeff> i LOVE that reason!
+2015-05-01T10:25:38  <jeff> i'm a HUGE fan of that reason.
+2015-05-01T10:26:04  <jeff> especially when it comes to questions like "why can't we change this password?"
+2015-05-01T10:29:20  <Dyrcona> That's a great reason until Dmitry brute forces your password.
+2015-05-01T10:29:53  <Dyrcona> But, honestly, it's a lazy excuse.
+2015-05-01T10:32:20  <jonadab> Not being able to change default passwords is extremely bad.
+2015-05-01T10:36:04  <jeff> agreed.
+2015-05-01T10:36:23  <jeff> person on the other end of the ticket disagreed.
+2015-05-01T10:36:31  <jeff> i'm re-opening.
+2015-05-01T10:43:08  *** ericar has joined #evergreen
+2015-05-01T10:45:02  <bshum> @love mosh
+2015-05-01T10:45:02  <pinesol_green> bshum: The operation succeeded.  bshum loves mosh.
+2015-05-01T10:45:11  <jeff> mosh++
+2015-05-01T10:48:37  <berick> @love mosh
+2015-05-01T10:48:37  <pinesol_green> berick: The operation succeeded.  berick loves mosh.
+2015-05-01T11:05:48  *** bmills has joined #evergreen
+2015-05-01T11:27:21  *** fluffypuffymo has joined #evergreen
+2015-05-01T11:28:27  *** fluffypuffymo has quit IRC
+2015-05-01T11:32:00  *** collum has quit IRC
+2015-05-01T11:34:24  *** bmills has quit IRC
+2015-05-01T11:40:34  <Dyrcona> mosh looks interesting.
+2015-05-01T11:46:01  <berick> mosh: because time warner is just the worst™
+2015-05-01T11:46:31  <berick> i mean, just terrible
+2015-05-01T11:47:20  <berick> (and I have a bad feeling the pending google fiber roll out will stop about a mile from my house.)
+2015-05-01T12:08:16  <tsbere> dbs: You around?
+2015-05-01T12:09:16  *** edoceo has joined #evergreen
+2015-05-01T12:11:55  <jeff> hrm. php--
+2015-05-01T12:13:00  <jeff> somewhere between these two php versions, FILTER_FLAG_NO_RES_RANGE seems to have diverged from documentation.
+2015-05-01T12:13:06  <jeff> PHP 5.3.3-7+squeeze24 with Suhosin-Patch (cli) (built: Jan 31 2015 12:32:09)
+2015-05-01T12:13:10  <jeff> PHP 5.4.39-0+deb7u2 (cli) (built: Mar 25 2015 08:33:29)
+2015-05-01T12:15:03  <jeff> and yes, they "fixed a bug" but didn't update the documentation. nice.
+2015-05-01T12:16:07  <Dyrcona> Well, when I see people mention bugs with distro packages, my first thought is did the maintainer or upstream break it.
+2015-05-01T12:16:09  <tsbere> jeff: According to a friend of mine there were some false positives fixed at some point. Which would mean the documentation wouldn't need changing. "This wasn't doing what was documented, now it is"?
+2015-05-01T12:17:06  <jeff> tsbere: https://bugs.php.net/bug.php?id=53150 is "oh no, FILTER_FLAG_NO_RES_RANGE permits 127.0.0.1!" and the documentation says ``Fails validation for the following reserved IPv4 ranges: 0.0.0.0/8, 169.254.0.0/16, 192.0.2.0/24 and 224.0.0.0/4.''
+2015-05-01T12:17:57  <jeff> tsbere: i'm looking to see if they later reverted the "fix"
+2015-05-01T12:18:49  * tsbere hasn't had much reason to use that part of PHP lately so isn't all that familiar with it personally
+2015-05-01T12:19:18  <jeff> you're the only reason I ran into it just now. ;-)
+2015-05-01T12:19:35  <jeff> PHPSIP2 won't connect to localhost because of it -- simple fix.
+2015-05-01T12:22:16  <tsbere> as I said, lately. I haven't done much with phpsip2 for a while.
+2015-05-01T12:23:00  * tsbere also rarely has phpsip2 talk to localhost, for that matter, even when testing things >_>
+2015-05-01T12:23:37  <berick> because i'm not a huge fan of php, i started on this a while back: https://github.com/berick/pysip2
+2015-05-01T12:23:47  <berick> in case anyone prefers python
+2015-05-01T12:23:50  <berick> for sip tseting
+2015-05-01T12:27:31  *** jihpringle has joined #evergreen
+2015-05-01T12:32:33  *** collum has joined #evergreen
+2015-05-01T12:35:47  <jeff> berick++
+2015-05-01T12:37:14  *** collum has quit IRC
+2015-05-01T12:45:27  *** buzzy has joined #evergreen
+2015-05-01T12:56:24  *** collum has joined #evergreen
+2015-05-01T13:46:05  * bshum curiously sees whether "ubuntu-trusty-packager" works with 15.04 desktop.
+2015-05-01T14:00:59  <berick> warning for anyone using SSTP (for VPN's), there are no ubuntu 15.04-compatible sstp packages
+2015-05-01T14:01:08  <berick> at least, not that i could find
+2015-05-01T14:01:19  * berick may have to downgrade before the conf
+2015-05-01T14:05:24  <tsbere> I would think it wouldn't be that hard to download, compile, and install the functionality. Or does it conflict with something you can't remove that is packaged?
+2015-05-01T14:07:36  <berick> haven't tried compiling it
+2015-05-01T14:07:40  <berick> just installing the debs
+2015-05-01T14:08:15  <berick> which I can force install, but they still don't work
+2015-05-01T14:08:31  <berick> they just report a version mismatch on a dependency
+2015-05-01T14:14:30  <Dyrcona> Have you searched for PPAs?
+2015-05-01T14:17:55  <Dyrcona> Also, not using OpenVPN, I take it.
+2015-05-01T14:21:44  <berick> windows vpn server.  i am (or was) using networkmanager + sstp plugin
+2015-05-01T14:21:54  <berick> hm, maybe i should try direct 'pon' route
+2015-05-01T14:22:07  <berick> might jsut be a networkmanager problem
+2015-05-01T14:26:51  <Dyrcona> The debs from the sourceforge page don't install on 15.04?
+2015-05-01T14:27:03  <Dyrcona> Or don't work?
+2015-05-01T14:30:43  <berick> both
+2015-05-01T14:30:50  <berick> don't work w/ a force install
+2015-05-01T14:31:12  <Dyrcona> Well, I'd try installing from the tarball.
+2015-05-01T14:32:51  <Dyrcona> Then, as if you don't have enough to do, consider joining Masters of the Universe, putting the project on Launchpad, and maintaining it for Ubuntu Universe, just for the full masochism.
+2015-05-01T14:33:03  <Dyrcona> ;)
+2015-05-01T14:33:41  * berick slowly walks backwards out of the room
+2015-05-01T14:33:46  <Dyrcona> heh
+2015-05-01T14:49:18  <berick> @beer [someone]
+2015-05-01T14:49:19  <pinesol_green> berick: Try restarting apache.
+2015-05-01T14:49:25  * berick chuckles
+2015-05-01T14:49:41  <berick> pinesol_green: try restarting yourself
+2015-05-01T14:49:41  <pinesol_green> berick: MARC still isn't dead yet, alas
+2015-05-01T14:49:42  <pinesol_green> berick: I am only a bot, please don't think I'm intelligent :)
+2015-05-01T14:59:31  <berick> @bartender pinesol_green
+2015-05-01T14:59:31  * pinesol_green fills a pint glass with Saint Arnold Amber Ale, and sends it sliding down the bar to pinesol_green (http://beeradvocate.com/beer/profile/337/1065/)
+2015-05-01T15:00:09  <Dyrcona> @bartender
+2015-05-01T15:00:09  * pinesol_green fills a pint glass with Samuel Adams Octoberfest, and sends it sliding down the bar to Dyrcona (http://beeradvocate.com/beer/profile/35/102/)
+2015-05-01T15:00:21  <Dyrcona> Well, that seems appropriate. :)
+2015-05-01T15:06:36  *** collum has quit IRC
+2015-05-01T15:28:45  *** dbwells_ is now known as dbwells
+2015-05-01T15:36:34  <kmlussier> DIG is first week of the month
+2015-05-01T15:37:14  <yboston> ?
+2015-05-01T15:37:37  <berick> kmlussier: hah, i looked ahead at several months, but not this month
+2015-05-01T15:38:00  <berick> yboston: my email to open-ils-dev
+2015-05-01T15:38:21  <kmlussier> berick: I still prefer the 1st week of the month if we don't hold it on DIG day. 4th week of the month is a bear for me. But that's just me. It may work just fine for the rest of the community.
+2015-05-01T15:38:53  <yboston> ah
+2015-05-01T15:40:43  <berick> kmlussier: ok.
+2015-05-01T15:55:12  *** buzzy has quit IRC
+2015-05-01T15:58:23  *** ericar has quit IRC
+2015-05-01T16:10:34  <pinesol_green> [evergreen|Bill Erickson] Forward-port 2.8.0 to 2.8.1 SQL upgrade - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=ab23f66>
+2015-05-01T16:13:26  <Dyrcona> Everyone download the releases and upgrade over the weekend!
+2015-05-01T16:13:47  <kmlussier> Nah. I'll be too busy working on my conference presentations over the weekend.
+2015-05-01T16:17:35  <Dyrcona> heh
+2015-05-01T16:18:36  <pinesol_green> [evergreen|Galen Charlton] LP#1449283: fix auth when running under Apache 2.4 - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=cd4438a>
+2015-05-01T16:22:29  <berick> what's the entry point for the blog?
+2015-05-01T16:22:33  <berick> for creating posts, i mean
+2015-05-01T16:24:36  <kmlussier> wp-admin
+2015-05-01T16:25:17  <berick> kmlussier: thanks
+2015-05-01T16:25:48  *** rjackson_isl has quit IRC
+2015-05-01T16:27:12  <mrpeters> hi guys -- sorry to make brains work at 4:30 on Friday, but it's not looking like auditor.actor.usr_history is exposed as a database source in the reports module -- or am I overlooking it?
+2015-05-01T16:27:21  <jeff> nope, it's not there.
+2015-05-01T16:27:34  <mrpeters> damn
+2015-05-01T16:30:33  *** jboyer-isl has quit IRC
+2015-05-01T16:51:23  *** mrpeters has left #evergreen
+2015-05-01T16:55:11  <kmlussier> @dessert
+2015-05-01T16:55:11  * pinesol_green grabs some Pumpkin Pie for kmlussier
+2015-05-01T16:55:49  <mmorgan> Good idea!
+2015-05-01T16:55:49  *** Dyrcona has quit IRC
+2015-05-01T16:55:52  <mmorgan> @dessert
+2015-05-01T16:55:52  * pinesol_green grabs some wild Alaskan rhubarb pie for mmorgan
+2015-05-01T16:56:53  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-01T17:06:03  *** StomproJ has quit IRC
+2015-05-01T17:10:28  *** mmorgan has left #evergreen
+2015-05-01T17:20:50  *** buzzy has joined #evergreen
+2015-05-01T17:37:23  *** buzzy has quit IRC
+2015-05-01T18:02:42  <kmlussier> evergreen-ils.org is quite sluggish at the moment
+2015-05-01T18:02:57  <kmlussier> Of course, as soon as I said that, it loaded.
+2015-05-01T18:08:08  <dbwells> kmlussier: we're getting hit pretty hard by 185.11.144.82.  I might see about blocking them, if I can do it.
+2015-05-01T18:09:09  <kmlussier> Ah, so it's not just me then. Thanks dbwells!
+2015-05-01T18:13:10  <dbwells> that looks much better now
+2015-05-01T18:40:28  *** pmurray is now known as pmurray_away
+2015-05-01T19:10:26  <jeff> dbwells++
+2015-05-01T19:19:43  *** yboston has quit IRC
+2015-05-01T20:00:26  *** nuentoter has joined #evergreen
+2015-05-01T20:00:45  <nuentoter> hello is there anyone live in here?
+2015-05-01T20:20:42  <jonadab> Yes, but most of the activity takes place in the daytime.
+2015-05-01T20:20:55  <jonadab> Like, typically 9-4 or so, Eastern time.
+2015-05-01T20:22:38  <nuentoter> ty, well curious if i could get a little bit of help
+2015-05-01T20:23:18  <jonadab> Go ahead and ask your question.  The worst we can do is not know the answer.
+2015-05-01T20:24:17  <nuentoter> ok i semi new to linux but pretty computer savvy, im trying to set up the evergreen server and having issues installing
+2015-05-01T20:24:34  <jonadab> What kinds of issues?
+2015-05-01T20:25:16  <jonadab> (Installing Evergreen is somewhat more involved than most Linux software.)
+2015-05-01T20:25:29  <nuentoter> im not sure of the file structure of where to be putting everything
+2015-05-01T20:26:47  <nuentoter> particularly stuck on the makefile it gets up to the "package libemailpearl-send-pearl is not available.." and so on
+2015-05-01T20:26:54  <jonadab> Ok.  Evergreen is kind of atypical in that regard.  The usual procedure is to put certain things in /openils that would, for most other software, be expected to be elsewhere.
+2015-05-01T20:27:25  <jonadab> Hmm... libemail-send-perl?
+2015-05-01T20:27:30  <nuentoter> ok where should /openils be though? i have it in /usr/local right now
+2015-05-01T20:27:47  <jonadab> nuentoter: /openils is an absolute location.
+2015-05-01T20:27:51  <jonadab> It starts with a slash.
+2015-05-01T20:27:59  <jonadab> So it's in the filesystem root.
+2015-05-01T20:28:02  <nuentoter> oh ok
+2015-05-01T20:28:08  <nuentoter> that should help haha
+2015-05-01T20:28:18  <jonadab> That's an atypical place to put things.  Evergreen is... special.
+2015-05-01T20:28:34  <jonadab> There's been talk of moving away from that, but for now...
+2015-05-01T20:28:50  <jonadab> As for the Perl library, do you have CPAN set up and working?
+2015-05-01T20:29:36  <nuentoter> thats what i was confused about, i've only compiled a few things and used the make command once before but everything always goes in /usr/local
+2015-05-01T20:30:04  <nuentoter> nope didnt read that it was required
+2015-05-01T20:30:08  <jonadab> automake/autoconf normally default to putting things in /usr/local/
+2015-05-01T20:30:38  <jonadab> You'll want to get CPAN working, some of the OpenSRF and Evergreen prerequisites require CPAN modules.
+2015-05-01T20:30:48  <jonadab> perl -MCPAN -e shell
+2015-05-01T20:32:09  <nuentoter> ok its up
+2015-05-01T20:32:20  <jonadab> Ok, is it asking you config questions, or is it done with all that?
+2015-05-01T20:33:10  <nuentoter> done with that sitting at the cpan[1] prmpt
+2015-05-01T20:33:20  <jonadab> I usually go ahead and type "install Bundle::CPAN" at the CPAN prompt; this is not mandatory, but I usually do it.
+2015-05-01T20:33:31  <jonadab> (It updates CPAN and a bunch of related modules.)
+2015-05-01T20:34:09  <jonadab> Oh, I should probably clarify:  since you were using make, I've been assuming that you already installed build-essential or the equivalent system package.
+2015-05-01T20:34:23  <jonadab> So you have gcc and make and all that stuff.
+2015-05-01T20:35:03  <nuentoter> our library is looking to switch very soon to evergreen and i'm setting up a left over computer as a test server to check it out and see what will work for us
+2015-05-01T20:35:43  <nuentoter> pretty sure most of that can preinstalled on this distro
+2015-05-01T20:35:45  <jonadab> Yeah, I'm doing a similar thing to work on migrating our data.
+2015-05-01T20:36:14  <jonadab> nuentoter: Oh, could be.  I use Debian, which doesn't install that stuff by default, but the build-essential metapackage depends on all of it.
+2015-05-01T20:36:22  <nuentoter> im on debian jessie for first time
+2015-05-01T20:36:42  <jonadab> Anyway, once you have CPAN up and going, you can exit it, then try the make step for the dependencies again.
+2015-05-01T20:37:07  <nuentoter> ok its doing its thing right now
+2015-05-01T20:37:08  *** jihpringle has quit IRC
+2015-05-01T20:37:42  <nuentoter> how much of a hassle is it to migrate?
+2015-05-01T20:38:04  <nuentoter> we're a pretty small library so im not worried, it will happen :)
+2015-05-01T20:38:30  <jonadab> Depends, but in general, different ILSes don't store the data in exactly the same way in the database.  So you have to figure out which fields in your old ILS map to which fields in the new one.
+2015-05-01T20:38:39  <jonadab> Some of the fields will be straightforward, others not so much.
+2015-05-01T20:39:09  <jonadab> We're kind of small for Evergreen too.  FTE of about fifteen or so.
+2015-05-01T20:39:41  <jonadab> About a hundred thousand items in the collection, and about ten thousand registered patrons, 2-3 thousand of whom have checked anything out *recently*.
+2015-05-01T20:41:06  <nuentoter> We're in a town of about 2k people lol
+2015-05-01T20:41:33  <nuentoter> One head librarian and 2 pt assitants
+2015-05-01T20:42:22  <jonadab> Oh, ok.  We're in a city of about ten thousand people.
+2015-05-01T20:42:43  <jonadab> But we get a fair number of patrons using the library who live in towns 10 or 20 minutes down the road.
+2015-05-01T20:44:16  <jonadab> Our *official* service area is just the city of Galion, but most library funding in Ohio comes from the State, so nobody gets upset about patrons from the next town down the road using the library.
+2015-05-01T20:44:56  <jonadab> Our patrons use the libraries over there too, e.g., if they commute to work.
+2015-05-01T20:48:01  *** dcook__ has quit IRC
+2015-05-01T20:48:23  *** dcook has joined #evergreen
+2015-05-01T20:51:23  <nuentoter> ok i just got the same error on the make file after moving everything
+2015-05-01T20:51:36  <nuentoter> let me dbl check things are where they are supposed to be
+2015-05-01T20:52:35  <jonadab> It's possible that your distribution doesn't have a package for the Perl library that the makefile wants to install.
+2015-05-01T20:52:47  <jonadab> In which case, you can probably work around it by using CPAN to install the module.
+2015-05-01T20:52:52  <nuentoter> i have /openils/Evergreen-ILS-2.8.0/     and all that that entails   and also   /openils/opensrf-2.4.0
+2015-05-01T20:53:21  <jonadab> Wait, are you /building/ in /openils?
+2015-05-01T20:53:42  <jonadab> I don't know of any reason why that won't work, but it isn't what I meant.
+2015-05-01T20:54:08  <nuentoter> yes
+2015-05-01T20:54:22  <jonadab> Hmm...  I think the CPAN command might be "install Email::Send" or something like that.  Not sure about the capitalization.
+2015-05-01T20:54:54  <jonadab> What I meant about /openils is that you'll tell the configure script that that's the install directory.
+2015-05-01T20:55:17  <nuentoter> oh haha
+2015-05-01T20:56:13  <jonadab> For example, step 4, here:  http://evergreen-ils.org/documentation/install/README_2_8.html
+2015-05-01T20:56:47  <jonadab> The --prefix=/openils --sysconfdir=/openils/conf there is what I was talking about.
+2015-05-01T20:57:06  <jonadab> The OpenSRF install docs have something similar, IIRC.
+2015-05-01T20:59:26  <jonadab> Out of curiousity, what ILS would you be migrating from?
+2015-05-01T20:59:33  <jonadab> (We've been on Polaris...)
+2015-05-01T21:02:48  <nuentoter> wwe've been using winnebago
+2015-05-01T21:03:12  <jonadab> Ah, I've heard of that.  I think Crestline used that before they moved to TLC.
+2015-05-01T21:03:40  <jonadab> Or, no, wait; I think _Bucyrus_ moved to TLC, and Crestline moved from winnebago to Polaris.
+2015-05-01T21:05:51  <jonadab> (Crestline's main library is about half our size; but they also have a branch, and we don't.  Bucyrus is about our size, give or take.)
+2015-05-01T21:06:53  <nuentoter> im new to the staff and winnebago is an old outdated clunky system
+2015-05-01T21:07:05  <jonadab> Right, winnebago is a full generation out of date.
+2015-05-01T21:07:25  <jonadab> When it was current, we were using Galaxy, which was made by the company that later also produced Polaris.
+2015-05-01T21:07:56  <jonadab> It probably doesn't even have its data in a relational database.  (Do you have a good way to get the data out?)
+2015-05-01T21:11:46  <nuentoter> im not sure to be honest
+2015-05-01T21:12:10  <nuentoter> i think i can only export to an excel file
+2015-05-01T21:13:19  <nuentoter> root@debian:/# make -f src/extras/Makefile.install debian-jessie
+2015-05-01T21:13:19  <nuentoter> make: src/extras/Makefile.install: No such file or directory
+2015-05-01T21:13:19  <nuentoter> make: *** No rule to make target 'src/extras/Makefile.install'.  Stop.
+2015-05-01T21:13:42  <jonadab> Hmm, exporting to an Excel spreadsheet should work.
+2015-05-01T21:14:18  <nuentoter> didnt mean to paste it all just the command line but isnt that correct?
+2015-05-01T21:14:24  <jonadab> nuentoter: are you in the directory where you extracted the tarball?
+2015-05-01T21:14:40  <jonadab> The tarball contains a src directory, which contains extras, etc.
+2015-05-01T21:15:03  <jonadab> Oh, wait, it puts it all inside of a directory, of course.
+2015-05-01T21:15:07  <nuentoter> oh i didnt extract it im just in the dir that contains it
+2015-05-01T21:15:09  <jonadab> Like, Evergreen-blah-blah-blah.
+2015-05-01T21:15:16  <jonadab> Oh, right, ok.
+2015-05-01T21:15:31  <nuentoter> maybe i should sleep instead of doing this late at night lol
+2015-05-01T21:15:32  <jonadab> So you tar -xvf Evergreen-whatever.tar.bz2
+2015-05-01T21:15:43  <jonadab> Or is it a .tar.gz?  Whatever.
+2015-05-01T21:15:58  <jonadab> And then you cd to the directory it creates.  Then do the make step from there.
+2015-05-01T21:16:18  <jonadab> Actually, though, you probably want to do the OpenSRF one first.
+2015-05-01T21:16:31  <jonadab> Unless you already did.
+2015-05-01T21:22:02  <nuentoter> yeah i did opensrf last night the right way i think i just need to walk away from the computer for a bit lol
+2015-05-01T21:25:33  <nuentoter> or start taking notes would probably work better
+2015-05-01T21:28:15  <nuentoter> there things seem to be finally going correctly i think, time for a cigarette thank you jonadab
+2015-05-01T21:31:59  <jonadab> Taking notes is good, yeah.
+2015-05-01T21:42:31  <nuentoter> ok so i ran up against the same error with the libemail-send-perl package not being found
+2015-05-01T21:42:54  <jonadab> Hmm, maybe jessie doesn't package that one?
+2015-05-01T21:43:04  <nuentoter> actually ...
+2015-05-01T21:43:07  <jonadab> You can probably work around it by using CPAN to install it directly.
+2015-05-01T21:43:19  <jonadab> install Email::Send at the CPAN prompt.
+2015-05-01T21:43:54  <nuentoter> it is already installed manually
+2015-05-01T21:44:00  <nuentoter> i get this error actually now
+2015-05-01T21:44:02  <nuentoter> Package libemail-send-perl is not available, but is referred to by another package.
+2015-05-01T21:44:02  <nuentoter> This may mean that the package is missing, has been obsoleted, or
+2015-05-01T21:44:02  <nuentoter> is only available from another source
+2015-05-01T21:44:17  <nuentoter> before it was not found
+2015-05-01T21:44:41  <jonadab> Ok, I'm not certain if this is an actual problem, but if you have Email::Send installed, try just ignoring that error and see if it just works.
+2015-05-01T21:45:06  <jonadab> Hmm, wait, one question:
+2015-05-01T21:45:23  <jonadab> When doing the make step for the dependencies, you did say debian-jessie for which distro you have, right?
+2015-05-01T21:45:32  <jonadab> You didn't, for example, say debian-wheezy?
+2015-05-01T21:45:33  <nuentoter> yup
+2015-05-01T21:45:37  <nuentoter> jessie
+2015-05-01T21:45:46  <jonadab> Ok, so yeah, probably the makefile needs a slight tweak.
+2015-05-01T21:45:56  <jonadab> I'll look in launchpad later and see if there's a bug about it.
+2015-05-01T21:46:07  <jonadab> It'll be good for me to get familiar with launchpad.
+2015-05-01T21:48:27  <jonadab> Ah, this seems relevant.  https://bugs.launchpad.net/evergreen/+bug/1362260
+2015-05-01T21:48:27  <pinesol_green> Launchpad bug 1362260 in Evergreen "Email::Send is deprecated" (affected: 2, heat: 12) [Undecided,Confirmed]
+2015-05-01T22:15:22  <jeffdavis> ldw: changes to fm_IDL.xml can go in Open-ILS/examples/fm_IDL.xml; when deploying you need to put the updated file at both /srv/openils/conf/fm_IDL.xml and /srv/openils/var/web/reports/fm_IDL.xml
+2015-05-01T22:15:36  <jeffdavis> er, wrong channel

@@ -1,0 +1,382 @@
+2015-04-07T00:47:00  *** dcook__ has joined #evergreen
+2015-04-07T00:50:21  *** dcook has quit IRC
+2015-04-07T03:34:05  *** sbrylander has joined #evergreen
+2015-04-07T03:34:11  *** dcook has joined #evergreen
+2015-04-07T03:36:13  *** dcook__ has quit IRC
+2015-04-07T03:36:38  *** sarabee has quit IRC
+2015-04-07T05:03:48  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-07T07:21:59  <rangi> wtaf
+2015-04-07T07:22:47  <rangi> i wish someone had told me 16 years ago that if you open source something, you are not allowed to work on it or maintain it anymore, ive been doing it wrong for 16 years
+2015-04-07T07:24:11  <rangi> thats too much new info for me, im going to go bed, unless that is politically correct also
+2015-04-07T07:26:56  *** collum has joined #evergreen
+2015-04-07T07:37:43  *** graced has joined #evergreen
+2015-04-07T07:49:41  *** mrpeters has joined #evergreen
+2015-04-07T07:50:27  *** jboyer-isl has joined #evergreen
+2015-04-07T07:55:02  *** jeff__ has joined #evergreen
+2015-04-07T07:55:19  *** jeff_ has quit IRC
+2015-04-07T07:57:58  *** rjackson_isl has joined #evergreen
+2015-04-07T08:12:46  *** darshana has joined #evergreen
+2015-04-07T08:24:26  *** Newziky1 has left #evergreen
+2015-04-07T08:29:43  *** Newziky1 has joined #evergreen
+2015-04-07T08:30:15  <jboyer-isl> @coffee
+2015-04-07T08:30:16  * pinesol_green brews and pours a cup of El Salvador Los Planes Cup of Excellence 2006, and sends it sliding down the bar to jboyer-isl
+2015-04-07T08:30:49  <jboyer-isl> Nothing quite takes the edge off the morning like 9 year old coffee.
+2015-04-07T08:36:14  *** akilsdonk has joined #evergreen
+2015-04-07T08:37:35  *** mmorgan has joined #evergreen
+2015-04-07T08:39:00  *** krvmga has joined #evergreen
+2015-04-07T08:50:24  *** ericar has joined #evergreen
+2015-04-07T08:52:58  *** RoganH has joined #evergreen
+2015-04-07T08:57:30  *** RoganH has quit IRC
+2015-04-07T08:58:17  *** Shae has joined #evergreen
+2015-04-07T08:59:13  *** Dyrcona has joined #evergreen
+2015-04-07T09:01:48  *** maryj has joined #evergreen
+2015-04-07T09:14:49  *** tsbere has quit IRC
+2015-04-07T09:16:28  *** tsbere has joined #evergreen
+2015-04-07T09:19:23  *** jwoodard has joined #evergreen
+2015-04-07T09:25:43  <gmcharlt> jboyer-isl: indeed, I've always found that being chased by coffee old enough to be sentient lends a special zest to the day
+2015-04-07T09:26:37  <jboyer-isl> Definitely. Once coffee can walk on it's own it's time to let it go off into the world.
+2015-04-07T09:28:01  *** yboston has joined #evergreen
+2015-04-07T09:29:52  * jeff eyes the day-old half-cup on his desk with renewed suspicion
+2015-04-07T09:33:19  *** remingtron_ is now known as remingtron
+2015-04-07T09:39:42  <krvmga> Jeff has grounds for suspicion.
+2015-04-07T09:41:11  * jeff winces
+2015-04-07T09:41:18  <jeff> (because of the pun, not the cold coffee)
+2015-04-07T09:41:32  <krvmga> too early?
+2015-04-07T09:41:36  <jeff> relevant, especially to gmcharlt's coffee-related tweet of this morning: http://en.wikipedia.org/wiki/Black_start
+2015-04-07T09:42:18  <gmcharlt> jeff++
+2015-04-07T09:44:41  <jboyer-isl> krvmga++
+2015-04-07T09:44:43  <jboyer-isl> jeff++
+2015-04-07T09:45:33  <jeff> I have done the "insert k-cup, press button, walk back to desk, stare blankly at coffee cup on desk for a few seconds, DASH back to keurig..."
+2015-04-07T09:46:06  <kmlussier> heh
+2015-04-07T09:46:51  <kmlussier> I quite often re-warm my cup of coffee in the microwave, forget about it until it cools down again, then re-warm it again.
+2015-04-07T09:46:53  <kmlussier> Then I repeat
+2015-04-07T09:46:58  * mmorgan always says one can't make coffee in the morning unless one has had coffee
+2015-04-07T09:47:43  <krvmga> mmorgan: the coffee catch-22
+2015-04-07T09:47:55  <jeff> keurig as blackstart capability for your more advanced coffee preparation device...
+2015-04-07T09:48:16  <kmlussier> That's why I start with tea. It much easier to pour boiling water into a cup with a teabag. As long as you remember to boil the water.
+2015-04-07T09:48:17  <jeff> but of course, as shown in the above examples even that can have its... challenges.
+2015-04-07T09:48:36  <krvmga> my keurig machine conked out, much to my dismay and surprise. have to get a new one.
+2015-04-07T09:49:05  <krvmga> jeff++
+2015-04-07T09:50:19  <jeff> So yesterday I hacked up Missing Pieces to check the item in question back out to the patron with a due date some fixed time in the future (could be an org unit setting, probably wouldn't make sense to have it go through the full circ policy set with some special flag), zero renewals, MAXFINES set and  stop_fines_time equal to xact_start.
+2015-04-07T09:50:49  <jeff> Notification goes out to patron of a fairly vague nature ("please contact the library for more info on what's missing/etc")
+2015-04-07T09:51:53  <jeff> Then the idea is that staff will get a report of any items marked Missing Pieces in a given day, and they have a week to either 1) manually add a billing to the circ for a disc replacement fee, etc or 2) adjust the asset.copy.price to reflect the desired full amount that will be automatically billed at the end of the week.
+2015-04-07T09:53:11  <jeff> Part of the idea is to not hit patrons immediately with the price (which would prevent them from checking items out, etc).
+2015-04-07T09:54:01  <jeff> Of course, in the case of a $10 disc replacement fee being added somewhere between 0 and 7 days after marked Missing Pieces, that will prevent checkout. I guess we'll need to have procedure that permits staff to override/allow the checkout as long as the week hasn't passed.
+2015-04-07T09:54:46  <jeff> Because short of staging the billing in an external fashion or having staff not manually add the replacement disc fee until the last minute, I don't have a way of having a "pending" bill.
+2015-04-07T09:55:20  <jeff> Does this kind of workflow compare to other libraries present, or are we going far afield?
+2015-04-07T10:01:14  <mmorgan> jeff: so all items marked "missing pieces" on days 0 - 7 are billed at the end of the week? Or did I read that wrong?
+2015-04-07T10:02:41  <jeff> mmorgan: any circs with copies in a Missing Pieces status that have not had a manual bill added would be auto-billed the full price on or after day 7. Staff have a week to adjust the copy's price or to manually add a (usually partial) billing.
+2015-04-07T10:04:50  <mmorgan> ok, I see. We don't have a formal Missing Pieces procedure in place.
+2015-04-07T10:05:50  <jeff> We've been trying to move from a very manual process, involving hand-filled slips with checkboxes for each time staff attempts to contact a patron, etc.
+2015-04-07T10:07:00  <jeff> Much simplification of the process, but we still find ourselves looking to adjust the Evergreen side of things a little bit.
+2015-04-07T10:07:27  <mmorgan> Makes sense. The thing that bothers me about the Missing Pieces process, though, is that an item can be sitting on the shelf for quite some time, then get marked Missing Pieces. That checks it out to a patron who may have returned it some time ago.
+2015-04-07T10:08:52  <jeff> Ah. Interesting. I don't think we have that often, but I'll now inquire as to what we do in that case.
+2015-04-07T10:09:50  <jeff> We inspect the items for missing pieces when returned. If discovered later, I suspect that the way we handle it is different, but I've not explicitly asked.
+2015-04-07T10:09:53  <jeff> mmorgan++
+2015-04-07T10:14:51  <mmorgan> Would an org unit setting that limits how long after checkin an item can be marked missing pieces make sense?
+2015-04-07T10:15:27  <jeff> Probably!
+2015-04-07T10:16:03  *** abowling has joined #evergreen
+2015-04-07T10:16:27  <jeff> I probably lack time to take it this far, but I can even see it being helpful to have a confirmation screen that includes the patron you're about to stick with the blame.
+2015-04-07T10:16:55  * mmorgan will file a launchpad bug. 
+2015-04-07T10:18:19  <mmorgan> I agree that a confirmation that it's being rechecked out to a patron would be helpful.
+2015-04-07T10:23:27  <jeff> Some of the things we're keeping in mind with Missing Pieces include: 1) the patron in most cases thinks that they have returned the item in question, 2) the existing behavior can result in someone ending up with many more or many fewer days before they start getting fines
+2015-04-07T10:24:02  <jeff> an example of 2, a patron may return an item a week early, have it marked Missing Pieces, and since the item is needed for a hold the current code will make it immediately due, and it will start getting daily fines.
+2015-04-07T10:24:26  <jeff> That doesn't work well for us.
+2015-04-07T10:24:38  <jeff> Which is why we're experimenting. :-)
+2015-04-07T10:25:48  <jeff> And for 1, "the patron thinks that they've returned it", we're probably going to exclude Missing Pieces from any courtesy/overdue notification, since those notices typically also include the "if you've recently returned this items, please disregard this notice" style wording. :-)
+2015-04-07T10:30:11  <mmorgan> jeff: are you building in an automatic notification? Instead of the missing pieces letter that opens in a text editor?
+2015-04-07T10:31:27  *** wjr has joined #evergreen
+2015-04-07T10:31:56  *** ericar_ has joined #evergreen
+2015-04-07T10:34:55  *** ericar has quit IRC
+2015-04-07T10:36:04  *** ericar has joined #evergreen
+2015-04-07T10:37:40  *** ericar_ has quit IRC
+2015-04-07T10:43:55  <jeff> mmorgan: We're not using the letter, though I was happy to see how well it worked in the web client. Hrm. Input is labeled incorrectly, though...
+2015-04-07T10:44:38  <jeff> Hrm. Web client also doesn't bring up the copy editor.
+2015-04-07T10:45:07  *** dreuther has joined #evergreen
+2015-04-07T10:46:58  <bshum> jeff: Should it?  Wouldn't copy editor be part of sprint2 - cataloging?  Or you using something fancy on your end of things?
+2015-04-07T10:47:18  <jeff> bshum: nope, you're right!
+2015-04-07T10:47:37  <jeff> bshum: it should eventually, but since there's no editor for it to bring up yet... it makes sense that it doesn't. :-)
+2015-04-07T10:47:46  * jeff eyes coffee
+2015-04-07T10:48:14  <jeff> bshum++
+2015-04-07T10:55:11  *** krvmga has quit IRC
+2015-04-07T11:13:26  <jeff> ah, and the label is fixed in commit 21e13fd
+2015-04-07T11:13:26  <pinesol_green> [evergreen|Mike Rylander] LP#1402797 Fix "scan item for missing pieces" label to say Item instead of Patron - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=21e13fd>
+2015-04-07T11:26:24  *** vlewis has joined #evergreen
+2015-04-07T11:42:55  <pinesol_green> [evergreen|Ben Shum] Docs: Minor edits to 2.8 release notes - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=a13a707>
+2015-04-07T12:03:31  *** bmills has joined #evergreen
+2015-04-07T12:09:34  *** ericar_ has joined #evergreen
+2015-04-07T12:11:13  *** ericar has quit IRC
+2015-04-07T12:11:27  *** ericar_ is now known as ericar
+2015-04-07T12:32:07  *** sandbergja has joined #evergreen
+2015-04-07T12:45:15  <mmorgan> Re: the Missing Pieces discussion earlier: lp 1441245
+2015-04-07T12:45:15  <pinesol_green> Launchpad bug 1441245 in Evergreen "Mark item as Missing Pieces should not always checkout the item to the last patron" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1441245
+2015-04-07T12:47:31  *** maryj has quit IRC
+2015-04-07T12:51:32  *** dreuther_ has joined #evergreen
+2015-04-07T12:51:38  *** dreuther has quit IRC
+2015-04-07T13:01:17  <bshum> kmlussier++ # ridesharing info
+2015-04-07T13:02:26  <kmlussier> I'm thinking it might be useful for other conferences, even if it's closer to an airport. Because there are always nearby people who are driving to the conference or even people who might want to share a taxi.
+2015-04-07T13:13:43  <jeff> mmorgan: I checked, and we handle "found on shelf missing pieces" without making use of Mark Item Missing Pieces.
+2015-04-07T13:14:28  <jeff> mmorgan: not a perfect analogy, but consider the difference between "Lost (by patron)" as opposed to "Missing"
+2015-04-07T13:15:24  * kmlussier wonders if a 12:30 p.m. Saturday shuttle is cutting it too close to make a 1:52 p.m. flight.
+2015-04-07T13:15:44  <bshum> that's too close.
+2015-04-07T13:15:45  <jeff> mmorgan: If it's found to be missing pieces when returned by a patron, we'll use Mark Item Missing Pieces, and attempt to recover the pieces or bill the patron. If it's found on the shelf missing pieces, we mark the material damaged, pull, and consider re-ordering.
+2015-04-07T13:15:54  <bshum> kmlussier: Well.... maybe
+2015-04-07T13:16:07  <bshum> I mean, it's an hour to go from Hood River to Portland right?
+2015-04-07T13:16:19  <bshum> So 12:30 means arriving at 1:30 at best.
+2015-04-07T13:16:21  <kmlussier> Oh, wait. I'm arriving too late for the Tuesday night shuttle too. I thought I was all set on that. :(
+2015-04-07T13:16:48  <mmorgan> jeff: gotcha, so if found on shelf, use the "mark damaged" function as opposed to the "missing pieces" function.
+2015-04-07T13:16:54  <bshum> If you had really fast security check, then maybe?  :)
+2015-04-07T13:17:02  <bshum> But that is really close.
+2015-04-07T13:17:48  <jeff> mmorgan: That's my understanding, yes.
+2015-04-07T13:29:29  *** Newziky1 has quit IRC
+2015-04-07T13:30:08  <csharp> kmlussier: I have a 1:38pm flight on Saturday too, so perhaps we could arrange shared transportation
+2015-04-07T13:31:09  <kmlussier> csharp: That would be great! There is a 10 a.m. shuttle, but I was hoping to stick around at the conference a little longer than that.
+2015-04-07T13:32:15  <csharp> so... anyone have any scripts for outputting data for Gale Analytics?
+2015-04-07T13:32:42  <csharp> looks like one of our libraries has already purchased this and now wants it to "interface with PINES"
+2015-04-07T13:32:49  <bshum> Typical.
+2015-04-07T13:32:56  <csharp> yep :-(
+2015-04-07T13:33:17  <collum> My flight is also at 1:30 on Saturday, maybe the same flight as kmlussier, but you can add my name to the shared transportation.
+2015-04-07T13:33:41  <kmlussier> Looks like we have a car pool! :)
+2015-04-07T13:33:45  <csharp> yep
+2015-04-07T13:34:38  * csharp assumes the Gale thing will need something similar to collectionhq
+2015-04-07T13:34:58  <bshum> Probably.
+2015-04-07T13:38:50  <collum> Oh.  Not the same flight.  The 1:30 I saw was bshum's statement.
+2015-04-07T13:39:02  * collum needs to read more closely, instead of scanning.
+2015-04-07T13:41:05  <csharp> the 10:00 a.m. shuttle might be the best option - allow 1.5 hours to get from Hood River to PDX = 11:30 - 2 hours in advance of my flight time
+2015-04-07T13:43:54  * kmlussier was hoping to catch a bit of gmcharlt's linked data talk. :(
+2015-04-07T13:44:20  <kmlussier> I missed dbs' talk last year.
+2015-04-07T13:44:25  <gmcharlt> kmlussier: I'll very likely be participating in the ride-sharing pool, FWIW
+2015-04-07T13:44:44  <gmcharlt> and since I can't very well miss my own talk...
+2015-04-07T13:45:10  <bshum> What?  No Skype in the car on the way back to the airport?
+2015-04-07T13:45:12  <bshum> :P
+2015-04-07T13:45:40  * bshum has done Google Hangout with the Docs on his way to the Hackfest before.  So, don't listen to him.
+2015-04-07T13:45:47  <gmcharlt> bshum: I like living more than I like giving Linked Data talks ;)
+2015-04-07T13:46:17  <bshum> I think they enjoyed watching my phone's video feed of the road as I was driving?  :)
+2015-04-07T13:46:31  <bshum> gmcharlt: But yes, living is good....
+2015-04-07T13:46:48  <collum> living++
+2015-04-07T13:52:38  * kmlussier remembers bshum doing that Google Hangout with DIG
+2015-04-07T13:53:25  <kmlussier> bmills++ #Offering 4 seats on ride share
+2015-04-07T13:54:58  *** sbrylander has quit IRC
+2015-04-07T13:55:15  <kmlussier> bmills: If we left Hood River at 11 a.m. on a Saturday morning, should we expect traffic? I'm thinking getting to the airport at 12 p.m. would be plenty of time to make a 1:52 p.m. flight.
+2015-04-07T13:55:28  * kmlussier likes living dangerously for the sake of seeing linked data talks.
+2015-04-07T13:55:50  <csharp> kmlussier: I would imagine 11a would be fine for my flight too
+2015-04-07T13:56:18  * kmlussier agrees
+2015-04-07T13:58:06  <bmills> i'd allow at least an hour and a half to get there. the turn off for the airpot can get real congested with people coming/going to Seattle
+2015-04-07T13:59:53  <bmills> leaving at noon should allow you to get to the airport with a little breathing room
+2015-04-07T14:00:10  <bmills> or sorry, 11am
+2015-04-07T14:00:40  <kmlussier> Yeah, noon would be a little tight. :)
+2015-04-07T14:04:53  <csharp> bmills++ # awesome
+2015-04-07T14:05:04  <Bmagic> What are folks doing with metarecord holds on metarecords that don't exist anymore?
+2015-04-07T14:05:54  <csharp> Bmagic: eww - in our case they're probably just sitting there abandoned and unloved
+2015-04-07T14:06:08  <bshum> Wouldn't those die with untargeted expiration eventually?
+2015-04-07T14:06:17  <Bmagic> csharp: in our case, it throws a nasty error on the staff client when that hold is getting fleshed
+2015-04-07T14:06:19  <bshum> I guess it depends on how your holds setup is configured.
+2015-04-07T14:06:55  <Bmagic> This is simliar to the part level holds on parts that have since been deleted
+2015-04-07T14:06:59  <bshum> Oh awesome Bmagic.... yeah
+2015-04-07T14:07:03  <Bmagic> which is a bug
+2015-04-07T14:07:05  <kmlussier> Ugh. bug 937789
+2015-04-07T14:07:05  <pinesol_green> Launchpad bug 937789 in Evergreen 2.4 "Deleting parts breaks hold interfaces" (affected: 11, heat: 68) [Medium,Confirmed] https://launchpad.net/bugs/937789
+2015-04-07T14:07:08  <bshum> Yeah
+2015-04-07T14:07:22  * bshum hates on bug 937789
+2015-04-07T14:07:32  <Bmagic> 937789--
+2015-04-07T14:08:02  <Bmagic> ok, just thought I would check. It sounds like everyone is having the same problem
+2015-04-07T14:08:20  <bshum> With parts, sure.
+2015-04-07T14:08:29  <bshum> But metarecords, unfortunately we've not tested that extensively.
+2015-04-07T14:08:34  <bshum> For our consortium, that is still disabled.
+2015-04-07T14:08:44  <Bmagic> metarecord holds = part level holds in this context
+2015-04-07T14:08:48  <bshum> Until we get more time to sort out the fingerprints
+2015-04-07T14:10:26  <Bmagic> We handle the part level holds with a cron job that deletes them and reports the deletes in an email to the consortium email list
+2015-04-07T14:10:46  <Bmagic> perhaps the metarecord holds need to be included in this cron
+2015-04-07T14:13:59  <dbs> kmlussier: my linked (structured, really) data talk missed you!
+2015-04-07T14:34:35  *** Newziky1 has joined #evergreen
+2015-04-07T14:36:43  *** mglass_ has joined #evergreen
+2015-04-07T14:38:58  *** mglass has quit IRC
+2015-04-07T14:54:46  <csharp> @quote random
+2015-04-07T14:54:46  <pinesol_green> csharp: Quote #83: "< jboyer-isl> PEBCAKEs, while delicious, rarely yield fruitful discussions." (added by csharp at 03:54 PM, April 16, 2014)
+2015-04-07T15:14:05  <jeff> interesting: various docs filenames have uppercase filename extensions in an evergreen release tar file, lowercase in git.
+2015-04-07T15:44:10  <jeff> i wonder why that is.
+2015-04-07T15:45:46  <kmlussier> jeff: Are they images?
+2015-04-07T15:47:09  <jeff> yes. jpg vs JPG
+2015-04-07T15:47:32  <kmlussier> I remember there were a few git commits a while back changing some image files with uppercase extensions to lowercase. They're probably the same files.
+2015-04-07T15:48:45  <bshum> Like 703a9b04311895af251c31170629e4fc4cebfc0a
+2015-04-07T15:48:45  <pinesol_green> [evergreen|Remington Steed] Docs: Fix filenames to match references in the docs - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=703a9b0>
+2015-04-07T15:48:54  <jeff> yup, first one is affected by commit 83c1981
+2015-04-07T15:48:54  <pinesol_green> [evergreen|Josh Stompro] Docs: Fix filenames to match references in the docs - second time - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=83c1981>
+2015-04-07T15:50:03  <jeff> but that commit it contained within master, rel_2_7, and tags/rel_2_7_4
+2015-04-07T15:50:10  <jeff> s/it contained/is contained/
+2015-04-07T15:50:13  <bshum> Yep
+2015-04-07T15:50:50  <bshum> It looks like that second commit
+2015-04-07T15:50:53  <bshum> Created new files
+2015-04-07T15:50:59  <bshum> That were lowercase .jpg
+2015-04-07T15:51:05  <bshum> But didn't remove the older .JPG uppercaes
+2015-04-07T15:51:08  <bshum> *uppercase
+2015-04-07T15:52:38  <bshum> So they're duplicates I guess
+2015-04-07T15:53:19  *** mglass_ has quit IRC
+2015-04-07T15:53:59  <Dyrcona> Looks like it in the git history and in a clean repo.
+2015-04-07T15:54:18  <bshum> There's still references to uppercase .JPG in the docs themselves too.
+2015-04-07T15:54:25  <bshum> So we could probably clean up all of this stuff.
+2015-04-07T15:54:42  <Dyrcona> Sounds like a job for DIG! ;)
+2015-04-07T15:55:15  <jeff> oh neat. the issue for me is that my local filesystem is Mac OS Extended (journaled)
+2015-04-07T15:55:26  <jeff> which isn't case sensitive.
+2015-04-07T15:56:08  <Dyrcona> jeff: It can be if you reformat and check a box, but then several Mac OS X applications stop working correctly. :)
+2015-04-07T15:56:12  *** Newziky1 has quit IRC
+2015-04-07T15:56:42  * bshum is putting together a patch to fix what he sees.
+2015-04-07T15:57:05  <Dyrcona> HFS+ is case preserving, but not case sensitive by default.
+2015-04-07T15:57:18  <jeff> so my git working copy has docs/media/Added_User_to_Routing_Slip.jpg, while my extracted copy from Evergreen-ILS-2.7.4.tar.gz contains docs/media/Added_User_to_Routing_Slip.JPG
+2015-04-07T15:57:38  <Dyrcona> And, you should have both in both, actually.
+2015-04-07T15:57:48  <Dyrcona> I have both in my git repo.
+2015-04-07T15:58:47  <jeffdavis> Filename case sensitivity issues in 2015. *shakes head sadly*
+2015-04-07T15:59:12  <jeff> right, but what happens in the git working directory is the first file (commit ordering) docs/media/Added_User_to_Routing_Slip.JPG is overwritten by the later docs/media/Added_User_to_Routing_Slip.jpg
+2015-04-07T15:59:47  <jeff> and in the tar archive, the first (in order of tar archive contents) file Evergreen-ILS-2.7.4/docs/media/Added_User_to_Routing_Slip.jpg is overwritten by the later Evergreen-ILS-2.7.4/docs/media/Added_User_to_Routing_Slip.JPG
+2015-04-07T15:59:48  <Dyrcona> jeff: Just use a real filesystem.
+2015-04-07T15:59:56  <Dyrcona> ;)
+2015-04-07T16:00:03  <Dyrcona> @blame 11 HFS+
+2015-04-07T16:00:03  <pinesol_green> Dyrcona: HFS+ musta been an Apple employee.
+2015-04-07T16:00:10  <jeff> Now that I've figured this out, I'm pretty sure I've stumbled on this before. Strong deja vu. :P
+2015-04-07T16:01:17  <dbs> I know dfiander stumbled on this back in the days of OpenSRF.js vs. opensrf.js
+2015-04-07T16:01:20  <jeff> Ugh.
+2015-04-07T16:01:58  <jeff> Yeah, doing something like "git rm docs/media/Added_User_to_Routing_Slip.JPG" touches on the tip of a dangerous iceburg.
+2015-04-07T16:02:13  <jeff> (in a working copy that's on a case-insensitive fs)
+2015-04-07T16:02:41  <Dyrcona> jeff: Switch to zfs and problem solved. :)
+2015-04-07T16:02:51  <jeff> anyway, I stubled across this TIME time because I was diffing a working copy against an extracted tarball.
+2015-04-07T16:02:56  <jeff> stumbled.
+2015-04-07T16:03:22  <Dyrcona> Stubble in the file system, eh? :)
+2015-04-07T16:07:20  <jeff> hah, yup. thought i remembered the djfiander convo from 2008.
+2015-04-07T16:07:38  <jeff> from that same log:
+2015-04-07T16:07:39  <jeff> <jeff> error.locale = (en_SMS)
+2015-04-07T16:07:39  <jeff> <jeff> UR QRY RT 0 RSLTS. PLZ TRY AGN
+2015-04-07T16:07:39  <jeff> <jeff> GTG CUL8R
+2015-04-07T16:15:34  <bshum> Alrighty then.
+2015-04-07T16:15:55  <pinesol_green> [evergreen|Ben Shum] Docs: Change all .JPG to .jpg - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=1edb4eb>
+2015-04-07T16:15:56  <pinesol_green> [evergreen|Ben Shum] Docs: Delete remnant .JPG files that had already been converted to .jpg - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=cfa3d11>
+2015-04-07T16:17:05  <bshum> I backported those to rel_2_8, rel_2_7, and rel_2_6.  With minor conflict changes since docs were different from 2.7 and backwards
+2015-04-07T16:18:57  <jeff> amusingly, i was right in guessing that after a fetch and merge, my local working copy is now missing several files from docs/media :-)
+2015-04-07T16:19:20  <jeff> (because in the process of merging, git deleted the .JPG files)
+2015-04-07T16:19:36  <bshum> Special.
+2015-04-07T16:19:46  <jeff> easily fixed by confirming that i have no local changes to the docs dir that i care about, then running "git checkout docs"
+2015-04-07T16:22:49  <bshum> Bleh :(
+2015-04-07T16:25:30  <bshum> You know, I wonder if maybe because yboston has a Mac, that's why that second commit didn't actually fix any of the extension names.
+2015-04-07T16:25:47  <bshum> Since he would have been the one to push Stompro's patch
+2015-04-07T16:26:00  <yboston> hola
+2015-04-07T16:26:00  *** rjackson_isl has quit IRC
+2015-04-07T16:26:11  <yboston> I have only been lurking
+2015-04-07T16:26:34  <yboston> but I remember having to cahnge a git valeu to reconize the file name changes when I pushed some Josh commits at home on my mac laptop
+2015-04-07T16:27:07  <yboston> (sorry for spelling, typing too fast)
+2015-04-07T16:27:33  <yboston> not sure if I later on pushed soemthing on my work iMac where I did not have that same git config value updated
+2015-04-07T16:28:24  <Dyrcona> Seriously, just use a real filesystem, like zfs.
+2015-04-07T16:28:38  <bshum> It's alright yboston.  Jeff's little (re)discovery about Mac's filesystem does make me wonder what other quirks could occur like that.
+2015-04-07T16:32:52  *** jboyer-isl has quit IRC
+2015-04-07T16:33:42  *** collum has quit IRC
+2015-04-07T16:35:00  <yboston> bshum: cool, just wanted to confirm that I did have issues with the Mac in pushing that renaming commit
+2015-04-07T16:38:19  *** maryj has joined #evergreen
+2015-04-07T16:57:49  *** Shae has quit IRC
+2015-04-07T17:01:54  *** Dyrcona has quit IRC
+2015-04-07T17:05:47  *** mglass has joined #evergreen
+2015-04-07T17:07:47  *** mmorgan has left #evergreen
+2015-04-07T17:08:03  <bshum> Hmm
+2015-04-07T17:08:29  <bshum> Think something like <copy_location>[% escape_xml(circ.target_copy.location.name) %]</copy_location> might work to define that in an overdue template?
+2015-04-07T17:08:53  * bshum has to dig deeper to try remembering how these silly XML thingies work
+2015-04-07T17:09:43  <berick> bshum: it might be helpers.escape_xml(...)
+2015-04-07T17:09:58  <berick> but, yes, that's basically what you want
+2015-04-07T17:10:14  <bshum> I'm just not sure if there's any special pathing considerations that I need to be thinking of.
+2015-04-07T17:10:24  <bshum> I know in A/T, those are all handled in the environment params or something
+2015-04-07T17:10:37  <bshum> But I don't know how generate_circ_notices.pl works .
+2015-04-07T17:11:11  <berick> you're using generate_circ_notices.pl?
+2015-04-07T17:11:20  <bshum> I suppose it probably wouldn't even know about it unless it was defined.
+2015-04-07T17:11:36  <bshum> Yes, these are our legacy (read, terribly implemented) print notices.
+2015-04-07T17:12:13  <bshum> We haven't adjusted the process for generating the content yet to make use of A/T since that process hasn't been well fleshed out anywhere yet.  Though I keep thinking about it... on and off.
+2015-04-07T17:12:27  <bshum> Like I know it's possible, I just don't feel like touching things if it "works" for now.
+2015-04-07T17:13:17  <berick> i feel ya
+2015-04-07T17:13:29  <berick> so, escape_xml is what you want (no helpers...)
+2015-04-07T17:13:38  <berick> but looks like it's not fleshing the copy location by defualt
+2015-04-07T17:13:46  <berick> for that, you'd have to modify the script
+2015-04-07T17:14:13  *** yboston has quit IRC
+2015-04-07T17:14:37  <bshum> right on.  So around line 425 or so, I see some things getting put together
+2015-04-07T17:14:53  <bshum> I assume that might be where I might need to define how location gets connected with the circulations.
+2015-04-07T17:15:10  <pastebot> "berick" at 64.57.241.14 pasted "copy loc" (14 lines) at http://paste.evergreen-ils.org/48
+2015-04-07T17:15:13  <berick> yep
+2015-04-07T17:15:31  <bshum> berick++ # thanks muchly
+2015-04-07T17:15:41  <bshum> We shall test and hopefully not crash everything :)
+2015-04-07T17:16:11  <berick> heh, so by "test" you mean "deploy" :)
+2015-04-07T17:16:33  <berick> AKA the developer's "test"
+2015-04-07T17:16:49  <bshum> Uh... yes.  :)
+2015-04-07T17:18:51  <bshum> If it breaks, we can always just manually re-run generating the XML
+2015-04-07T17:19:05  <bshum> In theory.
+2015-04-07T17:19:06  <bshum> :)
+2015-04-07T17:24:45  <csharp> @who tests all their fixes in production?
+2015-04-07T17:24:45  <pinesol_green> tsbere tests all their fixes in production.
+2015-04-07T17:24:54  <bshum> Lucky shot.
+2015-04-07T17:24:56  *** ericar has quit IRC
+2015-04-07T17:24:57  <berick> heh
+2015-04-07T17:25:08  <csharp> @roulette
+2015-04-07T17:25:08  <pinesol_green> csharp: *click*
+2015-04-07T17:25:30  <berick> @who tests [someone]'s fixes in production
+2015-04-07T17:25:30  <pinesol_green> collinanderson tests collinanderson 's fixes in production.
+2015-04-07T17:25:30  <csharp> @developer
+2015-04-07T17:25:31  <pinesol_green> csharp: Communication:16, BigPicture:12, DetailOriented:14, KungFu:12, GetsStuffDone:8, FlakeFactor:9, JavaAvoidance:11
+2015-04-07T17:25:51  <bshum> Now that's just spooky berick...
+2015-04-07T17:26:07  <csharp> @bartender [someone]
+2015-04-07T17:26:07  * pinesol_green fills a pint glass with Samuel Smith's Winter Welcome Ale, and sends it sliding down the bar to jonadab (http://beeradvocate.com/beer/profile/113/577/)
+2015-04-07T17:26:07  <berick> glad I'm not playing...
+2015-04-07T17:26:08  <berick> @roulette
+2015-04-07T17:26:09  <pinesol_green> berick: *click*
+2015-04-07T17:26:12  <pinesol_green> [evergreen|Ben Shum] Docs: Change all .PNG to .png - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=8598e7a>
+2015-04-07T17:26:35  <csharp> @praise [someone]
+2015-04-07T17:26:35  * pinesol_green hopkinsju is one of the few who deserves to be praised
+2015-04-07T17:30:58  <bshum> Well actually I can test right now if the template worked.
+2015-04-07T17:31:08  * bshum tests generating some circ overdue files.
+2015-04-07T17:31:19  <csharp> @test
+2015-04-07T17:31:20  <pinesol_green> csharp: You probably want hard-boiled eggs.
+2015-04-07T17:31:30  <bshum> ~test
+2015-04-07T17:31:36  <bshum> Nope.
+2015-04-07T17:31:50  <csharp> s'ok
+2015-04-07T17:34:04  <bshum> @roulette
+2015-04-07T17:34:04  <pinesol_green> bshum: *click*
+2015-04-07T17:35:32  <bshum> At some point down the road, I know we have to re-evaluate how we do print notice generation.
+2015-04-07T17:35:46  <bshum> With 12.04 at least, the thing that converts it to PDF complains all the time about template syntax errors.
+2015-04-07T17:35:57  <bshum> I haven't dared try building everything out on a 14.04 yet...
+2015-04-07T17:36:48  *** abowling has left #evergreen
+2015-04-07T17:36:54  <csharp> bshum: I'm working on 14.04 issues right now - trying to get the remaining issues ironed out
+2015-04-07T17:37:09  *** mrpeters has quit IRC
+2015-04-07T17:37:23  <csharp> building opensrf and evergreen debs is actually a pretty good way to flush out issues
+2015-04-07T17:37:58  <bshum> Well, in general, most everything seemed to work fine when I installed it.
+2015-04-07T17:38:06  <bshum> I'm just worried about these little dangling bits.
+2015-04-07T17:38:25  <csharp> you may have seen I'm trying to hack around the busted ruby deps
+2015-04-07T17:38:27  * bshum still has to finish adapting all the apache config over for 2.4
+2015-04-07T17:38:38  <bshum> Yeah, we're planning to give that a poke in the coming weeks.
+2015-04-07T17:38:44  <bshum> I have that bug bookmarked for review.
+2015-04-07T17:38:58  <csharp> yeah, just saw that our deb-building scripts don't account for apache 2.4 either :-/
+2015-04-07T17:39:00  <bshum> Not this week though... one upgrade at a time.
+2015-04-07T17:39:03  <csharp> yep
+2015-04-07T17:39:15  <bshum> We're going up to 2.8.0 on Saturday.
+2015-04-07T17:39:22  <csharp> it's high on my list because I want to move to 14.04 for my next upgrade
+2015-04-07T17:39:28  <csharp> ooh - good luck
+2015-04-07T17:39:31  <bshum> But our move to 14.04 will probably occur during Memorial Day weekend.
+2015-04-07T17:39:33  <bshum> Next month.
+2015-04-07T17:39:36  <csharp> I'm sure it will be fine
+2015-04-07T17:39:40  <bshum> If we can iron out all the remaining kinks.
+2015-04-07T17:40:05  <bshum> At the very least, I expect to be able to deploy app servers at 14.04.  Just have to keep testing out all the utility stuff.
+2015-04-07T17:40:18  <csharp> yeah
+2015-04-07T17:44:56  <bshum> Yay, berick++ # it worked in my testing :)
+2015-04-07T17:45:27  <bshum> Now to add it onto the giant .xml that controls everything...
+2015-04-07T17:50:49  *** dcook__ has joined #evergreen
+2015-04-07T17:51:13  <berick> bshum: cool!
+2015-04-07T17:52:59  *** graced has quit IRC
+2015-04-07T17:53:43  *** dcook has quit IRC
+2015-04-07T18:52:33  *** dmoses has joined #evergreen
+2015-04-07T18:52:55  *** darshana has quit IRC
+2015-04-07T18:54:00  *** dmoses has quit IRC
+2015-04-07T19:10:35  *** vlewis has quit IRC
+2015-04-07T19:36:09  *** sarabee has joined #evergreen
+2015-04-07T19:56:54  *** akilsdonk has quit IRC
+2015-04-07T19:59:58  *** mglass has quit IRC
+2015-04-07T20:02:37  *** jwoodard has quit IRC
+2015-04-07T20:27:51  *** bbqben has joined #evergreen
+2015-04-07T20:33:00  *** dreuther_ has quit IRC
+2015-04-07T20:45:30  *** bbqben has quit IRC
+2015-04-07T22:00:26  *** akilsdonk has joined #evergreen
+2015-04-07T22:02:18  *** mceraso has quit IRC
+2015-04-07T22:03:46  *** mceraso has joined #evergreen
+2015-04-07T22:21:57  *** bmills has quit IRC
+2015-04-07T22:39:02  *** pmurray is now known as pmurray_away
+2015-04-07T23:44:10  *** akilsdonk has quit IRC

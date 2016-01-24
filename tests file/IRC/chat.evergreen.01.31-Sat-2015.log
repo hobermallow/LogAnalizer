@@ -1,0 +1,79 @@
+2015-01-31T00:05:57  *** kshitij_2015 has joined #evergreen
+2015-01-31T00:12:07  *** kshitij_2015 has quit IRC
+2015-01-31T00:32:59  *** dcook__ has joined #evergreen
+2015-01-31T00:35:50  *** Guest14599 is now known as ldw
+2015-01-31T00:35:59  *** dcook has quit IRC
+2015-01-31T00:49:19  *** nhilton has quit IRC
+2015-01-31T01:25:29  *** dcook has joined #evergreen
+2015-01-31T01:25:35  *** StomproJ has joined #evergreen
+2015-01-31T01:27:34  *** dcook__ has quit IRC
+2015-01-31T01:27:34  *** egbuilder_ has quit IRC
+2015-01-31T01:27:44  *** egbuilder has joined #evergreen
+2015-01-31T01:28:37  *** Stompro has quit IRC
+2015-01-31T03:01:24  *** abowling has quit IRC
+2015-01-31T04:53:11  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-31T06:22:12  *** mnsri_away is now known as mnsri
+2015-01-31T06:27:36  *** mnsri is now known as mnsri_away
+2015-01-31T06:29:14  *** mnsri_away is now known as mnsri
+2015-01-31T06:35:43  *** mnsri is now known as mnsri_away
+2015-01-31T07:37:58  *** kitteh_ has quit IRC
+2015-01-31T08:44:52  <dbs> @later tell csharp yep, we rolled back to a much older version of SIPServer; only have one SIP client so we need it to just work
+2015-01-31T08:44:52  <pinesol_green> dbs: The operation succeeded.
+2015-01-31T09:26:28  *** book` has quit IRC
+2015-01-31T09:30:07  *** book` has joined #evergreen
+2015-01-31T10:12:08  *** book` has quit IRC
+2015-01-31T10:14:16  *** book` has joined #evergreen
+2015-01-31T10:46:41  *** book` has quit IRC
+2015-01-31T11:15:22  *** abowling has joined #evergreen
+2015-01-31T11:29:40  *** mnsri_away is now known as mnsri
+2015-01-31T11:48:27  *** book` has joined #evergreen
+2015-01-31T13:13:14  *** bmills has joined #evergreen
+2015-01-31T13:44:53  *** bmills has quit IRC
+2015-01-31T13:45:15  *** bmills has joined #evergreen
+2015-01-31T13:58:34  *** Sato has quit IRC
+2015-01-31T14:06:29  *** Sato has joined #evergreen
+2015-01-31T14:48:18  *** mnsri is now known as mnsri_away
+2015-01-31T15:01:49  *** mnsri_away is now known as mnsri
+2015-01-31T15:41:29  *** mnsri is now known as mnsri_away
+2015-01-31T16:21:54  *** bmills has quit IRC
+2015-01-31T16:33:24  *** mnsri_away is now known as mnsri
+2015-01-31T16:35:14  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-31T16:49:34  *** mnsri is now known as mnsri_away
+2015-01-31T16:51:36  *** mnsri_away is now known as mnsri
+2015-01-31T17:02:02  *** mnsri is now known as mnsri_away
+2015-01-31T17:02:39  *** mnsri_away is now known as mnsri
+2015-01-31T17:18:09  *** mnsri is now known as mnsri_away
+2015-01-31T17:27:27  *** mnsri_away is now known as mnsri
+2015-01-31T17:32:04  *** mnsri is now known as mnsri_away
+2015-01-31T17:33:06  *** mnsri_away is now known as mnsri
+2015-01-31T17:42:06  *** mnsri is now known as mnsri_away
+2015-01-31T17:50:55  *** bmills has joined #evergreen
+2015-01-31T17:51:02  *** bmills has left #evergreen
+2015-01-31T17:53:19  *** mnsri_away is now known as mnsri
+2015-01-31T17:53:59  *** mnsri is now known as mnsri_away
+2015-01-31T17:54:39  *** mnsri_away is now known as mnsri
+2015-01-31T17:55:11  *** mnsri is now known as mnsri_away
+2015-01-31T18:39:37  *** remingtron_ has joined #evergreen
+2015-01-31T18:43:15  *** remingtron has quit IRC
+2015-01-31T18:46:51  *** jeff_ has quit IRC
+2015-01-31T18:49:18  *** jeff_ has joined #evergreen
+2015-01-31T19:20:54  *** nhilton has joined #evergreen
+2015-01-31T19:37:25  *** mnsri_away is now known as mnsri
+2015-01-31T20:02:02  *** mnsri is now known as mnsri_away
+2015-01-31T20:37:29  *** jeffdavi1 has joined #evergreen
+2015-01-31T20:38:01  *** Bmagic_ has joined #evergreen
+2015-01-31T20:38:44  *** hopkinsju_ has joined #evergreen
+2015-01-31T20:42:28  *** csharp_ has joined #evergreen
+2015-01-31T20:43:13  *** hopkinsju has quit IRC
+2015-01-31T20:43:13  *** jeffdavis has quit IRC
+2015-01-31T20:43:13  *** mtj_ has quit IRC
+2015-01-31T20:43:13  *** Bmagic has quit IRC
+2015-01-31T20:43:14  *** serflog has quit IRC
+2015-01-31T20:43:14  *** ningalls has quit IRC
+2015-01-31T20:43:14  *** csharp has quit IRC
+2015-01-31T20:43:19  *** serflog has joined #evergreen
+2015-01-31T20:44:00  *** mtj_ has joined #evergreen
+2015-01-31T20:44:52  *** mmorgan1 has joined #evergreen
+2015-01-31T20:44:52  *** ningalls_ has joined #evergreen
+2015-01-31T20:50:22  *** mtj_ has quit IRC
+2015-01-31T20:50:30  *** mtj_ has joined #evergreen

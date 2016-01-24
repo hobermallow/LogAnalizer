@@ -1,0 +1,500 @@
+AnonID	Query	QueryTime	ItemRank	ClickURL
+479	family guy	2006-03-01 16:01:20		
+479	also sprach zarathustra	2006-03-02 14:48:55		
+479	family guy movie references	2006-03-03 22:37:46	1	http://www.familyguyfiles.com
+479	top grossing movies of all time	2006-03-03 22:42:42	1	http://movieweb.com
+479	top grossing movies of all time	2006-03-03 22:42:42	2	http://www.imdb.com
+479	car decals	2006-03-03 23:20:12	4	http://www.decaljunky.com
+479	car decals	2006-03-03 23:20:12	1	http://www.modernimage.net
+479	car decals	2006-03-03 23:20:12	5	http://www.webdecal.com
+479	car window decals	2006-03-03 23:24:05	9	http://www.customautotrim.com
+479	car window sponsor decals	2006-03-03 23:27:17	3	http://www.streetglo.net
+479	car sponsor decals	2006-03-03 23:28:59		
+479	car brand name decals	2006-03-03 23:29:35		
+479	brand name decals	2006-03-03 23:29:58		
+479	bose	2006-03-03 23:30:11	1	http://www.bose.com
+479	bose car decal	2006-03-03 23:31:48	1	http://stickers.signprint.co.uk
+479	bose car decal	2006-03-03 23:31:48	1	http://stickers.signprint.co.uk
+479	bose car decal	2006-03-03 23:31:48	7	http://www.motorcitydecals.com
+479	chicago the mix	2006-03-04 22:11:31	1	http://www.wtmx.com
+479	chicago the drive	2006-03-04 22:14:51	2	http://www.wdrv.com
+479	chicago radio annoucer whip	2006-03-04 22:16:07		
+479	chicago radio whip	2006-03-04 22:16:27		
+479	chicago radio brian the whipping boy	2006-03-04 22:17:00	1	http://www.djheadlines.com
+479	emma watson	2006-03-04 23:05:53	1	http://www.imdb.com
+479	stanford encyclopedia of philosophy	2006-03-06 21:57:14	1	http://plato.stanford.edu
+479	internet encyclopedia of philosophy	2006-03-06 21:59:30	1	http://www.iep.utm.edu
+479	www library philosophy	2006-03-06 22:01:29	2	http://www.bris.ac.uk
+479	allegory of the cave	2006-03-06 22:03:19	1	http://faculty.washington.edu
+479	allegory of the cave	2006-03-06 22:03:19	2	http://www.wsu.edu:8080
+479	allegory of the cave	2006-03-06 22:03:19	6	http://en.wikipedia.org
+479	citation machine	2006-03-06 22:57:22	1	http://citationmachine.net
+479	howard stern lawsuit	2006-03-08 00:14:55		
+479	sirius playboy	2006-03-08 17:23:07	3	http://www.orbitcast.com
+479	opec	2006-03-09 09:19:29		
+479	citation machine	2006-03-13 18:25:12	1	http://citationmachine.net
+479	wto history	2006-03-13 18:26:09	1	http://depts.washington.edu
+479	wto history	2006-03-13 18:26:09	3	http://www.pbs.org
+479	wto history	2006-03-13 18:26:09	4	http://www.wto.org
+479	wikpedia	2006-03-13 18:29:21	1	http://en.wikipedia.org
+479	britannica	2006-03-13 18:41:09	1	http://www.britannica.com
+479	wto	2006-03-13 18:44:23	1	http://www.wto.org
+479	wto history	2006-03-13 18:48:27		
+479	wto history	2006-03-13 18:48:35	1	http://depts.washington.edu
+479	wto history	2006-03-13 18:48:35	4	http://www.wto.org
+479	wto history	2006-03-13 18:48:35	6	http://www2.netdoor.com
+479	wto history	2006-03-13 18:48:35	7	http://www.econ.iastate.edu
+479	wto history	2006-03-13 18:48:35	9	http://cyberjournal.org
+479	wto history	2006-03-13 18:48:35	2	http://depts.washington.edu
+479	wto history	2006-03-13 18:48:35	4	http://www.wto.org
+479	www.galleryhost.com	2006-03-15 01:13:14		
+479	prairie state college student email	2006-03-20 23:15:59	3	http://students.prairiestate.edu
+479	ronny van zant	2006-03-22 00:23:17		
+479	ronnie van zant	2006-03-22 00:23:55		
+479	zack wylde	2006-03-22 00:25:01		
+479	zack wylde lead singer	2006-03-22 00:26:26		
+479	ozzy guitarist	2006-03-22 00:27:44	1	http://www.ultimate-guitar.com
+479	www.whitesox.xom	2006-03-22 11:38:16		
+479	fantasies	2006-03-27 00:05:25	3	http://www.fantasies.com
+479	proofs for the existence of god	2006-03-27 15:45:39	1	http://www.godlessgeeks.com
+479	proofs for the existence of god	2006-03-27 15:45:39	2	http://www.existence-of-god.com
+479	proofs for the existence of god	2006-03-27 15:45:39	3	http://www.philosopher.org.uk
+479	things that exist but u cant see	2006-03-27 19:00:03		
+479	things that exist but u can't see	2006-03-27 19:00:21	6	http://www.thingsthatdontexist.com
+479	citation machine	2006-03-30 09:19:12	1	http://citationmachine.net
+479	germa translator	2006-03-31 15:44:15		
+479	german translation	2006-03-31 15:44:28	1	http://german.about.com
+479	german translation	2006-03-31 15:44:28	3	http://www.freetranslation.com
+479	average tax refund in 2005	2006-04-07 01:54:56	1	http://abcnews.go.com
+479	city wallpaper	2006-04-11 23:12:46		
+479	www.prariestate.edu	2006-04-19 00:44:58		
+479	www.prariestate.cc.il.us	2006-04-19 00:45:35		
+479	prariestate college	2006-04-19 00:46:16		
+479	prairie state college	2006-04-19 00:46:35	1	http://www.prairie.cc.il.us
+479	south suburban college	2006-04-19 00:47:53	1	http://www.ssc.cc.il.us
+479	dictionary	2006-04-20 23:40:29		
+479	tony sopranos russian girlfriend	2006-04-22 00:50:43		
+479	www.prariestate.cc.il.us	2006-04-23 18:08:24		
+479	www.psc.cc.il.us	2006-04-23 18:09:01		
+479	prairie state college	2006-04-23 18:10:20	1	http://www.prairie.cc.il.us
+479	south suburban college	2006-04-24 01:00:39	1	http://www.ssc.cc.il.us
+479	south suburban college	2006-04-24 01:00:39	1	http://www.ssc.cc.il.us
+479	dictionary	2006-04-24 01:10:01		
+479	the internet encyclopedia of philosophy	2006-04-24 15:39:36	1	http://www.iep.utm.edu
+479	citation mine	2006-04-24 20:40:06		
+479	citation machine	2006-04-24 20:40:22	2	http://citationmachine.net
+479	citation machine	2006-04-24 20:40:22	3	http://www.landmark-project.com
+479	citation machine	2006-04-24 20:40:22	1	http://citationmachine.net
+479	6 6 06	2006-04-28 22:19:18		
+479	the signs are all around you	2006-04-28 22:19:48		
+479	the signs are all around you 6 6 06	2006-04-28 22:22:11	1	http://vnboards.ign.com
+479	comcast sports net chicago	2006-04-28 23:31:52	1	http://chicago.comcastsportsnet.com
+479	xm radio	2006-05-02 00:26:12	1	http://www.xmradio.com
+479	cranial nerves	2006-05-05 01:37:39	5	http://staff.washington.edu
+479	cranial nerves	2006-05-05 01:37:39	7	http://www.meddean.luc.edu
+479	cranial nerves	2006-05-05 01:37:39	3	http://www.gwc.maricopa.edu
+479	eye muscles	2006-05-05 01:41:22	4	http://www.patient.co.uk
+479	eye muscles	2006-05-05 01:41:22	2	http://cim.ucdavis.edu
+479	underworld evolution	2006-05-05 09:49:06	2	http://www.sonypictures.com
+479	underworld evolution	2006-05-05 09:49:06	3	http://www.imdb.com
+479	mvp baseball 2007	2006-05-08 20:02:48		
+479	mvp baseball 2006	2006-05-08 20:13:19	10	http://forums.ea.com
+479	game stop	2006-05-08 20:26:28	1	http://www.gamestop.com
+479	dictionary	2006-05-10 01:11:23		
+479	nokia tracfone	2006-05-10 23:25:11		
+479	desktop wallpaper	2006-05-15 14:47:08	3	http://www.desktopwallpapers.net
+479	kant theory of knowledge	2006-05-15 20:06:15	3	http://www.oxfordscholarship.com
+479	kant theory of knowledge	2006-05-15 20:06:15	5	http://www.historyguide.org
+479	kant theory of knowledge	2006-05-15 20:06:15	4	http://www.coursework.info
+479	kant theory of knowledge	2006-05-15 20:06:15	6	http://www.psupress.psu.edu
+479	kant theory of knowledge	2006-05-15 20:06:15	7	http://wn.rsarchive.org
+479	kant theory of knowledge	2006-05-15 20:06:15	10	http://www.philosophypathways.com
+479	kant's copernican revolution	2006-05-15 20:11:13	1	http://www.age-of-the-sage.org
+479	kant's copernican revolution	2006-05-15 20:11:13	5	http://instruct.westvalley.edu
+479	existence precedes essence	2006-05-15 20:31:02	2	http://atheism.about.com
+479	existence precedes essence	2006-05-15 20:31:02	3	http://www.anselm.edu
+479	sartre man surrounded by absurdity	2006-05-15 20:34:07	1	http://www.unchristianlikebehavior.com
+479	sartre man surrounded by absurdity	2006-05-15 20:34:07	2	http://www.geocities.com
+479	ozzfest 2006	2006-05-26 00:36:58	1	http://www.ozzfest.com
+479	nip tuck	2006-05-28 00:36:04		
+479	nip tuck	2006-05-28 00:44:58	4	http://www.niptuck.com
+479	nip tuck season 4	2006-05-28 00:47:05		
+479	nip tuck season 3 dvd	2006-05-28 00:47:48	7	http://en.wikipedia.org
+479	nip tuck season 3 dvd	2006-05-28 00:47:48	9	http://www.dvdtimes.co.uk
+479	nip tuck season 3 dvd	2006-05-28 00:47:48	1	http://www.amazon.co.uk
+507	kbb.com	2006-03-01 16:45:19	1	http://www.kbb.com
+507	kbb.com	2006-03-01 16:55:46	1	http://www.kbb.com
+507	autotrader	2006-03-02 14:48:05		
+507	ebay	2006-03-05 10:50:35		
+507	ebay	2006-03-05 10:50:52		
+507	ebay	2006-03-05 10:51:24		
+507	ebay	2006-03-05 10:52:04		
+507	ebay	2006-03-05 10:52:36	69	http://antiques.ebay.com
+507	ebay	2006-03-05 10:58:00		
+507	ebay	2006-03-05 10:58:21		
+507	ebay electronics	2006-03-05 10:59:26	5	http://www.internetretailer.com
+507	ebay electronics	2006-03-05 11:00:21	20	http://www.amazon.com
+507	ebay electronics	2006-03-05 11:00:21	22	http://gizmodo.com
+507	ebay electronics	2006-03-05 11:00:21	22	http://gizmodo.com
+507	ebay electronics	2006-03-05 11:18:56		
+507	ebay electronics	2006-03-05 11:20:59		
+507	ebay electronics	2006-03-05 11:21:53	66	http://portals.ebay.com
+507	ebay electronics	2006-03-05 11:25:35		
+507	ebay electronics	2006-03-05 11:26:06		
+507	ebay electronics	2006-03-05 11:26:37	104	http://electronics.listings.ebay.ca
+507	ebay electronics	2006-03-05 11:27:47		
+507	ghost hunting equipment	2006-03-05 16:14:29	1	http://www.paranormality.com
+507	ghost hunting equipment	2006-03-05 16:14:29	3	http://www.prairieghosts.com
+507	ghost hunting equipment	2006-03-05 16:14:29	1	http://www.paranormality.com
+507	ghost hunting equipment	2006-03-05 16:14:29	1	http://www.paranormality.com
+507	ghost hunting equipment	2006-03-05 16:14:29	5	http://ghostinvestigator.tripod.com
+507	ghost hunting equipment	2006-03-05 16:14:29	8	http://members.aol.com
+507	ghost hunting equipment	2006-03-05 16:48:43	12	http://www.maui.net
+507	ghost hunting equipment	2006-03-05 16:48:43	14	http://www.gettysburgghosts.net
+507	ghost hunting equipment	2006-03-05 16:48:43	16	http://www.homestead.com
+507	ghost hunting equipment	2006-03-05 16:48:43	18	http://www.castleofspirits.com
+507	ghost hunting equipment	2006-03-05 16:48:43	22	http://www.hollowhill.com
+507	ghost hunting equipment	2006-03-05 16:56:35	26	http://www.lessemf.com
+507	ghost hunting equipment	2006-03-05 16:56:35	40	http://www.crawfordcountyghosthunters.com
+507	ghost hunting equipment	2006-03-05 17:11:08	68	http://www.paranormalshop.co.uk
+507	ghost hunting equipment	2006-03-05 17:12:50	75	http://www.paranormalghost.com
+507	ghost hunting equipment	2006-03-05 17:12:50	85	http://www.ghost-trackers.org
+507	ghost hunting equipment	2006-03-05 17:15:11	88	http://mywebpages.comcast.net
+507	ghost hunting equipment	2006-03-05 17:15:11	93	http://www.ghoststore.net
+507	ghost hunting equipment	2006-03-05 17:15:11	94	http://www.ohioghosthunter.com
+507	ghost hunting equipment	2006-03-05 17:19:54		
+507	ghost hunting equipment	2006-03-05 17:20:39	117	http://www.paranormalghost.com
+507	mapquest	2006-03-07 17:55:44	1	http://www.mapquest.com
+507	kbb.com	2006-03-09 15:56:29	1	http://www.kbb.com
+507	mercedes benz	2006-03-10 16:30:57		
+507	mercedes benz	2006-03-10 16:33:52		
+507	mercedes benz	2006-03-10 16:34:53	24	http://www.mercedesshop.com
+507	pogo games	2006-03-17 17:31:02		
+507	pogo games	2006-03-17 17:31:28		
+507	pogogames	2006-03-21 01:31:46	3	http://groups.msn.com
+507	browser update	2006-03-23 08:41:53		
+507	verison	2006-03-24 10:47:09		
+507	verizon	2006-03-24 10:48:11	1	http://www.verizon.com
+507	verizon	2006-03-24 10:48:11	1	http://www.verizon.com
+507	kbb.com	2006-03-24 21:33:19	1	http://www.kbb.com
+507	ebay	2006-03-29 00:10:30	4	http://www.motors.ebay.com
+507	vintage auto wiring harness	2006-03-29 10:33:43	2	http://www.car-stuff.com
+507	friends	2006-04-01 19:58:08		
+507	pogogames	2006-04-01 20:00:02		
+507	pogogames	2006-04-01 20:01:06		
+507	pogogames	2006-04-01 20:01:12		
+507	jig saw detective	2006-04-01 20:02:41		
+507	pogogames	2006-04-01 21:00:01		
+507	pogogames	2006-04-01 21:00:16		
+507	pogogames	2006-04-01 21:00:28		
+507	vintage auto wiring harness	2006-04-03 05:40:25	4	http://www.hemmings.com
+507	vintage auto wiring harness	2006-04-03 05:40:25	9	http://www.vinwire.com.au
+507	mapquest	2006-05-05 15:56:07		
+507	kbb.com	2006-05-05 18:23:23	1	http://www.kbb.com
+507	kbb.com	2006-05-06 18:33:30	1	http://www.kbb.com
+507	kbb.com	2006-05-08 09:30:42	1	http://www.kbb.com
+507	kbb.com	2006-05-08 09:59:19	1	http://www.kbb.com
+507	google	2006-05-10 11:12:32	1	http://www.google.com
+507	google	2006-05-10 11:12:32	1	http://www.google.com
+507	google	2006-05-10 11:12:32	1	http://www.google.com
+507	dodge motor recalls for 2001	2006-05-10 15:53:09	9	http://autorepair.about.com
+507	pogogames	2006-05-12 19:57:01		
+507	pogohome	2006-05-12 19:57:38		
+507	pogoho	2006-05-12 19:58:01		
+507	pogohome	2006-05-12 19:58:12	1	http://www.urbanworkshop.us
+507	pogohome	2006-05-12 19:58:36		
+507	pogo	2006-05-12 19:58:50		
+507	pogo	2006-05-12 19:59:37	1	http://www.pogo.com
+507	pogogames	2006-05-13 08:53:07		
+507	pogogames	2006-05-13 21:25:17		
+507	consumer energy	2006-05-15 09:11:03	7	http://www.consumersenergy.coop
+507	consumer energy	2006-05-15 09:11:03	7	http://www.consumersenergy.coop
+507	consumer energy	2006-05-15 09:11:03	7	http://www.consumersenergy.coop
+507	consumer energy	2006-05-15 09:11:03	7	http://www.consumersenergy.coop
+507	consumer energy	2006-05-15 09:11:03	7	http://www.consumersenergy.coop
+507	www.consumer energy.com	2006-05-15 09:21:08	1	http://www.consumersenergy.com
+507	-	2006-05-25 19:28:01		
+507	craigslist	2006-05-25 19:28:30	11	http://atlanta.craigslist.org
+507	-	2006-05-25 19:30:43		
+507	craigslist	2006-05-25 19:31:08	19	http://detroit.craigslist.org
+507	-	2006-05-25 19:34:00		
+507	-	2006-05-25 19:34:28		
+507	pogogames	2006-05-25 19:35:03		
+507	pogogames	2006-05-25 19:35:29		
+507	pogogames	2006-05-25 19:36:31		
+507	pogohome	2006-05-25 19:37:39		
+507	pogo	2006-05-25 19:37:39		
+507	-	2006-05-25 23:21:07	2	http://www.pogo.com
+507	rainyday spider	2006-05-25 23:21:51		
+507	-	2006-05-25 23:21:54		
+507	pogo	2006-05-25 23:21:59	1	http://www.pogo.com
+507	-	2006-05-30 12:40:45		
+507	-	2006-05-30 12:40:45		
+507	rainyday spider	2006-05-30 12:41:30	3	http://pogofanclub.tripod.com
+507	rainyday spider	2006-05-30 12:57:24	3	http://pogofanclub.tripod.com
+507	rainyday spider	2006-05-30 12:57:24	8	http://groups.msn.com
+507	rainyday spider	2006-05-30 13:02:05		
+507	pogogames	2006-05-30 13:02:16		
+507	pogogames	2006-05-30 13:02:53		
+507	clubpogo	2006-05-30 13:03:09		
+946	celbrity voices	2006-03-01 12:20:06		
+946	celebrity voices	2006-03-01 12:20:20		
+1020	lexmark z42-z43	2006-03-01 09:58:22	1	http://www.lexmark.com
+1020	lexmark z42-z43	2006-03-01 09:58:22	2	http://www.lexmark.com
+1020	lexmark z42-z43	2006-03-01 09:58:22	4	http://thegearproject.org
+1020	lexmark z42-z43	2006-03-01 09:58:22	1	http://www.lexmark.com
+1020	lexmark z42-z43	2006-03-01 09:58:22	3	http://www.xs4all.nl
+1020	disney.com	2006-03-05 13:26:28		
+1020	playhousedisney.com	2006-03-05 13:27:11		
+1020	playhousedisney.com	2006-03-05 13:28:04		
+1020	www.playhousedisney.com	2006-03-05 13:28:39		
+1020	playhousedisney	2006-03-05 13:29:14		
+1020	playhouse disney	2006-03-05 13:30:56		
+1020	www.disney.co.uk disneychannel	2006-03-05 13:32:12		
+1020	www.disney.co.uk disneychannel	2006-03-05 13:32:54		
+1020	disney channel's playhouse disney	2006-03-05 13:34:37		
+1020	disney channel's playhouse disney.com	2006-03-05 13:35:00		
+1020	disney channel's playhouse disney.com	2006-03-05 13:35:01		
+1020	disney channel's playhouse disney.com	2006-03-05 13:35:15		
+1020	disney channel's playhouse disney.com	2006-03-05 13:35:15		
+1020	disney channel's playhouse disney.com	2006-03-05 13:35:16		
+1020	disney channel's playhouse disney.com	2006-03-05 13:35:17		
+1020	disney channel's playhouse disney.com	2006-03-05 13:35:18		
+1020	christian musci	2006-03-06 12:23:19		
+1020	atlantic city nj map	2006-03-07 07:15:30		
+1020	vineyard music	2006-03-07 11:52:05	1	http://www.vineyardmusic.com
+1020	christian sheet music	2006-03-07 11:59:19	1	http://www.freesheetmusicguide.com
+1020	christian sheet music	2006-03-07 11:59:19	3	http://www.inhymn.com
+1020	gateway computer	2006-03-13 13:25:23		
+1020	drew's salad dressing	2006-03-14 07:10:49		
+1020	compaq	2006-03-15 14:18:42		
+1020	hewlit packard	2006-03-15 14:26:58		
+1020	toshiba	2006-03-15 14:32:31		
+1020	averatec	2006-03-15 14:35:39	1	http://www.averatec.com
+1020	sony	2006-03-15 14:38:15		
+1020	i fly tma	2006-03-16 12:20:15		
+1020	alaska	2006-03-16 12:23:41		
+1020	redirect.virtumundo.com	2006-03-21 08:51:59		
+1020	marx hotel syracuse ny	2006-03-22 14:18:56	1	http://www.marxsyracuse.com
+1020	www.maq	2006-03-22 14:19:58		
+1020	natural vitality	2006-03-28 07:09:11	1	http://www.vitaminsthatwork.com
+1020	back to the basics	2006-03-28 07:15:38	1	http://www.backtobasicsproducts.com
+1020	as seen on tv	2006-03-30 07:22:23		
+1020	passport	2006-03-31 08:14:09	1	http://travel.state.gov
+1020	posture pump	2006-04-04 09:39:26	1	http://www.posturepump.com
+1020	worship music	2006-04-05 07:06:55	1	http://www.worshipmusic.com
+1020	worship music	2006-04-05 07:06:55	3	http://www.sharesong.org
+1020	worship music	2006-04-05 07:06:55	7	http://www.worshiparchive.com
+1020	worship music	2006-04-05 07:06:55	10	http://www.worship.com
+1020	worship music	2006-04-05 07:22:18	12	http://www.vineyardmusic.com
+1020	calorad	2006-04-06 07:20:51	1	http://www.calorad.com
+1020	sinucleanse	2006-04-11 09:51:58	1	http://www.sinucleanse.com
+1020	atlantic city nj	2006-04-11 12:18:56		
+1020	atlantic city nj	2006-04-17 13:18:51		
+1020	atlantic city nj	2006-04-18 12:03:02	1	http://www.atlanticcitynj.com
+1020	atlantic city nj	2006-04-18 12:06:55	7	http://www.caesars.com
+1020	absecon light house	2006-04-18 12:12:16	1	http://www.abseconlighthouse.org
+1020	atlantic city nj	2006-04-18 12:14:13		
+1020	www.sacsands.com	2006-04-18 12:18:18		
+1020	slot machine tips	2006-04-18 12:43:46	1	http://www.slotadvisor.com
+1020	slot machine tips	2006-04-18 12:43:46	4	http://www.thegamblersedge.com
+1020	slot machine tips	2006-04-18 12:43:46	8	http://www.gambling.jaxworld.com
+1020	slot machine tips	2006-04-18 13:06:52	11	http://www.licensed4fun.com
+1020	slot machine tips	2006-04-18 13:06:52	12	http://robison.casinocitytimes.com
+1020	windows 98	2006-04-19 07:12:17		
+1020	windows 98	2006-04-19 07:13:29	1	http://www.microsoft.com
+1020	windows 95	2006-04-19 07:14:17	1	http://www.microsoft.com
+1020	e card	2006-04-19 18:49:50	2	http://www.123greetings.com
+1020	cla insight	2006-04-22 08:06:58	1	http://www.subluxation.com
+1020	rock the dog 105	2006-04-27 13:25:52	2	http://www.rock105thedog.com
+1020	power 106.9	2006-04-27 13:28:06	1	http://www.power1069jamz.com
+1020	peanut butter pie	2006-04-27 17:51:41	1	http://www.cooks.com
+1020	peanut butter pie	2006-04-27 17:51:41	1	http://www.cooks.com
+1020	peanut butter pie	2006-04-27 17:51:41	3	http://www.cdkitchen.com
+1020	peanut butter pie	2006-04-27 17:51:41	7	http://www.wchstv.com
+1020	peanut butter pie	2006-04-27 17:51:41	10	http://pie.allrecipes.com
+1020	coach usa cny	2006-04-28 07:19:22		
+1020	nys worker's compensation board	2006-05-01 13:34:06	1	http://www.wcb.state.ny.us
+1020	jeopardy	2006-05-04 11:42:59		
+1020	free slots blazing sevens	2006-05-06 11:24:01	1	http://www.geocities.com
+1020	free slots blazing sevens	2006-05-06 11:24:01	2	http://org.co-motion.com
+1020	free slots blazing sevens	2006-05-06 11:24:01	2	http://org.co-motion.com
+1020	free slots blazing sevens	2006-05-06 11:24:01	6	http://directorys.decuma.com
+1020	org.co-motion.com	2006-05-06 11:34:59		
+1020	org.co-motion.com	2006-05-06 11:35:18		
+1020	comments worldchiropracticalliance.org	2006-05-09 06:43:33		
+1020	department of state licensing	2006-05-10 12:29:35	1	http://www.dos.state.ny.us
+1020	west soy milk	2006-05-10 13:04:48	1	http://www.westsoy.biz
+1020	drew's salad dressing	2006-05-10 13:11:02	1	http://www.chefdrew.com
+1020	free video poker	2006-05-10 13:34:23	3	http://www.helpself.com
+1020	free video poker	2006-05-10 13:34:23	5	http://www.ildado.com
+1020	before i was a mother	2006-05-15 14:12:10	1	http://www.allbusiness.com
+1020	before i was a mother	2006-05-15 14:14:31		
+1020	reverse mortgage	2006-05-18 07:15:28		
+1020	bus schedule	2006-05-22 13:42:02	1	http://www.greyhound.com
+1020	usa coach	2006-05-22 13:52:11	1	http://www.coachusa.com
+1020	cny bus	2006-05-22 13:54:59	2	http://www.cnycoach.com
+1020	amtrak	2006-05-22 13:55:38		
+1020	abc studio	2006-05-22 18:42:36		
+1020	guiness	2006-05-25 18:12:22	3	http://www.guinnessworldrecords.com
+1020	encyclopedia	2006-05-30 12:41:04	1	http://www.encyclopedia.com
+1020	periodic table	2006-05-31 11:44:22	1	http://www.webelements.com
+1020	periodic table	2006-05-31 11:44:22	3	http://chemlab.pc.maricopa.edu
+1020	periodic table	2006-05-31 11:44:22	7	http://www.dayah.com
+1020	state flowers	2006-05-31 12:05:21	3	http://www.usna.usda.gov
+1020	state flags	2006-05-31 12:10:35		
+1020	state flags	2006-05-31 12:10:54	1	http://www.50states.com
+1020	state flags	2006-05-31 12:10:54	2	http://www.50states.com
+1020	state flags	2006-05-31 12:10:54	6	http://www.netstate.com
+1020	usa presidents	2006-05-31 12:20:47	2	http://www.whitehouse.gov
+1021	.njufile.com	2006-03-01 16:43:40		
+1021	nj unemployment	2006-03-01 16:44:45	1	http://www.state.nj.us
+1021	www.	2006-03-04 14:55:00		
+1021	www.universalcaerd.com	2006-03-06 07:38:32		
+1021	sixers tickets	2006-03-06 20:28:35	7	http://www.ticketcity.com
+1021	sixers tickets	2006-03-06 20:28:35	8	http://www.ticketspecialists.com
+1021	sixers tickets	2006-03-06 20:28:35	9	http://www.vividseats.com
+1021	sixers tickets	2006-03-06 20:28:35	10	http://www.teamonetickets.com
+1021	sixers tickets	2006-03-06 20:28:35	5	http://www.stagefronttickets.com
+1021	sixers tickets	2006-03-06 20:28:35	3	http://www.coasttocoasttickets.com
+1021	sixers tickets	2006-03-06 20:28:35	4	http://www.stubhub.com
+1021	www.sportingevents.com	2006-03-06 20:29:05		
+1021	sixers tickets	2006-03-07 09:34:18	2	http://www.buyselltix.com
+1021	www.	2006-03-07 18:25:58		
+1021	timeshares	2006-03-07 18:27:31	7	http://www.holidaygroup.com
+1021	google.com	2006-03-09 14:48:46	1	http://www.google.com
+1021	www.arborwoodlindenwold.com	2006-03-10 10:41:20		
+1021	www.lindenwold.arborwood.com	2006-03-10 10:41:35		
+1021	www.lindenwold.nj	2006-03-10 10:42:03		
+1021	www.nj.lindenwold	2006-03-10 10:42:19		
+1021	www.nj.lindenwold	2006-03-10 10:42:40		
+1021	lindenwold nj	2006-03-10 10:43:22	5	http://www.hometownlocator.com
+1021	lindenwold nj	2006-03-10 10:43:22	3	http://lindenwold.areaconnect.com
+1021	lindenwold nj	2006-03-10 10:43:22	1	http://www.city-data.com
+1021	lindenwold nj	2006-03-10 10:43:22	10	http://www.topix.net
+1021	njdobi.gov	2006-03-25 13:46:20		
+1021	www.state.nj.uf	2006-03-25 13:47:37		
+1021	www.statenjuf	2006-03-25 13:49:00		
+1021	www.state.nj.uf	2006-03-25 13:50:47		
+1021	new jersey department of banking	2006-03-25 13:51:21	1	http://www.state.nj.us
+1021	small 20claims 20forms	2006-05-09 15:24:29	2	http://co.fayette.in.us
+1021	mohawk	2006-05-09 15:39:29		
+1021	superiorcourt.nj.gov	2006-05-11 14:34:40		
+1021	legal 20forms	2006-05-11 14:34:58		
+1021	monmouthcounty.gov	2006-05-11 14:36:02	4	http://prosecutor.co.monmouth.nj.us
+1021	www.knowx.com	2006-05-11 14:37:27		
+1021	www.monmouthcounty.gov	2006-05-11 14:40:57		
+1021	njcounty.gov	2006-05-11 14:41:20		
+1021	legal 20forms	2006-05-11 14:41:28		
+1021	small 20claims 20forms	2006-05-11 14:41:44	1	http://www.ingham.org
+1021	small 20claims 20forms	2006-05-11 14:41:44	7	http://www.justice.gov.nl.ca
+1021	njlegalforms.com	2006-05-11 14:44:52		
+1021	smallclaims.nj.com	2006-05-11 14:45:17		
+1021	m.mlxchange.com	2006-05-11 20:28:24		
+1021	www.first national of omaha.com	2006-05-15 10:58:27	1	http://first-national-bank-of-omaha.aarptermlifeinsurance.com
+1021	google.com	2006-05-15 11:00:44	1	http://www.google.com
+1021	www.firstnational.com	2006-05-15 11:16:54	1	http://www.firstnational.com
+1021	www.firstnational.com	2006-05-15 11:42:23	1	http://www.firstnational.com
+1021	john coombs	2006-05-18 18:22:27		
+1021	john coombs	2006-05-18 18:23:19		
+1021	grant harris	2006-05-18 18:24:29		
+1021	grant harris	2006-05-18 18:25:02		
+1021	grant harris	2006-05-18 18:25:40		
+1021	grant harris	2006-05-18 18:26:49		
+1021	www.beauliucarpet.com	2006-05-23 17:00:32		
+1021	beaulieu	2006-05-23 17:01:58	1	http://www.beaulieu-usa.com
+1021	beaulieu	2006-05-23 17:12:35		
+1021	beaulieu	2006-05-23 17:23:35	1	http://www.beaulieu-usa.com
+1021	bruce 20toll	2006-05-23 18:38:37		
+1021	toll bruce	2006-05-23 18:39:48		
+1021	toll bruce	2006-05-23 18:40:52		
+1021	toll bruce	2006-05-23 18:41:39		
+1021	roebling bank	2006-05-23 18:42:20	1	http://www.roeblingbank.com
+1021	toll bruce	2006-05-23 18:44:54		
+1021	toll bruce	2006-05-23 18:44:56		
+1021	enterprisebanknj	2006-05-23 19:12:21		
+1021	enterprise bank nj	2006-05-23 19:13:04	1	http://www.enterprisebank.net
+1021	ocean 20federal	2006-05-24 07:41:52		
+1021	rumson fairhaven bank	2006-05-24 07:42:46		
+1021	ocean federal savings bank	2006-05-24 07:45:11	3	http://www.oceanfirst.com
+1021	brielle 20federal	2006-05-24 08:07:08		
+1021	brielle savings bank	2006-05-24 08:07:49	5	http://local.yahoo.com
+1021	brielle savings bank	2006-05-24 08:07:49	5	http://local.yahoo.com
+1021	point 20pleasant 20banks	2006-05-24 08:27:49		
+1021	point pleasant bank	2006-05-24 08:30:23	9	http://www.pointpleasantonline.com
+1021	point pleasant bank	2006-05-24 08:30:23	8	http://www.pointpleasantonline.com
+1021	petro	2006-05-24 08:38:42	1	http://www.petro.com
+1021	www.anasamatt.com	2006-05-24 13:39:10		
+1021	www.anasamaast.com	2006-05-24 13:40:30		
+1021	www.beauliucarpet.com	2006-05-26 08:34:35		
+1021	beaulieu	2006-05-26 08:36:47	1	http://www.beaulieu-usa.com
+1021	www.mercercountynjtaxrecords.com	2006-05-30 16:43:37		
+1021	www.njbusinessesforsale.com	2006-05-30 20:45:44		
+1521	girliezone.com	2006-03-01 00:08:13		
+1521	webmaste.drunkenmature.net	2006-03-01 00:08:13		
+1521	webmaste.drunkenmature.net	2006-03-01 00:08:13		
+1521	toolbarurl.biz	2006-03-03 22:57:30		
+1521	cherryteenthumbs.com	2006-03-04 22:45:54		
+1521	dl.weeklydialer.com	2006-03-22 18:10:40		
+1521	www.maxygirls.com	2006-05-04 22:57:15		
+1521	www.lolita-portal.org	2006-05-04 23:03:04		
+1521	www.lolita-portal.org	2006-05-04 23:10:11		
+1521	www.lolita-portal.org	2006-05-04 23:25:40		
+1521	topvaginas.biz	2006-05-08 14:39:16		
+1521	karen huie	2006-05-08 14:58:33		
+1521	arsenio hall	2006-05-08 19:04:50		
+1521	william beaumont hospital	2006-05-09 00:52:21		
+1521	shelbyvirgins.com	2006-05-11 14:04:44		
+1521	galleries.amateursexhunters.com	2006-05-24 00:05:50		
+1521	galleries.amateursexhunters.com	2006-05-24 00:06:56		
+1521	galleries.amateursexhunters.com	2006-05-24 00:12:00		
+1521	promo.teenfuns.com	2006-05-28 00:23:37		
+1521	promo.teenfuns.com	2006-05-28 00:26:49		
+1521	promo.teenfuns.com	2006-05-28 00:29:44		
+1521	molyrama.com	2006-05-31 08:44:23		
+1521	molyrama.org	2006-05-31 08:44:30		
+1521	molyrama.net	2006-05-31 08:44:40		
+1521	www.topvaginas.org	2006-05-31 08:45:13		
+1521	www.topvaginas.biz	2006-05-31 08:45:20		
+1521	loparty.com	2006-05-31 14:45:55		
+2015	oradell fire	2006-03-01 17:07:54	1	http://www.oradellfire.org
+2015	yello pages	2006-03-03 20:14:12	1	http://www.yellow.com
+2015	adobe reader	2006-03-11 21:10:17		
+2015	oradellfire	2006-03-12 09:42:26	1	http://www.oradellfire.org
+2015	adell fire	2006-03-12 17:43:55		
+2015	oradell fire	2006-03-12 17:44:07	1	http://www.oradellfire.org
+2015	firehouse .com	2006-04-07 23:20:06		
+2015	who invented the k tool	2006-04-11 19:03:12		
+2015	calabresi	2006-05-03 22:30:42		
+2015	calabresi mini pipes	2006-05-03 22:31:07	1	http://www.meerschaumpipes.com
+2015	calabresi	2006-05-03 22:32:37		
+2015	www.pipesrus.net	2006-05-03 22:46:45		
+2015	extreampinnacle.com	2006-05-09 17:01:30		
+2015	extreampinnacle.com	2006-05-09 17:02:55		
+2708	revenge tactics	2006-03-01 07:33:28	1	http://www.ekran.no
+2708	revenge tactics	2006-03-01 07:33:28	2	http://www.linkbase.org
+2708	revenge tactics	2006-03-01 07:33:28	3	http://www.totse.com
+2708	revenge tactics	2006-03-01 07:33:28	7	http://www.books4you.addr.com
+2708	revenge tactics	2006-03-01 07:33:28	10	http://www.avenging.info
+2708	revenge tactics	2006-03-01 07:47:55	18	http://www.coping.org
+2708	revenge tactics	2006-03-01 07:47:55	24	http://revenge-tactics.ecorehosting.com
+2708	revenge tactics	2006-03-01 07:50:21	26	http://forums.cncden.com
+2708	marblehead massachusetts library	2006-03-01 17:35:48	4	http://www.marblehead.com
+2708	marblehead massachusetts library	2006-03-01 17:35:48	3	http://www.peabodylibrary.org
+2708	marblehead massachusetts library	2006-03-01 17:35:48	2	http://www.libdex.com
+2708	the woman's book of revenge	2006-03-01 17:39:48	3	http://www.revengelady.com
+2708	how to torment someone	2006-03-01 17:57:05	8	http://www.webmd.com
+2708	the woman's book of revenge	2006-03-01 18:00:09	8	http://www.wpr.org
+2708	the woman's book of revenge	2006-03-01 18:00:09	10	http://home.earthlink.net
+2708	marblehead massachusetts library	2006-03-01 18:00:16		
+2708	alt.revenge	2006-03-01 18:03:20	1	http://www.student.uit.no
+2708	alt.revenge	2006-03-01 18:03:20	4	http://www.ekran.no
+2708	alt.revenge	2006-03-01 18:03:20	7	http://www.harley.com
+2708	alt.revenge	2006-03-01 18:03:20	9	http://www.xent.com
+2708	the woman's book of revenge	2006-03-01 18:11:23	1	http://www.amazon.com
+2708	dirty tricks for chicks	2006-03-01 18:14:01	7	http://www.shopping.com
+2708	out of business	2006-03-01 18:15:06		
+2708	out of business by dennis fieriy	2006-03-01 18:15:24		
+2708	21st century revenge	2006-03-01 18:20:39	4	http://www.loompanics.com
+2708	victor santoro's samples	2006-03-01 18:22:11		
+2708	stories or samples of revenge	2006-03-01 18:22:38		

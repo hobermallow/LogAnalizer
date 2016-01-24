@@ -1,0 +1,183 @@
+2015-03-24T00:51:22  *** remingtron_ has joined #evergreen
+2015-03-24T00:54:58  *** remingtron has quit IRC
+2015-03-24T02:03:37  *** user259205087017 has quit IRC
+2015-03-24T04:52:19  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-24T06:07:04  *** eady has joined #evergreen
+2015-03-24T07:08:24  *** sarabee has quit IRC
+2015-03-24T07:20:11  *** sarabee has joined #evergreen
+2015-03-24T07:21:26  *** graced has joined #evergreen
+2015-03-24T07:42:00  *** jboyer-isl has joined #evergreen
+2015-03-24T07:55:20  *** bshum has quit IRC
+2015-03-24T07:55:20  *** kmlussier has quit IRC
+2015-03-24T07:55:20  *** mceraso has quit IRC
+2015-03-24T07:56:43  *** kmlussier has joined #evergreen
+2015-03-24T07:56:45  *** mceraso has joined #evergreen
+2015-03-24T07:56:47  *** bshum has joined #evergreen
+2015-03-24T07:57:19  *** rjackson_isl has joined #evergreen
+2015-03-24T08:04:09  *** collum has joined #evergreen
+2015-03-24T08:09:37  *** _bott_ has left #evergreen
+2015-03-24T08:12:55  *** akilsdonk has joined #evergreen
+2015-03-24T08:14:04  *** _bott_ has joined #evergreen
+2015-03-24T08:29:43  *** mrpeters has joined #evergreen
+2015-03-24T08:38:16  *** mmorgan has joined #evergreen
+2015-03-24T08:39:47  *** Dyrcona has joined #evergreen
+2015-03-24T08:40:26  *** ericar has joined #evergreen
+2015-03-24T08:43:12  <kmlussier> @coffee [someone]
+2015-03-24T08:43:12  * pinesol_green brews and pours a cup of Kenya AA, and sends it sliding down the bar to jeffdavis
+2015-03-24T08:43:41  <kmlussier> It's a little early in the morning for jeffdavis
+2015-03-24T08:46:49  <mmorgan> If jeffdavis doesn't pick it up, I won't let it go to waste ;-)
+2015-03-24T08:52:48  *** maryj has joined #evergreen
+2015-03-24T08:52:50  <kmlussier> mmorgan: That's what I like about the folks at NOBLE. They know how to appreciate a good cup of coffee.
+2015-03-24T08:58:56  *** jwoodard has joined #evergreen
+2015-03-24T09:05:23  *** dcook has joined #evergreen
+2015-03-24T09:07:37  *** dcook__ has quit IRC
+2015-03-24T09:37:09  *** yboston has joined #evergreen
+2015-03-24T09:53:35  *** yboston has quit IRC
+2015-03-24T10:00:20  *** yboston has joined #evergreen
+2015-03-24T10:02:10  <Dyrcona> @blame ejabberd
+2015-03-24T10:02:10  <pinesol_green> Dyrcona: ejabberd wants the TRUTH?! ejabberd CAN'T HANDLE THE TRUTH!!
+2015-03-24T10:02:20  <Dyrcona> True dat! :)
+2015-03-24T10:06:27  *** yboston has quit IRC
+2015-03-24T10:07:10  *** Newziky has joined #evergreen
+2015-03-24T10:13:13  *** yboston has joined #evergreen
+2015-03-24T10:15:35  *** yboston has quit IRC
+2015-03-24T10:16:03  *** maryj has quit IRC
+2015-03-24T10:19:53  *** yboston has joined #evergreen
+2015-03-24T10:21:04  <csharp> @blame ejabberd
+2015-03-24T10:21:04  <pinesol_green> csharp: ejabberd caused the white screen of death!
+2015-03-24T10:23:09  <Dyrcona> @praise ejabberd
+2015-03-24T10:23:09  * pinesol_green Shall I compare ejabberd to a summer's day? ejabberd is more lovely and more temperate.
+2015-03-24T10:23:27  <Dyrcona> @praise erlang
+2015-03-24T10:23:27  * pinesol_green erlang is the very model of a modern major hacker
+2015-03-24T10:24:53  <csharp> @blame add $who HAXORED MY SERVERZ!!!!
+2015-03-24T10:24:53  <pinesol_green> csharp: The operation succeeded.  Blame #18 added.
+2015-03-24T10:25:16  <jboyer-isl> @blame 18 TehGibson
+2015-03-24T10:25:16  <pinesol_green> jboyer-isl: TehGibson HAXORED jboyer-isl's SERVERZ!!!!
+2015-03-24T10:25:32  <bshum> Hahaha, nice.
+2015-03-24T10:25:51  <jboyer-isl> Oh, I didn't realize it would replace "my"
+2015-03-24T10:25:52  <csharp> heh - I didn't realize "MY" would be substituted too
+2015-03-24T10:26:06  <bshum> Guess it's a reserved word in that plugin.
+2015-03-24T10:27:14  <Dyrcona> @blame 18 bshum
+2015-03-24T10:27:14  <pinesol_green> Dyrcona: bshum HAXORED Dyrcona's SERVERZ!!!!
+2015-03-24T10:27:32  <bshum> Bah!  Foiled again...
+2015-03-24T10:27:36  <Dyrcona> TehGibson could probably not hack a toaster.....
+2015-03-24T10:28:18  <Dyrcona> ;)
+2015-03-24T10:29:13  *** yboston has quit IRC
+2015-03-24T10:30:48  <Dyrcona> @praise TehGibson
+2015-03-24T10:30:48  * pinesol_green TehGibson is kind and patient to newbies
+2015-03-24T10:32:18  *** yboston has joined #evergreen
+2015-03-24T10:39:03  *** maryj has joined #evergreen
+2015-03-24T10:39:48  <tsbere> Figure I will throw this out here for now while I mentally debate the merits of actually slapping an auth wrapper on the new code: http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/user/tsbere/addedcontent_clearcache
+2015-03-24T10:42:02  *** sarabee has quit IRC
+2015-03-24T10:44:13  *** sarabee has joined #evergreen
+2015-03-24T11:05:14  <eeevil> tsbere: auth wrapper FTW, IMO
+2015-03-24T11:05:21  <eeevil> and also, sweet
+2015-03-24T11:06:49  <jboyer-isl> No doubt, I don't care for the ugly scripts I put together to try to purge covers once they're corrected upstream, this is going to be really handy.
+2015-03-24T11:06:52  <jboyer-isl> tsbere++
+2015-03-24T11:09:09  <jboyer-isl> It is literally infuriating to use the same keyboard on a Mac and a Windows machine. I never know which wrong-o keyboard shortcut I'll activate next. (Windows users, try Win + arrow keys. Now imagine you're trying to select text!)
+2015-03-24T11:09:55  <tsbere> Anyone think I should add a "just clear the jacket images" variant of the staff link somewhere (say, under/next to the image in the first place)?
+2015-03-24T11:10:37  * Dyrcona thinks so.
+2015-03-24T11:10:53  <Dyrcona> That's the most common thing staff want cleared.
+2015-03-24T11:11:18  <tsbere> Yea, but if they changed the ISBNs instead of upstream having changed things then the other added content pieces will need clearing too. :/
+2015-03-24T11:11:37  <Dyrcona> For the channel: This arose out of a ticket where a cataloger asked why a jacket didn't clear immediately after an ISBN was moved to subfield z.
+2015-03-24T11:12:45  <tsbere> I originally went with "quick command line script that accepts one or more record IDs" but decided "can be triggered by staff in general" was a better solution to not have tech staff driven nuts with "run the script to clear this record" requests. ;)
+2015-03-24T11:15:08  <tsbere> and now I have apache config blocks for "only let staff do that" in the branch.
+2015-03-24T11:15:44  * tsbere is still undecided on the "just jacket images" link, the code supports it, but the link will look really out of place if there is no image....
+2015-03-24T11:16:44  <Dyrcona> It could always be added later if there was demand.
+2015-03-24T11:17:00  <tsbere> True
+2015-03-24T11:17:31  <Dyrcona> s/was/were/
+2015-03-24T11:17:33  <Dyrcona> ;)
+2015-03-24T11:18:03  *** vlewis has joined #evergreen
+2015-03-24T11:18:21  *** vlewis_ has joined #evergreen
+2015-03-24T11:26:48  *** bbqben has joined #evergreen
+2015-03-24T11:32:01  * tsbere has filed bug 1435938 and now is going to move onto "why is this music skipping?" and some lunch considerations ;)
+2015-03-24T11:32:01  <pinesol_green> Launchpad bug 1435938 in Evergreen "New Feature: Allow Staff to clear Added Content cache" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1435938
+2015-03-24T11:37:44  <Dyrcona> @blame me
+2015-03-24T11:37:44  <pinesol_green> Dyrcona: Dyrcona stole Dyrcona's ice cream!
+2015-03-24T11:38:00  <Dyrcona> For forgetting to restart Clark on Sunday.
+2015-03-24T11:49:38  *** sal_ has joined #evergreen
+2015-03-24T11:54:09  <Dyrcona> Speaking of clark, he should probably write his loc/pid file after he forks....
+2015-03-24T11:54:48  <Dyrcona> Kinda useless having the pid of an exited process hanging around.
+2015-03-24T12:07:18  *** bbqben has quit IRC
+2015-03-24T12:15:20  *** bbqben has joined #evergreen
+2015-03-24T12:26:20  *** jihpringle has joined #evergreen
+2015-03-24T12:32:49  *** bmills has joined #evergreen
+2015-03-24T12:42:35  <bshum> @blame old dojo
+2015-03-24T12:42:35  <pinesol_green> bshum: old dojo HAXORED bshum's SERVERZ!!!!
+2015-03-24T12:52:59  <csharp> heh - I like that @blame
+2015-03-24T12:54:48  *** maryj has quit IRC
+2015-03-24T12:55:09  *** maryj has joined #evergreen
+2015-03-24T12:55:49  *** bbqben_ has joined #evergreen
+2015-03-24T12:57:23  *** bbqben has quit IRC
+2015-03-24T12:57:36  *** bbqben_ is now known as bbqben
+2015-03-24T13:06:12  *** maryj has quit IRC
+2015-03-24T13:13:44  *** sandbergja has joined #evergreen
+2015-03-24T13:26:03  <Bmagic> I really don't like how long the fine generator takes, when most of the output is rolling back, rolling back. Can I make the fine generator code run against a list of circs manually?
+2015-03-24T13:27:26  <tsbere> Bmagic: I believe that is possible, given that checkin runs it for a single transaction
+2015-03-24T13:28:12  <tsbere> Bmagic: In fact, go read fine_generator.pl. It shows how to make such a request as it does it when you tell it to run more than one at a time.
+2015-03-24T13:28:54  <Bmagic> tsbere: yeah, I am seeing that
+2015-03-24T13:29:20  <Bmagic> I suppose I could copy this script and add a query to feed into the loop instead of the results from open-ils.storage.action.circulation.overdue.id_list
+2015-03-24T13:30:49  <tsbere> Bmagic: Or if you know your circ IDs just fire off a pile of "request open-ils.storage open-ils.storage.action.circulation.overdue.generate_fines <id>" calls from srfsh
+2015-03-24T13:31:07  <Bmagic> tsbere: ah, not bad
+2015-03-24T13:31:31  <Dyrcona> There were some recent changes to make this faster,  but I don't recall if they made it into 2.7.
+2015-03-24T13:31:41  <Dyrcona> May be in 2.8.
+2015-03-24T13:31:52  <Dyrcona> i.e. the fine generator.
+2015-03-24T13:32:08  <bshum> Indeed... there were.
+2015-03-24T13:32:11  * bshum looks for the bug
+2015-03-24T13:32:23  <bshum> Did we forget to merge that?  Damn... that looked like a good one.
+2015-03-24T13:32:52  <bshum> Nope, it got pushed
+2015-03-24T13:32:54  <bshum> https://bugs.launchpad.net/evergreen/+bug/1406367
+2015-03-24T13:32:54  <pinesol_green> Launchpad bug 1406367 in Evergreen "Fine generator can use a lot of memory" (affected: 2, heat: 10) [Medium,Fix committed]
+2015-03-24T13:34:10  <Dyrcona> Yep. That's what I was thinking about.
+2015-03-24T13:37:45  <gmcharlt> Dyrcona++
+2015-03-24T13:38:10  <pinesol_green> [evergreen|Jason Stephenson] LP 1435966: Clark Kent should write lock file after it forks. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=04a38b3>
+2015-03-24T13:55:30  *** Dyrcona has quit IRC
+2015-03-24T13:55:52  *** RoganH has joined #evergreen
+2015-03-24T14:53:24  *** bbqben has quit IRC
+2015-03-24T15:19:11  *** krvmga has joined #evergreen
+2015-03-24T15:30:17  *** maryj has joined #evergreen
+2015-03-24T15:52:26  *** maryj_ has joined #evergreen
+2015-03-24T15:58:18  *** krvmga has quit IRC
+2015-03-24T16:07:55  *** gmcharlt has quit IRC
+2015-03-24T16:07:55  *** gmcharlt has joined #evergreen
+2015-03-24T16:13:12  *** maryj has quit IRC
+2015-03-24T16:14:51  *** alynn26 has joined #evergreen
+2015-03-24T16:22:59  *** collum has quit IRC
+2015-03-24T16:27:20  *** alynn26 has quit IRC
+2015-03-24T16:30:10  *** jboyer-isl has quit IRC
+2015-03-24T16:33:23  *** maryj_ has quit IRC
+2015-03-24T16:40:20  *** sarabee has quit IRC
+2015-03-24T16:44:40  *** RoganH has quit IRC
+2015-03-24T16:49:08  *** bbqben has joined #evergreen
+2015-03-24T17:10:48  *** graced has quit IRC
+2015-03-24T17:14:51  *** yboston has quit IRC
+2015-03-24T17:16:53  *** jihpringle has quit IRC
+2015-03-24T17:17:35  *** mmorgan has left #evergreen
+2015-03-24T17:17:53  *** jihpringle has joined #evergreen
+2015-03-24T17:21:55  *** mrpeters has quit IRC
+2015-03-24T17:24:39  *** ericar has quit IRC
+2015-03-24T17:36:50  *** Newziky has left #evergreen
+2015-03-24T17:48:25  *** paxed has quit IRC
+2015-03-24T17:49:52  *** paxed has joined #evergreen
+2015-03-24T17:57:17  *** dcook__ has joined #evergreen
+2015-03-24T18:00:44  *** dcook has quit IRC
+2015-03-24T18:34:10  *** bbqben has quit IRC
+2015-03-24T18:40:39  *** bbqben has joined #evergreen
+2015-03-24T19:03:34  *** sal_ has quit IRC
+2015-03-24T19:04:06  *** sandbergja has quit IRC
+2015-03-24T19:04:50  *** vlewis has quit IRC
+2015-03-24T19:04:54  *** vlewis_ has quit IRC
+2015-03-24T19:34:42  *** akilsdonk has quit IRC
+2015-03-24T20:00:52  *** jwoodard has quit IRC
+2015-03-24T20:31:54  *** jihpringle has quit IRC
+2015-03-24T20:44:06  *** rjackson_isl_ has joined #evergreen
+2015-03-24T20:47:25  *** rjackson_isl has quit IRC
+2015-03-24T20:58:21  *** bmills has quit IRC
+2015-03-24T21:00:40  *** bbqben has quit IRC
+2015-03-24T21:08:14  *** akilsdonk has joined #evergreen
+2015-03-24T21:44:12  *** akilsdonk has quit IRC
+2015-03-24T21:47:58  *** akilsdonk has joined #evergreen
+2015-03-24T22:05:13  *** akilsdonk has quit IRC
+2015-03-24T22:40:35  *** RBecker has quit IRC
+2015-03-24T22:46:03  *** RBecker has joined #evergreen
+2015-03-24T23:28:12  *** akilsdonk has joined #evergreen

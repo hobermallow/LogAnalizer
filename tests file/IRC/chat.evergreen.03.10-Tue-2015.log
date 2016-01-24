@@ -1,0 +1,292 @@
+2015-03-10T06:40:32  *** dkyle has quit IRC
+2015-03-10T06:40:45  *** _bott_ has quit IRC
+2015-03-10T07:29:55  *** graced has joined #evergreen
+2015-03-10T07:39:47  *** rjackson_isl has joined #evergreen
+2015-03-10T07:40:04  *** dcook__ has joined #evergreen
+2015-03-10T07:43:27  *** dcook has quit IRC
+2015-03-10T07:58:19  *** krvmga has joined #evergreen
+2015-03-10T07:58:38  <krvmga> are the macros that we can use for receipt templates also good for things in acquisitions?
+2015-03-10T08:01:47  *** jboyer-isl has joined #evergreen
+2015-03-10T08:06:49  *** ckolasinski has joined #evergreen
+2015-03-10T08:14:26  *** collum has joined #evergreen
+2015-03-10T08:18:41  <csharp> krvmga: afaik, no - there is JavaScript business logic in the receipt template code that knows about the macros - it's not in acq
+2015-03-10T08:19:45  <krvmga> csharp: thanks. one of my co-workers asked me.
+2015-03-10T08:20:07  *** akilsdonk has joined #evergreen
+2015-03-10T08:27:17  *** mmorgan has joined #evergreen
+2015-03-10T08:28:07  *** mrpeters has joined #evergreen
+2015-03-10T08:40:45  <jboyer-isl> Action Trigger Question Time!
+2015-03-10T08:42:47  <jboyer-isl> So, by default a_t_r_pl only runs the checkout.due hook because it’s defined as the default in the script. There are a lot of passive hooks though, some of which seem to run without having to be called specifically (the selfcheck.whatever hooks, usually). Do any local hooks have to be added to /openils/conf/action_trigger_filters.json or called out on the a_t_r.pl command line?
+2015-03-10T08:43:12  <jboyer-isl> any local == all local...
+2015-03-10T08:43:54  <jboyer-isl> I would have assumed that not specifying any hook would mean to run them all, but I am mistaken.
+2015-03-10T08:49:21  *** Shae has joined #evergreen
+2015-03-10T08:52:16  <jboyer-isl> For the logs: From what I have seen it does appear that local hooks need to be added to action_trigger_filters.json.
+2015-03-10T08:53:29  <dbwells> Our experience matches that conclusion.  I haven't seen any passive hooks run other than those we added to action_trigger_filters.json.
+2015-03-10T08:54:12  * mmorgan has found that to be true as well.
+2015-03-10T08:57:05  <dbwells> We don't run and selfcheck, so I can't comment on whether that code does something unique with event generation.
+2015-03-10T09:02:21  <mmorgan> We are running some selfcheck stations that use the a_t selfcheck receipts. Not sure I understand why those events are "passive", but they work just fine.
+2015-03-10T09:06:11  *** Callender_ is now known as Callender
+2015-03-10T09:08:35  <pinesol_green> [evergreen|Remington Steed] Docs: Fix AsciiDoc processing errors - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=63b5982>
+2015-03-10T09:09:09  *** dkyle has joined #evergreen
+2015-03-10T09:09:19  *** _bott_ has joined #evergreen
+2015-03-10T09:10:37  *** Dyrcona has joined #evergreen
+2015-03-10T09:30:52  <Dyrcona> Do I have to use namespace prefixes when using xpath in a database query on bre.marc?
+2015-03-10T09:31:27  <Dyrcona> I ask, 'cause this is giving me nothing: /record/field[@tag="245"]/subfield[@code="a"]/text()
+2015-03-10T09:32:05  <Dyrcona> Doh!
+2015-03-10T09:32:25  <Dyrcona> datafield, not field.
+2015-03-10T09:33:03  <Dyrcona> And, I still get nothing!
+2015-03-10T09:33:15  <Dyrcona> It's gonna be another one of those weeks, I see.
+2015-03-10T09:33:20  <dbwells> Dyrcona: We usually tiptoe around any possible namespace issues and do something like:  oils_xpath_string('//*[@tag="245"]/*[@code="a"]', bre.marc)
+2015-03-10T09:33:42  <Dyrcona> Ok, I'll us oils_xpath_string, then.
+2015-03-10T09:33:53  <Dyrcona> I don't like using //*
+2015-03-10T09:34:01  <Dyrcona> Just sayin'.
+2015-03-10T09:34:05  <dbwells> Well, I think the regular xpath stuff works too with the wildcards.
+2015-03-10T09:34:30  <Dyrcona> It does. I just prefer the precision of specifying exactly what I want.
+2015-03-10T09:35:39  <dbwells> Yes, that was in response to your first statement, not the stuff about not liking the wildcards.  At some point I just gave in, since @tag is already pretty specific in a marc record.
+2015-03-10T09:36:25  <Dyrcona> Still getting nothing, and the record has a 245$a.
+2015-03-10T09:36:31  *** yboston has joined #evergreen
+2015-03-10T09:41:52  <csharp> Dyrcona: I've had a similar lack of success using xpath too
+2015-03-10T09:41:55  <Dyrcona> Well, to hell wit that, then. I'll just pull the title from some place else. So what if it is in all lower case.
+2015-03-10T09:42:11  <csharp> I don't know enough about it to even really troubleshoot
+2015-03-10T09:42:13  <Dyrcona> csharp: I normally have no trouble with xpath in Perl, C, or whatever.
+2015-03-10T09:42:38  <csharp> I'll clarify: xpath in Evergreen/postgresql
+2015-03-10T09:42:40  <Dyrcona> That same statement works with libxml perl.
+2015-03-10T09:42:43  <Dyrcona> Heh.
+2015-03-10T09:42:57  <Dyrcona> I already feel exhausted, sorry.
+2015-03-10T09:43:54  * Dyrcona should've taken a sick day, but then there'd be no tech staff in the office and everyone else would shit their pants if something happened.
+2015-03-10T09:55:03  <gmcharlt> verbose, but effective: '/*[local-name()="record"]/*[local-name()="datafield" and @tag = "245"]/*[local-name()="subfield" and @code="a"]/text()'
+2015-03-10T09:56:23  <gmcharlt> sadly, Pg's handling of XML namespaces has been... variable
+2015-03-10T09:56:28  <gmcharlt> e.g., http://www.postgresql.org/message-id/54E5C0B1.6040001@joh.to
+2015-03-10T09:58:58  <dbwells> We're still on 9.1.14, so that might be a factor in why the code I posted has always worked for me.
+2015-03-10T10:00:10  *** Newziky has joined #evergreen
+2015-03-10T10:00:14  <gmcharlt> dbwells: indeed
+2015-03-10T10:00:26  <dbwells> I've also had luck with something like the following (where the "namespace" argument structure can actually be any namespace you want):
+2015-03-10T10:00:30  <dbwells> SELECT xpath('/marc:record/marc:datafield[@tag="245"]/marc:subfield[@code="a"]', marc::XML, ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']]) from biblio.record_entry where id = 12345;
+2015-03-10T10:00:59  <gmcharlt> dbwells: likewise
+2015-03-10T10:08:17  <Dyrcona> Yeah. I just gave up and used mrfr. I don't want to spend all morning on it.
+2015-03-10T10:19:45  <Dyrcona> On my opensrf.settings issue: I have almost ruled out the hold targeter and a/t runner, but not exactly.
+2015-03-10T10:20:31  <Dyrcona> I notice that storage uses SettingsClient quite liberally, so I'm going log every time it is used in storage and fire off a/t runner and the hold targeter and then see what happens.
+2015-03-10T10:24:29  <Dyrcona> dbwells: Our Pg server is 9.1, but I was using a 9.3 client, not that that has much to do with anything. :)
+2015-03-10T10:25:25  <berick> fyi if there are more than a handful of connections from storage to settings (maybe even just one), I'd be surprsied.  drones should be reading from the local cached version of the config.
+2015-03-10T10:25:42  <berick> if you do find a lot, that's news
+2015-03-10T10:25:47  <dbwells> Dyrcona: I'm just curious, are you on 9.1.14 or 9.1.15?  Apparently (based on the thread gmcharlt posted), xpath behavior had a significant change at that minor version.
+2015-03-10T10:26:07  * dbwells wants to know if all his reports are going to break when 9.1.15 hits production.
+2015-03-10T10:27:05  <Dyrcona> Not even 9.1.14.
+2015-03-10T10:27:11  <Dyrcona> Earlier than that.
+2015-03-10T10:27:23  <dbwells> ok, guess we'll wait and see :)
+2015-03-10T10:27:39  <Dyrcona> XML namespaces can be tricky.
+2015-03-10T10:27:54  * Dyrcona thinks they were an OK idea that was poorly implemented.
+2015-03-10T10:32:16  <Dyrcona> Whee! Gotta love this one: pg_restore: [archiver (db)] COPY failed for table "z3950_index_field_map": ERROR:  new row for relation "z3950_index_field_map" violates check constraint "valid_z3950_attr_type"
+2015-03-10T10:32:40  <Dyrcona> Added something to my restore script to shove the table data in after the fact if the table ends up empty.
+2015-03-10T10:32:43  <bshum> I'm still not sure why that randomly happens but then doesn't.
+2015-03-10T10:32:52  <Dyrcona> I'm not either.
+2015-03-10T10:33:10  <Dyrcona> It will happen, and then it won't.
+2015-03-10T10:33:39  <Dyrcona> Sometimes happens several restores in a row, some times doesn't. Sometimes seems to alternate.
+2015-03-10T10:33:47  <jboyer-isl> bshum: because it is random. If the 2 tables are restored in this order, everything is fine. If it’s the other order, your data is sad.
+2015-03-10T10:34:16  <bshum> Sad data makes me feel sad now.
+2015-03-10T10:34:23  <jboyer-isl> pg_restore isn’t smart enough to figure out that the check constraint implies ordering
+2015-03-10T10:34:32  <Dyrcona> So, if I don't do parallel restore it won't happen.
+2015-03-10T10:34:42  <Dyrcona> But, I'm lazy and don't want to wait all day.
+2015-03-10T10:34:51  <jboyer-isl> Dyrcona: true, but like you say, it’s super slow.
+2015-03-10T10:35:26  <Dyrcona> What's curious, is why just those two tables? Other tables must have similar relations.
+2015-03-10T10:35:49  <jboyer-isl> I know there’s a —disable-triggers (or something similar) If there’s a pg_restore option to ignore all constraints until the data is in that might help.
+2015-03-10T10:36:26  <jboyer-isl> Dyrcona: I think it’s specified as a check constraint rather than a foreign key, but I haven’t looked in a while.
+2015-03-10T10:36:38  <Dyrcona> jboyer-isl: That could be it.
+2015-03-10T10:38:16  <jboyer-isl> I don’t think there are lot of check constraints that depend on other tables. (The only ones I can remember have their list of acceptable values right in the check)
+2015-03-10T10:46:03  *** Shae has quit IRC
+2015-03-10T10:53:35  <dbwells> Dyrcona: bshum: jboyer-isl: Regarding the above issue, this looks interesting: http://dba.stackexchange.com/questions/75613/disable-all-constraints-and-table-checks-while-restoring-a-dump/75635#75635  From what that says, a non-immutable check constraint is a no-no, so we should either move it to a trigger or perhaps add a 'NOT VALID' modifier to it (9.2+)
+2015-03-10T10:55:07  <bshum> Interesting.
+2015-03-10T10:55:45  <jboyer-isl> dbwells: A trigger certainly sounds good. (may still require disabling on restore, but that’s easy enough to do)
+2015-03-10T10:57:00  <Dyrcona> Would a simple FK do?
+2015-03-10T10:58:31  <dbwells> I think the issue is that the 'name' is not unique in the config table.
+2015-03-10T10:58:41  *** jwoodard has joined #evergreen
+2015-03-10T11:10:00  *** BigRig has quit IRC
+2015-03-10T11:15:48  *** BigRig has joined #evergreen
+2015-03-10T11:45:24  <Bmagic> Is my IRC client stale? Can anyone read this?
+2015-03-10T11:45:39  <jboyer-isl> Bmagic: It is quiet, too quiet.
+2015-03-10T11:45:43  <jboyer-isl> (Yes)
+2015-03-10T11:46:00  <Bmagic> jboyer-isl: ah! good!
+2015-03-10T11:47:32  <bshum> Calm before the storm
+2015-03-10T11:48:55  <jboyer-isl> How do I install Evergreen on Windows with MySQL?
+2015-03-10T11:49:13  *** bmills has joined #evergreen
+2015-03-10T11:50:04  <Dyrcona> heh
+2015-03-10T11:50:19  <Dyrcona> You don't.
+2015-03-10T11:50:41  <Dyrcona> Same answer for how do I install Evergreen on OpenBSD.
+2015-03-10T11:51:06  * Dyrcona wouldn't 'cause OpenBSD is too slow, and I don't mean that disparagingly, it is slow by design.
+2015-03-10T11:52:51  <Dyrcona> And, I've used OpenBSD for various purposes since at least version 2.7 back in '99 or thereabouts.
+2015-03-10T11:53:29  <Dyrcona> But, to Francis, I say, "Have it, Hoss."
+2015-03-10T11:54:57  * Dyrcona sighs.
+2015-03-10T12:01:43  *** jwoodard has quit IRC
+2015-03-10T12:05:51  * Dyrcona shouldna got out of bed this morning.
+2015-03-10T12:06:47  *** buzzy has joined #evergreen
+2015-03-10T12:07:13  *** buzzy has quit IRC
+2015-03-10T12:07:29  <mmorgan> Always a risky thing to do ;-)
+2015-03-10T12:09:08  *** krvmga has quit IRC
+2015-03-10T12:09:35  *** jihpringle has joined #evergreen
+2015-03-10T12:15:23  <Dyrcona> :)
+2015-03-10T12:26:52  *** bmills has quit IRC
+2015-03-10T12:31:03  *** bmills has joined #evergreen
+2015-03-10T12:32:15  *** sandbergja has joined #evergreen
+2015-03-10T12:48:45  <bshum> Hmm, have you guys been removing RC4 from the cipher suite for SSL config for apache?  I'm thinking about it again today while perusing things.
+2015-03-10T12:54:55  *** krvmga has joined #evergreen
+2015-03-10T12:55:13  *** ckolasinski has left #evergreen
+2015-03-10T12:57:06  <berick> bshum: we have
+2015-03-10T12:58:02  <dbs> bshum: I use https://wiki.mozilla.org/Security/Server_Side_TLS
+2015-03-10T12:58:15  <dbs> SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA25    6:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:EC    DHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-S
+2015-03-10T12:58:24  <bshum> Yowza
+2015-03-10T12:58:50  * bshum might just try that
+2015-03-10T12:59:06  <dbs> mozilla updates their recommended config quite regularly
+2015-03-10T12:59:24  <bshum> dbs++  # thanks for sharing :D
+2015-03-10T13:00:31  <dbs> We should perhaps link that from the docs somewhere. Once upon a time the evergreen book was going to have a "Hardening your Evergreen install" chapter
+2015-03-10T13:01:47  <bshum> Indeed.
+2015-03-10T13:20:58  *** jwoodard has joined #evergreen
+2015-03-10T13:25:42  <mmorgan> Quick question about selfcheck, is there a way to have it automatically login with staff credentials?
+2015-03-10T13:26:03  <mmorgan> Most of our stations are touch screens with no keyboard.
+2015-03-10T13:29:00  <eeevil> mmorgan: you can make those staff logins last ... a really long time (excepting memcached restarts), but not auto-login
+2015-03-10T13:30:54  <eeevil> mmorgan: you know, actually, if you use the auth proxy from 2.6 and before (still in there) and you don't show the URL bar, you could use basic-auth params in the URL
+2015-03-10T13:31:07  <eeevil> and that would be auto-login
+2015-03-10T13:31:39  <eeevil> but, you'd be putting the staff user and pw into the url, so you want to be /really/ sure patrons can't ever see that
+2015-03-10T13:32:13  <jeff> relying on "don't show the url bar" for the security of a staff password might be more risk than you're willing to accept.
+2015-03-10T13:32:29  <eeevil> jeff: right :)
+2015-03-10T13:32:50  * bshum sees your risk and bets 20 more.
+2015-03-10T13:32:53  <eeevil> but, hey, mmorgan asked for "how" not "should we" ;)
+2015-03-10T13:33:19  <mmorgan> ok, thanks for the input. Yeah. Just because one CAN doesn't mean one SHOULD ;-)
+2015-03-10T13:34:15  <jeff> ELIMINATE patron password problems with this ONE WEIRD DATABASE TRIGGER -- DBAs HATE HIM!
+2015-03-10T13:34:19  * mmorgan must run to lunch, but will ponder upon return
+2015-03-10T13:34:57  <csharp> @coin
+2015-03-10T13:34:57  <pinesol_green> csharp: heads
+2015-03-10T13:40:30  <Dyrcona> @coin
+2015-03-10T13:40:30  <pinesol_green> Dyrcona: tails
+2015-03-10T13:40:49  <bshum> @coin
+2015-03-10T13:40:49  <pinesol_green> bshum: tails
+2015-03-10T13:41:21  * Dyrcona looks around for Rosencrantz and Guildenstern.
+2015-03-10T13:42:13  <jonadab> We have a (non-ILS) thing here that actually authenticates staff by IP address.
+2015-03-10T13:43:06  <jonadab> Of course, to have one of the IP addresses that will get you authenticated, you have to be physically connected to the staff portion of the network; otherwise you'd be on the wrong side of a firewall.
+2015-03-10T13:43:07  <jeff> GREETINGS PROFESSOR ROSENCRANTZ
+2015-03-10T13:43:11  <jeff> WOULD YOU LIKE TO PLAY AT QUESTIONS?
+2015-03-10T13:43:12  <Dyrcona> Oh sure, lots of database vendors do that.
+2015-03-10T13:43:27  <Dyrcona> jeff: Y'know they're dead the whole time, right? ;)
+2015-03-10T13:43:39  <jeff> Why would you think I didn't know that?
+2015-03-10T13:43:46  <Dyrcona> ;)
+2015-03-10T13:44:14  * Dyrcona looks around for Tom Stoppard.
+2015-03-10T13:44:15  * jeff imagines a new script -- "Emoticon! One - Love!"
+2015-03-10T13:44:34  <Dyrcona> I think I need a new script writer for my life. The current has too dark of a sense of humor. :)
+2015-03-10T13:44:41  <jeff> Can emoticons be questions? Can emoji be questions?
+2015-03-10T13:45:04  <Dyrcona> That is the question!
+2015-03-10T13:45:31  <jonadab> The emoji that cannot be questions are not the true emoji.
+2015-03-10T13:45:57  <Dyrcona> These aren't the emoji we're looking for. :)
+2015-03-10T13:46:05  <jonadab> Ah, sooo.
+2015-03-10T13:46:59  <Dyrcona> On an Evergreen note, this is what I like to see before testing something: -rw-rw-r-- 1 opensrf opensrf    0 Mar 10 13:36 osrfsys.log
+2015-03-10T13:47:19  * Dyrcona hugs truncate -s0
+2015-03-10T13:53:23  <Dyrcona> @coin
+2015-03-10T13:53:23  <pinesol_green> Dyrcona: tails
+2015-03-10T13:53:26  *** krvmga has quit IRC
+2015-03-10T14:06:17  <bshum> dbs: Did you guys choose the "intermediate compatibility" list?
+2015-03-10T14:07:04  <bshum> I'm tempted to go for broke and take Modern Compatibility, but I keep getting nervous twitches with IE
+2015-03-10T14:07:07  <bshum> IE--
+2015-03-10T14:07:45  <Dyrcona> IE6 on XP and Java 6 are not compatible even with the intermediate list.
+2015-03-10T14:08:13  <Dyrcona> At least, according to SSLLabs
+2015-03-10T14:08:38  <bshum> Right.
+2015-03-10T14:08:46  <bshum> But I want that dead for sure :)
+2015-03-10T14:08:54  <dbs> Intermediate, yes.
+2015-03-10T14:08:58  <bshum> I just feel like maybe giving people IE7 might be good.
+2015-03-10T14:09:00  <bshum> Stupid Vista users
+2015-03-10T14:10:08  <dbs> Yeah, I can't justify breaking IE < 11
+2015-03-10T14:10:11  <Dyrcona> I can't imagine how giving anyone IE7 could be good.
+2015-03-10T14:10:13  <dbs> So just intermediate.
+2015-03-10T14:10:26  <Dyrcona> ;)
+2015-03-10T14:10:34  <Dyrcona> I'd go with intermediate.
+2015-03-10T14:10:42  <Dyrcona> Or, rather, I did.
+2015-03-10T14:10:44  <dbs> And we use HTTPS-only, so Modern would very much break IE < 11.
+2015-03-10T14:11:08  <bshum> True that.
+2015-03-10T14:11:19  * bshum steps back from the cliff a bit then
+2015-03-10T14:20:20  *** akilsdonk has quit IRC
+2015-03-10T14:27:35  <jonadab> Requiring IE users to upgrade to at least IE8 seems reasonable.
+2015-03-10T14:27:51  <jonadab> I think IE8 will install on everything back through XP.
+2015-03-10T14:28:07  <Dyrcona> Requiring IE users to switch to Firefox or Chromium sounds reasonable. :)
+2015-03-10T14:28:27  <jonadab> Heh.
+2015-03-10T14:28:32  <jonadab> Good luck with that.
+2015-03-10T14:28:54  <jonadab> Although, a lot of progress has been made.  Die-hard IE-only users are well down into minority country these days, so that's progress.
+2015-03-10T14:29:11  <Dyrcona> Just for fun I wrote something that would tell IE users that they couldn't use a site and provided links to download a different browser.
+2015-03-10T14:29:33  <jonadab> Oh, I remember when half the sites on the web did that.
+2015-03-10T14:29:45  <Dyrcona> I know of some users who don't trust software that didn't come with the computer.
+2015-03-10T14:29:51  <jonadab> Back when IE was new and none of the websites had started to support it yet.
+2015-03-10T14:30:05  <jonadab> Anything other than Netscape got the "install our favorite browser" button.
+2015-03-10T14:30:14  <Dyrcona> Of course, you can't trust the crap that the vendor loaded in the first place.... *Cough* Lenovo *Cough*
+2015-03-10T14:30:30  <jonadab> Lenovo is not unique in that regard.
+2015-03-10T14:30:36  <Dyrcona> Not by a long shot.
+2015-03-10T14:30:44  <jonadab> My normal practice is to not trust software unless I get it from the people who wrote it.
+2015-03-10T14:30:48  <Dyrcona> Dell used to put a lot of crap on "home" PCs.
+2015-03-10T14:31:04  <Dyrcona> My normal practice is buy with no O/S installed, just the hardware, please.
+2015-03-10T14:31:08  <bshum> Remember google chrome frame plugin? Ah, JSPAC... I do NOT miss you.
+2015-03-10T14:31:41  <Dyrcona> bshum: Actually, I don't remember that, but I have a very selective memory. :)
+2015-03-10T14:31:48  <jonadab> Hah.
+2015-03-10T14:32:16  <bshum> :P
+2015-03-10T15:02:38  <dbs> bshum: ugh, yes, I remember that
+2015-03-10T15:03:07  <dbs> JSPAC was almost self-aware
+2015-03-10T15:36:37  *** csharp is now known as JSPAC
+2015-03-10T15:36:48  <JSPAC> dbs: YES, I WAS
+2015-03-10T15:36:53  *** JSPAC is now known as csharp
+2015-03-10T15:38:25  <kmlussier> csharp++
+2015-03-10T15:40:41  *** akilsdonk has joined #evergreen
+2015-03-10T15:41:36  <gmcharlt> Clearly, the really problem with library free software projects is how they keep spawning off AIs by accident! ;)
+2015-03-10T15:42:03  <eeevil> HAVEN'T ANY OF YOU READ NECROMANCER?!?!
+2015-03-10T15:42:26  <gmcharlt> @quote add <dbs> JSPAC was almost self-aware ... <JSPAC> dbs: YES, I WAS
+2015-03-10T15:42:26  <pinesol_green> gmcharlt: The operation succeeded.  Quote #107 added.
+2015-03-10T15:43:23  <eeevil> er... neuromancer
+2015-03-10T15:43:34  <eeevil> NTS: joke works better when you do it right
+2015-03-10T15:44:05  <dbs> csharp++
+2015-03-10T15:44:20  * dbs actually did read at least one book in the Necromancer series
+2015-03-10T16:11:56  *** collum has quit IRC
+2015-03-10T16:24:55  <Dyrcona> Does $self->method_lookup($method)->run(args) actually make a request or it does it just run the method directly?
+2015-03-10T16:26:07  *** rashma is now known as rashma_away
+2015-03-10T16:27:27  <Dyrcona> Never mind, I found the answer in OpenSRF::Application, I think.
+2015-03-10T16:29:07  <Dyrcona> BTW, OpenSRF perl code appears to be indented with tabs. Just throwing that out there.
+2015-03-10T16:29:40  *** rjackson_isl has quit IRC
+2015-03-10T16:30:03  <Dyrcona> The answer to my question appears to be "It depends."
+2015-03-10T16:30:41  <Dyrcona> Looks like it usually will make an OpenSRF call, but under certain circumstances (i.e. when $self->{remote} is undefined) it will just execute the code.
+2015-03-10T16:31:07  <jeff> hah. service bulletin that might explain some of the random lockups we've had on this unit: 12V supply incorrectly wired to 5V input on one of the internal components. :-)
+2015-03-10T16:31:23  <Dyrcona> Well, that'll do it.
+2015-03-10T16:33:37  *** jboyer-isl has quit IRC
+2015-03-10T16:35:08  <jeff> @eightball will the fix be worse than the freeze?
+2015-03-10T16:35:08  <pinesol_green> jeff: The outlook is hazy, please ask again later.
+2015-03-10T16:35:17  <jeff> @eightball is it later yet?
+2015-03-10T16:35:17  <pinesol_green> jeff: The outlook is poor.
+2015-03-10T16:40:43  <kmlussier> @eightball is the outlook clearer yet?
+2015-03-10T16:40:43  <pinesol_green> kmlussier: Yes!
+2015-03-10T16:42:04  <Dyrcona> @eightball Does it blend?
+2015-03-10T16:42:04  <pinesol_green> Dyrcona: The answer is def-- oooh! shiny thing!
+2015-03-10T16:44:32  <Dyrcona> @eghtball Is the outlook cloudy?
+2015-03-10T16:44:32  <pinesol_green> Dyrcona: MARC still isn't dead yet, alas
+2015-03-10T16:44:39  <Dyrcona> Oops.
+2015-03-10T16:44:50  * Dyrcona calls it a day.
+2015-03-10T16:45:51  <jonadab> Haha.  I still remember my horror the first time I ever saw a MARC record.
+2015-03-10T16:46:19  <Dyrcona> That horror comes back every time you look at one.
+2015-03-10T16:47:20  <Dyrcona> Ever look at a raw binary MARC record?
+2015-03-10T16:47:50  *** vlewis has joined #evergreen
+2015-03-10T16:57:37  *** Dyrcona has quit IRC
+2015-03-10T16:58:00  *** mrpeters has quit IRC
+2015-03-10T17:02:17  *** mmorgan has left #evergreen
+2015-03-10T17:05:07  *** graced has quit IRC
+2015-03-10T17:05:46  <eeevil> @later tell Dyrcona re method_lookup(), if it can't resolve the method name locally, it will go to the router, get a list of services, go to each and gather their methods, then try to resolve the method by name again.  it supports simple service discovery: "I don't care who implements this method, just do what I want" ... that functionality is not used inside evergreen (we only resolve local methods via method_lookup)
+2015-03-10T17:05:46  <pinesol_green> eeevil: The operation succeeded.
+2015-03-10T17:12:14  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-10T17:36:25  <csharp> @dunno add The horror... The horror...
+2015-03-10T17:36:25  <pinesol_green> csharp: The operation succeeded.  Dunno #36 added.
+2015-03-10T17:51:44  *** yboston has quit IRC
+2015-03-10T17:53:05  *** rashma_away is now known as rashma
+2015-03-10T17:56:53  *** Newziky has left #evergreen
+2015-03-10T18:06:13  *** eady has quit IRC
+2015-03-10T18:06:25  *** eady has joined #evergreen
+2015-03-10T18:57:09  *** jonadab has quit IRC
+2015-03-10T18:59:01  *** jonadab has joined #evergreen
+2015-03-10T19:04:11  *** vlewis has quit IRC
+2015-03-10T19:18:45  *** bmills has quit IRC
+2015-03-10T19:19:00  *** bmills has joined #evergreen
+2015-03-10T19:49:46  *** akilsdonk has quit IRC
+2015-03-10T19:51:17  *** mglass has quit IRC
+2015-03-10T20:01:55  *** jwoodard has quit IRC
+2015-03-10T20:49:33  *** jihpringle has quit IRC
+2015-03-10T21:15:13  *** akilsdonk has joined #evergreen
+2015-03-10T21:24:28  *** bmills has quit IRC
+2015-03-10T22:02:33  *** akilsdonk has quit IRC
+2015-03-10T23:16:31  *** akilsdonk has joined #evergreen

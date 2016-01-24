@@ -1,0 +1,207 @@
+2015-03-30T07:43:27  *** graced has joined #evergreen
+2015-03-30T07:48:38  *** sarabee has joined #evergreen
+2015-03-30T07:49:14  *** graced has quit IRC
+2015-03-30T07:53:46  *** ericar has joined #evergreen
+2015-03-30T07:53:56  *** graced has joined #evergreen
+2015-03-30T07:55:59  *** jboyer-isl has joined #evergreen
+2015-03-30T08:00:39  *** Newziky has joined #evergreen
+2015-03-30T08:02:42  *** rjackson_isl has joined #evergreen
+2015-03-30T08:11:32  *** collum has joined #evergreen
+2015-03-30T08:19:57  <csharp> eeevil: the explain analyze is just giving me "Function Scan on query_parser_fts  (cost=0.25..10.25 rows=1000 width=64) (actual time=23179.184..23179.185 rows=2 loops=1)" - I'm assuming that's not what you're after, right ;-)
+2015-03-30T08:20:01  <csharp> ?
+2015-03-30T08:20:21  <csharp> eeevil: just wondering what the best way to get to the core query is
+2015-03-30T08:20:40  <eeevil> csharp: nope :) ... pull the SELECT that's passed to the function -- that's the core query
+2015-03-30T08:20:47  *** Shae has joined #evergreen
+2015-03-30T08:20:55  <csharp> ok
+2015-03-30T08:25:10  <csharp> eeevil: sorry - I'm not getting it :-/ - here is the full query inside the function: http://pastie.org/10062550 - where does the query I need to explain start and end?
+2015-03-30T08:26:42  <eeevil> the query is bounded by the string: $core_query_11190$
+2015-03-30T08:26:49  <csharp> okay - good
+2015-03-30T08:28:59  *** akilsdonk has joined #evergreen
+2015-03-30T08:32:22  <csharp> eeevil: got it - I attached the explain analyze output and the core query to bug 1438136
+2015-03-30T08:32:22  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438136
+2015-03-30T08:35:03  *** Stompro has quit IRC
+2015-03-30T08:36:45  *** mmorgan has joined #evergreen
+2015-03-30T08:41:00  *** Guest52093 is now known as pmurray
+2015-03-30T08:41:06  *** pmurray has quit IRC
+2015-03-30T08:41:06  *** pmurray has joined #evergreen
+2015-03-30T08:46:51  *** dkyle2 has quit IRC
+2015-03-30T08:56:58  <jboyer-isl> csharp: I assume this search includes the format filters, it might be useful to see how the non-filtered search is different to compare.
+2015-03-30T09:07:52  <eeevil> csharp: yep: Bitmap Index Scan on mrca_vlist_idx  (cost=0.00..337.66 rows=1821 width=0) (actual time=515.026..515.026 rows=1587948 loops=1) ... 1.8k est rows vs 1.6M actual rows. first thing I'd suggest is remove the duplicate condition in the vlist clause (change '(61|311)&(61|311)' to '61|311'
+2015-03-30T09:09:15  <eeevil> csharp: if that changes the plan, then there's a code change that could help (dedup vlist searches before passing to PG). if not, you'll want to increase the stats target on record_attr_vlist and vac-analyze
+2015-03-30T09:20:57  *** Dyrcona has joined #evergreen
+2015-03-30T09:27:03  *** Newziky1 has joined #evergreen
+2015-03-30T09:32:02  *** dkyle1 has joined #evergreen
+2015-03-30T09:32:20  *** maryj has joined #evergreen
+2015-03-30T09:44:29  *** yboston has joined #evergreen
+2015-03-30T10:00:21  <Dyrcona> @quote random
+2015-03-30T10:00:21  <pinesol_green> Dyrcona: Quote #52: "<dbs> MARC is not machine readable." (added by Dyrcona at 02:34 PM, April 12, 2013)
+2015-03-30T10:03:18  *** pmurray is now known as pmurray_away
+2015-03-30T10:07:03  *** pmurray_away is now known as pmurray
+2015-03-30T10:08:25  <jonadab> To the casual observer, MARC looks like an old-timey 8-bit binary format got transmitted over a 7-bit medium.
+2015-03-30T10:12:46  *** mrpeters has joined #evergreen
+2015-03-30T10:30:20  *** mllewellyn has joined #evergreen
+2015-03-30T10:39:15  <bshum> gmcharlt: Our reports blew up about six days ago (with a bad report template that went to get the circ notes for everything with a circ mod "book" in the consortium)
+2015-03-30T10:39:27  <bshum> So I'm taking this reset time to try out the clipping of Clark's cape
+2015-03-30T10:39:58  <gmcharlt> bshum: groovy
+2015-03-30T10:40:16  <bshum> I'm trying to decide if 1000 minutes might be excessive yet (that's like 16+ hours)
+2015-03-30T10:40:39  <bshum> I'll have to ask around the office to see what seems like a nice stop point for us.
+2015-03-30T10:41:19  <bshum> Wait, 60
+2015-03-30T10:41:25  <bshum> I misread the line didn't I?
+2015-03-30T10:41:31  * bshum has his eyes checked
+2015-03-30T10:42:56  <bshum> gmcharlt: I'll let you know what comes from our testing and maybe this might be one of the first new features we push on next
+2015-03-30T10:43:45  <gmcharlt> bshum: in addition to asking folks -- http://paste.lisp.org/display/146642
+2015-03-30T10:44:08  <bshum> gmcharlt++ # I like that better :)
+2015-03-30T10:45:54  <gmcharlt> bshum: data from that applied to our hosted customers is what led me to setting 60 minutes as a default
+2015-03-30T10:46:07  <bshum> So with that, I see less than eleven reports historically taking longer than 60 minutes.
+2015-03-30T10:46:15  <bshum> Most of them have been done in 5 minutes or less.
+2015-03-30T10:46:51  <gmcharlt> obvious, YMMV, but arguably any report that finishes but runs longer than 60 minutes probably could have been better done using hand-crafted SQL anyway
+2015-03-30T10:48:01  <jeff> bshum: do you have access logs sufficient to determine if those >60m reports resulted in output that was actually viewed? :-)
+2015-03-30T10:48:12  <bshum> jeff: Yeah I doubt we do :)
+2015-03-30T10:48:53  *** sandbergja has joined #evergreen
+2015-03-30T10:56:56  *** Shae_ has joined #evergreen
+2015-03-30T10:57:35  *** Shae has quit IRC
+2015-03-30T10:57:46  *** Shae_ is now known as Shae
+2015-03-30T10:58:10  <Dyrcona> I have rarely seen a report take longer than 15 minutes to run, and most run in just 1 to 2 minutes or less.
+2015-03-30T10:58:20  <Dyrcona> The few times that I have looked.
+2015-03-30T10:59:12  <bshum> gmcharlt: Hmm, getting errors like http://pastie.org/10062847 while reports attempt to run.
+2015-03-30T10:59:45  <bshum> that's what spills out onto the console anyways
+2015-03-30T11:02:40  <gmcharlt> bshum: hmm, have you used either the CLI switch or opensrf.xml to explicitly set a limit for the size of the resultset?
+2015-03-30T11:02:57  <bshum> I added the new values to opensrf.xml
+2015-03-30T11:03:06  <bshum> But let me check to make sure it saved right
+2015-03-30T11:03:24  *** Newziky has quit IRC
+2015-03-30T11:03:36  <bshum> Aha
+2015-03-30T11:03:38  <bshum> It's empty
+2015-03-30T11:03:52  <bshum> It was added, but there's no value there
+2015-03-30T11:04:33  <bshum> So the sample entry was <resultset_limit></resultset_limit>
+2015-03-30T11:05:00  <gmcharlt> hmm, and getting passed back by opensrf.settings as a hashref containing undef, perhaps
+2015-03-30T11:07:16  <bshum> Hmm, 1 million rows?  :D
+2015-03-30T11:11:40  *** vlewis has joined #evergreen
+2015-03-30T11:17:18  <Dyrcona> One meellyun rows of what?
+2015-03-30T11:18:09  <bshum> Just setting some unreasonable number of rows to test the new clark out.
+2015-03-30T11:18:29  <bshum> Should probably set it lower to really test it.
+2015-03-30T11:18:43  <gmcharlt> :)
+2015-03-30T11:18:44  <bshum> But eh, I'll do that on some other server.
+2015-03-30T11:18:51  <bshum> And let's say, not production :D
+2015-03-30T11:21:52  <kmlussier> bshum: Where's your sense of adventure? Testing in production is fun! :D
+2015-03-30T11:22:01  *** dreuther_ has quit IRC
+2015-03-30T11:22:30  <Dyrcona> The only real testing is done in production when real users get their hands on things. ;)
+2015-03-30T11:25:52  <bshum> Oh duh
+2015-03-30T11:26:00  <bshum> I have to restart services for the new limitset to apply :)
+2015-03-30T11:26:07  <bshum> I was wondering why it was still broken
+2015-03-30T11:26:24  <Dyrcona> Well, settings and Clark would probably need to be restarted.
+2015-03-30T11:26:28  <bshum> Yep
+2015-03-30T11:26:38  <Dyrcona> Not sure it affects anything else.
+2015-03-30T11:29:22  *** dreuther has joined #evergreen
+2015-03-30T11:30:06  <bshum> Yep, after restarting things, we're back to happily running reports.
+2015-03-30T11:30:19  <bshum> I'll update the bug with notes about the potential issue with resultset_limit
+2015-03-30T11:30:31  <bshum> And I'll add anything else that we find as we start using it.
+2015-03-30T11:40:54  <jboyer-isl> bshum++ # testing!
+2015-03-30T11:41:43  <jboyer-isl> gmcharlt++ # I ran that query and we had a 2.5 day report a while back. D: at least it didn’t cause any issues as it slowly trod on.
+2015-03-30T11:41:52  <bshum> We'll schedule an evening to test the report past 1 hour and see if it kills as advertised.
+2015-03-30T11:47:17  <csharp> eeevil: thanks for the response - deduping didn't change the plan, so I'll experiment with the stats target
+2015-03-30T11:58:05  <csharp> postgresql_docs++
+2015-03-30T11:58:30  <csharp> that is possibly the best-documented F/LOSS project I've come across
+2015-03-30T11:59:10  * csharp will limit his statement to thing he has actually used, though ;-)
+2015-03-30T11:59:17  <csharp> s/thing/things/
+2015-03-30T11:59:36  <Dyrcona> csharp: Where the foot gun in that? ;)
+2015-03-30T11:59:43  <csharp> Dyrcona: ha!
+2015-03-30T12:00:12  *** ningalls has quit IRC
+2015-03-30T12:02:37  <gmcharlt> bshum++ # edge case finder
+2015-03-30T12:02:47  <gmcharlt> (and we ought to make a badge for that)
+2015-03-30T12:02:54  *** jihpringle has joined #evergreen
+2015-03-30T12:03:13  <jboyer-isl> Game-ify all the things!
+2015-03-30T12:12:40  <Dyrcona> And bshum's comment on the bug reminds me that the daemonize function from OpenSRF::Utils doesn't do a few things that it should.
+2015-03-30T12:15:13  <bshum> Hmm
+2015-03-30T12:17:22  <gmcharlt> Dyrcona: ... and serveral things that perhaps ought to be using O::Utils->daemonize() aren't, in favor of hand-coding
+2015-03-30T12:17:34  <gmcharlt> whee!
+2015-03-30T12:18:18  <Dyrcona> gmcharlt: I also wonder why we don't just use Proc::Daemon.
+2015-03-30T12:19:43  <gmcharlt> Dyrcona: a shameful lack of TARDIS, perhaps :)
+2015-03-30T12:20:15  <gmcharlt> but seriously, +1 to using something that does all the recommended bits... and specializes in using the recommended bits
+2015-03-30T12:20:16  <Dyrcona> gmcharlt: Heh. I thought that was reason number 1.
+2015-03-30T12:35:42  <csharp> eeevil: hmm - so I did 'alter table metabib.record_attr_vector_list alter COLUMN vlist set statistics 10000;', then vacuum analyzed, but I don't see a change in the plan yet and the query is still slow :-/
+2015-03-30T12:36:16  * csharp wonders if there's another table or column that needs that change too
+2015-03-30T12:39:24  <csharp> I also tried de-duping after the statistics change too, in case that helps
+2015-03-30T12:58:46  *** maryj has quit IRC
+2015-03-30T13:21:53  *** dreuther_ has joined #evergreen
+2015-03-30T13:24:25  *** dreuther has quit IRC
+2015-03-30T13:29:32  *** Newziky1 has quit IRC
+2015-03-30T13:54:58  <bshum> Hmm
+2015-03-30T13:55:55  <bshum> So we have a patron with $16.00 in fines (consortium wide - $4.50 in home lib, the rest elsewhere) and they don't get a group penalty from the home library which blocks at $5.00.  I thought it used to calculate penalty based on total owed, not just the amount owed to the lib with the penalty.
+2015-03-30T13:56:02  <bshum> Or maybe something else is awry here...
+2015-03-30T14:00:05  <tsbere> bshum: No, that sounds like how it works. It gets fun, though, when there are multiple layers. It won't update all layers. <_<
+2015-03-30T14:00:35  <bshum> That's odd then.  I guess we just never noticed it working that way, and always thought it was counting globally.
+2015-03-30T14:00:36  <bshum> Good times!
+2015-03-30T14:01:24  <tsbere> Nah. The way it counts is annoying at times, but I understand why it does what it does. If you want me to walk you through the pile of things I have discovered let me know.
+2015-03-30T14:02:01  <bshum> I think I get it.
+2015-03-30T14:02:36  <bshum> I'm just going to use this as a "so this is why we need a global fine penalty block instead of 80 different ones" unification, have one rule that actually works spiel.  That'll go absolutely nowhere.
+2015-03-30T14:08:20  *** ningalls has joined #evergreen
+2015-03-30T14:08:36  <csharp> @blame per-library policies
+2015-03-30T14:08:36  <pinesol_green> csharp: per-library policies forgot to give the gerbils their chocolate-frosted sugar bombs
+2015-03-30T14:08:58  <csharp> @blame search nice
+2015-03-30T14:08:58  <pinesol_green> csharp: 1 found: #9: "$who is why we can never have nice things!"
+2015-03-30T14:09:08  <csharp> @blame 9 per-library policies
+2015-03-30T14:09:08  <pinesol_green> csharp: per-library policies is why we can never have nice things!
+2015-03-30T14:09:09  <bshum> Heh
+2015-03-30T14:23:20  *** Newziky has joined #evergreen
+2015-03-30T14:35:44  *** dreuther has joined #evergreen
+2015-03-30T14:37:23  *** DPearl has joined #evergreen
+2015-03-30T14:38:43  *** dreuther_ has quit IRC
+2015-03-30T14:38:57  <kmlussier> In the existing client, staff need to click "Replace Barcode" to enter a new barcode for the user. In the web client. the "Replace Barcode" button doesn't do anything, but staff can just type in the new barcode.
+2015-03-30T14:39:21  <kmlussier> I'm trying to figure out if it's a bad thing that they can just type in a new barcode now like they can with any other field on that record.
+2015-03-30T14:39:34  * kmlussier assumes there was a reason we prevented staff from doing so in the old client.
+2015-03-30T14:40:21  <tsbere> For a user replacing the barcode involves making the old one inactive and non-primary in addition to creating the new one. I don't know if the web client is doing that as well.
+2015-03-30T14:40:55  <bshum> Ugh, that sounds "not good"
+2015-03-30T14:41:27  <jeff> or "handy", depending on your workflow. ;-)
+2015-03-30T14:45:13  <DPearl> bshum++
+2015-03-30T14:45:55  <kmlussier> Well, I included it on a broader bug report if anyone wants to offer opinions on how it should work. bug 1438358
+2015-03-30T14:45:55  <pinesol_green> Launchpad bug 1438358 in Evergreen "Web staff client: non-functional buttons on patron registration screen" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438358
+2015-03-30T14:51:53  <Bmagic> under what circumstance would the shelf_time be different than the capture_time?
+2015-03-30T14:52:39  <mmorgan> Bmagic: when the item goes in transit to the pickup library.
+2015-03-30T14:52:51  <Bmagic> lol
+2015-03-30T14:52:55  <Bmagic> gotcha
+2015-03-30T14:53:16  <mmorgan> We get a lot of that around here ;-)
+2015-03-30T14:58:34  *** sfu has joined #evergreen
+2015-03-30T14:59:03  *** sfu has left #evergreen
+2015-03-30T15:21:12  *** Dyrcona has quit IRC
+2015-03-30T15:24:04  *** Dyrcona has joined #evergreen
+2015-03-30T15:25:17  *** mglass has joined #evergreen
+2015-03-30T15:25:20  *** vlewis_ has joined #evergreen
+2015-03-30T16:11:14  *** dreuther_ has joined #evergreen
+2015-03-30T16:12:32  *** maryj has joined #evergreen
+2015-03-30T16:14:03  *** dreuther has quit IRC
+2015-03-30T16:26:17  *** collum has quit IRC
+2015-03-30T16:29:07  *** rjackson_isl has quit IRC
+2015-03-30T16:30:36  *** jboyer-isl has left #evergreen
+2015-03-30T16:36:11  *** jonadab is now known as sdgdfgfdsg
+2015-03-30T16:36:49  *** sdgdfgfdsg is now known as jonadab
+2015-03-30T16:39:55  *** dreuther has joined #evergreen
+2015-03-30T16:43:24  *** dreuther_ has quit IRC
+2015-03-30T16:48:13  *** maryj has quit IRC
+2015-03-30T16:59:38  *** Dyrcona has quit IRC
+2015-03-30T17:03:07  *** ericar has quit IRC
+2015-03-30T17:04:09  <bshum> kmlussier: I just tested https://bugs.launchpad.net/evergreen/+bug/1438410 and can confirm it doesn't work for my webclient.
+2015-03-30T17:04:09  <pinesol_green> Launchpad bug 1438410 in Evergreen "Web staff client: Load patron from Checkout does not work" (affected: 2, heat: 10) [Low,Confirmed]
+2015-03-30T17:04:14  <bshum> But it's fine for XUL, so far as I can tell.
+2015-03-30T17:04:21  <bshum> I've updated the bug ticket accordingly.
+2015-03-30T17:04:32  <bshum> But we might want to adjust the description of the problem a bit.
+2015-03-30T17:04:40  <kmlussier> Done
+2015-03-30T17:04:41  <bshum> kmlussier++ # testing
+2015-03-30T17:05:40  *** mmorgan has left #evergreen
+2015-03-30T17:10:30  *** graced has quit IRC
+2015-03-30T17:16:51  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-30T17:49:54  *** Newziky1 has joined #evergreen
+2015-03-30T17:51:15  *** Newziky has quit IRC
+2015-03-30T18:24:13  *** yboston has quit IRC
+2015-03-30T18:38:56  *** mllewellyn has quit IRC
+2015-03-30T19:05:04  *** vlewis has quit IRC
+2015-03-30T19:05:05  *** vlewis_ has quit IRC
+2015-03-30T19:29:25  *** mrpeters has quit IRC
+2015-03-30T19:50:39  *** Shae has quit IRC
+2015-03-30T20:43:11  *** jihpringle has quit IRC
+2015-03-30T20:49:39  *** Newziky1 has quit IRC
+2015-03-30T22:59:33  *** akilsdonk has quit IRC
+2015-03-30T23:11:14  *** sandbergja has quit IRC
+2015-03-30T23:15:21  *** gsams has quit IRC
+2015-03-30T23:15:47  *** gsams has joined #evergreen
+2015-03-30T23:36:43  *** pmurray is now known as pmurray_away
+2015-03-30T23:42:05  *** akilsdonk has joined #evergreen

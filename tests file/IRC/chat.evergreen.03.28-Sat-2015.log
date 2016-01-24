@@ -1,0 +1,32 @@
+2015-03-28T00:31:46  *** rfrasur has joined #evergreen
+2015-03-28T00:37:51  *** rfrasur has quit IRC
+2015-03-28T03:15:18  *** chatley_ has joined #evergreen
+2015-03-28T03:15:18  *** dreuther_ has joined #evergreen
+2015-03-28T03:15:18  *** dreuther has quit IRC
+2015-03-28T03:15:18  *** chatley has quit IRC
+2015-03-28T05:04:27  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-28T08:00:14  *** Newziky has joined #evergreen
+2015-03-28T08:52:08  *** artunit has quit IRC
+2015-03-28T08:55:34  *** artunit has joined #evergreen
+2015-03-28T08:56:50  *** artunit_ has joined #evergreen
+2015-03-28T09:00:30  *** artunit has quit IRC
+2015-03-28T09:00:44  *** artunit_ is now known as artunit
+2015-03-28T10:29:43  *** dMiller_ has joined #evergreen
+2015-03-28T11:03:20  *** Newziky has quit IRC
+2015-03-28T11:03:23  *** dMiller_ has quit IRC
+2015-03-28T13:09:35  *** bmills has joined #evergreen
+2015-03-28T13:52:00  *** bmills has quit IRC
+2015-03-28T14:05:46  *** bmills has joined #evergreen
+2015-03-28T15:52:52  *** bmills has quit IRC
+2015-03-28T15:58:49  *** bmills has joined #evergreen
+2015-03-28T16:07:52  *** bmills1 has joined #evergreen
+2015-03-28T16:10:22  *** bmills has quit IRC
+2015-03-28T16:47:01  *** RBecker has quit IRC
+2015-03-28T16:52:37  *** RBecker has joined #evergreen
+2015-03-28T17:30:23  *** phasefx_ has quit IRC
+2015-03-28T17:30:24  *** TaraC has quit IRC
+2015-03-28T17:30:24  *** pmurray_away has quit IRC
+2015-03-28T17:30:47  *** pmurray_away has joined #evergreen
+2015-03-28T17:31:11  *** pmurray_away is now known as Guest52093
+2015-03-28T17:31:44  *** TaraC has joined #evergreen
+2015-03-28T17:31:57  *** phasefx_ has joined #evergreen

@@ -1,0 +1,474 @@
+2015-05-07T01:12:15  *** akilsdonk has quit IRC
+2015-05-07T05:04:28  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-07T07:12:12  <kmlussier> Good morning #evergreen
+2015-05-07T07:30:02  *** graced has joined #evergreen
+2015-05-07T07:35:01  *** jboyer-isl has joined #evergreen
+2015-05-07T07:53:19  *** rjackson_isl has joined #evergreen
+2015-05-07T08:21:02  *** collum has joined #evergreen
+2015-05-07T08:23:07  *** akilsdonk has joined #evergreen
+2015-05-07T08:31:00  *** mrpeters has joined #evergreen
+2015-05-07T08:32:17  *** Dyrcona has joined #evergreen
+2015-05-07T08:35:18  <Stompro> kmlussier, good morning!
+2015-05-07T08:35:33  *** mmorgan has joined #evergreen
+2015-05-07T08:36:22  <Stompro> I'm looking forward to meeting people next week, hopefully everyone puts their IRC handle on their name tags :-)
+2015-05-07T08:36:46  <kmlussier> Hello Stompro! I'm looking forward to meeting you in person too! :)
+2015-05-07T08:48:21  <kmlussier> Hmmm...I just went to look at something on my job listing, and noticed that I can't see jobs on the job dashboard if I'm not logged in to evergreen-ils.org.
+2015-05-07T08:48:29  <kmlussier> That doesn't seem to be particularly useful.
+2015-05-07T08:49:23  <Dyrcona> Sure, it has been two days, time for another kernel update. :)
+2015-05-07T08:50:21  *** Shae has joined #evergreen
+2015-05-07T08:52:16  *** Shirleyh_ has quit IRC
+2015-05-07T08:53:27  <Dyrcona> Back after a restart.
+2015-05-07T08:53:33  *** Dyrcona has quit IRC
+2015-05-07T08:55:08  *** Dyrcona has joined #evergreen
+2015-05-07T08:57:28  <kmlussier> Looks like I put the wrong jobs link in the menu. So I guess I need to figure out what the correct link is.
+2015-05-07T09:02:34  <kmlussier> Got it. Looks much better now
+2015-05-07T09:06:56  <csharp> @who got the wrong job because of the wrong web link?
+2015-05-07T09:06:56  <pinesol_green> pastebot got the wrong job because of the wrong web link.
+2015-05-07T09:07:04  <csharp> that's probably true
+2015-05-07T09:07:06  *** maryj has joined #evergreen
+2015-05-07T09:07:09  <Dyrcona> heh
+2015-05-07T09:07:50  <Dyrcona> So, our server is using a lot of RAM right now, and when I sort the running processes by resident memory used, my #2 item is a open-ils.trigger drone.
+2015-05-07T09:08:15  <csharp> oh yeah - hackfest quickie idea - fix pastebot's "reset the paste ID every time I restart" issue ;-)
+2015-05-07T09:09:20  <Dyrcona> It is also #3 on cpu time sorting, right behind ejabberd and the OpenSRF router.
+2015-05-07T09:10:45  <csharp> dbwells: would you be amenable to creating a branch with your quick fix to bug 1419172? or do you think it's too hacky?
+2015-05-07T09:10:45  <pinesol_green> Launchpad bug 1419172 in Evergreen "extend_reporter.full_circ_count view unusably slow on large datasets" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1419172
+2015-05-07T09:12:41  <Dyrcona> I am tempted to kill that drone.
+2015-05-07T09:13:28  *** Newziky has joined #evergreen
+2015-05-07T09:14:07  *** Newziky has left #evergreen
+2015-05-07T09:20:05  <Dyrcona> And, we ran out of swap, so had to shut everything down anyway.
+2015-05-07T09:20:13  <Dyrcona> Think I'll reboot the server while I'm at it.
+2015-05-07T09:21:08  <Dyrcona> And, we just got the last three of our new servers yesterday, so only another week or two to put with this cranky, old box.
+2015-05-07T09:21:13  *** kbutler has joined #evergreen
+2015-05-07T09:21:18  <gmcharlt> csharp: dbwells: looks reasonable to me, and the query plan with the new version rather less convoluted
+2015-05-07T09:30:40  *** yboston has joined #evergreen
+2015-05-07T09:38:17  *** kbutler has quit IRC
+2015-05-07T09:42:29  <csharp> Dyrcona: I wonder if your problems will just go away with the new hardware - we've seen that happen
+2015-05-07T09:42:48  <csharp> "that" being "problems were solved by changing hardware"
+2015-05-07T09:43:22  <csharp> gmcharlt: awesome
+2015-05-07T09:43:55  <Dyrcona> Yeah, the new servers will definitely help with the running out of memory.
+2015-05-07T09:44:16  <Dyrcona> We're also doing something like a brick setup with the new servers to spread the load.
+2015-05-07T09:44:49  <csharp> gmcharlt: and we've been using it very happily in production - some of our libraries were actually convinced something was wrong because reports were returning in seconds when they used to take hours
+2015-05-07T09:44:57  <Dyrcona> In the mean time, I'm adding more swap via a file on the current server.
+2015-05-07T09:45:48  *** jwoodard has joined #evergreen
+2015-05-07T09:46:03  <csharp> Dyrcona: yeah, I remember dmcmorris from ESI doing that on our reports server that was dying basically daily (c. 2008)
+2015-05-07T09:47:01  <Dyrcona> Yep. We had been doing pretty well for about 3.5 years, then lately we've been running out of RAM.
+2015-05-07T09:47:10  <Dyrcona> Just the past couple of months.
+2015-05-07T09:47:55  <Dyrcona> I was actually watching as it happened this morning, which is a bit of a wonder in itself.
+2015-05-07T09:48:58  *** RoganH has joined #evergreen
+2015-05-07T09:50:05  <csharp> I bet ;-)
+2015-05-07T09:59:04  <dbwells> csharp: Yes, I will make a branch for it.
+2015-05-07T10:02:35  <jboyer-isl> dbwells++ # I didn't realize that wasn't already committed. We've been happily using it here as well; huge help.
+2015-05-07T10:07:45  <csharp> dbwells++ # thanks
+2015-05-07T10:07:56  <csharp> dbwells: I'll sign off as soon as it's up
+2015-05-07T10:10:09  <csharp> is rsoulliere the right person to poke if http://docs.evergreen-ils.org/2.8/Evergreen_Documentation.pdf results in a 404?
+2015-05-07T10:11:21  <yboston> csharp: yes
+2015-05-07T10:11:33  <csharp> yboston: thanks
+2015-05-07T10:13:36  * csharp sent him an email about it
+2015-05-07T10:14:05  * kmlussier waves to RoganH
+2015-05-07T10:14:44  <kmlussier> RoganH: I was looking at the jobs board this morning. Was your plan to have people submit the jobs themselves or to go through somebody like you?
+2015-05-07T10:15:02  <kmlussier> I was just wondering if we need a link to the page where you submit a new job.
+2015-05-07T10:19:09  <jwoodard> do we have any catalogers on?
+2015-05-07T10:20:55  <kmlussier> @quote 46
+2015-05-07T10:20:55  <pinesol_green> kmlussier: http://wonder-tonic.com/geocitiesizer/content.php?theme=2&music=6&url=evergreen-ils.org
+2015-05-07T10:20:59  <RoganH> kmlussier: originally we said they would go through me so we would have some vetting but there have been so few I'd be fine with making into a form and we can look them over after they're posted
+2015-05-07T10:21:10  <kmlussier> @quote get 46
+2015-05-07T10:21:10  <pinesol_green> kmlussier: Quote #46: "<_bott_> I am not a cataloger, but I speak enough MARC to be fun at parties" (added by gmcharlt at 11:43 AM, March 15, 2013)
+2015-05-07T10:21:26  <RoganH> kmlussier: however, since they go immediately out to social media we may want them vetted before published
+2015-05-07T10:21:41  <kmlussier> RoganH: OK, that's fine. I'll leave it the way it is then.
+2015-05-07T10:21:55  <jwoodard> haha that nice
+2015-05-07T10:21:58  <kmlussier> RoganH: I hope it's okay that I didn't go through you. :)
+2015-05-07T10:22:22  <dbs> gmcharlt++ # looks like a very promising performance win!
+2015-05-07T10:22:22  <RoganH> kmlussier: oh, no, I'm horribly offended, you'll have to appease me with a beer in Oregon
+2015-05-07T10:22:26  <jwoodard> Quick question do you know of any reason why an item will not appear when you search it by title and isbn
+2015-05-07T10:22:35  <jwoodard> in the catalog
+2015-05-07T10:22:52  <kmlussier> jwoodard: Are you doing a keyword search?
+2015-05-07T10:23:01  <jwoodard> I checked over the MARC record and everything is right and the title will appear when i am typing it in the search box
+2015-05-07T10:23:42  <jwoodard> kmlussier: yeah and the title appears as Im typing it but when I click on it no results are brough back
+2015-05-07T10:24:24  <kmlussier> jwoodard: Are you doing the search through the staff client or through the public catalog? Also, are there any items attached to the record?
+2015-05-07T10:30:03  <jwoodard> kmlussier: Through the staff client and there are items attached.
+2015-05-07T10:30:37  <kmlussier> So you said you click on the autosuggest term. Did you say you're adding isbn to the search too?
+2015-05-07T10:31:02  <kmlussier> If so, that could be the problem. IIRC, autosuggest will automatically change your search to a title search. But it's been a while since I used autosuggest.
+2015-05-07T10:31:35  <bshum> Yes, it changes the search type
+2015-05-07T10:31:45  <bshum> (which we hated, but anyways)
+2015-05-07T10:33:17  <kmlussier> Yeah, I don't think we liked that either, but it's been so long since we've evaluated autosuggest, that I don't recall the wishlist items anymore.
+2015-05-07T10:33:33  <kmlussier> Beyond the big wishlist item of getting it to work with screen readers.
+2015-05-07T10:34:05  <kmlussier> Well, not really work with screen readers. Not break the ability to use screen readers in the catalog is a more accurate representation of the problem.
+2015-05-07T10:39:23  <bshum> I thought autosuggest wasn't going to pop up for advanced search though (which is the default search for staff clients)
+2015-05-07T10:39:37  <kmlussier> bshum: Yes, that's true
+2015-05-07T10:39:48  <jwoodard> kmlussier: No the isbn search was separate. The only way we can find this item is by a barcode search.
+2015-05-07T10:40:24  <bshum> jwoodard: What version of Evergreen are you working with?
+2015-05-07T10:40:24  <kmlussier> jwoodard: It sounds like the record wasn't properly ingested.
+2015-05-07T10:40:53  <jwoodard> 2.7.3
+2015-05-07T10:41:09  <kmlussier> You might want to try editing the MARC record, saving it again, and then see if you can retrieve it.
+2015-05-07T10:41:23  <bshum> Anything interesting about the record?  Like was it ever deleted at any point and then brought back?
+2015-05-07T10:42:06  <jwoodard> I did that as well. I change the isbn. Replaced the title. Added the isbn13 and search by that.
+2015-05-07T10:42:55  <jwoodard> bshum: The only thing I can think of is that it was an old record that was import over when we joined the a consortium. Other than that...
+2015-05-07T10:43:14  <bshum> Hmm
+2015-05-07T10:43:29  <bshum> Well, I always get wary of bibs that don't reingest and think of https://bugs.launchpad.net/evergreen/+bug/1091885
+2015-05-07T10:43:29  <pinesol_green> Launchpad bug 1091885 in Evergreen "Reingest bib needs to deal with missing metabib.record_attr entries" (affected: 4, heat: 26) [Medium,Confirmed]
+2015-05-07T10:43:58  <bshum> If you have database access, you can check to see if there are actually metabib attributes associated with the bib in question.
+2015-05-07T10:44:23  * bshum is afraid he doesn't know which consortium jwoodard  belongs to :\
+2015-05-07T10:44:45  <jwoodard> NTLC
+2015-05-07T10:45:47  <kmlussier> Ah, I forgot about that bug.
+2015-05-07T10:46:02  <bshum> kmlussier: These bugs haunt my dreams.
+2015-05-07T10:46:04  <jwoodard> NTLC aka North Texas Library Consortium in case everyone cannot read my mind or auto guess acronyms ;)
+2015-05-07T10:46:39  <bshum> jwoodard: I've had some passing familiarity with NTLC ;)
+2015-05-07T10:54:13  *** akilsdonk has quit IRC
+2015-05-07T10:55:50  *** akilsdonk has joined #evergreen
+2015-05-07T10:56:17  <bshum> jwoodard: So my recommendation is to mention the issue up your chain of support, and see if they can test your bib/item and see if there are problems with the reingest on that record.
+2015-05-07T10:57:20  <bshum> Something like: SELECT COUNT(*) FROM biblio.record_entry WHERE deleted = FALSE AND id NOT IN (SELECT source FROM metabib.record_attr_vector_list);
+2015-05-07T10:57:41  <bshum> Would tell you how many bibs (which are not deleted) do not have a proper corresponding metabib.record_attr_vector_list entry
+2015-05-07T10:58:02  <bshum> I just ran that on our systems and came up with 13 bibs, which makes me a little sad.
+2015-05-07T10:58:58  <csharp> yay! 0 in PINES
+2015-05-07T10:59:19  * csharp fully expected to see more than 0
+2015-05-07T10:59:22  <bshum> csharp: Amazing!
+2015-05-07T10:59:23  <bshum> :)
+2015-05-07T11:00:13  <mmorgan> Hmm. 3 in NOBLE :-(
+2015-05-07T11:01:39  <bshum> I guess I can update the bug with these slightly better targeting SQLs
+2015-05-07T11:02:08  <bshum> SELECT bre.id FROM biblio.record_entry bre LEFT JOIN metabib.record_attr_vector_list mravl ON mravl.source = bre.id WHERE bre.deleted = FALSE AND bre.active = TRUE AND mravl.vlist IS NULL;
+2015-05-07T11:02:15  <bshum> In case you wanted the exact bib IDs for those missing entries
+2015-05-07T11:02:36  <mmorgan> bshum++
+2015-05-07T11:03:06  <bshum> mmorgan: Yeah, if you follow rjackson_isl's steps in his comment on that bug for a post-2.6 system, you can repair those missing entries.
+2015-05-07T11:03:22  <berick> csharp: have you done any additional testing on EDI since your last comments in bug #1342227 ?
+2015-05-07T11:03:22  <pinesol_green> Launchpad bug 1342227 in Evergreen "Setting up EDI Fails with Ruby version > 1.8" (affected: 2, heat: 14) [Undecided,New] https://launchpad.net/bugs/1342227
+2015-05-07T11:04:33  <jwoodard> bshum: Already sent an email. Proper training and database access are one of the many thing on my list of things to accomplish.
+2015-05-07T11:04:57  <jwoodard> bshum++  kmlussier++
+2015-05-07T11:06:21  <bshum> jwoodard: Good luck, hope it's the answer you need.
+2015-05-07T11:08:25  <kmlussier> mmorgan: 3 doesn't seem too bad.
+2015-05-07T11:08:52  <mmorgan> No, but I like csharp's 0 better :)
+2015-05-07T11:14:49  <jeff> this one is similar: select count(*) from money.billable_xact mbx where not exists (select 1 from money.materialized_billable_xact_summary mmbxs where mmbxs.id = mbx.id);
+2015-05-07T11:14:52  <jeff> that one prevents checkin.
+2015-05-07T11:15:18  <jeff> (for affected transactions)
+2015-05-07T11:15:26  <bshum> Ugh, why jeff?  Why must you torment me?
+2015-05-07T11:15:26  <bshum> :)
+2015-05-07T11:15:28  <jeff> but i think it's pretty rare. we have two.
+2015-05-07T11:16:00  * bshum thanksfully has 0
+2015-05-07T11:16:19  <bshum> And I'll go back to blissfully not thinking about billing weirdness.
+2015-05-07T11:17:08  <csharp> berick: no - I didn't put together a good way to test on the stock EG master machine I was on
+2015-05-07T11:17:30  <csharp> berick: I was able to see the daemon running, though
+2015-05-07T11:18:40  <mmorgan> Whew! we have 0 for jeff's query :)
+2015-05-07T11:19:19  *** sarabee has joined #evergreen
+2015-05-07T11:20:20  <csharp> 0 for jeff's query here too
+2015-05-07T11:21:38  <berick> csharp: gotcha, thanks, that's a start. i'm working on a 14.04 utility server, so I should have some updates on this front soon
+2015-05-07T11:22:33  <csharp> excellent
+2015-05-07T11:31:47  *** bmills has joined #evergreen
+2015-05-07T11:56:35  *** bmills has quit IRC
+2015-05-07T11:58:12  *** bmills has joined #evergreen
+2015-05-07T12:15:53  *** jihpringle has joined #evergreen
+2015-05-07T12:25:26  *** krvmga has joined #evergreen
+2015-05-07T12:28:35  <gsams> bshum: ran your report...9308...  So, what do now?
+2015-05-07T12:29:32  <kmlussier> Wow!
+2015-05-07T12:29:37  *** buzzy has joined #evergreen
+2015-05-07T12:29:43  <gsams> yeah... Not so pretty
+2015-05-07T12:31:34  <gsams> jeff: Thankfully we come up 0 on that report.
+2015-05-07T12:31:48  <gsams> I was worried for a moment though, all things considered.
+2015-05-07T12:31:57  * jeff feels special
+2015-05-07T12:35:52  <gsams> bshum: Ah, I see the instructions from the bug report.  I'll take a stab at that for a few to make sure I have the idea down.
+2015-05-07T12:41:38  <gsams> jwoodard:try searching for them now
+2015-05-07T12:42:18  <gsams> if that worked, 2 down 9306 to go...
+2015-05-07T12:44:13  <jonadab> Hmm...  everything seems to work, until autogen.sh, which... doesn't.  http://pastebin.com/RHbrZ0DM
+2015-05-07T12:44:44  <jonadab> settings-tester.pl looks ok.
+2015-05-07T12:45:24  <Dyrcona> jonadab: You restarted services after installing Evergreen?
+2015-05-07T12:45:41  <jonadab> Yes.
+2015-05-07T12:45:48  <Dyrcona> Try osrf_control --diagnostic to see if any services are not running.
+2015-05-07T12:46:29  <jonadab> Hmm... that's telling me that a lot of things are "NOT configured for this host".
+2015-05-07T12:46:47  <jonadab> Ah, here we go, --localhost
+2015-05-07T12:47:11  <Dyrcona> Yeah, I left it out, figuring you'd know if you needed it or not.
+2015-05-07T12:47:23  <jonadab> I figured it out.
+2015-05-07T12:47:43  <jonadab> http://pastebin.com/ebQ3VYH3
+2015-05-07T12:48:08  <jonadab> Notably, it says * opensrf.settings         [16415] uptime=19:56       cputime=00:00:00    #drones=5
+2015-05-07T12:48:28  <csharp> jonadab: maybe check /openils/var/log/osrfsys.log for clues?
+2015-05-07T12:48:30  <Dyrcona> FWIW, we see "No Response from settings server...going to sleep" from time to time with hold targeter and other cron jobs.
+2015-05-07T12:49:08  <Dyrcona> And, we've not run out of drones, either.
+2015-05-07T12:49:22  <Dyrcona> Never been able to pin it down.
+2015-05-07T12:49:41  <jonadab> Hmm...  [2015-05-07 12:41:03] opensrf.settings [INFO:16427:Server.pm:748:] server: no request was received in 1 seconds, exiting stateful sessi\
+2015-05-07T12:49:54  <jonadab> *session
+2015-05-07T12:50:04  <jonadab> Is that normal?
+2015-05-07T12:50:33  <Dyrcona> For certain definitions of normal, yes.
+2015-05-07T12:50:47  <Dyrcona> Not always desirable.
+2015-05-07T12:51:17  <jonadab> Is it possible autogen needs more than 1 second to send a request?
+2015-05-07T12:53:15  <Dyrcona> Could be, but then you might have other problems.
+2015-05-07T12:54:23  <jonadab> Hmm... I've confirmed that those messages get put in the log when I run autogen.sh
+2015-05-07T12:54:40  <jwoodard> gsams: It worked! That number though...I was hoping it wouldn't be that high.
+2015-05-07T12:54:48  <jonadab> Four lines, actually, and that's only the last one.
+2015-05-07T12:55:13  <jonadab> http://pastebin.com/StgmhHig
+2015-05-07T12:55:47  <jeff> jonadab: have you verified your ejabberd config changes, and that ejabberd was restarted after reconfiguring?
+2015-05-07T12:55:59  <jeff> jonadab: also, have you checked your ejabberd logs?
+2015-05-07T12:56:29  <jonadab> jeff: ejabberd and memcached were restarted after configuring, but I'm not knowledgeable enough about ejabberd to be certain the configuration is entirely correct.
+2015-05-07T12:56:33  <Dyrcona> jonadab: Well, you could change up the loglevel in opensrf_core.xml and restart services. That might give you more information about what is going on.
+2015-05-07T12:56:39  <jonadab> Though I /thought/ I just followed the install instructions.
+2015-05-07T12:58:10  <jonadab> Dyrcona: I guess just the opensrf log levels (not the router ones)?
+2015-05-07T12:58:52  <Dyrcona> jonadab: Yeah, specifically opensrf.settings.
+2015-05-07T12:59:02  <gsams> jwoodard: I had a bad feeling once I started reading the conversation that it would be.  There have always been a number of oddities with our records.
+2015-05-07T12:59:05  <Dyrcona> Maybe set it to 4.
+2015-05-07T12:59:34  <Dyrcona> On an unrelated note: Does anyone adjust the swappiness or vfs_cache_pressure on their Evergreen servers?
+2015-05-07T13:00:11  <jonadab> Oh, that DOES give new messages.
+2015-05-07T13:00:25  <Dyrcona> Are they useful?
+2015-05-07T13:01:06  <jonadab> Hang on, I'm restarting all the services again...
+2015-05-07T13:02:28  <jonadab> (I'd done start-all after restarting ejabberd and memcached, but I hadn't done stop-all first, so I am redoing with that to make sure everything is as it should be...)
+2015-05-07T13:03:54  <Dyrcona> jonadab: There is a --restart-all, too, and you can stop, start, and restart individual services.
+2015-05-07T13:04:06  <jonadab> Oh, --restart-all, good to know.
+2015-05-07T13:04:26  <Dyrcona> For instance, to restart just opensrf.settings: osrf_control --localhost --service opensrf.settings --restart
+2015-05-07T13:04:50  <jonadab> Yes, I'd run across --service and --restart in the documentation.
+2015-05-07T13:05:04  <jonadab> Not sure how I missed --restart-all
+2015-05-07T13:06:55  *** kbutler has joined #evergreen
+2015-05-07T13:18:13  <jonadab> http://pastebin.com/Th15Exaa
+2015-05-07T13:27:30  <Dyrcona> The log looks like everything is OK.
+2015-05-07T13:27:51  <Dyrcona> But is autogen.sh still saying it can't talk to opensrf.settings?
+2015-05-07T13:30:36  <Dyrcona> Because opensrf.settings is passing on a request and getting responses.
+2015-05-07T13:31:06  <Dyrcona> This does reveal a connected session that is not properly closed, but that should not result in your symptoms.
+2015-05-07T13:31:39  <Dyrcona> jonadab: Here's a question: is this a fresh install or an upgrade?
+2015-05-07T13:43:04  <jonadab> Dyrcona: It's a fresh install.
+2015-05-07T13:43:14  <jonadab> Haven't even put any data into the DB yet.
+2015-05-07T13:43:27  <yboston> gmcharlt: do you have a sec. Looking for DIG VM update, if any new info is available
+2015-05-07T13:49:58  *** rsoulliere has joined #evergreen
+2015-05-07T13:50:07  <Dyrcona> jonadab: Do you have org. units, at least?
+2015-05-07T13:50:26  <Dyrcona> It could be getting hung up on getting nothing back.
+2015-05-07T13:51:22  <bshum> gsams++ # glad to hear you're able to help out jwoodard :)
+2015-05-07T13:51:52  *** remingtron_ is now known as remingtron
+2015-05-07T13:54:56  <jeff> jonadab: have you shared your ejabberd.cfg file somewhere yet?
+2015-05-07T13:55:57  <yboston> heads up DIG monthly meetign start at 2 PM EST
+2015-05-07T13:56:22  <kmlussier> yboston: I'm buried in work today, so may not be an active participant in the meeting.
+2015-05-07T13:56:27  <kmlussier> But I'll be around if you have any questions.
+2015-05-07T13:57:03  *** jihpringle has quit IRC
+2015-05-07T14:00:30  <kmlussier> yboston: Now that I think about it, I do have an update for my release coordinator report.
+2015-05-07T14:00:45  <yboston> #startmeeting DIG Monthly Meeting Evergreen Documentation Interest Group (DIG) Monthly Meeting.
+2015-05-07T14:00:45  <pinesol_green> Meeting started Thu May  7 14:00:45 2015 US/Eastern.  The chair is yboston. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-05-07T14:00:45  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-05-07T14:00:45  <pinesol_green> The meeting name has been set to 'dig_monthly_meeting_evergreen_documentation_interest_group__dig__monthly_meeting_'
+2015-05-07T14:00:57  <yboston> The agenda can be found here http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:dig_meeting_20150507-agenda
+2015-05-07T14:01:06  <yboston> #topic Introductions
+2015-05-07T14:01:11  <yboston> Please feel free to start introducing yourselves...
+2015-05-07T14:01:16  <remingtron> #info remingtron = Remington Steed, Hekman Library (Calvin College)
+2015-05-07T14:01:17  <yboston> #info yboston is Yamil Suarez @ Berklee College of Music - DIG meeting facilitator
+2015-05-07T14:01:31  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-05-07T14:01:36  <kbutler> #info kbutler is Kate Butler, Rodgers Memorial Library (Hudson, NH)
+2015-05-07T14:02:28  <rsoulliere> #info rsoulliere  is Robert Soulliere, Mohawk College
+2015-05-07T14:02:35  *** RoganH has quit IRC
+2015-05-07T14:03:03  <yboston> thank you everyone for coming
+2015-05-07T14:03:14  <yboston> #topic Updates from Content Coordinators
+2015-05-07T14:03:58  <yboston> kmlussier or rsoulliere ?
+2015-05-07T14:04:16  <rsoulliere> Nothing new this time around.
+2015-05-07T14:04:25  <kmlussier> Sorry, I stepped away
+2015-05-07T14:04:35  <kmlussier> #topic Release Coordinator report
+2015-05-07T14:05:19  <kmlussier> #info During our latest round of point releases, we added release notes for the 2.8.1 point release.
+2015-05-07T14:06:08  <kmlussier> We previously hadn't done release notes before for point releases, but I've had people ask me about them before. I'm hoping it's something we can do for the rest of the 2.8 release cycle and maybe do for future Evegreen releases.
+2015-05-07T14:06:24  <remingtron> kmlussier++
+2015-05-07T14:06:29  <yboston> kmlussier++
+2015-05-07T14:06:34  <kmlussier> #link http://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_8.html
+2015-05-07T14:06:50  <kmlussier> I want to tweak them a bit. Maybe something I can do on hackfest day.
+2015-05-07T14:06:56  <kmlussier> That's all I had.
+2015-05-07T14:07:10  <yboston> thanks
+2015-05-07T14:07:26  <yboston> I will move on to  meeting action items
+2015-05-07T14:07:48  <yboston> #topic 1) yboston will check in on DIG VM
+2015-05-07T14:08:15  <yboston> #info I got some updates from Galen about the DIG VM
+2015-05-07T14:08:38  <yboston> #info last I heard we might have it available this week, but not sure if the date slipped
+2015-05-07T14:09:01  <yboston> of course we still need the time to set up the VM
+2015-05-07T14:09:06  <yboston> any comments or questions?
+2015-05-07T14:10:16  <yboston> moving on
+2015-05-07T14:10:24  <yboston> #topic 2) yboston will reach out to krvmga for another copy of his docs to push to master
+2015-05-07T14:11:01  <yboston> #info I spoke to krvmga but did not get a chance to ask for this, will need to postpone for next meeting
+2015-05-07T14:11:12  <yboston> #action yboston will reach out to krvmga for another copy of his docs to push to master
+2015-05-07T14:11:22  <yboston> #topic 3) kmlussier will complete the marc stream importer work and check on the status of the RDA docs
+2015-05-07T14:12:00  <yboston> kmlussier warned me that she might be too busy to participat fully in this meeting. will postpone her action item
+2015-05-07T14:12:16  <yboston> #action kmlussier will complete the marc stream importer work and check on the status of the RDA docs
+2015-05-07T14:12:20  <kmlussier> Sorry - I'll need to defer again.
+2015-05-07T14:12:29  <yboston> no worries at all
+2015-05-07T14:12:33  <yboston> #topic 4) remingtron will send out email to list about cahnging the file suffix in the docs repo to .asciidoc
+2015-05-07T14:12:59  <remingtron> I didn't do that yet
+2015-05-07T14:13:20  <remingtron> I was really busy working on ACRL and IPEDS statistics surveys
+2015-05-07T14:13:40  <yboston> no worries, I can defer it
+2015-05-07T14:13:41  <remingtron> I'll do it after the conference
+2015-05-07T14:13:43  <remingtron> thanks
+2015-05-07T14:13:52  <yboston> #action remingtron will send out email to list about cahnging the file suffix in the docs repo to .asciidoc
+2015-05-07T14:14:11  <yboston> #topic 5) all finish outstanding EG 2.8 features listed here http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:2.8_needs
+2015-05-07T14:14:30  <remingtron> There are no changes on the wiki page since last meeting
+2015-05-07T14:14:39  <remingtron> pre-conference syndrome?
+2015-05-07T14:14:57  <yboston> :)
+2015-05-07T14:15:16  <yboston> in some ways I am happy to know exactly what we can all work on at the DIG hackfest
+2015-05-07T14:15:32  <remingtron> :)
+2015-05-07T14:15:47  <remingtron> I'll be there in spirit, and remotely if someone has a webcam
+2015-05-07T14:15:58  <yboston> also, we can look at web client docs
+2015-05-07T14:16:12  <yboston> I have a webcam on two devices
+2015-05-07T14:16:46  <yboston> remingtron: lets plan on conencting with you uring the conference
+2015-05-07T14:17:06  <remingtron> sounds great
+2015-05-07T14:17:15  <yboston> shall we move on from this topic or do we want to discuss it further?
+2015-05-07T14:17:47  <remingtron> one thought
+2015-05-07T14:18:06  <jonadab> jeff: http://cgi.galion.lib.oh.us/evergreen-things/ejabberd.cfg
+2015-05-07T14:18:22  <remingtron> maybe at the conference someone can update the wiki page with status of the assigned but not completed tasks on the 2.8 docs page
+2015-05-07T14:18:40  <jonadab> Dyrcona: All I did to the DB was the step in the instructions that creates the schemata and stuff.  I haven't attempted to import any data to this install.
+2015-05-07T14:19:00  <jonadab> Oh, meeting, sorry.
+2015-05-07T14:19:12  <yboston> jonadab: no problem
+2015-05-07T14:19:34  <yboston> remingtron: like add a small update with soem additonal information like "need screenshots", etc
+2015-05-07T14:20:25  <remingtron> yboston: or just "in progress" or remove a person's name if they have to back out
+2015-05-07T14:20:34  <yboston> OK
+2015-05-07T14:20:41  <remingtron> or post whatever files they have that need review
+2015-05-07T14:20:48  <remingtron> thanks
+2015-05-07T14:22:17  <yboston> #action all update the 2.8 outstanding features list; remove names of those that cannot continue working on asignement; post compelted or incomplete files
+2015-05-07T14:22:38  <jeff> jonadab: you missed changing one of your maxrate values to 500000 -- you still have 1000
+2015-05-07T14:22:54  <Stompro> jonadab, The problem is in your ejabberd.cfg, your shaper maxrate needs to be increased.... dang, Jeff beat me.
+2015-05-07T14:23:11  <yboston> anything else for this topic?
+2015-05-07T14:23:42  <remingtron> not from me
+2015-05-07T14:23:48  <yboston> OK
+2015-05-07T14:23:58  <yboston> #topic 6) remingtron will add information of older outstanding doc needs to the 2.8 new feature doceumentation wiki page
+2015-05-07T14:24:06  <jeff> ack. sorry, missed that the meeting was still in progress!
+2015-05-07T14:24:30  <remingtron> that is done, though I'm correcting some formatting as we speak
+2015-05-07T14:24:41  <remingtron> jeff: no worries
+2015-05-07T14:24:48  <yboston> cool
+2015-05-07T14:24:59  <yboston> #topic 7) kmlussier will review submitted web client docs to be included in repository
+2015-05-07T14:25:11  <yboston> I will defer this item for her
+2015-05-07T14:25:13  <kmlussier> Sigh...
+2015-05-07T14:25:17  <kmlussier> I have a lot of work to do at the hackfest
+2015-05-07T14:25:41  <yboston> #action kmlussier will review submitted web client docs to be included in repository
+2015-05-07T14:26:03  <yboston> don't forget we can work on the plane ride over :)
+2015-05-07T14:26:36  <remingtron> planeride_hackfest++
+2015-05-07T14:27:14  <yboston> for the record, we are reffering to hacking our community documentation; and not affectign any other systems :)
+2015-05-07T14:27:24  <kmlussier> My laptop is too big for the itty bitty trays.
+2015-05-07T14:28:12  <yboston> At this point I can go into old action items, but I am in need of ending this meeting early if possible
+2015-05-07T14:28:33  <yboston> sorry, I mean "old business" ite,s
+2015-05-07T14:28:36  <yboston> *itmes
+2015-05-07T14:28:39  <yboston> *items
+2015-05-07T14:29:17  <yboston> I quickly wanted to ask who will be attending the DIG hackfest?
+2015-05-07T14:29:34  <remingtron> me, remotely
+2015-05-07T14:29:41  <Stompro> I'm planning on attending.
+2015-05-07T14:29:50  <kbutler> me, also remotely
+2015-05-07T14:30:25  <yboston> Stompro: FYI, I would love to have you join us, but we are probably in a seperate room from the dev hackfest
+2015-05-07T14:31:10  <yboston> kbutler: that is too bad we won't see you at the conference, we can try to connect with you
+2015-05-07T14:31:48  <kbutler> I wish I was going, too. Maybe next year.
+2015-05-07T14:32:29  <yboston> In terms of planning for the DIG hackfest, remingtron, kmlussier, and I can help with pushing content into the repo. Josh can help with that too
+2015-05-07T14:32:48  <yboston> I can work with newcomers and give them a short tutorial
+2015-05-07T14:33:03  <kmlussier> I'll be there, but I'll also be going to the dev hackfest for part of the day.
+2015-05-07T14:33:03  <yboston> the rest of us can look at the 2.8 features list
+2015-05-07T14:33:16  <yboston> kmlussier: I expected that
+2015-05-07T14:33:31  <yboston> kmlussier: my boss would prefer that I go to the dev one too :)
+2015-05-07T14:33:40  <kmlussier> heh
+2015-05-07T14:33:49  <yboston> any questions or comments about the hackfest?
+2015-05-07T14:34:14  <remingtron> I guess DIG is a gateway group to being a dev
+2015-05-07T14:34:14  <yboston> oops, I forgot that we can also work on web cleitn docs. For example, reviweing submitted docs
+2015-05-07T14:34:24  <yboston> yes
+2015-05-07T14:34:48  <yboston> kmlussier is following my plans to the letter
+2015-05-07T14:35:33  <yboston> unbeknownst to her
+2015-05-07T14:35:51  <yboston> anything else?
+2015-05-07T14:36:58  <yboston> I need to exit the meeting early, if that is OK with everyone
+2015-05-07T14:37:06  <remingtron> if it's useful, you could use this page for tracking hackfest work
+2015-05-07T14:37:07  <remingtron> http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:todo
+2015-05-07T14:37:17  <remingtron> yboston++ #for leading meetings
+2015-05-07T14:37:30  <kbutler> yboston++
+2015-05-07T14:37:43  <yboston> thanks
+2015-05-07T14:38:41  <kmlussier> yboston++
+2015-05-07T14:38:58  <yboston> OK folks I will wrap up, amd thanks for coming
+2015-05-07T14:39:07  <yboston> #endmeeting
+2015-05-07T14:39:07  <pinesol_green> Meeting ended Thu May  7 14:39:07 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-05-07T14:39:07  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-05-07-14.00.html
+2015-05-07T14:39:07  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-05-07-14.00.txt
+2015-05-07T14:39:07  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-05-07-14.00.log.html
+2015-05-07T14:40:01  <yboston> darn, I forgot that I will be traveling during the first week of June
+2015-05-07T14:40:16  <jonadab> jeff++
+2015-05-07T14:40:16  <yboston> We might need to postpone the next DIG meeting or have someone else lead it
+2015-05-07T14:40:26  <kmlussier> I won't be available the first Thursday in June. It's the day of our local conference.
+2015-05-07T14:40:40  <remingtron> yboston: postpone is fine
+2015-05-07T14:40:58  <yboston> kmlussier: I was going to ask you if I could crash your conference, but I won't be available
+2015-05-07T14:44:31  *** rsoulliere has quit IRC
+2015-05-07T14:46:37  *** pmurray_away has joined #evergreen
+2015-05-07T14:46:46  *** pmurray_away is now known as pmurray
+2015-05-07T14:46:50  <Dyrcona> @eightball Will it go 'round in circles?
+2015-05-07T14:46:50  <pinesol_green> Dyrcona: _I_ don't know.
+2015-05-07T14:46:58  *** pmurray has quit IRC
+2015-05-07T14:46:58  *** pmurray has joined #evergreen
+2015-05-07T14:47:10  *** pmurray has left #evergreen
+2015-05-07T14:47:12  <Dyrcona> @eightball Will it fly high, like a bird up in the sky?
+2015-05-07T14:47:12  <pinesol_green> Dyrcona: The outlook is hazy, please ask again later.
+2015-05-07T14:48:47  * Dyrcona wonders what eightball has against Billy Preston?
+2015-05-07T14:50:28  <Stompro> remingtron, if I want to add old missing stuff to the 2.8_needs doc, do I need to figure out what version it was originally added or can I just put it in anywhere?
+2015-05-07T14:59:31  <dbs> Dyrcona: Outlook is an unreliable delibry system
+2015-05-07T14:59:47  <dbs> Some people would say "delivery" but not me
+2015-05-07T15:00:03  <Dyrcona> dbs: No argument from me on that one.
+2015-05-07T15:00:15  <Dyrcona> ;)
+2015-05-07T15:00:26  <Dyrcona> And, then boom!
+2015-05-07T15:03:30  <remingtron> Stompro: good question. The intention was that we would document all new features for a version before it is released, so I guess everything remaining after that is part of the same "old stuff" pile
+2015-05-07T15:04:09  <remingtron> Stompro: the only place we've put random old stuff so far, though, is here: http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:todo&#new_features_needing_documentation
+2015-05-07T15:04:16  <remingtron> but I'm open to your suggestions
+2015-05-07T15:06:26  <jonadab> Dyrcona: BTW, thanks for your help earlier.  It turned out jeff's idea was right, but I appreciate all the help I can get :-)
+2015-05-07T15:09:31  <Stompro> remingtron, I'm just seeing that some of the "Local Administration" and "Server Administration" items are not documented in the official docs, but are not listed on the 2.8_needs doc, I'm guessing because they were released long long ago.  I can try to figure out when each feature was released to add it to that section, but I'm not sure it is worth the effort.  How about just a "Unknown Release" section?
+2015-05-07T15:10:20  <remingtron> Stompro: yes, that sounds just fine. not important when it was first introduced
+2015-05-07T15:38:59  <pastebot> "mrpeters" at 64.57.241.14 pasted "Trouble with Z39.50 after adding new config.metabib_field xpath" (34 lines) at http://paste.evergreen-ils.org/51
+2015-05-07T15:39:13  <mrpeters> been racking my brain on this, and i'm still not sure what i've done wrong
+2015-05-07T15:39:39  <pastebot> "mrpeters" at 64.57.241.14 pasted "SQL to insert new config.metabib_field entries" (18 lines) at http://paste.evergreen-ils.org/52
+2015-05-07T15:41:26  <mrpeters> is there a step in the process that I've neglected that is causing new MARC records from being created?
+2015-05-07T15:42:13  *** jihpringle has joined #evergreen
+2015-05-07T15:42:32  <mrpeters> running the insert manually gives "ERROR:  Attempted to UPDATE MARCXML that is not well formed"
+2015-05-07T15:43:20  <jboyer-isl> mrpeters: your xpath should start with //marc:datafield... not //marcxml:data... marcxml goes in the format field.
+2015-05-07T15:43:40  <mrpeters> jboyer-isl: stupid emojis -- can you pastie that
+2015-05-07T15:43:50  <Dyrcona> Yep. what jboyer-isl said.
+2015-05-07T15:44:04  <Dyrcona> mrpeters: Turn emojis off in your client. :)
+2015-05-07T15:44:06  * mrpeters notes the random magic spells page needs updating then :)
+2015-05-07T15:44:32  <jboyer-isl> Ah, all you need to do is take the xml out of the xpath line, just slash-slash-marc-colon-data...
+2015-05-07T15:44:44  <mrpeters> ok
+2015-05-07T15:45:06  <jboyer-isl> the format field tells the parser that it needs marcxml, so you're good to go there.
+2015-05-07T15:45:23  <mrpeters> right on, ok makes sense -- thats what i get for using old docs i guess :)
+2015-05-07T15:47:12  <mrpeters> GLORIOUS!  Thanks!  jboyer-isl++ Dyrcona++
+2015-05-07T15:47:15  <jboyer-isl> Since I'm still logged into the wiki on this machine I went ahead and fixed the page.
+2015-05-07T15:47:22  <mrpeters> oh, thanks!  i was just about to do that
+2015-05-07T15:47:55  <Stompro> buzzy, would it save much money to cancel the Wed 12:00 shuttle, only 3 people signed up (including me), I could wait until the 2:30pm shuttle.
+2015-05-07T15:48:16  <Stompro> Whoops, meant tuesday 12:00 shuttle.
+2015-05-07T15:49:32  <Stompro> Is there free WiFi at the Portland airport?
+2015-05-07T15:52:22  <Stompro> remingtron, I added some items that don't seem to be documented to the end of the 2.8_needs doc.  Let me know if that looks ok to you.
+2015-05-07T15:53:27  <remingtron> Stompro: thanks!
+2015-05-07T15:56:53  *** eady has quit IRC
+2015-05-07T15:57:43  *** jonadab_znc has quit IRC
+2015-05-07T16:08:48  *** jonadab_znc has joined #evergreen
+2015-05-07T16:09:34  *** yboston has quit IRC
+2015-05-07T16:10:05  *** eady has joined #evergreen
+2015-05-07T16:22:44  *** collum has quit IRC
+2015-05-07T16:28:33  *** rjackson_isl has quit IRC
+2015-05-07T16:35:25  *** maryj has quit IRC
+2015-05-07T16:42:13  *** Shae has quit IRC
+2015-05-07T16:44:17  *** mmorgan has left #evergreen
+2015-05-07T16:54:54  <dbwells> csharp: Just FYI, I've created a branch for bug #1419172 and added it to the bug report.
+2015-05-07T16:54:54  <pinesol_green> Launchpad bug 1419172 in Evergreen 2.8 "extend_reporter.full_circ_count view unusably slow on large datasets" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1419172
+2015-05-07T16:56:13  *** Dyrcona has quit IRC
+2015-05-07T17:00:13  *** kbutler has quit IRC
+2015-05-07T17:06:32  *** graced has quit IRC
+2015-05-07T17:15:22  * kmlussier is holding her breath and hoping the improvements she now sees in webby iframe navigation are not just a crazy fluke.
+2015-05-07T17:29:00  <gsams> kmlussier: Please tell me you are breathing again
+2015-05-07T17:29:27  * kmlussier quickly regains consciousness. :)
+2015-05-07T17:29:51  <gsams> heh, couldn't help myself
+2015-05-07T17:37:27  * jonadab can be a smart alec sometimes.
+2015-05-07T17:37:45  <jonadab> Eh, wrong channel, pay no heed.
+2015-05-07T17:43:53  *** mrpeters has quit IRC
+2015-05-07T18:07:38  *** buzzy has quit IRC
+2015-05-07T19:58:55  *** jwoodard has quit IRC
+2015-05-07T20:05:04  *** sandbergja2 has quit IRC
+2015-05-07T20:16:04  *** bmills has quit IRC
+2015-05-07T21:04:18  *** jihpringle has quit IRC
+2015-05-07T21:06:31  *** bmills has joined #evergreen
+2015-05-07T21:33:16  *** nuentoter has joined #evergreen
+2015-05-07T21:33:45  <nuentoter> hello, anybody live in here tonight?
+2015-05-07T21:34:51  <jonadab> I'm here for the moment, but this channel tends to function mostly in the daytime.
+2015-05-07T21:35:07  <jonadab> Daytime in the Americas, specifically.
+2015-05-07T21:36:29  <nuentoter> hello again jonadab, how are you?
+2015-05-07T21:38:09  <jonadab> Getting sleepy.  (It's after 9pm here, and I'm a morning person.)
+2015-05-07T21:38:58  <nuentoter> you helped me the other week, and I was able to install my the server properly
+2015-05-07T21:39:39  <nuentoter> I wiped my HDD and went to do a fresh install of linux and server from my notes to ensure I can do it on my own and got stuck again lol
+2015-05-07T21:42:17  <nuentoter> i believe its postgresql giving me problems when i am installing the prerequisits
+2015-05-07T21:45:19  <nuentoter> i just have a quick question, can i install postqresql in its default location or in /openils or somewhere else?
+2015-05-07T21:46:36  <jonadab> I've been installing postgres using apt
+2015-05-07T21:46:45  <jonadab> Like, apt-get install postgresql
+2015-05-07T21:48:03  <jonadab> I think the Makefile.install also has a target for installing postgres.
+2015-05-07T21:51:14  <nuentoter> thats what i did, it installed postgreql 9.4 and the make command requests 9.3  now that i'm looking into it more
+2015-05-07T21:53:49  <jonadab> Shouldn't 9.4 be substitutable for 9.3?
+2015-05-07T21:54:13  * jonadab asks this naively, knowing next to nothing about Postgres versions.
+2015-05-07T21:54:48  <nuentoter> i would have thought so but it seems like not
+2015-05-07T21:55:02  <jonadab> Oh, I also remember at some point maybe installing a -contrib package related to Pg.
+2015-05-07T21:55:34  <jonadab> Not sure how relevant that still is.  This was versions ago.
+2015-05-07T22:01:11  <jeff> guess i should find something other than the patron editor to work on.
+2015-05-07T22:02:05  <nuentoter> im talking with someone in the #debian channel helping me understand compiling a little bit better
+2015-05-07T22:03:56  <jonadab> One of these days I'm gonna try seeing what aimake makes of Evergreen.
+2015-05-07T22:04:06  * jeff looks through bugs
+2015-05-07T22:04:45  <jeff> actually...
+2015-05-07T22:05:24  * jeff steps back and looks at how we talk about contributing
+2015-05-07T22:11:07  <jeff> reddit.com
+2015-05-07T22:11:20  <jeff> or i could procrastinate, inthe wrong window.
+2015-05-07T22:35:33  *** dbwells_ has joined #evergreen
+2015-05-07T22:39:00  *** dbwells has quit IRC
+2015-05-07T22:44:57  *** nuentoter has quit IRC

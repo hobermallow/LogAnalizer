@@ -1,0 +1,571 @@
+2015-03-12T01:02:37  *** jboyer_isl has joined #evergreen
+2015-03-12T01:04:00  *** mmorgan1 has joined #evergreen
+2015-03-12T01:09:21  *** jeffdavis has quit IRC
+2015-03-12T01:09:21  *** jboyer-isl has quit IRC
+2015-03-12T01:14:16  *** jeffdavis has joined #evergreen
+2015-03-12T02:44:00  *** dcook__ has quit IRC
+2015-03-12T03:35:09  *** mmorgan1 has quit IRC
+2015-03-12T05:09:49  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-12T07:51:20  *** collum has joined #evergreen
+2015-03-12T07:59:35  *** rjackson_isl has joined #evergreen
+2015-03-12T08:01:51  *** ericar has joined #evergreen
+2015-03-12T08:27:38  *** akilsdonk has joined #evergreen
+2015-03-12T08:32:42  *** jboyer_isl has quit IRC
+2015-03-12T08:32:57  *** jboyer-isl has joined #evergreen
+2015-03-12T08:34:55  <jcamins> kmlussier: what was the board game you recommended?
+2015-03-12T08:35:32  *** mmorgan has joined #evergreen
+2015-03-12T08:43:24  *** Dyrcona has joined #evergreen
+2015-03-12T08:47:18  *** Shae has joined #evergreen
+2015-03-12T08:58:24  <csharp> @developer
+2015-03-12T08:58:24  <pinesol_green> csharp: Communication:14, BigPicture:14, DetailOriented:9, KungFu:8, GetsStuffDone:15, FlakeFactor:16, JavaAvoidance:15
+2015-03-12T08:58:52  <csharp> that's all pretty accurate, actually ;-)
+2015-03-12T08:59:48  <Dyrcona> :)
+2015-03-12T09:00:10  <Dyrcona> So, I think our new thrashing is just that we're super busy at times.
+2015-03-12T09:00:37  <Dyrcona> That and a couple of bots hitting us to do stuff right in a row in the middle of the night.
+2015-03-12T09:01:24  <Dyrcona> At one point during our high load last Wednesday, we had 4,800 Apache resuests in one minute.
+2015-03-12T09:03:26  *** maryj has joined #evergreen
+2015-03-12T09:05:24  <Dyrcona> resuests? Oh boy. It has started already.
+2015-03-12T09:05:55  * csharp queues dramatic music for Dyrcona's server drama
+2015-03-12T09:06:23  <Dyrcona> Heh. No drama so far today, but my fingers don't seem to want to work.
+2015-03-12T09:07:05  <csharp> Dyrcona: just make sure you listen to https://www.youtube.com/watch?v=3YOYlgvI1uE next time it happens
+2015-03-12T09:07:18  <Dyrcona> So, I've loaded last week's Apache log with process id into a database table, and I'm going to generate some statistics for last Wednesday.
+2015-03-12T09:07:26  * csharp loves the smell of burning apache processes in the morning
+2015-03-12T09:07:32  <Dyrcona> Heh.
+2015-03-12T09:08:35  <Dyrcona> It's kind of weird, 'cause there are fewer Apaches involved during the higher # of request periods, but I think that is because there are just a couple of clients making hundreds of requests.
+2015-03-12T09:09:08  <Dyrcona> Because of the way it works, the same client tends to stick with the same Apache process for a while.
+2015-03-12T09:10:11  <Dyrcona> TCP is like that. :)
+2015-03-12T09:14:28  *** graced has joined #evergreen
+2015-03-12T09:16:49  *** sarabee has joined #evergreen
+2015-03-12T09:20:03  *** jwoodard has joined #evergreen
+2015-03-12T09:25:41  <Dyrcona> "Surprise! Surprise! Surprise!"
+2015-03-12T09:25:59  <Dyrcona> The staff client is of course our biggest user at that time of the day.
+2015-03-12T09:35:16  <pinesol_green> [evergreen|Thomas Berezansky] LP#1413621 Docs: Apache Rewrite Tricks - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3643e44>
+2015-03-12T09:35:17  <pinesol_green> [evergreen|Remington Steed] LP#1413621 Docs: Minor changes to Apache Rewrite Tricks - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=8d57549>
+2015-03-12T09:35:18  <pinesol_green> [evergreen|Remington Steed] LP#1413624 Docs: Move Access Handler docs to official docs - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=c0e94d4>
+2015-03-12T09:35:19  <pinesol_green> [evergreen|Remington Steed] Docs: Link optional docs from Apache config - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=e772013>
+2015-03-12T09:37:21  *** collum has quit IRC
+2015-03-12T09:37:50  <kmlussier> jcamins: I recommended a board game?
+2015-03-12T09:43:18  <pastebot> "Dyrcona" at 64.57.241.14 pasted "jeff: This is what I ended up adding to .profile" (6 lines) at http://paste.evergreen-ils.org/43
+2015-03-12T09:43:57  <Dyrcona> Follow up to a private conversation from earlier.
+2015-03-12T09:47:15  *** yboston has joined #evergreen
+2015-03-12T09:51:02  <Dyrcona> More trivia: The minute where we reportedly ran out of settings drones was not the busiest minute in terms of requests, only 235 requests completed during that minute and 192 the next.
+2015-03-12T09:52:51  <Dyrcona> It did, however, have 53 pids handle only 1 request each.
+2015-03-12T09:53:10  <Dyrcona> What I don't know is how many of those spun up during that time.
+2015-03-12T09:55:41  <Dyrcona> And the same thing appears to be more or less true when we get the no children available from opensrf.settings at others time.s
+2015-03-12T09:56:06  <Dyrcona> It isn't the busiest minute, but it has 40+ Apache processes handling 1 request only.
+2015-03-12T09:57:03  <Dyrcona> Think I'll generate a pids/minute spreadsheet.
+2015-03-12T09:58:25  *** collum has joined #evergreen
+2015-03-12T10:00:21  <kmlussier> gmcharlt: Did we ever settle on needsrepatch for LP bugs that need more work?
+2015-03-12T10:00:44  <gmcharlt> kmlussier: I owe the list an email
+2015-03-12T10:10:51  <Dyrcona> Hm.. Those messages do not always correspond to times when we have the most unique pids going, either.
+2015-03-12T10:11:15  <Dyrcona> No real pattern here, except that we have over 40 pids handling 1 request each.
+2015-03-12T10:24:50  <Bmagic> jcamins: I don't know what she recommended but I can recommend Asara as a good solid fun starting board game for 9-99
+2015-03-12T10:27:15  *** akilsdonk has quit IRC
+2015-03-12T10:28:14  *** mllewellyn has joined #evergreen
+2015-03-12T10:28:31  <jcamins> kmlussier: I thought you did.
+2015-03-12T10:28:44  <jcamins> Bmagic: how many players does it work with?
+2015-03-12T10:28:57  <kmlussier> jcamins: I may have, but I don't remember. :)
+2015-03-12T10:29:09  <jcamins> Bmagic: 2-4. I found it.
+2015-03-12T10:29:10  <jcamins> :)
+2015-03-12T10:29:13  <Bmagic> jcamins: up to 4, If you want a game for more, I recommend Power Grid, accomodates 6
+2015-03-12T10:29:58  <Bmagic> /accomodates/accommodates/
+2015-03-12T10:30:59  <kmlussier> jcamins: Ah, I think I found the log. I think it was phasefx who recommended it. Ticket to Ride?
+2015-03-12T10:31:16  <kmlussier> http://irc.evergreen-ils.org/evergreen/2014-01-22#i_61516
+2015-03-12T10:31:29  <Bmagic> LOL, we have an on going Ticket to Ride game happening right now in the office!
+2015-03-12T10:31:30  <kmlussier> We're actually planning to play that game this weekend.
+2015-03-12T10:33:00  <jcamins> I've been thinking about getting Ticket to Ride. Never played it, though.
+2015-03-12T10:33:04  *** dreuther has joined #evergreen
+2015-03-12T10:33:57  <kmlussier> I'm glad I dug up that log. Lots of game ideas there.
+2015-03-12T10:34:17  <jcamins> Oh, it was paxed! "We didn't play test this." I searched for "this should not be a game," and it didn't bring that up.
+2015-03-12T10:34:46  <Bmagic> jcamins: It's not my favorite game but I will say it's a good opener. A "gateway" game if you will. I enjoy Through the Ages, Agricola, At the Gates of Loyang, 1830
+2015-03-12T10:35:51  <jcamins> For this Sunday we'll probably ask some of our guests to bring a couple of their board games, but I would like to own a couple of board games for when we have guests coming who aren't driving.
+2015-03-12T10:36:28  * paxed likes Guillotine and Love Letter. card games, though.
+2015-03-12T10:36:44  <Dyrcona> Mille Bournes!
+2015-03-12T10:36:58  <jcamins> paxed: we actually have Guillotine. And Munchkin.
+2015-03-12T10:37:00  <jcamins> And nothing else.
+2015-03-12T10:37:02  * Dyrcona mostly just plays Scrabble and Clue.
+2015-03-12T10:37:08  <paxed> jcamins: i hate munchkin.
+2015-03-12T10:37:15  <Bmagic> Dyrcona: classic
+2015-03-12T10:37:18  * Dyrcona is boring.
+2015-03-12T10:37:34  <jcamins> paxed: Munchkin's great.
+2015-03-12T10:37:46  <Bmagic> I agree with paxed about Munchkin (although I would say dislike)
+2015-03-12T10:38:02  <paxed> jcamins: if it only lasted like 15 minutes tops, it would be better ...
+2015-03-12T10:39:48  <paxed> but, really, the best is to go on boardgamegeek.com and sort the list by rating (and whatever else you want)
+2015-03-12T10:40:03  <kmlussier> Mille Bournes? I haven't played that game in years.
+2015-03-12T10:40:27  <Bmagic> paxed: you reminded me, Terra Mystica! That is a game I am really into right now
+2015-03-12T10:40:40  * kmlussier wants to go shopping at the game store this weekend.
+2015-03-12T10:41:19  <Bmagic> Terra Mystica just came out and it has rocketed to the top of the list on bgg
+2015-03-12T10:48:14  *** awlib has joined #evergreen
+2015-03-12T10:51:15  <awlib> Hi, anyone know if there's a macro to add the "number of items checked out," "number of items on hold," and "number of hold ready to pickup" in the receipt template editor?
+2015-03-12T10:52:51  *** hopkinsju has joined #evergreen
+2015-03-12T10:53:43  * hopkinsju likes boardgames!
+2015-03-12T10:53:53  *** yayabobi has joined #evergreen
+2015-03-12T10:54:12  <hopkinsju> Who wants a 2015 International Evergreen Boardgame Night?
+2015-03-12T10:57:41  <hopkinsju> I've got the Axe Cop version of Munchkin (and the original... and the princess expansion...)
+2015-03-12T11:00:23  *** yayabobi has quit IRC
+2015-03-12T11:00:53  <bshum> That could be fun.
+2015-03-12T11:01:02  <bshum> Board game night I mean.
+2015-03-12T11:01:11  <kmlussier> hopkinsju: I would be up for that.
+2015-03-12T11:01:31  <kmlussier> Might be almost as fun as a pub crawl. Almost.
+2015-03-12T11:01:50  <hopkinsju> We'd obviously want to hold the event at the pub...
+2015-03-12T11:01:54  <hopkinsju> Obviously.
+2015-03-12T11:02:32  <jboyer-isl> "Who's screaming in the back room?" "Buncha librarians. Something about cops and axes."
+2015-03-12T11:08:19  *** sandbergja has joined #evergreen
+2015-03-12T11:09:07  * Bmagic wants board games at the conference!
+2015-03-12T11:09:19  <Bmagic> @who is a boardgame nut!
+2015-03-12T11:09:19  <pinesol_green> eby is a boardgame nut.
+2015-03-12T11:11:10  <hopkinsju> jboyer-isl: I'm assuming that we will just chop their heads off.
+2015-03-12T11:11:12  <hopkinsju> http://boardgamegeek.com/collection/user/hopkinsju?own=1&subtype=boardgame&ff=1
+2015-03-12T11:12:41  <Bmagic> @cast jumanji
+2015-03-12T11:12:41  <pinesol_green> Bmagic: As great as you are man, you'll never be greater than yourself.
+2015-03-12T11:15:44  * Dyrcona now has to play some Bob Dylan.
+2015-03-12T11:26:06  <jboyer-isl> That's not my cup of meat.
+2015-03-12T11:30:49  *** awlib has quit IRC
+2015-03-12T11:34:57  *** vlewis has joined #evergreen
+2015-03-12T11:35:03  *** mglass has joined #evergreen
+2015-03-12T11:40:11  *** akilsdonk has joined #evergreen
+2015-03-12T11:51:10  *** bmills has joined #evergreen
+2015-03-12T12:08:37  *** dreuther_ has joined #evergreen
+2015-03-12T12:10:55  *** dreuther has quit IRC
+2015-03-12T12:12:14  <jwoodard> Is the ability to create Circ Limits a grantable permission?
+2015-03-12T12:16:49  *** jihpringle has joined #evergreen
+2015-03-12T12:20:17  <Dyrcona> jwoodard: What do you mean by the "ability to create Circ Limits?" I can think of at least three different things that that could mean.
+2015-03-12T12:21:28  *** Newziky has quit IRC
+2015-03-12T12:27:19  *** Newziky has joined #evergreen
+2015-03-12T12:29:05  *** dreuther has joined #evergreen
+2015-03-12T12:32:35  *** dreuther_ has quit IRC
+2015-03-12T12:42:09  <jeffdavis> after upgrading to Ubuntu 14.04.2 and installing 2.8 beta, I get this error: Your version of Class::DBI, 3.0.17, is too new and incompatible with Evergreen.  You will need to downgrade to version 3.0.1 or install Class::DBI::Frozen::301
+2015-03-12T12:43:16  <jeffdavis> Seems like something the build process should handle?
+2015-03-12T12:43:21  <bshum> It should...
+2015-03-12T12:43:30  <bshum> Maybe it's cause of something in the way you upgraded to 14.04
+2015-03-12T12:43:37  <bshum> What were you upgrading from?
+2015-03-12T12:43:40  <jeff> this is something where you first installed evergreen THEN upgraded the OS?
+2015-03-12T12:44:17  <jeffdavis> Upgraded from precise (before doing the install) via do-release-upgrade and dist-upgrade.
+2015-03-12T12:44:58  <jeff> I'm not sure where in the process you installed Evergreen.
+2015-03-12T12:46:22  <csharp> the Makefile.install for ubuntu-trusty should install that via CPAN
+2015-03-12T12:46:46  <jeffdavis> Sorry. I had a server with Ubuntu 12.04 and EG 2.6.  I did do-release-upgrade and dist-upgrade to upgrade Ubuntu to 14.04, then installed OpenSRF 2.4 from the repo and EG 2.8 beta from the packaged release.
+2015-03-12T12:47:20  <jeffdavis> Maybe I missed something in the Makefile.install output. I'll re-run it.
+2015-03-12T12:47:27  <jeff> Got it!
+2015-03-12T12:47:30  * csharp wonders if this is APT dependencies for already installed packages are the problem
+2015-03-12T12:47:49  <csharp> er.. s/this is//
+2015-03-12T12:48:20  <jeff> jeffdavis: I think (without looking, sorry) that the issue is that the Makefile.install for the version you were on when you installed used the packaged version of Class::DBI. This was fine, but then the OS upgrade upgraded it to a version that was not-fine.
+2015-03-12T12:48:31  <jeff> Now, having made that guess, I'm going to have to go and look. :P
+2015-03-12T12:48:51  <bshum> I thought we've been using the frozen 301 for awhile now.
+2015-03-12T12:48:57  <Dyrcona> Upgrading Ubuntu is just all kinds of nasty.
+2015-03-12T12:49:08  <Dyrcona> I'm usually surprised when it works, actually.
+2015-03-12T12:49:31  <jeffdavis> I generally prefer to start from a fresh install, and stuff like this is why. :)
+2015-03-12T12:49:32  * bshum doesn't usually use Ubuntu upgrade anymore either.
+2015-03-12T12:49:41  <Dyrcona> I've had several instances on just plain vanilla desktops and so on where the machines would not even boot after an upgrade.
+2015-03-12T12:51:02  * csharp always installs on fresh OS, but uses VMs that are more or less disposable
+2015-03-12T12:51:29  *** bbqben has joined #evergreen
+2015-03-12T12:53:22  <jeff> the 2.6 pre-req makefile does seem to force-install Class::DBI::Frozen::301 from CPAN, so I'm guessing that something in the OS upgrade pulled in a new version that's now first in @INC
+2015-03-12T12:53:39  <bshum> Fun times.
+2015-03-12T13:04:37  <Dyrcona> Well, yeah. apt probably saw a package for it and upgraded it. Don't think CPAN on Ubuntu makes packages, though I believer there is a Perl module for that.
+2015-03-12T13:05:13  <Dyrcona> I know that on some distros and the BSDs there are versions of CPAN that will make packages out of CPAN modules when you install them.
+2015-03-12T13:07:48  <Dyrcona> BSDPAN, for intance.
+2015-03-12T13:08:10  <jeff> dh-make-perl, in the case of Debian.
+2015-03-12T13:08:48  <Dyrcona> Thought there was one for Debian.
+2015-03-12T13:08:59  <Dyrcona> Probably works on Ubuntu, too.
+2015-03-12T13:09:16  <jeff> But to the best of my knowledge, we don't use that (or anything similar) in the pre-req makefiles, and I've not encountered anything that would take a perl distribution installed from CPAN and replace it with a packaged (in the dpkg/apt sense) version during upgrades...
+2015-03-12T13:09:34  <Dyrcona> Yep. Doesn't really help does it?
+2015-03-12T13:09:53  <kmlussier> dbwells: Now that her internship is over, would it be worthwhile to add julialima's style guide to the Evergreen docs?
+2015-03-12T13:10:14  <Dyrcona> jeffdavis: Did you try force purging the package and rerunning the makefile.install?
+2015-03-12T13:10:41  <Dyrcona> Or, may just a purge, first. That would tell you if something required it.
+2015-03-12T13:10:50  <Dyrcona> maybe...
+2015-03-12T13:11:01  <jeff> tricky part with uninstalling the version provided by the distro package manager is going to be if something else you care about requires it...
+2015-03-12T13:11:21  <Dyrcona> Well, yeah, but trying to remove it should tell you.
+2015-03-12T13:11:34  * jeff nods
+2015-03-12T13:11:41  <Dyrcona> I can't think of what Evergreen would install that needs it, though.
+2015-03-12T13:11:50  *** wjr has joined #evergreen
+2015-03-12T13:11:59  <jeffdavis> I think I figured it out actually.  Local issue - for some reason there was a VERY stale lockfile in /root/.cpan/.lock, and that was causing the install_cpan_force part of Makefile.install to fail.
+2015-03-12T13:12:02  <jeff> also, I'm surprised that Class::DBI::Frozen::301 isn't in @INC if it was installed from CPAN at -- OH!
+2015-03-12T13:12:17  <Dyrcona> Ah.
+2015-03-12T13:12:24  <Dyrcona> That makes sense.
+2015-03-12T13:13:00  <jeffdavis> There seems to be running another CPAN process (pid 21450).  Contacting...
+2015-03-12T13:13:01  <jeff> jeffdavis: hah! okay, and I think that your initial CPAN install of Class::DBI::Frozen::301 was no longer in @INC possibly because the system perl version changed during the Ubuntu upgrade process.
+2015-03-12T13:13:01  <jeffdavis> Other job not responding. Shall I overwrite the lockfile '/root/.cpan/.lock'? (Y/n) [y] Ok, bye
+2015-03-12T13:13:21  <jeffdavis> ^ for benefit of the logs, I re-ran Makefile.install and noticed that in the output.
+2015-03-12T13:13:25  <jeff> You'd probably have to install any custom CPAN modules that you had previously installed, if that's actually the case.
+2015-03-12T13:13:41  <Dyrcona> Despite what I said earlier about upgrades being wonky, I did successfully upgrade an Evergreen vm from 12.04 to 14.04, as well as my "utility" server where I run some Evergreen scripts.
+2015-03-12T13:13:54  <jeffdavis> jeff: Good point. 12.04 was using perl 5.14.2, looks like 14.04 is 5.18.something
+2015-03-12T13:14:28  <Dyrcona> Depends.
+2015-03-12T13:14:43  <Dyrcona> Sometimes the upgrade adds the old path to @INC, sometimes not.
+2015-03-12T13:15:02  <jeffdavis> I'll keep an eye out for any errors that could be due to that, at least.
+2015-03-12T13:15:54  <Dyrcona> We don't really have any good instructions for what to do when you upgrade your O/S do we?
+2015-03-12T13:16:08  <Dyrcona> You basically need to reinstall OpenSRF and Evergreen.
+2015-03-12T13:16:22  <kmlussier> Really?
+2015-03-12T13:16:33  <Dyrcona> Even if you're not upgrading them along with the O/S.
+2015-03-12T13:16:39  <Dyrcona> Yes, pretty much.
+2015-03-12T13:16:45  * kmlussier was just talking to somebody about an O/S upgrade today.
+2015-03-12T13:18:16  <kmlussier> The question posed to me today was, if you are operating in a brick environment and you are doing an O/S upgrade, can you upgrade them one at a time, basically operating in a mixed environment, or do you have to upgrade all of the bricks at once?
+2015-03-12T13:18:20  <Dyrcona> Hmm. Thinking about it, I think I added the old path manually to @INC.
+2015-03-12T13:19:05  <Dyrcona> I think you should be able to operate in a mixed environment.
+2015-03-12T13:19:35  <Dyrcona> You might have a fun time trying to keep Apache configurations up to date, though.
+2015-03-12T13:20:41  <kmlussier> Why?
+2015-03-12T13:20:57  <Dyrcona> The configuration changes from Apache 2.2 to Apache 2.4.
+2015-03-12T13:21:38  <kmlussier> OK, thanks!
+2015-03-12T13:21:43  <Dyrcona> So, if you're keeping configs and all that on a network file share, you might need to make accomodations.
+2015-03-12T13:21:52  <Dyrcona> heh.
+2015-03-12T13:21:56  <gmcharlt> indeed
+2015-03-12T13:22:08  <Dyrcona> someone made that same typo earlier today.
+2015-03-12T13:22:51  <Dyrcona> I think it would be saner to try and do it all at once. Maybe doing a brick at a time while taking them out of rotation to avoid down time.
+2015-03-12T13:23:17  * Dyrcona doesn't currently use bricks, though.
+2015-03-12T13:23:26  <kmlussier> Yeah, I'm not sure if their configs are on a network share or not.
+2015-03-12T13:24:08  <gmcharlt> other than things like adjusting for an Apache major version change as Dyrcona pointed out, doing an OS upgrade a brick a time is doable
+2015-03-12T13:24:28  <gmcharlt> but I woudln't recommend *leaving* the cluster in a mixed state
+2015-03-12T13:24:33  *** jjlundgren has joined #evergreen
+2015-03-12T13:24:35  <Dyrcona> gmcharlt++ # For CVEs and stuff.
+2015-03-12T13:24:38  <gmcharlt> to avoid confusion, if nothing else
+2015-03-12T13:25:06  * Dyrcona agrees.
+2015-03-12T13:25:07  <kmlussier> Sure. I don't think the plan was to leave it in a mixed state. It was just to make the upgrading a little more manageable.
+2015-03-12T13:25:14  <kmlussier> I'll forward all of this along.
+2015-03-12T13:25:19  <kmlussier> Dyrcona++ gmcharlt++
+2015-03-12T13:25:51  <gmcharlt> Dyrcona: BTW, I've asked cve-assign to make the CVEs public (or for them to tell me to "learn patience, grasshopper!")
+2015-03-12T13:25:54  <gmcharlt> one or the other :)
+2015-03-12T13:26:18  <Dyrcona> heh
+2015-03-12T13:26:29  <Dyrcona> Patience is a hard lesson.
+2015-03-12T13:26:37  <dbwells> kmlussier: I plan to put something on the agenda for the dev meeting on Monday about the guide.  I think we'll want to roll it in fairly soon, but we can talk about it as a group then.  Does that sound alright?
+2015-03-12T13:26:59  <jeff> "patience? sorry, don't have the time."
+2015-03-12T13:27:37  <gmcharlt> "got tired of standing in the line to receive my patience, and wandered off.."
+2015-03-12T13:27:49  <Dyrcona> haha
+2015-03-12T13:28:03  <dbwells> kmlussier: Also, julialima does plan to be there on Monday as well.
+2015-03-12T13:29:27  <kmlussier> dbwells: Excellent! Thank you.
+2015-03-12T13:30:07  *** krvmga has joined #evergreen
+2015-03-12T13:33:35  *** jeffdavis has quit IRC
+2015-03-12T13:33:35  *** jeffdavis has joined #evergreen
+2015-03-12T13:43:45  *** bmills has quit IRC
+2015-03-12T13:53:00  *** bmills has joined #evergreen
+2015-03-12T13:53:54  <kmlussier> @dessert add a ginormous bag of Jelly Bellies
+2015-03-12T13:53:54  <pinesol_green> kmlussier: The operation succeeded.  Dessert #31 added.
+2015-03-12T13:54:11  <kmlussier> @dessert 31 [someone]
+2015-03-12T13:54:11  * pinesol_green grabs some a ginormous bag of Jelly Bellies for sarabee
+2015-03-12T13:54:29  <kmlussier> Sigh...
+2015-03-12T13:54:56  <yboston> heads up, the Evergreen for Academics monthly meeting will be starting at 2 PM EST
+2015-03-12T13:55:11  *** jck_ has joined #evergreen
+2015-03-12T13:56:05  <kmlussier> @dessert add ginormous bags of Jelly Bellies
+2015-03-12T13:56:05  <pinesol_green> kmlussier: The operation succeeded.  Dessert #32 added.
+2015-03-12T13:56:16  * kmlussier now needs to figure out how to remove dessert 31
+2015-03-12T13:56:19  *** jihpringle has quit IRC
+2015-03-12T13:56:32  *** DonB__ has joined #evergreen
+2015-03-12T13:57:04  <Dyrcona> @dessert delete 31
+2015-03-12T13:57:04  * pinesol_green grabs some Tiramisu for delete 31
+2015-03-12T13:57:22  <Dyrcona> There's a command for it, if you're signed in.
+2015-03-12T13:57:23  <kmlussier> ha ha
+2015-03-12T13:57:37  * kmlussier is signed in
+2015-03-12T13:57:48  <Dyrcona> @help dessert
+2015-03-12T13:57:48  <pinesol_green> Dyrcona: An error has occurred and has been logged. Please contact this bot's administrator for more information.
+2015-03-12T13:57:56  <Dyrcona> Curses.
+2015-03-12T13:58:23  <kmlussier> @dessert 32 Dyrcona
+2015-03-12T13:58:23  * pinesol_green grabs some ginormous bags of Jelly Bellies for Dyrcona
+2015-03-12T14:00:49  <Dyrcona> So, back to my opensrf.settings problem, it looks like we could increase our maxchildren to 60 and alleviate most of the issues.
+2015-03-12T14:00:57  <yboston> #startmeeting 2015-03-12 - Evergreen for academics monthly meeting.
+2015-03-12T14:00:57  <pinesol_green> Meeting started Thu Mar 12 14:00:57 2015 US/Eastern.  The chair is yboston. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-03-12T14:00:57  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-03-12T14:00:57  <pinesol_green> The meeting name has been set to '2015_03_12___evergreen_for_academics_monthly_meeting_'
+2015-03-12T14:01:05  <yboston> The agenda can be found here http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen_for_academics:2015-03-12
+2015-03-12T14:01:14  <yboston> #topic Introductions
+2015-03-12T14:01:22  <yboston> Please feel free to start introducing yourselves...
+2015-03-12T14:01:36  <krvmga> #info krvmga is Jim Keenan, C/W MARS
+2015-03-12T14:01:43  <yboston> #info yboston is Yamil Suarez @ Berklee College of Music
+2015-03-12T14:01:52  <sandbergja> #info sandbergja is Jane Sandberg, Linn-Benton Community College
+2015-03-12T14:01:55  <yboston> #topic last meeting's action items
+2015-03-12T14:02:03  <yboston> sorry, I jumped the gun
+2015-03-12T14:02:17  <jck_> #info jck is Joan Kranich, C/W MARS
+2015-03-12T14:02:22  <DonB__> #info DonB_ is Don Butterworth Asbury Seminary
+2015-03-12T14:02:27  <yboston> keep introducing yourselves
+2015-03-12T14:03:52  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-03-12T14:04:02  <yboston> welcome everyone
+2015-03-12T14:04:04  <yboston> #topic last meeting's action items
+2015-03-12T14:04:24  <yboston> #info 1) ck_ and kmlussier to follow up directly with libraries that showed interest in an academic PAC flavor.
+2015-03-12T14:04:37  <yboston> any comments or questions?
+2015-03-12T14:04:53  <kmlussier> Defer?
+2015-03-12T14:05:04  <yboston> no problem
+2015-03-12T14:05:27  <kmlussier> Also, I think that jck is the other person in that action item
+2015-03-12T14:05:27  <yboston> BTW, who is ck_?
+2015-03-12T14:05:48  <yboston> #action ck_ and kmlussier to follow up directly with libraries that showed interest in an academic PAC flavor.
+2015-03-12T14:06:45  <yboston> #info 2) jeffdavis to put out a call for current patron loading scripts that are already in use.
+2015-03-12T14:06:57  <yboston> not sure if jeffdavis is aorund?
+2015-03-12T14:07:33  <yboston> I will defer teh action item for now
+2015-03-12T14:07:43  <yboston> #action jeffdavis to put out a call for current patron loading scripts that are already in use.
+2015-03-12T14:08:00  <yboston> #info 3) DonB write up a Launcpad wishlist bug to propose “see more” style cuntionality on OPAC record view
+2015-03-12T14:08:14  <DonB__> Done. See https://bugs.launchpad.net/evergreen/+bug/1424815
+2015-03-12T14:08:14  <pinesol_green> Launchpad bug 1424815 in Evergreen "Wishlist: Add a “read more” feature to the OPAC bib record view for fields with lots of text" (affected: 3, heat: 16) [Undecided,New]
+2015-03-12T14:08:24  <yboston> any commnets or questions?
+2015-03-12T14:08:30  <yboston> *comments
+2015-03-12T14:09:59  <krvmga> i added my "this bug affects me" to that ticket
+2015-03-12T14:09:59  <yboston> I'll move on to the next wishlist related action item
+2015-03-12T14:10:12  <yboston> #info 4) DonB and yboston will write out an LP wishlist bug for call number search “list view”
+2015-03-12T14:10:24  <krvmga> others who want/need it may wish to do the same.
+2015-03-12T14:10:28  <yboston> DonB__: do you have the link handy?
+2015-03-12T14:10:30  <DonB__> Also done. See https://bugs.launchpad.net/evergreen/+bug/1424690
+2015-03-12T14:10:31  <pinesol_green> Launchpad bug 1424690 in Evergreen "Create a “list view” for Call Number (Shelf Browse) results lists" (affected: 3, heat: 16) [Undecided,New]
+2015-03-12T14:10:32  <yboston> thanks
+2015-03-12T14:11:09  <yboston> glad those two whishlist bugs were created
+2015-03-12T14:11:33  <yboston> at this point there will be a need to find someone witht he skills or the money to have those bugs addressed
+2015-03-12T14:12:05  <DonB__> That leaves me out, at least for this budget year
+2015-03-12T14:12:21  <yboston> the upcoming conference could be a time to look for collaborators in term of coding the solution or funding someone else to fund the development
+2015-03-12T14:13:40  <yboston> lets move on to "new business"
+2015-03-12T14:13:55  <yboston> unless there are any comments or quesitons?
+2015-03-12T14:14:26  <yboston> #topic Updates from sub-group leaders (Authorities, LC Call numbers, etc.)
+2015-03-12T14:15:02  <yboston> I can report that the tiny authority related code changed I proposed made it to the 2.8 release
+2015-03-12T14:15:18  <DonB__> I haven't done any more with the LC Call Number issues.
+2015-03-12T14:16:48  <yboston> Here is the link to the manual part that mentions the addition of the "authority thesaurus" value
+2015-03-12T14:16:50  <yboston> http://docs.evergreen-ils.org/dev/_manage_authorities.html
+2015-03-12T14:17:09  <yboston> unless there are any comments or questions, we can move on
+2015-03-12T14:17:33  <yboston> #topic Need to find another group leader to replace Kathy (suggested by Yamil)
+2015-03-12T14:18:10  <yboston> kmlussier will not be able to co-lead this group with me going forward. I could use the help form someone else
+2015-03-12T14:18:30  <yboston> any volunteers?
+2015-03-12T14:18:51  <krvmga> i'll help you, yamil
+2015-03-12T14:19:01  <krvmga> opac is my world :)
+2015-03-12T14:19:13  <yboston> thanks
+2015-03-12T14:19:32  <krvmga> just let me know what i can do to help
+2015-03-12T14:20:13  <yboston> so far we have collaborated on running the meetings and updating the wiki pages; also some little strategizing for how to move the group's goals forard
+2015-03-12T14:20:19  <yboston> *forward
+2015-03-12T14:20:26  <krvmga> thanks
+2015-03-12T14:21:05  <yboston> #agreed krvmga will co-lead the group with yboston
+2015-03-12T14:21:13  <DonB__> =1
+2015-03-12T14:21:18  <kmlussier> krvmga++
+2015-03-12T14:21:19  <DonB__> +1
+2015-03-12T14:21:32  <yboston> #action yboston will email krvmga to plan next steps as co-leaders
+2015-03-12T14:22:11  <yboston> next topic, unless there are comments/questions
+2015-03-12T14:22:52  <yboston> #topic Lets plan to meet face to face during the EG conference (suggested by Yamil)
+2015-03-12T14:23:28  <yboston> I hope we can find a time to get a group to meet face to face at some point during the conference.
+2015-03-12T14:23:39  <yboston> it could be a great way to recruit more people
+2015-03-12T14:23:58  <yboston> how many of you here plan to attend this year's cofnerence?
+2015-03-12T14:24:05  <DonB__> I would love to do that but Asbury's head of IT will be there as our only representative
+2015-03-12T14:24:17  <krvmga> budget constraints at cwmars this year will keep me away unfortunately.
+2015-03-12T14:24:34  <krvmga> during the convention, though, i'll happily be available for google hangouts
+2015-03-12T14:24:36  <yboston> we can try to arrange it so that we have a laptop available
+2015-03-12T14:24:54  <kmlussier> I'll be there
+2015-03-12T14:24:54  <sandbergja> I'll be at the first part of the conference, and could participate remotely during the second half
+2015-03-12T14:25:13  <yboston> sorry, had a knowck on my door
+2015-03-12T14:25:34  <yboston> I meant that hopefully we can have people join in remotely on a cell phone or on Google hangout/skype
+2015-03-12T14:26:40  <yboston> DonB__: It is a shame you can't make it, please have your IT person introduce himself to me
+2015-03-12T14:28:03  <yboston> since this is still a new group, I was not plannign on asking for an offical time slot fromt he cofnerence comittee, though perhaps we should request a time?
+2015-03-12T14:28:46  <DonB__> I think that would be a good idea
+2015-03-12T14:28:57  <yboston> we could plan to do a lightning talk to promote our group. I can volunteer to make the presentation
+2015-03-12T14:29:08  <krvmga> lightning talk++
+2015-03-12T14:29:16  <yboston> (does everyone know what a lightning talk is?)
+2015-03-12T14:29:36  <DonB__> not yet
+2015-03-12T14:30:04  <DonB__> but it sounds like you should really pay attention
+2015-03-12T14:30:11  <yboston> lightnig talks are 5 minute long presentations
+2015-03-12T14:30:31  <yboston> the conference planners set a time for anyone to walk up to the podium
+2015-03-12T14:30:39  <yboston> and give a 5minute presentation
+2015-03-12T14:30:55  <yboston> the speakers are not really known in advance
+2015-03-12T14:30:58  <krvmga> it's not hard (though it might feel scary)
+2015-03-12T14:31:15  <krvmga> i gave a lightning talk on our docsprint two conferences ago
+2015-03-12T14:31:23  <yboston> often, the presentation cover code improvements that happened that same day or the day before
+2015-03-12T14:31:55  <yboston> OK, so far we have one volunteer (yboston) for a lighning talk
+2015-03-12T14:32:40  <yboston> can I get a volunteer to reach out to the conference committee to 1) provide us an oficial time to meet OR 2) make sure that the conferece is providing a space for ad hoc meetings during the conference
+2015-03-12T14:32:59  <kmlussier> I can volunteer
+2015-03-12T14:33:07  <krvmga> kmlussier++
+2015-03-12T14:33:18  <yboston> also, folks can volunteer to help with the lightning talk too
+2015-03-12T14:33:35  <yboston> thanks kmlussier
+2015-03-12T14:33:41  <yboston> kmlussier++
+2015-03-12T14:34:05  <yboston> #action kmlussier to reach out to the conference committee to 1) provide us an oficial time to meet OR 2) make sure that the conferece is providing a space for ad hoc meetings during the conference
+2015-03-12T14:34:46  <yboston> kmlussier: I'll bake you a cheese flan (my signature dish) if you also ask for a meeting time for the authoritites group
+2015-03-12T14:35:02  <krvmga> yboston, do you want to add an action item for you and i to touch base with each other early next week?
+2015-03-12T14:35:26  <yboston> thanks
+2015-03-12T14:35:37  * kmlussier tries not to touch authorities unless she absolutely has to. :)
+2015-03-12T14:36:28  <yboston> krvmga: thaks, I'll stick to the existing action item to email you
+2015-03-12T14:37:37  <yboston> kmlussier: I'll lead the authorities group; I just want to let them know of all the other groups at the saem time
+2015-03-12T14:38:02  <kmlussier> OK, I'll send it along.
+2015-03-12T14:38:12  * kmlussier really likes flan, but has never had it with cheese.
+2015-03-12T14:39:03  <yboston> #action yboston will work on a 5 minute lightning talk presentation on the Evergreen for Academics to help recruit more members
+2015-03-12T14:39:22  <yboston> kmlussier: gracias; it is a mix of custard and cheesecake
+2015-03-12T14:39:57  <yboston> kmlussier: I can send you the recipe, but we will have to coordinate to get the flan to you
+2015-03-12T14:40:06  <yboston> any other comments or questions so far?
+2015-03-12T14:40:30  <kmlussier> yboston: We'll just have to organize another local doc-fest. I'll bring cookies.
+2015-03-12T14:40:58  <DonB__> Y'all are making me hungry! :)
+2015-03-12T14:41:27  <yboston> One idea i wanted to share
+2015-03-12T14:41:27  <krvmga> if there are cookies, i will come
+2015-03-12T14:41:38  <krvmga> i see cookies. i want to go to there.
+2015-03-12T14:41:51  *** jihpringle has joined #evergreen
+2015-03-12T14:42:06  <yboston> is to create a sub page to the academics group wiki page were we list what each library has done to customize EG to work better for them
+2015-03-12T14:42:26  <DonB__> Cool
+2015-03-12T14:42:35  <yboston> it should eb useful for new academic libraries, and I am sure we could learn from each other
+2015-03-12T14:42:41  <krvmga> i like that idea
+2015-03-12T14:43:01  <yboston> BTW, I keep a log of the local customizations that I make to Eg when we upgrade
+2015-03-12T14:43:57  <yboston> and it is nice that over time thabks to my lobbying, bug reporting, or me coding proof of concepts a few of those cahnges are no longer needed because they have slowly become EG defaults
+2015-03-12T14:44:24  <Dyrcona> yboston: I'd suggest public git branches for academic customizations.
+2015-03-12T14:44:33  <yboston> I can start the page and then publicize it on the general mailing list
+2015-03-12T14:44:49  <krvmga> Dyrcona: that's an interesting suggestion.
+2015-03-12T14:45:04  <yboston> Dyrcona: to be clear do you mean something in the contrib repo or just working branches?
+2015-03-12T14:45:11  <yboston> or a mix of both?
+2015-03-12T14:45:21  <yboston> (and thanks for the immediate feedback)
+2015-03-12T14:45:37  <Dyrcona> Whatever seems more appropriate. I hadn't thought much farther than git branches.
+2015-03-12T14:46:05  <yboston> Dyrcona: OK, thanks
+2015-03-12T14:46:59  <yboston> for example, at Berklee we are toying with displaying the main title (tag 245) subfield "h", which is the "medium"
+2015-03-12T14:47:22  <yboston> it already displays in the OPAC full bib view, but not in the search results
+2015-03-12T14:49:14  <DonB__> Just be sure it isn't a subfield that is "indexed" in your title browse results
+2015-03-12T14:49:19  <yboston> Here is a screenshot with the change https://drive.google.com/file/d/0B4URatF-NX5LWlR4Rk1USGNSOVk/view?usp=sharing
+2015-03-12T14:49:51  <yboston> this is only a display change, that takes adding about two additional words to the OPAC code
+2015-03-12T14:50:33  <DonB__> It looks helpful
+2015-03-12T14:51:13  <yboston> just to reiterate, it is two seperate things to display a field/subfield in the OPAC and to make that field/subfield indexed (i.e. searchable)
+2015-03-12T14:51:44  <yboston> of course with RDA that type of information will be stored somehwere else, so some folks will not be interested int his change
+2015-03-12T14:51:51  <DonB__> I understand. What kind of coding would it take, I wonder, to put an icon in the cover art section?
+2015-03-12T14:51:58  <yboston> I will set up an action item now
+2015-03-12T14:52:13  *** jck_ has quit IRC
+2015-03-12T14:52:16  <kmlussier> DonB__: An icon where?
+2015-03-12T14:52:31  <DonB__> Instead of cover art ...
+2015-03-12T14:52:48  <DonB__> have a default picture for a Sound Recording format
+2015-03-12T14:52:59  <DonB__> Or a Video recording format
+2015-03-12T14:53:01  <DonB__> etc.
+2015-03-12T14:53:15  <yboston> #acton yboston will create a wiki sub page where libraries can list their EG customizations
+2015-03-12T14:53:16  <DonB__> Just a thougt
+2015-03-12T14:53:19  <DonB__> thought
+2015-03-12T14:53:32  <yboston> #action yboston will create a wiki sub page where libraries can list their EG customizations
+2015-03-12T14:54:19  *** Newziky has quit IRC
+2015-03-12T14:54:20  <yboston> Iwe have wanted to come up with a way that our locally produced CDs, like student cocnerts, to have a generic Berklee cover
+2015-03-12T14:54:22  <kmlussier> DonB__: I don't know. It's well beyond my coding abilities.
+2015-03-12T14:54:30  <yboston> we have some ideas, but nver tried any of them yet
+2015-03-12T14:54:55  <yboston> DonB__: you should ask on the dev list for ideas
+2015-03-12T14:55:46  <yboston> DonB__: but it helps to give some background information of why your situation led you to what you think is the solution
+2015-03-12T14:56:01  <DonB__> we use bepress for our digital repository http://place.asburyseminary.edu/
+2015-03-12T14:56:04  <yboston> DonB__: you can send me a draft for me to look over
+2015-03-12T14:56:23  <DonB__> and use Icons and portraits of speakers
+2015-03-12T14:56:24  <yboston> I need to wrap up to walk to another meeting
+2015-03-12T14:57:18  <yboston> next meeting shoudl be April 9th
+2015-03-12T14:57:25  <yboston> take care all
+2015-03-12T14:57:30  <krvmga> yboston++
+2015-03-12T14:57:31  <kmlussier> Thanks Yamil!
+2015-03-12T14:57:32  <yboston> #endmeeting
+2015-03-12T14:57:32  <pinesol_green> Meeting ended Thu Mar 12 14:57:32 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-03-12T14:57:32  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-12-14.00.html
+2015-03-12T14:57:32  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-12-14.00.txt
+2015-03-12T14:57:32  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-12-14.00.log.html
+2015-03-12T14:57:38  <kmlussier> yboston++
+2015-03-12T14:57:41  <DonB__> Many thanks! bye
+2015-03-12T14:57:44  <kmlussier> @dessert add of yboston's cheese flan
+2015-03-12T14:57:44  <pinesol_green> kmlussier: The operation succeeded.  Dessert #33 added.
+2015-03-12T14:58:17  *** krvmga has quit IRC
+2015-03-12T14:58:19  <kmlussier> @dessert 33 [someone]
+2015-03-12T14:58:19  * pinesol_green grabs some of yboston's cheese flan for eady
+2015-03-12T14:58:34  *** DonB__ has quit IRC
+2015-03-12T14:59:03  <kmlussier> bshum: You may have missed this earlier because you were busy. Do you know how I can delete dessert 31?
+2015-03-12T14:59:12  <bshum> kmlussier: Hmm
+2015-03-12T14:59:21  <bshum> @list dessert
+2015-03-12T14:59:21  <pinesol_green> bshum: add, change, dessert, get, remove, search, and stats
+2015-03-12T14:59:26  <bshum> @dessert remove 31
+2015-03-12T14:59:26  <pinesol_green> bshum: The operation succeeded.
+2015-03-12T14:59:30  <bshum> Like that.
+2015-03-12T14:59:34  <kmlussier> Ah, remove! Dyrcona tried delete
+2015-03-12T14:59:54  <bshum> pinesol_green: Bow to my whim, slave.
+2015-03-12T14:59:54  <pinesol_green> bshum: What we have here is a failure to communicate.
+2015-03-12T14:59:55  <pinesol_green> bshum: I am only a bot, please don't think I'm intelligent :)
+2015-03-12T15:00:15  <kmlussier> @dessert bshum
+2015-03-12T15:00:15  * pinesol_green grabs some of yboston's cheese flan for bshum
+2015-03-12T15:19:58  *** mglass has quit IRC
+2015-03-12T15:24:54  <bshum> kmlussier: Fwiw (finally reading scrollback), but we operated in mixed Ubuntu systems in our cluster for awhile.  Where usually we lagged our DB server behind a bit and kept reinstalling fresh VMs for the bricks, etc. over time.
+2015-03-12T15:25:05  <bshum> So we had Ubuntu 10.04 -> 14.04 for the DB servers
+2015-03-12T15:25:12  <bshum> 10.04 -> 12.04 for the app servers
+2015-03-12T15:25:24  <bshum> (we still haven't switched to 14.04 due to the ruby EDI bug since we use acq)
+2015-03-12T15:25:53  <bshum> And we used Debian 6 instead of Ubuntu for awhile till 14.04 had a workable less-buggy version of ldirector for our load balancers.
+2015-03-12T15:26:16  <kmlussier> bshum: But it was just the DB server that was on a different O/S than the bricks? Or did you sometimes have a mix among your bricks too?
+2015-03-12T15:26:26  <bshum> So you can use whatever OS you want for each role in your setup.  The only burden it adds is on the sys admins for keeping track of it all.
+2015-03-12T15:26:44  <bshum> Right now we're in the midst of switching up our app servers too.
+2015-03-12T15:26:56  <bshum> Where 5 out of 6 are 12.04 and one is 14.04
+2015-03-12T15:27:10  <bshum> We're testing the 14.04 one as a side utility server and seeing what else is weird.
+2015-03-12T15:27:30  <bshum> And also using it as our chance to rewrite our apache config files for the Apache 2.2 to 2.4 change that Dyrcona mentioned too.
+2015-03-12T15:28:04  *** graced has quit IRC
+2015-03-12T15:29:01  <bshum> Generally I find it's easier on the brain the fewer distros we have to keep track of.
+2015-03-12T15:29:08  <bshum> So I've been trying to consolidate things as best as I can.
+2015-03-12T15:30:44  <kmlussier> bshum: Thanks for the details!
+2015-03-12T15:30:46  <kmlussier> bshum++
+2015-03-12T15:30:52  <bshum> kmlussier: Actually come to think of it... we ran Lucid bricks at the same time we were building Precise bricks
+2015-03-12T15:31:03  <bshum> And then we rotated them in our load balancer config to switch them when they were ready to take over.
+2015-03-12T15:31:13  <bshum> So nobody noticed when we changed them over.
+2015-03-12T15:31:26  <bshum> So it's all relative.
+2015-03-12T15:31:27  <bshum> :D
+2015-03-12T15:31:55  <Dyrcona> That's what I was hinting at when I said that you could upgrade brick by brick earlier, what bshum just described.
+2015-03-12T15:32:15  <Dyrcona> Or what I meant, rather.
+2015-03-12T15:32:47  <Dyrcona> And that's the way I would do it, but I wouldn't spread it out over more than a week or so.
+2015-03-12T15:32:56  <bshum> Note, when I say "bricks" that's just a legacy term I affectionately call our servers.  They are not traditional "bricks" (head and drones separately maintained), but in fact single application installs.
+2015-03-12T15:33:45  <Dyrcona> Right, but you could take 1 brick out of rotation, upgrade it, then put it back in rotation in ldirector.
+2015-03-12T15:33:45  <bshum> With VMs, it's been easy enough to spin up new instances as necessary and smaller physical hardware working together to make a single "brick" has not been necessary for us for several years now.
+2015-03-12T15:33:55  <bshum> Right.
+2015-03-12T15:34:02  <bshum> Pull, NUKE IT, reinstall, and put back :)
+2015-03-12T15:34:14  <bshum> Upgrade?  What is this upgrade you speak of...
+2015-03-12T15:34:28  <Dyrcona> Yeah, we're very likely to do what you're doing now when we upgrade our hardware "any day now."
+2015-03-12T15:35:08  <Dyrcona> We'll us VMs on a couple of hosts to simulate bricks with everything running on each vm.
+2015-03-12T15:35:20  <Dyrcona> s/us/use/
+2015-03-12T15:35:49  <Dyrcona> In fact, I was just putting that into my report for the board meeting next week.
+2015-03-12T15:37:25  <bshum> I still amuse myself over the meeting where I first showed people how to "obliterate" users.
+2015-03-12T15:37:34  <bshum> :D
+2015-03-12T15:37:40  <Dyrcona> ;)
+2015-03-12T15:37:47  <bshum> Words are fun.
+2015-03-12T15:38:22  <Dyrcona> That's the word they use in French when you get your public transit ticket punched/stamped to show that it has been used.
+2015-03-12T15:38:35  * bshum wonders how he'll have to mix pound in with ldirector with the websockets stuff.
+2015-03-12T15:40:56  <jeffdavis> Can I add kmlussier's email about security bugs to the agenda for Monday's dev meeting? http://markmail.org/thread/fqrhegamnyej2s57 - I can't make the meeting but it would be good to have some follow-up discussion.
+2015-03-12T15:42:22  <dbs> sounds good
+2015-03-12T15:44:02  * kmlussier certainly won't object. :)
+2015-03-12T15:44:14  <kmlussier> jeffdavis++
+2015-03-12T15:44:47  <jeffdavis> kmlussier++
+2015-03-12T15:44:49  <jeffdavis> okay, added to agenda.
+2015-03-12T16:28:18  *** rjackson_isl has quit IRC
+2015-03-12T16:33:22  *** jboyer-isl has quit IRC
+2015-03-12T16:38:23  *** maryj has quit IRC
+2015-03-12T16:39:36  *** collum has quit IRC
+2015-03-12T16:45:20  <Dyrcona> So, yeah, we got hammered (mostly staff client traffic, btw) last Wednesday afternoon.
+2015-03-12T16:45:33  <Dyrcona> Median hits/minute for the whole day: 625.
+2015-03-12T16:45:52  <Dyrcona> Median hits/minute during the time of our high load: 2,592.
+2015-03-12T16:46:25  <Dyrcona> With a maximum of 4,705 during the minute of 4:40 pm EST.
+2015-03-12T16:46:53  *** yboston has quit IRC
+2015-03-12T16:47:08  <Dyrcona> Our poor server did the best it could, but the load hit 154.
+2015-03-12T16:48:26  *** Shae has quit IRC
+2015-03-12T16:50:34  *** ericar has quit IRC
+2015-03-12T16:52:23  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-12T16:52:53  <Dyrcona> hits==requests if you don't know what I mean.
+2015-03-12T16:55:09  <gmcharlt> Dyrcona: beats baseball bats...
+2015-03-12T16:55:17  <Dyrcona> :)
+2015-03-12T16:55:50  <gmcharlt> now by requests, do you mean Apache requests (which could include static content), OpenSRF calls, or something else
+2015-03-12T16:56:00  <Dyrcona> Apache requests.
+2015-03-12T16:56:14  <Dyrcona> And there isn't much static content.
+2015-03-12T16:56:27  <Dyrcona> Since this server only serves up Evergreen.
+2015-03-12T16:57:15  <Dyrcona> But, hey, 300+ requests from a handful of libraries, 200+ from some others, and 100+ from a bunch more, add up in a hurry.
+2015-03-12T16:57:31  <gmcharlt> any sign of a cat sitting on a circ station's keyboard at the time - or does it all look like normal traffic, just a lot of it?
+2015-03-12T16:57:48  <Dyrcona> Just a lot of traffic as as I can tell.
+2015-03-12T16:58:06  <Dyrcona> It's not like one library really stands out.
+2015-03-12T16:58:30  <Dyrcona> and occasionally, the local host, doing head requests for added content wins.
+2015-03-12T16:59:13  <Dyrcona> It's like between 4:10 and 4:15 someone flipped a switch and set the larger libraries in to high speed.
+2015-03-12T16:59:37  <Dyrcona> Guess kids were getting stuff for term reports or somethings.
+2015-03-12T17:00:37  <Dyrcona> Anyway, time to go.
+2015-03-12T17:00:48  <Dyrcona> Cya'll tomorrow.
+2015-03-12T17:00:56  *** Dyrcona has quit IRC
+2015-03-12T17:03:16  *** akilsdonk has quit IRC
+2015-03-12T17:08:27  *** jjlundgren has quit IRC
+2015-03-12T17:25:43  *** mmorgan has left #evergreen
+2015-03-12T17:26:37  *** mglass has joined #evergreen
+2015-03-12T17:29:17  *** mllewellyn has quit IRC
+2015-03-12T17:52:15  *** collinanderson has joined #evergreen
+2015-03-12T17:52:18  <collinanderson> yo
+2015-03-12T17:55:19  <collinanderson> I just heard of evergreen 5 minutes ago. is the code on github?
+2015-03-12T18:03:20  <collinanderson> found it https://github.com/evergreen-library-system/Evergreen
+2015-03-12T18:10:17  *** dreuther has quit IRC
+2015-03-12T18:11:53  *** dcook has joined #evergreen
+2015-03-12T18:14:27  <jeffdavis> collinanderson: That is indeed Evergreen, but in general the dev community doesn't use github for development.
+2015-03-12T18:14:49  <jeffdavis> The official repo can be seen at http://git.evergreen-ils.org/?p=Evergreen.git and issue tracking is managed in Launchpad, at https://launchpad.net/evergreen
+2015-03-12T18:15:06  <jeffdavis> Just in case you're wondering why there's so little activity on Github for an active project. :)
+2015-03-12T18:16:26  <collinanderson> gotcha
+2015-03-12T18:19:24  <collinanderson> what's the difference between evergreen and opensrf?
+2015-03-12T18:21:24  <jeffdavis> OpenSRF is a message routing layer. Evergreen depends on it. So if you wanted to install Evergreen, you'd install OpenSRF first, then Evergreen on top of it.
+2015-03-12T18:29:28  *** bbqben has quit IRC
+2015-03-12T18:32:42  <collinanderson> gotcha. interesting. what sort of messaging happens under the hood?
+2015-03-12T18:42:25  *** bbqben has joined #evergreen
+2015-03-12T18:44:39  <jeffdavis> With OpenSRF, you define services which communicate by sending each other chunks of JSON over XMPP.
+2015-03-12T18:45:45  <jeffdavis> So the core of Evergreen is a set of closely interrelated OpenSRF services.
+2015-03-12T18:47:45  <jeffdavis> I'm probably oversimplifying, and there are bunch of people in this channel who know OpenSRF better than me, but that's the essence of it. :)
+2015-03-12T19:00:05  *** vlewis has quit IRC
+2015-03-12T19:06:20  <collinanderson> gotcha. is it really big enough that it makes sense to have multiple services?
+2015-03-12T19:08:09  <eeevil> collinanderson: evergreen? well, http://git.evergreen-ils.org/gitstats/Evergreen/lines.html says we're at 1.7M lines of code in the repo :)
+2015-03-12T19:08:20  <collinanderson> dang. nice
+2015-03-12T19:16:19  <jeffdavis> "Evergreen: The Industrial-Strength Open Source ILS"
+2015-03-12T19:24:56  <eeevil> jeffdavis: it's Enterprise(tm) ;)
+2015-03-12T19:31:44  <jeffdavis> heh
+2015-03-12T20:00:40  *** jwoodard has quit IRC
+2015-03-12T20:13:40  *** bbqben has quit IRC
+2015-03-12T20:19:29  *** sandbergja has quit IRC
+2015-03-12T20:48:21  *** bmills has quit IRC
+2015-03-12T21:22:14  *** jihpringle has quit IRC
+2015-03-12T22:30:34  *** akilsdonk has joined #evergreen
+2015-03-12T23:56:00  *** akilsdonk has quit IRC

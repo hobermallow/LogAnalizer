@@ -1,0 +1,65 @@
+2015-02-01T00:37:08  *** egbuilder has quit IRC
+2015-02-01T00:37:09  *** phasefx has quit IRC
+2015-02-01T00:38:03  *** egbuilder has joined #evergreen
+2015-02-01T00:38:19  *** phasefx has joined #evergreen
+2015-02-01T01:05:45  *** Bmagic_ has quit IRC
+2015-02-01T01:06:09  *** Bmagic has joined #evergreen
+2015-02-01T01:27:38  *** abowling has quit IRC
+2015-02-01T03:35:19  *** dbwells_ has joined #evergreen
+2015-02-01T03:35:30  *** StomproJosh has joined #evergreen
+2015-02-01T03:38:03  *** pmurray_` has joined #evergreen
+2015-02-01T03:38:30  *** jeffdavis has joined #evergreen
+2015-02-01T03:39:44  *** berick_ has joined #evergreen
+2015-02-01T03:45:03  *** dbs_ has joined #evergreen
+2015-02-01T03:45:19  *** Sato has quit IRC
+2015-02-01T03:45:19  *** StomproJ has quit IRC
+2015-02-01T03:45:19  *** berick has quit IRC
+2015-02-01T03:45:19  *** dbs has quit IRC
+2015-02-01T03:45:19  *** pmurray_away has quit IRC
+2015-02-01T03:45:19  *** jeffdavi1 has quit IRC
+2015-02-01T03:45:19  *** dbwells has quit IRC
+2015-02-01T03:48:55  *** Sato has joined #evergreen
+2015-02-01T04:07:51  *** serflog has quit IRC
+2015-02-01T04:14:24  *** serflog has joined #evergreen
+2015-02-01T05:07:25  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-02-01T05:26:54  *** mnsri_away is now known as mnsri
+2015-02-01T05:38:05  *** mnsri is now known as mnsri_away
+2015-02-01T05:40:53  *** mnsri_away is now known as mnsri
+2015-02-01T05:41:24  *** mnsri is now known as mnsri_away
+2015-02-01T06:55:42  *** StomproJ has joined #evergreen
+2015-02-01T06:59:27  *** StomproJosh has quit IRC
+2015-02-01T10:46:03  *** mnsri_away is now known as mnsri
+2015-02-01T11:15:01  *** mnsri is now known as mnsri_away
+2015-02-01T11:27:42  *** mnsri_away is now known as mnsri
+2015-02-01T11:47:48  *** mnsri is now known as mnsri_away
+2015-02-01T11:56:26  *** mnsri_away is now known as mnsri
+2015-02-01T12:12:53  *** mnsri is now known as mnsri_away
+2015-02-01T12:40:43  *** abowling has joined #evergreen
+2015-02-01T13:17:12  *** mnsri_away is now known as mnsri
+2015-02-01T13:34:27  *** mnsri is now known as mnsri_away
+2015-02-01T13:36:00  *** mnsri_away is now known as mnsri
+2015-02-01T13:49:29  *** mnsri is now known as mnsri_away
+2015-02-01T14:24:16  *** mnsri_away is now known as mnsri
+2015-02-01T15:19:36  *** mnsri is now known as mnsri_away
+2015-02-01T15:25:49  *** mnsri_away is now known as mnsri
+2015-02-01T15:43:12  *** sarabee has joined #evergreen
+2015-02-01T15:43:50  *** dbs_ is now known as dbs
+2015-02-01T16:16:47  *** bmills has joined #evergreen
+2015-02-01T18:11:25  *** mnsri is now known as mnsri_away
+2015-02-01T18:36:02  *** mnsri_away is now known as mnsri
+2015-02-01T18:46:02  *** mnsri is now known as mnsri_away
+2015-02-01T19:36:22  *** bmills has quit IRC
+2015-02-01T19:56:39  *** mnsri_away is now known as mnsri
+2015-02-01T21:06:41  *** dcook has quit IRC
+2015-02-01T21:11:20  *** dcook has joined #evergreen
+2015-02-01T21:27:35  *** mnsri is now known as mnsri_away
+2015-02-01T21:27:44  *** mnsri_away is now known as mnsri
+2015-02-01T21:45:44  *** mnsri is now known as mnsri_away
+2015-02-01T22:18:49  *** mnsri_away is now known as mnsri
+2015-02-01T22:21:08  *** mnsri is now known as mnsri_away
+2015-02-01T22:21:52  *** mnsri_away is now known as mnsri
+2015-02-01T22:48:31  *** mnsri is now known as mnsri_away
+2015-02-01T22:51:04  *** mnsri_away is now known as mnsri
+2015-02-01T22:57:22  *** mnsri is now known as mnsri_away
+2015-02-01T22:58:35  *** mnsri_away is now known as mnsri
+2015-02-01T23:01:55  *** mnsri is now known as mnsri_away

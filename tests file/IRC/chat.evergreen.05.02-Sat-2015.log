@@ -1,0 +1,47 @@
+2015-05-02T01:16:03  *** nuentoter has quit IRC
+2015-05-02T07:49:02  *** artunit has quit IRC
+2015-05-02T07:49:48  *** artunit has joined #evergreen
+2015-05-02T09:19:18  *** Dyrcona has joined #evergreen
+2015-05-02T10:29:57  <Dyrcona> Heh. It has been a while since I did a git fetch --all on my personal laptop.
+2015-05-02T10:31:56  <Dyrcona> Well, maybe not that long, just over 3 months.
+2015-05-02T12:37:34  *** bmills has joined #evergreen
+2015-05-02T12:38:15  *** bmills has joined #evergreen
+2015-05-02T12:46:28  <dbs> tsbere: around for about a minute, have to take kids out to dance
+2015-05-02T12:47:19  <Dyrcona> dbs: He may not be around, but he wanted your opinion on something that changes something you wrote.
+2015-05-02T12:47:35  <Dyrcona> Hang on a sec and I'll find the branch.
+2015-05-02T12:48:30  <dbs> Dyrcona: thanks!
+2015-05-02T12:48:42  <Dyrcona> dbs: Here's the commitdiff: http://git.mvlcstaff.org/?p=tsbere/ILS.git;a=commitdiff;h=d0e6bdc4d7b086991a5f3bc5812f73872b7ab24e
+2015-05-02T12:49:43  <Dyrcona> I can see that from home, so it should be world visible.
+2015-05-02T12:51:48  <dbs> Hard for me to opine all that quickly, but I don't think there's any real savings to one less seq scan on config.copy_status unless sites have ccs tables with thousands of rows
+2015-05-02T12:52:10  <Dyrcona> I think it comes out to 0.6 ms.
+2015-05-02T12:52:13  <dbs> Typo in "availble" (just a comment)
+2015-05-02T12:52:30  <Dyrcona> I joked what would I do with all that time. :)
+2015-05-02T12:52:55  <Dyrcona> I think it changes the order of a couple of them, though.
+2015-05-02T12:52:57  <dbs> I don't see how it could even take that long, I suspect there's some other reason you're seeing that savings :)
+2015-05-02T12:53:01  <dbs> yeah
+2015-05-02T12:53:16  <Dyrcona> I mean it was 0.6 ms faster than the previous version.
+2015-05-02T12:53:26  <Dyrcona> At least in a couple of tsbere's tests.
+2015-05-02T12:53:40  <dbs> right, I get that, I just don't think that has to do with a seq scan against config.copy_status :)
+2015-05-02T12:54:30  <Dyrcona> Anyway, since you wrote the original he wanted to know what you though of it, and I think he wanted to ask why it was based on 10 before.
+2015-05-02T12:54:52  <Dyrcona> But, he should speak for himself, really. I just happen to be paying attention and he isn't at the moment.
+2015-05-02T12:54:59  <dbs> thanks for that though!
+2015-05-02T12:55:07  <dbs> gotta roll
+2015-05-02T12:56:00  <Dyrcona> Have fun!
+2015-05-02T12:57:25  * Dyrcona is supposed to be working on development proposals.
+2015-05-02T14:01:18  <kmlussier> dbs: Although tsbere mentioned a time savings in his commit, I think the main motiviation was to get checked in and reshelving items to display higher than items on the holds shelf. Since those are technically not available.
+2015-05-02T14:07:51  <Dyrcona> Yep.
+2015-05-02T14:08:01  <Dyrcona> Something like that.
+2015-05-02T14:42:03  *** jwoodard has joined #evergreen
+2015-05-02T14:53:23  <dbs> kmlussier: yes, I understood that from the commit message, I was just responding to the more straightforward technical detail mentioned in the commit
+2015-05-02T14:54:32  <dbs> part of me wonders whether we should add a "rank" column to config.copy_status so that sites can make ranking tweaks for other copy statuses, but probably overkill
+2015-05-02T15:19:29  <Dyrcona> dbs: tsbere thought of add the same column and made almost the same conclusion.
+2015-05-02T15:19:50  <Dyrcona> dbs: He thought it would be worth it if it were used in more places through out Evergreen.
+2015-05-02T15:20:07  * Dyrcona just got back from a nice walk.
+2015-05-02T15:59:40  *** jwoodard has quit IRC
+2015-05-02T16:16:52  *** dcook__ has joined #evergreen
+2015-05-02T16:20:14  *** dcook has quit IRC
+2015-05-02T16:30:47  *** dcook has joined #evergreen
+2015-05-02T16:33:07  *** dcook__ has quit IRC
+2015-05-02T17:12:01  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-02T17:51:43  *** Dyrcona has quit IRC
+2015-05-02T18:54:10  *** bmills has quit IRC

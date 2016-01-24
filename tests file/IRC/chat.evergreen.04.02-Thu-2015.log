@@ -1,0 +1,462 @@
+2015-04-02T02:15:10  *** dcook has quit IRC
+2015-04-02T04:07:09  *** sbrylander has quit IRC
+2015-04-02T04:08:23  *** sarabee has joined #evergreen
+2015-04-02T05:56:40  *** gsams has quit IRC
+2015-04-02T05:57:02  *** gsams has joined #evergreen
+2015-04-02T07:53:14  *** mrpeters has joined #evergreen
+2015-04-02T08:00:40  *** Newziky has joined #evergreen
+2015-04-02T08:10:41  *** collum has joined #evergreen
+2015-04-02T08:11:43  *** rjackson_isl has joined #evergreen
+2015-04-02T08:34:47  *** mmorgan has joined #evergreen
+2015-04-02T08:45:40  *** ericar has joined #evergreen
+2015-04-02T08:46:47  *** graced has joined #evergreen
+2015-04-02T08:50:42  <kmlussier> @coffee
+2015-04-02T08:50:42  * pinesol_green brews and pours a cup of Kenya AA Nyeri Fine Cup, and sends it sliding down the bar to kmlussier
+2015-04-02T08:51:04  <kmlussier> good morning #evergreen
+2015-04-02T08:55:21  <mmorgan> Good Morning!
+2015-04-02T08:55:33  <kmlussier> @tea [someone]
+2015-04-02T08:55:33  * pinesol_green brews and pours a pot of BH02: Holy Basil Purple Leaf, and sends it sliding down the bar to remingtron (http://ratetea.com/tea/upton/bh02-holy-basil-purple-leaf/1937/)
+2015-04-02T08:55:46  * kmlussier wonders why pinesol_green serves coffee and tea at a bar.
+2015-04-02T08:56:46  <jboyer-isl> Classy bar or tea dive?
+2015-04-02T08:56:50  *** jwoodard has joined #evergreen
+2015-04-02T08:59:29  *** Newziky1 has joined #evergreen
+2015-04-02T09:00:00  *** Dyrcona has joined #evergreen
+2015-04-02T09:00:22  <remingtron> jboyer-isl: would I be found in a tea dive? I think not! Well, maybe.
+2015-04-02T09:01:25  <jboyer-isl> I would actually very much like to see such a thing as a tea dive, though perhaps only once.
+2015-04-02T09:02:22  <remingtron> kmlussier: thanks for the tea, I always drink Holy teas near Easter.
+2015-04-02T09:04:42  <kmlussier> I picture a darkened room, a person with his/her head lying on the bar, begging for just one more cup of Earl Grey.
+2015-04-02T09:05:27  <jeff> huh. i guessed that tea would be one from Upton Tea Imports (aside from the url having "upton" in it, which was a pretty big clue).
+2015-04-02T09:06:23  <jeff> (the prefix/code before the name was what gave it away)
+2015-04-02T09:06:32  <jeff> http://ratetea.com/search/?only=tea&brand_id=1
+2015-04-02T09:07:52  <kmlussier> Tea made with basil doesn't sound appealing to me.
+2015-04-02T09:08:13  <dbwells> Review from that site for this tea, "it reminds me of the smell of books".  It was stated as a good thing :)
+2015-04-02T09:10:25  <Dyrcona> @blame ejabberd
+2015-04-02T09:10:25  <pinesol_green> Dyrcona: Your failure is now complete, ejabberd.
+2015-04-02T09:21:21  *** jlundgren has joined #evergreen
+2015-04-02T09:36:11  <jboyer-isl> kmlussier, re: 09:04:43, "Gimmie the one with bergi, bergimi, berger... bergamot. Double."
+2015-04-02T09:38:28  <kmlussier> jboyer-isl: Ha ha. I suspect you weren't being totally honest when you said you hadn't been to a tea dive before.
+2015-04-02T09:39:16  *** akilsdonk has joined #evergreen
+2015-04-02T09:41:15  *** maryj has joined #evergreen
+2015-04-02T09:41:23  <jboyer-isl> No tea dives yet, just dive dives. They're usually... not my cup of tea.
+2015-04-02T09:41:49  <Dyrcona> I'll have a scotch on the rocks. My friend takes his neat.
+2015-04-02T09:44:15  <bshum> :D
+2015-04-02T09:44:40  <Dyrcona> Heh. Thought you'd get it. :)
+2015-04-02T09:45:52  <csharp> now we need to find a tea dive in Hood River
+2015-04-02T09:46:06  <csharp> for us teetotalers to get our drink on
+2015-04-02T09:46:18  <csharp> teatotalers!
+2015-04-02T09:46:19  <Dyrcona> You mean teatotalers?
+2015-04-02T09:46:25  <csharp> jynx!
+2015-04-02T09:47:06  <collum> https://www.facebook.com/thegoodmedicinelounge
+2015-04-02T09:47:08  * csharp quickly trademarks the name and makes millions
+2015-04-02T09:47:19  <Dyrcona> I don't drink Earl Grey any more for....digestive reasons. Begamot apparently doesn't agree with me.
+2015-04-02T09:47:24  <csharp> collum++
+2015-04-02T09:47:51  * csharp likes Earl Grey, Hot
+2015-04-02T09:51:54  <kmlussier> collum++
+2015-04-02T09:52:21  <kmlussier> I would be up for a trip to the tea room.
+2015-04-02T09:52:28  <collum> ditto
+2015-04-02T10:13:14  *** darshana has joined #evergreen
+2015-04-02T10:16:53  *** yboston has joined #evergreen
+2015-04-02T10:20:04  *** ericar has quit IRC
+2015-04-02T10:28:26  *** mllewellyn has joined #evergreen
+2015-04-02T10:31:02  *** Shae has joined #evergreen
+2015-04-02T10:59:44  *** TaraC has quit IRC
+2015-04-02T11:00:44  <eeevil> csharp: so, I was thinking  about your "all books" filter, and it looks like you're not using the new, stock composite record attr def for "books".  in your example, QP is seeing item_type(a,t) but should be seeing search_format(book) ... so, either I'm misunderstanding the question or there's something configuration-based going on
+2015-04-02T11:03:25  *** Newziky has quit IRC
+2015-04-02T11:03:53  *** TaraC has joined #evergreen
+2015-04-02T11:04:19  <csharp> eeevil: is there a table I can dump out and share with you to verify?
+2015-04-02T11:06:06  <eeevil> not just one. it's ... complicated in the back end :)  ... are you familiar with http://docs.evergreen-ils.org/2.6/_marc_record_attributes.html ?
+2015-04-02T11:07:34  <eeevil> the UI looks like it wants to use the right thing, but it's getting mapped away somehow, maybe. local customization? but ... I have to run for a while
+2015-04-02T11:10:55  <csharp> eeevil: thanks for the hint - yes Elaine and I did some customization that may be getting in the way - I'll review it and get back to you
+2015-04-02T11:22:41  <csharp> eeevil: I'll add a 'book' example query to the ticket too
+2015-04-02T11:22:48  <csharp> s/ticket/bug report/
+2015-04-02T11:27:31  <csharp> okay - added comment & attachment to bug 1438136
+2015-04-02T11:27:31  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438136
+2015-04-02T11:37:16  *** sandbergja has joined #evergreen
+2015-04-02T11:49:03  <kmlussier> I need to fill out the acknowledgements info on the Release Notes - http://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_8.html.
+2015-04-02T11:49:21  <kmlussier> I need help for the second on organizations that commissioned development.
+2015-04-02T11:49:36  <kmlussier> I know MassLNC and C/W MARS commissioned development projects that made it into 2.8.
+2015-04-02T11:50:08  <kmlussier> If anyone else worked on a contracted development project that made it into 2.8, could you let me know who should receive the credit for commissioning the development?
+2015-04-02T11:52:41  <bshum> Hmm
+2015-04-02T11:53:02  <kmlussier> Oh, and Georgia PINES should be there too.
+2015-04-02T11:54:43  *** ningalls has joined #evergreen
+2015-04-02T12:06:02  *** jihpringle has joined #evergreen
+2015-04-02T12:09:25  *** bmills has quit IRC
+2015-04-02T12:09:51  <berick> kmlussier: KCLS (via me) did the 2.3.1. Vandelay Authority Record Match Sets
+2015-04-02T12:11:57  <kmlussier> berick: Thanks. I'll inlcude KCLS in the section for organizations whose employees contributed patches.
+2015-04-02T12:12:41  <kmlussier> I've got most of those orgs nailed down because it's easy to find the dev who did the work. Not so easy to find project funders.
+2015-04-02T12:12:50  <berick> ah, gotcha
+2015-04-02T12:12:55  <berick> thanks
+2015-04-02T12:12:55  * kmlussier doesn't think there was much commissioned development for 2.8
+2015-04-02T12:16:44  *** bmills has joined #evergreen
+2015-04-02T12:26:57  <berick> hmm, need to bump all the 2.8.0 LP tix
+2015-04-02T12:27:06  <berick> i forget, is there an auotmated way to do that?
+2015-04-02T12:27:12  <bshum> Not really.
+2015-04-02T12:27:24  <bshum> Though there is an LP account used for changing statuses, etc.
+2015-04-02T12:27:29  <graced> NC kmlussier: Cardinal had commissioned work
+2015-04-02T12:27:43  <kmlussier> graced: Thanks!
+2015-04-02T12:28:00  <graced> do you need LP links?
+2015-04-02T12:28:07  <bshum> berick: I can help you take care of it, if it'd be helpful.
+2015-04-02T12:28:16  *** Dyrcona has quit IRC
+2015-04-02T12:29:21  <kmlussier> graced: I don't need them for the release notes, but I'm always curious about what work was commissioned by different groups. :)
+2015-04-02T12:29:27  <graced> https://bugs.launchpad.net/evergreen/+bug/1378169
+2015-04-02T12:29:28  <pinesol_green> Launchpad bug 1378169 in Evergreen "The context OU selector in funds management should be sticky" (affected: 2, heat: 12) [Wishlist,Fix committed]
+2015-04-02T12:29:28  <graced> and
+2015-04-02T12:29:28  <graced> https://bugs.launchpad.net/evergreen/+bug/1287370
+2015-04-02T12:29:29  <pinesol_green> Launchpad bug 1287370 in Evergreen "Funds Go Back Option Takes User Back to the First Fund Screen" (affected: 5, heat: 26) [Low,Fix committed]
+2015-04-02T12:29:32  <kmlussier> Just because I'm nosy
+2015-04-02T12:30:44  <berick> bshum: looks like there's only 3 open tickets for 2.8.0.  i'll just move them.
+2015-04-02T12:30:47  <berick> thanks, though
+2015-04-02T12:30:50  <bshum> Sounds good.
+2015-04-02T12:31:02  * kmlussier now realizes there is also a new feature missing from the release notes.
+2015-04-02T12:31:44  <kmlussier> Of course, it was one I signed off on, so I should have caught nearly 2 months ago.
+2015-04-02T12:33:59  <bshum> berick: I'm moving a few of the bugs left at 2.8-beta that didn't get worked on to either 2.next or 2.8.1 (if they're looking like bugfixes)
+2015-04-02T12:34:56  <csharp> general philosophical question to the channel: should we start considering C compiler warnings as individual bug reports?  discuss
+2015-04-02T12:35:26  <bshum> csharp: I'm going to respond with "eh?" and wonder what warnings you mean :
+2015-04-02T12:35:29  <bshum> :)
+2015-04-02T12:35:42  <csharp> having just spent the better part of two hours trying to get dpkg-buildpackage to not treat format-security warnings as fatal errors, that question is on my mind ;-)
+2015-04-02T12:36:04  <berick> thanks, bshum
+2015-04-02T12:36:22  <csharp> example (that I'm pasting in channel, yes)
+2015-04-02T12:36:25  <csharp> utils.c:133:2: error: format not a string literal and no format arguments [-Werror=format-security] return snprintf( *(global_argv), global_argv_size, VA_BUF ); ^
+2015-04-02T12:36:37  <csharp> ah - that came out as one line here ;-)
+2015-04-02T12:37:30  <csharp> that particular warning is from building OpenSRF on Ubuntu 14.04
+2015-04-02T12:37:45  <csharp> gcc 4.8.2
+2015-04-02T12:39:02  <csharp> for the logs/the curious, I was able to circumvent the fatality of those errors by adding 'export DEB_CFLAGS_MAINT_APPEND= -Wno-error=format-security' to my debian rules file
+2015-04-02T12:39:41  <csharp> but the real solution would be to fix the causes of the warnings
+2015-04-02T12:44:29  <bshum> berick: Since I'm in there, I'm also updating statuses from fix committed to fix released using the bugmaster account now.
+2015-04-02T12:45:15  <berick> bshum++
+2015-04-02T12:48:33  <bshum> csharp: In general, I think if you've got some suggestions on how to address some of those warnings/errors you're seeing, it doesn't hurt to add them as LP tickets and target them towards the next OpenSRF milestones for review.
+2015-04-02T12:48:49  <bshum> Or at the very least, noting them for further scrutiny by smarter folks than I :)
+2015-04-02T12:53:08  <kmlussier> berick/dbwells: While I'm in the Release Notes, do we need to say anything there about the changes to the fine generator?
+2015-04-02T12:53:19  <csharp> yeah, I think I'll start a couple o' tickets on 'em
+2015-04-02T12:53:40  * csharp has a feeling they'll be more urgent when jessie is released
+2015-04-02T12:53:50  <bshum> Which is soon I hear.
+2015-04-02T12:54:25  <bshum> April 25 - https://lists.debian.org/debian-devel-announce/2015/03/msg00016.html
+2015-04-02T12:54:27  <dbwells> kmlussier: I don't think so.  There should be no change in functionality.
+2015-04-02T12:54:31  <berick> kmlussier: well, ideally, no one would ever know it changed.
+2015-04-02T12:54:34  <berick> jinx
+2015-04-02T12:55:19  <csharp> big changes in installation instructions for jessie - new-style ejabberd config, for one
+2015-04-02T12:56:32  * csharp started a branch with README changes, originally based on Fedora 21, but ejabberd is utterly broken out of the box on Fedora http://git.evergreen-ils.org/?p=working/OpenSRF.git;a=blobdiff;f=README;h=cc81d4492bd9f1aed2cded23666254b7fa12cfbe;hp=38aff45713816207e2607afe4b1dfdb8efdf7f52;hb=e5ff2480d51feffee388e52104c2c592d37205d3;hpb=2cf93448e2ba2540b7fc3ea2f939f62621488420
+2015-04-02T12:56:32  <pinesol_green> [opensrf|Bill Erickson] LP#1418613 per-tab websocket send() JS thinko repair - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=2cf9344>
+2015-04-02T12:57:42  <kmlussier> dbwells / berick: OK, thanks
+2015-04-02T12:58:12  <bshum> csharp: Did you say Fedora, but mean Jessie?  Or do you mean Jessie also has newer ejabberd packaged with it, like Fedora's?
+2015-04-02T12:58:42  * bshum knows that initial makefile stuff was pushed for Jessie, but hasn't watched it closely since he doesn't use Debian.
+2015-04-02T12:59:06  <csharp> bshum: jessie also has the newer YML-based config, like Fedora
+2015-04-02T12:59:31  <csharp> but jessie's ejabberd appeared to work fine in my scant testing
+2015-04-02T12:59:46  <csharp> s/YML/YAML/
+2015-04-02T13:05:15  <bshum> Okay, done bug wrangling for now.
+2015-04-02T13:06:28  *** ericar has joined #evergreen
+2015-04-02T13:08:34  *** b_bonner has quit IRC
+2015-04-02T13:08:57  *** rashma has quit IRC
+2015-04-02T13:13:36  *** b_bonner has joined #evergreen
+2015-04-02T13:14:03  *** rashma has joined #evergreen
+2015-04-02T13:15:28  <kmlussier> I'm confused. I see a commit for the creation of RELEASE_NOTES_2_8.txt, but I don't see the actual file.
+2015-04-02T13:16:07  <kmlussier> Oh, I see. It's in the 2_8 branch, but not in master.
+2015-04-02T13:16:59  <csharp> @praise [someone]
+2015-04-02T13:16:59  * pinesol_green jboyer-isl is kind and patient to newbies
+2015-04-02T13:17:09  <csharp> @dessert [someone]
+2015-04-02T13:17:09  * pinesol_green grabs some wild Alaskan rhubarb pie for yboston
+2015-04-02T13:17:48  <jboyer-isl> Until the velvet glove of patience is removed, then it's iron fist, noob.
+2015-04-02T13:17:59  <csharp> jboyer-isl: haha
+2015-04-02T13:19:46  * csharp is reminded of the "Stonecutters" Simpsons episode: "Remove the Stone of Shame!  Attach the Stone of Triumph!"
+2015-04-02T13:20:53  * jboyer-isl needs to watch more Simpsons. Long has been the drought.
+2015-04-02T13:21:20  <kmlussier> berick: Should bab547295d1fd77b7db09108af02ac563f4ab1df go into master too?
+2015-04-02T13:21:20  <pinesol_green> [evergreen|Bill Erickson] 2.8 release notes creation and cleanup - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=bab5472>
+2015-04-02T13:21:33  <csharp> jboyer-isl: my Simpsons devotion ended nearly 20 years ago, but I own the seasons love and watch them very often
+2015-04-02T13:21:48  <csharp> s/seasons love/seasons *I* love/
+2015-04-02T13:22:41  <csharp> they got a bit unmoored in the mid- to late 90s and I never really watched them after that
+2015-04-02T13:24:25  <berick> kmlussier: hmm, yes.  thanks.  will merge...
+2015-04-02T13:24:40  <kmlussier> berick++ #Thanks!
+2015-04-02T13:25:36  *** buzzy has joined #evergreen
+2015-04-02T13:40:51  <eeevil> csharp: re your compiler warning, that's how we rewrite the process title for top/ps ... we could look for other ways to do it, maybe, but it's "considered safe" in the context we use it (we control the strings -- it would take a malicious installation to exploit)
+2015-04-02T13:41:02  <eeevil> in which case, you have bigger issues ;)
+2015-04-02T13:46:16  <csharp> eeevil: makes sense
+2015-04-02T13:47:08  <csharp> the CFLAGS for debian package building add -Werror=format-security, so that's why it was breaking when trying to build a deb
+2015-04-02T13:53:02  <jboyer-isl> Sounds like a good use for #pragma diagnostic push / ignore=format-security / pop : https://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html#Diagnostic-Pragmas (on GCC at least... do any other supported OSs use Clang or PCC?)
+2015-04-02T13:53:38  <kmlussier> Heh, we're still getting paxed in our Release Notes acknowledgements. :)
+2015-04-02T13:53:50  <csharp> paxed++
+2015-04-02T13:53:55  <bshum> paxed++
+2015-04-02T13:54:08  <jeff> goes to show, bugs you report can have lasting impact! :-)
+2015-04-02T13:56:38  <paxed> hah
+2015-04-02T13:57:15  *** rsoulliere has joined #evergreen
+2015-04-02T13:57:42  <yboston> heads up, the DIG monthly meeting will be starting at 2 PM EST
+2015-04-02T13:58:43  <paxed> oh, and just as a note: for GCC, "all" in -Wall does not actually mean all...
+2015-04-02T14:00:31  <yboston> #startmeeting DIG Monthly Meeting Evergreen Documentation Interest Group (DIG) Monthly Meeting.
+2015-04-02T14:00:31  <pinesol_green> Meeting started Thu Apr  2 14:00:31 2015 US/Eastern.  The chair is yboston. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-04-02T14:00:31  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-04-02T14:00:31  <pinesol_green> The meeting name has been set to 'dig_monthly_meeting_evergreen_documentation_interest_group__dig__monthly_meeting_'
+2015-04-02T14:00:40  <yboston> The agenda can be found here http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:dig_meeting_20150402-agenda
+2015-04-02T14:00:59  <yboston> #topic Introductions
+2015-04-02T14:00:59  <yboston> Please feel free to start introducing yourselves...
+2015-04-02T14:01:12  <yboston> #info yboston is Yamil Suarez @ Berklee College of Music - DIG meeting facilitator
+2015-04-02T14:01:35  <rsoulliere> #info rsoulliere is Robert Soulliere, Mohawk College
+2015-04-02T14:02:11  <jihpringle> info jihpringle is Jennifer Pringle, BC Libraries Cooperative (Sitka)
+2015-04-02T14:02:21  <jihpringle> #info jihpringle is Jennifer Pringle, BC Libraries Cooperative (Sitka)
+2015-04-02T14:02:21  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-04-02T14:03:47  <yboston> welcome everyone
+2015-04-02T14:04:01  <yboston> Robert or Kathy, do either of you have anything to report?
+2015-04-02T14:04:08  <yboston> it is OK if you don't
+2015-04-02T14:04:15  <kmlussier> I do
+2015-04-02T14:04:20  <yboston> go ahea
+2015-04-02T14:04:25  <yboston> *ahead
+2015-04-02T14:04:26  <kmlussier> #topic Release Coordinator Report
+2015-04-02T14:04:50  <kmlussier> #info I am adding acknowledgements plus one missing feature to the Release Notes as we meet
+2015-04-02T14:05:02  <kmlussier> #info The 2.8 Release Notes should be complete by the end of today.
+2015-04-02T14:05:05  <kmlussier> End of report
+2015-04-02T14:05:29  <kmlussier> Oh, I do have something else.
+2015-04-02T14:05:48  <yboston> BTW, Kathy do you have any doceumntation ont he process of making the release ntoes?
+2015-04-02T14:06:10  <kmlussier> There has been some talk among the devs of possibly doing release notes for point releases. That's something I might like to consider doing if I have time for the 2.8 point releases.
+2015-04-02T14:06:24  <pinesol_green> [evergreen|Bill Erickson] 2.8 release notes creation and cleanup - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=eee6a71>
+2015-04-02T14:06:26  <kmlussier> yboston: No, I don't have documentation. Is this documentation for devs who are writing release note entries?
+2015-04-02T14:06:35  <kmlussier> Ha, nice timing berick
+2015-04-02T14:06:39  <yboston> no, for the documentation side
+2015-04-02T14:06:45  <yboston> in case you ever need a sub
+2015-04-02T14:07:07  <yboston> or help
+2015-04-02T14:07:14  <kmlussier> No, I don't have documentation because, as long as the devs do their release notes, I don't do much other than read them for clarity and add acknowledgements.
+2015-04-02T14:07:22  <kmlussier> I do go through the ChangeLog to make sure everything is there.
+2015-04-02T14:07:27  <yboston> OK
+2015-04-02T14:07:29  <kmlussier> I can add something to the wiki, though.
+2015-04-02T14:07:33  <yboston> I thought it was more involved
+2015-04-02T14:08:07  <yboston> if you have the time, even a high level overview could be helpful
+2015-04-02T14:08:08  <kmlussier> No, I think what the RM does is a little more involved.
+2015-04-02T14:08:18  <yboston> yes, I agree
+2015-04-02T14:08:33  <kmlussier> In terms of generating the Release Notes, that is.
+2015-04-02T14:08:49  <yboston> Robert did you want to mention anything?
+2015-04-02T14:08:57  <rsoulliere> I have a couple of items.
+2015-04-02T14:09:01  <yboston> go ahead
+2015-04-02T14:09:03  <rsoulliere> #topic Conversion Coordinator Report
+2015-04-02T14:09:09  <rsoulliere> #info Evergree Documentation for 2.8 is up and pulling for the rel_2_8 branch.
+2015-04-02T14:09:18  <rsoulliere> #link http://docs.evergreen-ils.org/2.8/
+2015-04-02T14:09:27  <kmlussier> rsoulliere++
+2015-04-02T14:09:30  <rsoulliere> #info I have updated the 2_8 repository to include the 2.8 release notes.
+2015-04-02T14:09:58  <yboston> rsoulliere++
+2015-04-02T14:09:59  <rsoulliere> #info I have also added the 2.8 database schema documentation.
+2015-04-02T14:10:08  <rsoulliere> #info Links have been added to the documentaiton menu page:
+2015-04-02T14:10:13  <rsoulliere> #link http://docs.evergreen-ils.org/
+2015-04-02T14:10:52  <rsoulliere> #questions any updates on the new doc servers?
+2015-04-02T14:11:31  <yboston> I think the web group met yesterday
+2015-04-02T14:11:49  <yboston> and they mentioned that they have an IP address and that thet need to still create the VM
+2015-04-02T14:12:03  <yboston> kmlussier: where you at the meeting yesterday?
+2015-04-02T14:12:19  <kmlussier> yes
+2015-04-02T14:12:35  <yboston> am I remembering correctly that you know of?
+2015-04-02T14:12:43  <kmlussier> Yes, that's what gmcharlt reported
+2015-04-02T14:13:01  <yboston> kmlussier: thanks
+2015-04-02T14:13:12  <yboston> I can follow up for next time to see what the progress is
+2015-04-02T14:13:26  <yboston> #action yboston will check in on DIG VM
+2015-04-02T14:13:54  <rsoulliere> OK, sounds good. That is all I had for today.
+2015-04-02T14:14:05  <yboston> thanks
+2015-04-02T14:14:16  <yboston> I will move on to past meetign action items
+2015-04-02T14:14:40  <yboston> #topic past meeting action items
+2015-04-02T14:14:47  <yboston> #info 1 ) yboston will reach out to krvmga for another copy of his docs to push to master
+2015-04-02T14:15:00  <yboston> I did not get a chance to do this, will defer for next time
+2015-04-02T14:15:22  <yboston> #info 2 ) kmlussier will complete the marc stream importer work and check on the status of the RDA docs
+2015-04-02T14:15:43  <yboston> kmlussier: any updates ont his?
+2015-04-02T14:15:52  <kmlussier> I need to defer for next time. My plan is to create my own DIG day to work on my to-do list
+2015-04-02T14:16:02  <yboston> OK
+2015-04-02T14:16:28  <yboston> #action kmlussier will complete the marc stream importer work and check on the status of the RDA docs
+2015-04-02T14:17:05  <yboston> the next two items were assigned to remingtron; but I am not sure if he is here?
+2015-04-02T14:17:19  <yboston> will defer them for now
+2015-04-02T14:17:39  <yboston> #action remingtron will send out email to list about cahnging the file suffix in the docs repo to .asciidoc
+2015-04-02T14:17:46  <yboston> #action remingtron will send an email to the list to consider changing the AsciiDoc section header style
+2015-04-02T14:18:07  <yboston> the next item was for the whole group
+2015-04-02T14:18:12  <yboston> #info 5 ) all decide how to proceed with docs reorganization next meeting
+2015-04-02T14:18:22  *** jck_ has joined #evergreen
+2015-04-02T14:18:30  <yboston> this might be a good topic of discussion at the conference
+2015-04-02T14:18:55  <remingtron> #info remingtron is Remington Steed, Hekman Library (Calvin College)
+2015-04-02T14:18:59  <remingtron> (sorry so late)
+2015-04-02T14:19:02  <yboston> hola
+2015-04-02T14:19:40  <remingtron> may I give a quick update on my two action items?
+2015-04-02T14:19:41  <yboston> not sure  if you have read what we have gone over so far
+2015-04-02T14:19:47  <yboston> go right ahead
+2015-04-02T14:21:05  <remingtron> I have not initiated either of those conversations yet. I still plan to do the first, but not the second (header style syntax) since consensus was to allow individual choice, and I have come to agree
+2015-04-02T14:21:18  <yboston> makes sense
+2015-04-02T14:21:59  <remingtron> that's all I wanted to say :)
+2015-04-02T14:22:20  <yboston> not sure how to cancel one for the defered actions with meetbot, but I on't think it is a big deal
+2015-04-02T14:22:25  <yboston> thank remingtron
+2015-04-02T14:23:15  <yboston> so right before remingtron joined us I had just brought up the topic of "5 ) all decide how to proceed with docs reorganization next meeting"
+2015-04-02T14:23:39  <yboston> I had also mentioned this might be a good topic for the upcoming conference
+2015-04-02T14:23:51  <yboston> any comments or questiosn about the re-org goal?
+2015-04-02T14:24:13  <kmlussier> #info remingtron will NOT send email to the list to consider changing AsciiDoc section header because the consensus was to allow individual choice.
+2015-04-02T14:24:17  <kmlussier> For the minutes. :)
+2015-04-02T14:24:35  <remingtron> kmlussier++
+2015-04-02T14:25:42  <yboston> we can also defer the topic of the re-org for next meeting, if that is what we want to do as group today
+2015-04-02T14:25:43  <remingtron> I created a wiki page with some re-org ideas here:
+2015-04-02T14:25:46  <remingtron> #link http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:reorg_2014:audience_focused_layout
+2015-04-02T14:26:24  <kmlussier> It seems like the in-person meeting is a great opportunity to discuss something like a doc reorg.
+2015-04-02T14:26:31  <remingtron> I'd be glad for any input or reactions
+2015-04-02T14:26:32  *** Newziky1 has left #evergreen
+2015-04-02T14:26:52  <remingtron> and FYI, I'm not able to attend the conference this year
+2015-04-02T14:26:57  <yboston> we need to plan to have a laptop to stream the meeting for those that cannot make it
+2015-04-02T14:27:02  <remingtron> so I'll do my best to participate remotely
+2015-04-02T14:27:10  <remingtron> yboston: thanks!
+2015-04-02T14:27:18  <yboston> or a phone on speaker phone
+2015-04-02T14:27:21  <yboston> (de nada)
+2015-04-02T14:27:57  <yboston> remingtron: that links looks pretty good
+2015-04-02T14:28:05  <yboston> *link
+2015-04-02T14:28:22  <remingtron> all are welcome to edit and expand that wiki page
+2015-04-02T14:29:08  <yboston> should we stay ont his topic or move on?
+2015-04-02T14:29:45  <yboston> the other two major topics arae web clients and EG 2.8 new feature docs
+2015-04-02T14:30:04  <remingtron> I'm happy to move on
+2015-04-02T14:30:47  <yboston> good enough for me
+2015-04-02T14:31:12  <yboston> #topic Progress on documenting new features in Evergreen 2.8
+2015-04-02T14:31:23  <yboston> #link http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:2.8_needs
+2015-04-02T14:32:09  <kmlussier> I got about half-way through my assigned topics.
+2015-04-02T14:32:11  <yboston> we still have a few features that need documenting.
+2015-04-02T14:32:24  <yboston> I just realized I signed up for a second feature I need to document
+2015-04-02T14:32:50  <kmlussier> I decided to do a new section regarding all billing OU settings, so it became a bigger project than I originally intended.
+2015-04-02T14:32:59  <yboston> I see
+2015-04-02T14:33:13  <yboston> that is what happens when adding new features :)
+2015-04-02T14:33:30  <kmlussier> I also could document most of the items in the OPAC section, but I didn't want to sign up until I had finished my first two items. :)
+2015-04-02T14:33:52  <yboston> some of those OPAC ones could be really simple, and great for a beguiner
+2015-04-02T14:33:55  <kmlussier> Two of them are mine, so I feel a responsibility to document them.
+2015-04-02T14:34:09  <kmlussier> yboston: Yes, I agree. I was thinking they would be good for a beginner too.
+2015-04-02T14:34:27  <kmlussier> In some cases, it may just require checking to see if a screenshot needs to be replaced.
+2015-04-02T14:35:10  <yboston> worse case scenario, we can use this low hanging fruit to give to newcomers at the conference. Though I am sure we would rather be done with 2.8 beofre the conference
+2015-04-02T14:36:38  <yboston> also, thanks to I think remingtron for sending out reminders aout 2.8 new features ont he list
+2015-04-02T14:37:44  <yboston> #action all finish outstanding EG 2.8 features listed here http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:2.8_needs
+2015-04-02T14:38:06  <yboston> should we switch to talking about web client docs?
+2015-04-02T14:39:00  <remingtron> I have one comment
+2015-04-02T14:39:09  <remingtron> (sorry, not paying close enough attention today!)
+2015-04-02T14:39:25  <yboston> go ahead
+2015-04-02T14:40:25  <remingtron> I realized that any time we don't document a feature on a given version, it's hard to remember to go back and work on those.
+2015-04-02T14:40:34  <rjackson_isl> :q
+2015-04-02T14:41:16  <yboston> remingtron: I agree
+2015-04-02T14:41:18  <remingtron> I'd like to add a section at the bottom of the 2.8 docs needs wiki page called "From older versions" or such, which lists all outstanding docs features needing new docs
+2015-04-02T14:41:22  <remingtron> thoughts?
+2015-04-02T14:42:25  <yboston> I think it would be helpful
+2015-04-02T14:43:01  <kmlussier> sure, why not?
+2015-04-02T14:43:02  <yboston> though some of it would have to be moved over when we do the 2.9 page, though I don't think that is a problem
+2015-04-02T14:43:42  <remingtron> okay, I'll work on that for 2.8 at least
+2015-04-02T14:44:03  <yboston> should I make it an action item?
+2015-04-02T14:44:11  <remingtron> then DIG can use that list at the conference for any outstanding items
+2015-04-02T14:44:13  <remingtron> yboston: sure!
+2015-04-02T14:44:24  <yboston> good idea
+2015-04-02T14:45:37  <yboston> #action remingtron will add information of older outstanding doc needs to the 2.8 new feature doceumentation wiki page
+2015-04-02T14:46:27  <yboston> any more questions/comments on EG 2.8 docs?
+2015-04-02T14:47:08  <yboston> should we talk about the web client docs?
+2015-04-02T14:47:16  <remingtron> sure, onward
+2015-04-02T14:47:44  <yboston> thanks again to remingtron for sending out an email to remind folks to help reivew some web cleint ocs that were submitted
+2015-04-02T14:47:52  <yboston> we should make that an "all" action item
+2015-04-02T14:47:59  <yboston> for next meeting
+2015-04-02T14:48:30  <kmlussier> Yes, I was just thinking of those. You can give that action item to me if you want.
+2015-04-02T14:48:37  <kmlussier> And I promise I will follow through on that one. :)
+2015-04-02T14:48:45  <remingtron> yboston: I'd put a higher priority on 2.8 docs, and suggest we wait on web client docs
+2015-04-02T14:49:09  <yboston> remingtron: that makes sense;
+2015-04-02T14:49:10  *** jck_ has quit IRC
+2015-04-02T14:49:36  <yboston> we will have plenty of web client docs to work on at the conference
+2015-04-02T14:49:46  <remingtron> but if kmlussier wants an action item, I will not stand in her way!
+2015-04-02T14:50:06  <kmlussier> I just want to review the ones we have.
+2015-04-02T14:50:19  <yboston> #action kmlussier will review submitted web client docs to be included in repository
+2015-04-02T14:51:18  <yboston> any other comments or questions on the topic of web client docs or anything else?
+2015-04-02T14:52:14  <remingtron> just the comment I added to the agenda
+2015-04-02T14:52:34  <remingtron> that we no longer need to wait before backporting web client docs to live docs versions
+2015-04-02T14:52:49  <remingtron> since ESI folks have published their remaining bugs on launchpad
+2015-04-02T14:52:55  <kmlussier> We're backporting to 2.8 then?
+2015-04-02T14:53:25  <remingtron> yes, for as much is included in 2.8, and then 2.9 as more comes outs, etc.
+2015-04-02T14:54:23  <remingtron> though some have already been backported to 2.8
+2015-04-02T14:55:43  <yboston> we are talking about doc commits?
+2015-04-02T14:56:00  <remingtron> yes
+2015-04-02T14:56:14  <yboston> but are we keeping the seperate web client docs sections?
+2015-04-02T14:56:22  *** buzzy has quit IRC
+2015-04-02T14:56:38  <remingtron> yes, still a "preview" version of the docs until the web client is more official
+2015-04-02T14:56:49  <yboston> just makign sure
+2015-04-02T14:56:58  <remingtron> yboston: good clarification
+2015-04-02T14:57:06  <yboston> thank you
+2015-04-02T14:57:16  <yboston> we are almost at the hour mark
+2015-04-02T14:57:31  <yboston> any other commetns or questions before we wrap up?
+2015-04-02T14:57:37  <remingtron> not from me
+2015-04-02T14:58:25  <yboston> OK then, then I will wrap up
+2015-04-02T14:58:36  <yboston> thank you everyone for attending
+2015-04-02T14:58:57  <yboston> #endmeeting
+2015-04-02T14:58:57  <pinesol_green> Meeting ended Thu Apr  2 14:58:57 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-04-02T14:58:57  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-02-14.00.html
+2015-04-02T14:58:57  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-02-14.00.txt
+2015-04-02T14:58:57  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-02-14.00.log.html
+2015-04-02T14:59:07  <rsoulliere> yboston++
+2015-04-02T14:59:15  <remingtron> yboston++
+2015-04-02T14:59:48  <kmlussier> yboston++
+2015-04-02T15:00:47  *** TaraC has quit IRC
+2015-04-02T15:16:07  *** ericar has quit IRC
+2015-04-02T15:22:55  *** bmills has quit IRC
+2015-04-02T15:28:53  *** akilsdonk has quit IRC
+2015-04-02T15:28:57  *** bmills has joined #evergreen
+2015-04-02T15:29:11  *** akilsdonk has joined #evergreen
+2015-04-02T15:30:21  *** bmills has quit IRC
+2015-04-02T15:30:28  *** rsoulliere has quit IRC
+2015-04-02T15:35:30  *** chatley_ has quit IRC
+2015-04-02T15:35:35  *** mglass has quit IRC
+2015-04-02T15:40:38  *** bmills has joined #evergreen
+2015-04-02T15:47:42  *** Callender_ has joined #evergreen
+2015-04-02T15:50:49  *** Callender has quit IRC
+2015-04-02T16:09:25  <kmlussier> My favorite part of the Release Notes is adding the acknowledgements. Because that's where you see in one snapshop all of the different people and organizations that go into making a release happen.
+2015-04-02T16:16:06  *** akilsdonk has quit IRC
+2015-04-02T16:16:47  *** Shae has quit IRC
+2015-04-02T16:17:19  <mmorgan> kmlussier++
+2015-04-02T16:29:01  *** graced has quit IRC
+2015-04-02T16:29:34  *** rjackson_isl has quit IRC
+2015-04-02T16:30:24  *** jboyer-isl has quit IRC
+2015-04-02T16:30:41  *** chatley has joined #evergreen
+2015-04-02T16:31:23  *** collum has quit IRC
+2015-04-02T16:38:51  *** maryj has quit IRC
+2015-04-02T16:58:03  <kmlussier> Hmmm..I can push to the working repository, but when I try to make a doc commit directly to master, I get a message saying I cannot read from the remote repository.
+2015-04-02T16:58:26  <yboston> kmlussier++
+2015-04-02T16:59:30  <jeff> kmlussier: if you type "git remote -v" does your (push) url for the remote in question look like git@git.evergreen-ils.org:/Evergreen ?
+2015-04-02T16:59:55  <kmlussier> Nope
+2015-04-02T17:00:08  <kmlussier> git://git.evergreen-ils.org/Evergreen.git
+2015-04-02T17:00:26  <kmlussier> Is it possible this is my first doc commit since moving to my new laptop in December? I've been negligent.
+2015-04-02T17:00:44  <kmlussier> OK, let me try to figure this out on my own then. I think I can do it.
+2015-04-02T17:00:51  <kmlussier> I WILL master git, even if it kills me.
+2015-04-02T17:01:26  <jeff> if your remote is called "origin", and assuming things are proper on the server side of things already, you can try this: git remote set-url --push origin git@git.evergreen-ils.org:/Evergreen
+2015-04-02T17:02:36  <kmlussier> jeff++
+2015-04-02T17:02:40  <jeff> worked? :-)
+2015-04-02T17:02:53  <kmlussier> It sure did
+2015-04-02T17:04:26  <kmlussier> Isn't there a quote in the database related to git killing people?
+2015-04-02T17:04:26  *** jlundgren has quit IRC
+2015-04-02T17:05:07  <pinesol_green> [evergreen|Kathy Lussier] Release Note Acknowledgements - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=0c7df68>
+2015-04-02T17:05:54  <jeff> kmlussier: at least two
+2015-04-02T17:05:56  <jeff> @quote get 1
+2015-04-02T17:05:56  <pinesol_green> jeff: Quote #1: "<senator> much as a cancer would develop from chewing on uranium rocks ... but the tooth decay is lovely!" (added by gmcharlt at 11:22 AM, February 17, 2011)
+2015-04-02T17:05:58  <jeff> @quote get 24
+2015-04-02T17:05:58  <pinesol_green> jeff: Quote #24: "<denials> when git doesn't kill you, it makes you smarter" (added by gmcharlt at 03:58 PM, May 03, 2012)
+2015-04-02T17:06:37  * gmcharlt is a little concerned that jeff just happens to have to numbers handy
+2015-04-02T17:06:53  *** yboston has quit IRC
+2015-04-02T17:07:16  <jeff> gmcharlt: i did my searches via privmsg to avoid cluttering up the channel :-)
+2015-04-02T17:08:13  <gmcharlt> *whew*
+2015-04-02T17:08:21  * mmorgan thought jeff must have had them all somewhere in jasperreports ;-)
+2015-04-02T17:08:48  * kmlussier thinks jeff really did know them off the top of his head, but doesn't want to admit it. :)
+2015-04-02T17:09:31  <jeff> the missing context from quote 1 is: <senator> my own understanding of the rebase question, the significance of fast-forwards and the consequences of squashing was stunted until it arose organically through habitual git use
+2015-04-02T17:09:50  <kmlussier> jeff: Thank you for that. I was just looking for it, but I couldn't remember how to get to the old logs.
+2015-04-02T17:10:14  <jeff> http://evergreen-ils.org/irc_logs/evergreen/2011-02/%23evergreen.17-Thu-2011.log
+2015-04-02T17:11:47  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-02T17:11:58  <kmlussier> @quote get 2
+2015-04-02T17:11:58  <pinesol_green> kmlussier: Quote #2: "<tsbere> We need more quotes" (added by berick at 11:24 AM, February 17, 2011)
+2015-04-02T17:13:29  <berick> knowing is half the battle
+2015-04-02T17:13:34  <berick> the easy half
+2015-04-02T17:18:39  *** mmorgan has left #evergreen
+2015-04-02T17:20:34  *** akilsdonk has joined #evergreen
+2015-04-02T17:20:58  *** sarabee has quit IRC
+2015-04-02T17:22:31  <gmcharlt> kmlussier++ # TODO's contributions will have to wait another year... ;)
+2015-04-02T17:27:25  *** mrpeters has quit IRC
+2015-04-02T17:28:25  <kmlussier> That's okay. TODO's contributions were completely overrated anyway.
+2015-04-02T17:32:11  *** akilsdonk has quit IRC
+2015-04-02T17:34:14  *** wjr has quit IRC
+2015-04-02T17:35:06  *** chatley_ has joined #evergreen
+2015-04-02T17:36:24  *** kmlussier_ has joined #evergreen
+2015-04-02T17:37:38  *** chatley has quit IRC
+2015-04-02T17:38:48  *** bshum has quit IRC
+2015-04-02T17:38:48  *** mceraso has quit IRC
+2015-04-02T17:38:48  *** kmlussier has quit IRC
+2015-04-02T17:38:50  *** mtate has quit IRC
+2015-04-02T17:38:50  *** mtate has joined #evergreen
+2015-04-02T17:39:11  *** bshum has joined #evergreen
+2015-04-02T17:39:13  *** mceraso has joined #evergreen
+2015-04-02T17:39:40  *** mllewellyn has quit IRC
+2015-04-02T17:52:51  *** darshana has quit IRC
+2015-04-02T19:01:17  *** kmlussier_ is now known as kmlussier
+2015-04-02T19:38:25  * kmlussier must have had a momentary lapse of memory and thought that berick still worked for ESI
+2015-04-02T19:41:42  <pinesol_green> [evergreen|Kathy Lussier] Release Notes acknowledgements addition - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=984dfe9>
+2015-04-02T19:48:27  * eeevil taps desk waiting for pg repo to clone ...
+2015-04-02T20:02:25  *** jwoodard has quit IRC
+2015-04-02T20:27:35  *** jihpringle has quit IRC
+2015-04-02T20:57:47  *** chatley_ has quit IRC
+2015-04-02T20:58:30  *** chatley has joined #evergreen
+2015-04-02T21:01:42  *** sandbergja has quit IRC

@@ -1,0 +1,645 @@
+2015-04-16T00:47:55  *** dbwells has quit IRC
+2015-04-16T00:52:23  *** dbwells has joined #evergreen
+2015-04-16T07:30:11  *** graced has joined #evergreen
+2015-04-16T07:45:39  *** mrpeters has joined #evergreen
+2015-04-16T08:25:25  *** Newziky has joined #evergreen
+2015-04-16T08:29:36  *** collum has joined #evergreen
+2015-04-16T08:37:25  *** Dyrcona has joined #evergreen
+2015-04-16T09:00:23  *** jwoodard has joined #evergreen
+2015-04-16T09:08:37  *** jwoodard has quit IRC
+2015-04-16T09:11:14  *** krvmga has joined #evergreen
+2015-04-16T09:19:22  *** Stompro has joined #evergreen
+2015-04-16T09:22:09  *** Newziky has quit IRC
+2015-04-16T09:24:03  <Stompro> Good morning all, can anyone point me to documentation on setting up a multi brick install?  Or answer some general questions about it?  Does each brick run everything that a stand alone system runs except for the DB?  So each brick runs ejabberd stand alone so to speak?
+2015-04-16T09:24:23  <csharp> Stompro: correct
+2015-04-16T09:24:24  *** mmorgan has joined #evergreen
+2015-04-16T09:25:13  <tsbere> I will note that the ejabberd instances need to be able to communicate with one another if you are load balancing between bricks.
+2015-04-16T09:25:46  <csharp> Stompro: a "brick" originally was a "head" which runs apache and 2 "drones" that ran OpenSRF. In our case they were connected by putting /openils on an NFS share shared between the three servers
+2015-04-16T09:26:08  <tsbere> Stompro / csharp: Also, don't you need a common memcache normally?
+2015-04-16T09:26:18  <Stompro> So each brick can be setup with the private opensrf domains like step 7 in the instructions?  http://tinyurl.com/k5twkbp
+2015-04-16T09:26:32  <Stompro> Err, that would be a no.
+2015-04-16T09:26:57  <csharp> tsbere: yep - in our case, we have two non-redundant memcache servers
+2015-04-16T09:27:34  <tsbere> Stompro: I think you will want thinks like private.brick1/public.brick1, private.brick2/public.brick2, etc so they can be set up to communicate with one another.
+2015-04-16T09:28:28  <csharp> Stompro: it's been several years since I actually set up a head + drones brick - we've been running on single-server "bricks" (though technically that's now a misnomer)
+2015-04-16T09:28:58  <csharp> i.e., if it's one server, it's no longer a "brick" ;-)
+2015-04-16T09:29:33  <tsbere> Stompro: I suppose each brick needs potential access to shared storage for things like reporter output, uploading offline circs, etc. I have never set up a "multi-brick" setup so I am not 100% sure what is needed there.
+2015-04-16T09:29:48  <tsbere> csharp: Why can't a single server be a "brick"?
+2015-04-16T09:30:11  <csharp> fwiw, GenaSYS (the cluster build system we use at GPLS/PINES) does the head + drone setup automatically: http://git.evergreen-ils.org/?p=contrib/pines/genasys.git;a=summary
+2015-04-16T09:30:38  <Dyrcona> Well, if you think about, a single server would be a brick, if you look at "brick" as an atomic unit of build materials.
+2015-04-16T09:30:58  <Dyrcona> A cluster of bricks would be well, bricks.
+2015-04-16T09:30:59  <csharp> tsbere: it can be, but I know the term "brick" was originally used to refer to multiple servers acting as a single entity
+2015-04-16T09:31:19  <Dyrcona> But maybe that's just from doing masonry and carpentry work as a teanager/young adult.
+2015-04-16T09:32:15  <csharp> I'm not sure the term "brick" would have been used if each what-is-now-known-as-"brick" had been a single server
+2015-04-16T09:32:39  <Dyrcona> Well, just don't brick your bricks. :)
+2015-04-16T09:32:48  <csharp> that's all academic though - we still name our servers "brick01-head", etc.
+2015-04-16T09:33:05  <Dyrcona> Or bh1 and bh2 as I've seen at one site.
+2015-04-16T09:34:50  <Dyrcona> S'pose you could consider 1 physical server a "brick" if you're running all the pieces on vms on that server....
+2015-04-16T09:34:54  <Dyrcona> Meh. Words.
+2015-04-16T09:35:11  <csharp> right ;-)
+2015-04-16T09:37:12  <Dyrcona> Speaking of building VMs.... I'm going to build two today to test csharp's changes for Safe.pm.
+2015-04-16T09:37:28  <csharp> it's also worth considering that virtual machines have become dominant enough that it's worth reconsidering cluster architecture
+2015-04-16T09:37:38  *** yboston has joined #evergreen
+2015-04-16T09:37:43  <Stompro> Thanks for the info all.
+2015-04-16T09:38:07  <Dyrcona> Yeah, we're buying 5 machines next week and we're considering a couple of different configurations.
+2015-04-16T09:38:11  <csharp> awitter has been experimenting with glusterfs as a way to share a single /openils across a row of app servers
+2015-04-16T09:39:10  <csharp> but we don't have anything like that beyond a bare prototyping phase
+2015-04-16T09:40:40  <Dyrcona> We were looking at running a master ejabberd with slaves (not sure that
+2015-04-16T09:40:47  <Dyrcona> 's the term they use).
+2015-04-16T09:42:48  <eeevil> so, as the guy what coined the term "brick" WRT evergreen and pines I can say that, originally, it meant "a unit of Evergreen that is self contained and can be a load balancing member" ;) ... but, definitions change, of course
+2015-04-16T09:44:58  <eeevil> the reason for head+drone was that, when CPUs were slower and RAM was smaller, it was a GoodThing(tm) to separate apache from opensrf, as they have,  um, competing and non-complementary resource profiles
+2015-04-16T09:45:40  <csharp> eeevil++
+2015-04-16T09:48:16  <eeevil> (and, IMO, it's still a GoodThing(tm) to separate applications with competing resource profiles onto separate servers/VMs/containers/whatever ... but that's not special to evergreen, it's just ye ol' proper resource allocation)
+2015-04-16T09:50:14  <mmorgan> Quick web client question anyone? Do I need to be registered to a workstation to login?
+2015-04-16T09:50:25  <mmorgan> Have a meeting in 10 minutes
+2015-04-16T09:50:36  * csharp was able to log into webby without first setting up a workstation
+2015-04-16T09:51:27  <mmorgan> Screen is just refreshing at the login page. Maybe I'm doing something wrong.
+2015-04-16T09:51:30  <kmlussier> mmorgan: You can log in without a workstation, but last I saw there were some bugs that appeared if you did not register a workstation.
+2015-04-16T09:51:38  <kmlussier> mmorgan: What browser are you in?
+2015-04-16T09:51:49  <mmorgan> Tried FF and Chrome
+2015-04-16T09:52:15  * kmlussier wishes there was a way to require workstation registration in the web client.
+2015-04-16T09:53:01  * mmorgan does too, but right now, I'd love to login. Different computer that hasn't logged into it before.
+2015-04-16T09:53:07  * csharp thinks it should use a similar mechanism to the selfcheck, which prompts you to register one when you first log in
+2015-04-16T09:53:44  <kmlussier> mmorgan: Sorry! I don't have an answer. :(
+2015-04-16T09:53:51  <csharp> https://<yourhostnamehere>/eg/circ/selfcheck/main
+2015-04-16T09:53:59  <kmlussier> And I guess you can't register the workstation if you can't log in.
+2015-04-16T09:54:10  * kmlussier doesn't like that bit either.
+2015-04-16T09:54:37  <Dyrcona> Well, that's the same as the current staff client.
+2015-04-16T09:54:55  <Dyrcona> Your workstation is registered "locally" and in the database.
+2015-04-16T09:54:56  <csharp> mmorgan: I was able to log into webby last Thursday without a problem, but I've seen the same issue you're seeing too
+2015-04-16T09:55:11  *** RoganH has joined #evergreen
+2015-04-16T09:55:19  <Dyrcona> Can't register it in the database if you can't login.
+2015-04-16T09:55:29  * csharp makes the excuse to his demo-ees that the server is "constantly under development"
+2015-04-16T09:55:45  <mmorgan> Oh! https!! Working now!
+2015-04-16T09:55:49  <mmorgan> Thanks all
+2015-04-16T09:55:55  * mmorgan runs off to meeting.
+2015-04-16T09:56:28  <kmlussier> Ah, https. That one gets us all the time.
+2015-04-16T09:57:58  <kmlussier> Dyrcona: I should restate that. It isn't so much that you have to log in. It's that there isn't a quick option to register the workstation right from the login screen.
+2015-04-16T09:58:26  <kmlussier> It just adds a few steps to the workstation registration process. Especially in those places where the login that registers the workstation isn't the same login that will be using the workstation.
+2015-04-16T09:58:40  *** RoganH has quit IRC
+2015-04-16T09:58:54  <Dyrcona> Well, the current staff client gives you the illusion that it is done in one step, but it really isn't.
+2015-04-16T09:59:13  <Dyrcona> Anyway, I get what you're saying, and it might be nice to have it right there.
+2015-04-16T10:01:21  <eeevil> mmorgan: you don't need one to log in, but you need one for it to work correctly (sorry, just saw this)
+2015-04-16T10:01:34  <eeevil> kmlussier: I'll be making it really required soon
+2015-04-16T10:01:47  <kmlussier> eeevil++
+2015-04-16T10:02:04  <kmlussier> eeevil: You don't know how happy that makes me. :)
+2015-04-16T10:02:48  <eeevil> kmlussier: that's good because,  as you know, that's my primary motivator ;)
+2015-04-16T10:03:33  <kmlussier> eeevil: As it should be. ;)
+2015-04-16T10:10:18  *** krvmga has quit IRC
+2015-04-16T10:25:07  *** Newziky has joined #evergreen
+2015-04-16T11:05:51  <yboston> bshum: got a moment?
+2015-04-16T11:06:14  <bshum> yboston: What's up?
+2015-04-16T11:07:35  <yboston> Good morining. In a month ESI is upgrading me to 2.7, is there plans for a new point release for 2.7 anytime soon?
+2015-04-16T11:07:39  <yboston> I ask because I was going to build a new EG 2.74 VM to upgrade my custom  TPAC templates
+2015-04-16T11:08:36  <bshum> yboston: Well, in theory, the maintenance releases were scheduled for what, yesterday I think
+2015-04-16T11:08:48  <bshum> But I'll admit, I was on a plane and indisposed to cutting anything.
+2015-04-16T11:08:59  <bshum> I'm still kind of away at the moment.
+2015-04-16T11:09:19  <yboston> OK, I can wait a ouple of days if a new version should come out soonish
+2015-04-16T11:09:27  <Dyrcona> "Kind of away?"
+2015-04-16T11:09:33  <bshum> My recommendation is to build your changes on rel_2_7
+2015-04-16T11:09:44  <yboston> makes sense
+2015-04-16T11:09:51  <bshum> And store the changes as git commits
+2015-04-16T11:09:57  <bshum> So that you can quickly rebase them as necessary
+2015-04-16T11:10:03  <Dyrcona> bshum: What time is it in Hong Kong?
+2015-04-16T11:10:18  <yboston> what year is it?
+2015-04-16T11:10:19  <bshum> And copy/move the commits from rel_2_7 to whatever future based branches you need.
+2015-04-16T11:10:28  <bshum> It's still 2015 over here.
+2015-04-16T11:10:33  <bshum> Anyways...
+2015-04-16T11:10:39  <bshum> It's a twelve hour time difference.
+2015-04-16T11:10:48  <bshum> So it's 11:10 pm, Thursday April 16.
+2015-04-16T11:11:33  * kmlussier wonders if an Evergreen release has ever been cut from Hong Kong before.
+2015-04-16T11:11:45  <bshum> I'm in your future.
+2015-04-16T11:11:53  <yboston> bshum: thanks for the suggestions
+2015-04-16T11:12:56  <Dyrcona> bshum: yeah, let me know the winning lottery numbers, will ya? :)
+2015-04-16T11:13:53  <csharp> @quote search future
+2015-04-16T11:13:53  <pinesol_green> csharp: 1 found: #44: "<bshum> Hmm, maybe it's just me, but your..."
+2015-04-16T11:13:56  * bshum cracks open a fortune cookie, "Do not mistake temptation for opportunity"
+2015-04-16T11:14:02  <csharp> @quote get 44
+2015-04-16T11:14:02  <pinesol_green> csharp: Quote #44: "<bshum> Hmm, maybe it's just me, but your commits seem to be coming from my future." (added by csharp at 06:54 PM, February 20, 2013)
+2015-04-16T11:14:13  <bshum> Hahaha, love that quote :)
+2015-04-16T11:14:33  <collum> @weather hkg
+2015-04-16T11:14:34  <pinesol_green> collum: The current temperature in Hong Kong Inter-National Airport, Hong Kong is 71.6°F (11:00 PM HKT on April 16, 2015). Conditions: Scattered Clouds. Humidity: 65%. Dew Point: 62.6°F. Pressure: 29.94 in 1014 hPa (Rising). 
+2015-04-16T11:15:32  <collum> Just wondering about the temperature.
+2015-04-16T11:15:41  <bshum> It is warm.
+2015-04-16T11:18:01  <bshum> kmlussier: I don't think I've ever cut a release while overseas.  But I know I've pushed git commits before.
+2015-04-16T11:26:14  <csharp> game idea: find the commits bshum pushed from overseas... GO!
+2015-04-16T11:26:58  <Dyrcona> bshum has an advantage on that one. :)
+2015-04-16T11:27:23  <kmlussier> bshum isn't allowed to play
+2015-04-16T11:27:25  <Dyrcona> csharp: Your changes for Safe.pm work for me on Ubuntu 12.04 and 14.04. Events still seem to work.
+2015-04-16T11:27:36  <csharp> Dyrcona++ # awesome
+2015-04-16T11:27:59  <Dyrcona> Do you think someone else should look at the branch on Debian and/or Fedora before it is pushed to master?
+2015-04-16T11:28:36  <csharp> I would love to hear from someone running Debian wheezy
+2015-04-16T11:28:54  <csharp> I think we can assume jessie's all good if 14.04 works
+2015-04-16T11:29:23  <Dyrcona> Ok. I'll comment on the bug to that effect.
+2015-04-16T11:32:26  <Dyrcona> csharp++
+2015-04-16T11:34:48  <bshum> yboston: On a more practical note, I was thinking to cut 2.7.5 later next week; give folks some time to test and push on more bug fixes.
+2015-04-16T11:35:32  <bshum> Personally, I'm poking at more stuff for 2.8.1 though. Now that Bibliomation is on 2.8 and all.
+2015-04-16T11:35:45  <bshum> And eating food.
+2015-04-16T11:36:36  <bshum> I mean literally, every time I'm in Hong Kong, it's "hey long time no see" and "you hungry? Eat this..."
+2015-04-16T11:36:36  <kmlussier> bshum: You
+2015-04-16T11:36:48  <kmlussier> bshum: You're eating food at 11:30 PM?
+2015-04-16T11:37:06  <bshum> No, I just got back from eating "dinner"
+2015-04-16T11:37:32  <bshum> Though I'm sure there's snacks or something somewhere just waiting for me.
+2015-04-16T11:38:14  <Dyrcona> That's family...
+2015-04-16T11:47:45  *** dbwells has quit IRC
+2015-04-16T11:48:35  <kmlussier> Bmagic: Just a thought on your two Long Overdue bugs. bug 1440148 looks like a bug fix, meaning it could potentially be in a release soon.
+2015-04-16T11:48:35  <pinesol_green> Launchpad bug 1440148 in Evergreen "Long overdue Items out TPAC OPAC display My Account" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1440148
+2015-04-16T11:49:13  <kmlussier> And bug 1331174 looks like a new feature and won't be in a release until September at the earliest.
+2015-04-16T11:49:13  <pinesol_green> Launchpad bug 1331174 in Evergreen "Long Overdue processing needs org unit settings separate from Lost Processing" (affected: 3, heat: 14) [Wishlist,Confirmed] https://launchpad.net/bugs/1331174
+2015-04-16T11:49:27  <kmlussier> So I would think we would want to sign off on the code in the first bug and get it into master.
+2015-04-16T11:49:55  <Bmagic> kmlussier: sounds like a plan to me
+2015-04-16T11:49:55  <kmlussier> And then the code from the second bug would then build off of that code.
+2015-04-16T11:50:31  <kmlussier> Bmagic: I can take a look at the first one somtime if nobody else gets to it. But I'm a bit low on tuits this week.
+2015-04-16T11:50:38  <Bmagic> The new feature, you mean, would need to be rebased on those bug fixes after they are commited?
+2015-04-16T11:52:10  <kmlussier> Bmagic: Yeah, I guess that's what I mean. I just wasn't sure if that last comment meant you were incorporating the bug fix into that branch.
+2015-04-16T11:52:56  <Dyrcona> yeah, I'm not sure what that last comment means.
+2015-04-16T11:52:57  * kmlussier needs to disappear for lunch.
+2015-04-16T11:53:05  <Dyrcona> I took it to mean they were incompatible.
+2015-04-16T11:53:35  <Bmagic> You can use one or the other, but not both. So if the bug fix is commited, then the code for the new feature would need to reverse that commit with it's commit. If that makes sense?
+2015-04-16T11:54:22  *** dbwells has joined #evergreen
+2015-04-16T11:54:29  <Bmagic> If you look at the code change for the bug 1440148 - it's very very tiny
+2015-04-16T11:54:29  <pinesol_green> Launchpad bug 1440148 in Evergreen "Long overdue Items out TPAC OPAC display My Account" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1440148
+2015-04-16T11:55:05  <Bmagic> So, it's not a major deal. I just noticed that long_overdue needed to be included on that line when using the new feature code
+2015-04-16T12:02:12  <jonadab> Rebasing on that commit will give you a chance to resolve that conflict in favor of reverting the unwanted change or whatever, then git rebase --continue and Robert becomes avuncular.
+2015-04-16T12:07:20  <jeffdavis> The fix for bug 1074096 was missing a piece. I have a working branch with the missing bit.
+2015-04-16T12:07:20  <pinesol_green> Launchpad bug 1074096 in Evergreen "Advanced Search by Bib Call Number Returns 0 Results" (affected: 3, heat: 18) [Low,Fix released] https://launchpad.net/bugs/1074096
+2015-04-16T12:08:05  <jeffdavis> The bug is marked Fix Released. I'm thinking I should change that to Triaged and retarget it at the 2.8.1 milestone, would that be the best approach in this situation?
+2015-04-16T12:10:16  <bshum> jonadab: "Robert becomes avuncular"... Hmm, "Bob's your uncle"?
+2015-04-16T12:10:27  * bshum wonders the origin of that saying now. 
+2015-04-16T12:11:06  <bshum> jeffdavis: That's one way. Another is to file a new bug to complete it and reference the original.
+2015-04-16T12:11:09  <dbs> Robert may become avuncular, but will Dojo become Angular?
+2015-04-16T12:11:13  <Dyrcona> Avuncular often has a slightly negative connotation, as if to imply patronizing tone.
+2015-04-16T12:11:37  <bshum> dbs: That goes in the quote library :)
+2015-04-16T12:12:34  <csharp> @quote add < dbs> Robert may become avuncular, but will Dojo become Angular?
+2015-04-16T12:12:34  <pinesol_green> csharp: The operation succeeded.  Quote #113 added.
+2015-04-16T12:12:50  <csharp> @who is the quote librarian?
+2015-04-16T12:12:50  <pinesol_green> phasefx_ is the quote librarian.
+2015-04-16T12:13:03  <jeffdavis> bshum: ok, thank you. Since I've already added a comment in the original bug I won't bother creating a new one this time. :)
+2015-04-16T12:14:20  <Dyrcona> @who becomes Electra
+2015-04-16T12:14:20  <pinesol_green> chatley becomes Electra.
+2015-04-16T12:15:34  *** akilsdonk has joined #evergreen
+2015-04-16T12:20:08  <dbs> @fight Electra Elektra
+2015-04-16T12:20:08  <pinesol_green> dbs: http://cat.evergreen-ils.org.meowbify.com/
+2015-04-16T12:22:55  * bshum wanders away
+2015-04-16T12:24:20  * phasefx thinks that's an improvement
+2015-04-16T12:24:44  <Dyrcona> dbs: http://www.googlefight.com/index.php?word1=electra&word2=elektra
+2015-04-16T12:25:19  <Dyrcona> S'pose we could a googlefight plugin to pinesol_green.
+2015-04-16T12:26:13  <dbs> yeah, just steal it from zoia
+2015-04-16T12:26:42  <dbs> (no flash in my browser, as if googlefight.com _needs_ flash. geez)
+2015-04-16T12:40:18  *** mglass has quit IRC
+2015-04-16T12:44:06  *** jihpringle has joined #evergreen
+2015-04-16T12:50:21  <kmlussier> jeffdavis++
+2015-04-16T12:52:29  *** maryj has joined #evergreen
+2015-04-16T13:11:05  <jeff> read that as "google flight", and remembered that i didn't consult google's flight search for conference travel
+2015-04-16T13:13:52  <dbs> phasefx: you permanently deleted the old "acqfest" google doc? Oh no, one part of our history is forever gone!
+2015-04-16T13:15:26  <phasefx> dbs: lemme look
+2015-04-16T13:15:43  *** Newziky has quit IRC
+2015-04-16T13:15:53  *** montgoc1 has joined #evergreen
+2015-04-16T13:18:30  <phasefx> dbs: what's the link/reference?  I don't recall deleting anything.  I see a acqfest.docx last modified in February, doesn't look to be shared (and it's not a gdoc)
+2015-04-16T13:21:45  <dbs> phasefx: it's just in my Drive "recent changes" feed
+2015-04-16T13:22:23  <phasefx> interesting.  Can you tell if it's my personal account or esi?
+2015-04-16T13:23:22  <dbs> http://i.imgur.com/6w5gRQ3.png
+2015-04-16T13:23:44  <dbs> no, nothing's clickable in the notification
+2015-04-16T13:25:21  <phasefx> looks like the image from my personal phasefx account.. nothing in my google drive trash :(
+2015-04-16T13:25:49  <dbs> Yeah, it would have been in the Drive trash bin for 10 or 30 days or whatever before being completely purged
+2015-04-16T13:25:57  * phasefx had been aggressively reorganizing that drive :(  sorry
+2015-04-16T13:26:24  <phasefx> work related, I've kept QA talk and receipt talk on there
+2015-04-16T13:27:06  <dbs> no real worries here, fwiw; it's just one of the first times I've seen a "permanently deleted" notification :)
+2015-04-16T13:27:19  * kmlussier has things in her Google drive trash from 2010
+2015-04-16T13:30:58  <kmlussier> Heh, the date on the oldest file is the day I started at MassLNC.
+2015-04-16T13:31:05  <phasefx> dbs: I think docx is it, I'll share it.  I didn't really delete stuff, just move things from my personal account to my work account, except for what I thought was publically out there like qa and receipts
+2015-04-16T13:32:00  * phasefx tries converting it back to a gdoc first
+2015-04-16T13:32:37  <phasefx> so for the IRC logs, acqfest.docx: https://docs.google.com/a/esilibrary.com/document/d/1VHLPKQtFiwEyo53Fq3G8jtfn7XFB1f2rzvzbvuruqAI/edit?usp=sharing
+2015-04-16T13:33:13  <phasefx> has a cool picture of Dan; the real reason he brought it up :)
+2015-04-16T13:33:47  * kmlussier clicks the Request Access button
+2015-04-16T13:33:51  <csharp> phasefx: looks like it's locked down (at least I'm getting a "You need permission" page)
+2015-04-16T13:34:05  <phasefx> gah
+2015-04-16T13:34:29  <phasefx> so for the IRC logs, acqfest.docx: https://docs.google.com/document/d/1VHLPKQtFiwEyo53Fq3G8jtfn7XFB1f2rzvzbvuruqAI/edit?usp=sharing  ;)
+2015-04-16T13:34:44  <csharp> phasefx++
+2015-04-16T13:36:43  <kmlussier> phasefx++
+2015-04-16T13:36:50  <kmlussier> Nice pictures
+2015-04-16T13:37:04  <phasefx> with the idea of lots of copies keep things safe, we may want to throw up a digitial repository on evergreen-ils.org :)
+2015-04-16T13:37:17  * csharp made a personal copy too
+2015-04-16T13:37:47  <csharp> bein' all GPLS-history-oriented 'n stuff
+2015-04-16T13:38:27  *** abneiman has joined #evergreen
+2015-04-16T13:41:04  <phasefx> I know what it was, I emptied my trash earlier this month.  So moved stuff over, and then deleted.  Had someone pulled up the document while it was in the trash, it would have warned that it was about to be permanently lost
+2015-04-16T13:46:28  *** jihpringle has quit IRC
+2015-04-16T13:47:51  <csharp> we may even have a copy of that on our PINES file share, come to think of it
+2015-04-16T13:48:40  *** collum has quit IRC
+2015-04-16T13:50:28  *** bbqben has joined #evergreen
+2015-04-16T13:55:58  <dbs> csharp: the original would have been the google doc version, so unfortunately all of the revision history is gone
+2015-04-16T13:56:04  <csharp> ah
+2015-04-16T13:56:38  <csharp> my cursory search of our file share didn't find it anyway
+2015-04-16T13:56:43  *** buzzy has joined #evergreen
+2015-04-16T13:58:40  *** krvmga has joined #evergreen
+2015-04-16T13:59:23  <krvmga> eeevil: we're upgrading to 2.7 over the weekend and we're really worried about the slowness of the All Books search.
+2015-04-16T13:59:34  <krvmga> if we have to, can we disable that format limiter?
+2015-04-16T13:59:54  <csharp> krvmga: you've seen bug 1438136, yes?
+2015-04-16T13:59:54  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438136
+2015-04-16T14:00:03  <krvmga> csharp: yes, exactly
+2015-04-16T14:00:10  <krvmga> i checked, though, and we have the index
+2015-04-16T14:00:37  <csharp> krvmga: there's a branch eeevil put up (that I haven't yet tested) that should help
+2015-04-16T14:01:00  <bbqben> Hi all - EOB meeting starting here in two shakes
+2015-04-16T14:01:02  <kmlussier> krvmga: Is it just the All Books limiter or others as well?
+2015-04-16T14:01:12  <krvmga> gmcharlt: are you aware of this for our upgrade?
+2015-04-16T14:01:13  * kmlussier quickly finishes her CoC report for the EOB.
+2015-04-16T14:01:16  <csharp> kmlussier: in our case ALL THE LIMITERS
+2015-04-16T14:01:42  <krvmga> kmlussier: everything else seems to be functioning nominally
+2015-04-16T14:02:05  <gmcharlt> krvmga: in a word, yes
+2015-04-16T14:02:06  <krvmga> csharp: that probably speaks to your indexing issue then maybe
+2015-04-16T14:02:10  <eeevil> krvmga: I don't recall OTTOMH if you can hide just one CRM entry
+2015-04-16T14:02:18  <bbqben> ok, here we go
+2015-04-16T14:02:35  <bbqben> #startmeeting Evergreen Oversight Board Meeting, 16.04.15
+2015-04-16T14:02:35  <pinesol_green> Meeting started Thu Apr 16 14:02:35 2015 US/Eastern.  The chair is bbqben. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-04-16T14:02:35  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-04-16T14:02:35  <pinesol_green> The meeting name has been set to 'evergreen_oversight_board_meeting__16_04_15'
+2015-04-16T14:02:50  <bbqben> #topic introductions
+2015-04-16T14:02:51  <bbqben> EOB members, please introduce yourself with #info
+2015-04-16T14:03:02  <csharp> #info csharp is Chris Sharp, GPLS
+2015-04-16T14:03:13  <graced> #info graced is Grace Dunbar, Equinox
+2015-04-16T14:03:14  <montgoc1> #info montgoc1 is Chauncey Montgomery, Consortium of Ohio Libraries
+2015-04-16T14:03:16  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-04-16T14:03:17  <bbqben> #info bbqben is Ben Hyman, BC Libraries Co-op
+2015-04-16T14:03:25  <abneiman> #info abneiman is Andrea Buntz Neiman, Kent County Public Library
+2015-04-16T14:04:29  <bbqben> bshum sends regrets from vacationland. Others may straggle in. Quorum achieved
+2015-04-16T14:04:41  <bbqben> #topic Minutes/Actions from last meeting
+2015-04-16T14:04:55  <bbqben> #info http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-19-14.01.html
+2015-04-16T14:05:27  <bbqben> right then, moving on...
+2015-04-16T14:05:37  <bbqben> #topic EG2015 Conference Report
+2015-04-16T14:06:04  <buzzy> greetings from the oregon library association conference! we're in crunch time for conference planning. hopefully you all received the budget earlier today
+2015-04-16T14:06:12  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-April/001002.html
+2015-04-16T14:06:34  <bbqben> Hi buzzy - thx for joining us
+2015-04-16T14:06:40  <buzzy> attendance is low, unfortunately. 112 people. nonetheless, we're hoping for a great conference.
+2015-04-16T14:06:41  <buzzy> hi!
+2015-04-16T14:07:06  <buzzy> we're getting last minute sponsors in. we got two gold-level sponsorships in the last week, actually
+2015-04-16T14:07:16  <buzzy> and i'm hitting up vendors while i'm at ola
+2015-04-16T14:07:38  <buzzy> we're working on the logistics and program now, the nitty gritty details
+2015-04-16T14:08:27  <kmlussier> buzzy: I have a question about the budget you sent out earlier.
+2015-04-16T14:08:38  <buzzy> i did want to ask you guys when you'd like to have your eob meeting. we've got some rooms set aside, but if there's a particular day/time that you have the conference meeting, i'll make sure that we set it aside for you.
+2015-04-16T14:08:39  <buzzy> shoot
+2015-04-16T14:08:49  <kmlussier> The food totals there, do they reflect the food & beverage minimum?
+2015-04-16T14:09:11  <bbqben> buzzy, we set to meet 14.05.15 @ 1900 Pacific
+2015-04-16T14:09:32  <bbqben> great if we can find a space with a phone line JIC folks need to dial in
+2015-04-16T14:09:49  <buzzy> no, those are the numbers that we have based on attendance. because attendance is lower than budgeted, we'll be discussing the issue with the venue.
+2015-04-16T14:09:56  <buzzy> i
+2015-04-16T14:10:05  <buzzy> i'll check on that, bbqben
+2015-04-16T14:10:28  <kmlussier> Given that we're so close to conference time, I would like to see a worst-case scenario budget. Basically, if the venue doesn't budge on the minimum, how bad does it look?
+2015-04-16T14:10:42  <buzzy> hold please
+2015-04-16T14:10:50  <buzzy> assuming no further sponsorships?
+2015-04-16T14:11:03  <kmlussier> Also, it appears as if the budget doesn't account for all of the signed sponsorship agreements we have.
+2015-04-16T14:11:33  <kmlussier> buzzy: Yes, assuming no further sponsorships. I don't think we need to see it now if you don't have it ready, but I think it would be good to see all the numbers as they stand now.
+2015-04-16T14:12:03  <buzzy> okay. to which sponsorships are you referring?
+2015-04-16T14:12:27  <buzzy> i was somewhat rushed this morning, given the conference, so i likely missed something. i apologize
+2015-04-16T14:12:42  <yboston> #info yboston is Yamil Suarez - Berklee Colege of Music
+2015-04-16T14:13:12  <kmlussier> It looks like you just have one $4,000 Platinum sponsorship there. But I could be reading it wrong.
+2015-04-16T14:13:20  <buzzy> i will try to send out a worst case scenario budget by monday, if that's all right.
+2015-04-16T14:13:55  <kmlussier> sure
+2015-04-16T14:14:33  <bbqben> any other q's for buzzy?
+2015-04-16T14:14:40  <bbqben> great to see the shuttle lists posted
+2015-04-16T14:14:53  <montgoc1> Yes
+2015-04-16T14:15:37  <bbqben> #action buzzy will provide worst case scenario conference budget no later than 20.04.15
+2015-04-16T14:15:43  <bbqben> buzzy++
+2015-04-16T14:16:03  <montgoc1> On the site, the Shuttle Options still say in progress by the link.
+2015-04-16T14:16:03  <buzzy> ah, you're correct, kathy. thank you!
+2015-04-16T14:16:07  <montgoc1> Can that get removed?
+2015-04-16T14:16:24  <buzzy> yes, i'll ask brent to handle that
+2015-04-16T14:16:39  <montgoc1> Cool. Thanks.
+2015-04-16T14:16:44  <bbqben> ok, moving on
+2015-04-16T14:16:52  <bbqben> thanks buzzy
+2015-04-16T14:16:53  <buzzy> bye!
+2015-04-16T14:17:01  <bbqben> #topic Financial Report
+2015-04-16T14:17:05  *** buzzy has quit IRC
+2015-04-16T14:17:14  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-April/000998.html
+2015-04-16T14:18:12  <bbqben> bshum++ in abstentia
+2015-04-16T14:18:21  <bbqben> I'm all thumbs again today
+2015-04-16T14:18:29  <bbqben> any discussion of finances?
+2015-04-16T14:19:07  <bbqben> ok, moving on in 5...
+2015-04-16T14:19:16  <bbqben> #topic Evergreen 2.8 Release Manager's Report
+2015-04-16T14:19:46  <bbqben> berick has a standing conflict during this time slot and bshum sends regrets, but RC2.8.1 was released 17.03.15
+2015-04-16T14:19:55  <bbqben> #info http://libmail.georgialibraries.org/pipermail/open-ils-dev/2015-March/009818.html
+2015-04-16T14:20:20  <kmlussier> I think that's 2.8.0 :)
+2015-04-16T14:20:44  <bbqben> kmlussier - I'm channeling the future with my thumbs ;)
+2015-04-16T14:21:04  <bbqben> any discussion or just feelings of warmth towards the devs?
+2015-04-16T14:21:12  <kmlussier> berick++
+2015-04-16T14:21:22  <bbqben> berick++
+2015-04-16T14:21:33  <graced> berick++
+2015-04-16T14:21:33  <csharp> #info 2.8.0 release: http://libmail.georgialibraries.org/pipermail/open-ils-general/2015-March/011468.html
+2015-04-16T14:21:43  <csharp> berick++
+2015-04-16T14:21:44  <yboston> berick++
+2015-04-16T14:21:44  <bbqben> csharp thanks
+2015-04-16T14:21:49  <montgoc1> berick++
+2015-04-16T14:21:59  <kmlussier> Ah, that's the one. csharp++
+2015-04-16T14:22:01  <abneiman> berick++
+2015-04-16T14:22:23  <bbqben> ok, moving on then
+2015-04-16T14:22:29  <bbqben> #topic 2015 EOB Elections - Call for Volunteers - Nominations Committee
+2015-04-16T14:23:21  <bbqben> Hoping to put the call out / open the voter registration survey later today
+2015-04-16T14:23:32  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-March/000958.html
+2015-04-16T14:23:54  <bbqben> that gives 2 weeks for nomiantions + registration
+2015-04-16T14:24:01  <bbqben> any volunteers for the noms comm?
+2015-04-16T14:24:07  <kmlussier> Did we do this last month?
+2015-04-16T14:24:37  <bbqben> kmlussier we talked about it but the minutes didn't reflect a show of hands for the comm
+2015-04-16T14:25:08  <bbqben> kmlussier I'll volunteer if you will
+2015-04-16T14:25:17  <kmlussier> I can't. Sorry
+2015-04-16T14:25:36  <csharp> I'll volunteer
+2015-04-16T14:25:37  <montgoc1> Yes, we did discuss it at the last meeting.
+2015-04-16T14:25:39  <bbqben> kmlussier no worries.
+2015-04-16T14:25:54  <bbqben> csharp - thanks again. I'll put us down
+2015-04-16T14:26:31  <bbqben> anyone else (optional)?
+2015-04-16T14:26:32  <csharp> heh - looks like I already *did* volunteer ;-)
+2015-04-16T14:26:37  <montgoc1> I will.
+2015-04-16T14:26:51  <csharp> as did montgoc1 and Rogan
+2015-04-16T14:26:59  <bbqben> wow - kewl - show me?
+2015-04-16T14:27:09  <csharp> http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-19-14.01.log.html at around 14:54
+2015-04-16T14:27:26  <csharp> logs++
+2015-04-16T14:27:50  <bbqben> logs++ all y'all++
+2015-04-16T14:27:51  <abneiman> csharp++
+2015-04-16T14:28:05  <bbqben> ok, amensia in check - will update the call and prep it for later
+2015-04-16T14:28:34  <bbqben> anyone test the voter reg survey?
+2015-04-16T14:28:38  <bbqben> #info https://www.surveymonkey.com/r/RXVRSKJ
+2015-04-16T14:28:58  <kmlussier> I looked at it. Didn't submit, though. It looked good to me.
+2015-04-16T14:29:03  <bbqben> don't recall what other info we collected last year (survey's decommissed) but very open to feedback
+2015-04-16T14:29:08  <bbqben> kmlussier - thanks
+2015-04-16T14:29:55  <csharp> it just asked for my name, org, and whether I was legit - is that all it's supposed to do?
+2015-04-16T14:30:04  <abneiman> I'll test it right after this meeting ... i.e., my first meeting-free time today :-/
+2015-04-16T14:30:12  <bbqben> csharp - pretty much
+2015-04-16T14:30:14  <csharp> ok
+2015-04-16T14:30:34  <bbqben> csharp - will take the names and load them to opavote later on
+2015-04-16T14:30:47  <csharp> cool
+2015-04-16T14:31:08  <bbqben> #action bbqben to push call for nominees + voter registration, listing noms comm members 16.04.15
+2015-04-16T14:31:38  <bbqben> with apologies for amnesia...moving on ,,,
+2015-04-16T14:31:48  <bbqben> #topic Public Relations Proposal - revised
+2015-04-16T14:32:02  <bbqben> #info http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-April/000997.html
+2015-04-16T14:32:21  <bbqben> kmlussier over to you
+2015-04-16T14:32:39  <kmlussier> The committee isn't official, but the members already had the name discussion. So we've revised the proposal to call it Outreach, rather than Public Relations.
+2015-04-16T14:32:54  *** dbs has quit IRC
+2015-04-16T14:32:57  <kmlussier> I think we need a vote to formally accept the proposal. Sorry, I wasn't thinking of that last time around.
+2015-04-16T14:33:34  <kmlussier> The EOB is also charged with appointing members, so I think we need a vote to appoint RoganH, graced, Amy Terlaga, Ron Gagnon and me to the committee.
+2015-04-16T14:33:47  <kmlussier> That is, if you're ok with us serving on the committee.
+2015-04-16T14:33:53  <kmlussier> I think that's it.
+2015-04-16T14:33:57  <bbqben> kmlussier - thanks. Any discussion before we call these votes?
+2015-04-16T14:34:16  <kmlussier> Almost forgot. Our first real conference call is tomorrow. I'll be posting updates as we go along.
+2015-04-16T14:34:24  <csharp> kmlussier++
+2015-04-16T14:34:28  <bbqben> ...hearing none ....
+2015-04-16T14:35:15  <bbqben> #startvote Does the EOB formally accept the Outreach Proposal as submitted? Yes, No, Abstain
+2015-04-16T14:35:15  <pinesol_green> Begin voting on: Does the EOB formally accept the Outreach Proposal as submitted? Valid vote options are Yes, No, Abstain.
+2015-04-16T14:35:15  <pinesol_green> Vote using '#vote OPTION'. Only your last vote counts.
+2015-04-16T14:35:24  <csharp> #vote Yes
+2015-04-16T14:35:29  <montgoc1> #vote Yes
+2015-04-16T14:35:34  <yboston> #vote yes
+2015-04-16T14:35:36  <abneiman> #vote yes
+2015-04-16T14:35:39  <bbqben> #vote Yes
+2015-04-16T14:35:41  <graced> #vote Yes
+2015-04-16T14:35:51  <kmlussier> #vote Yes
+2015-04-16T14:36:14  <bbqben> #endvote
+2015-04-16T14:36:14  <pinesol_green> Voted on "Does the EOB formally accept the Outreach Proposal as submitted?" Results are
+2015-04-16T14:36:14  <pinesol_green> Yes (7): kmlussier, abneiman, bbqben, graced, montgoc1, csharp, yboston
+2015-04-16T14:36:21  <bbqben> thanks, next ...(standby)
+2015-04-16T14:37:23  <bbqben> #startvote Does the EOB appoint RoganH graced Amy Terlaga Ron Gagnon kmlussier to the Outreach committee? Yes, No, Abstain
+2015-04-16T14:37:23  <pinesol_green> Begin voting on: Does the EOB appoint RoganH graced Amy Terlaga Ron Gagnon kmlussier to the Outreach committee? Valid vote options are Yes, No, Abstain.
+2015-04-16T14:37:23  <pinesol_green> Vote using '#vote OPTION'. Only your last vote counts.
+2015-04-16T14:37:36  <bbqben> #Yes
+2015-04-16T14:37:38  <csharp> #vote Yes
+2015-04-16T14:37:41  <kmlussier> #vote Yes
+2015-04-16T14:37:48  <montgoc1> #vote Yes
+2015-04-16T14:37:51  <bbqben> oops
+2015-04-16T14:37:53  <bbqben> #vote Yes
+2015-04-16T14:37:55  <yboston> #vote yes
+2015-04-16T14:38:09  <graced> #vote Yes
+2015-04-16T14:38:33  *** dbs has joined #evergreen
+2015-04-16T14:38:47  <abneiman> #vote yes
+2015-04-16T14:39:02  <bbqben> #endvote
+2015-04-16T14:39:02  <pinesol_green> Voted on "Does the EOB appoint RoganH graced Amy Terlaga Ron Gagnon kmlussier to the Outreach committee?" Results are
+2015-04-16T14:39:02  <pinesol_green> Yes (7): kmlussier, yboston, bbqben, graced, montgoc1, csharp, abneiman
+2015-04-16T14:39:13  <bbqben> kmlussier et al ++
+2015-04-16T14:39:40  <bbqben> moving on in 5...
+2015-04-16T14:39:53  <bbqben> #topic Revised Code of Conduct Procedures
+2015-04-16T14:41:51  <kmlussier> #link http://list.evergreen-ils.org/pipermail/eg-oversight-board/2015-April/001003.html
+2015-04-16T14:42:12  <csharp> once again, kmlussier++
+2015-04-16T14:42:16  <kmlussier> I was hoping to have these somewhat finalized by today, but I think they still need a little work.
+2015-04-16T14:42:18  <bbqben> kmlussier++
+2015-04-16T14:42:20  <montgoc1> kmlussier++
+2015-04-16T14:42:29  <graced> kmlussier++
+2015-04-16T14:42:58  <abneiman> kmlussier++
+2015-04-16T14:43:06  <yboston> kmlussier++
+2015-04-16T14:43:13  <kmlussier> We've made a lot of progress on this. I think the big discussion Valerie Aurora wanted us to have was to ensure that the Safety Committee is empowered to make decisions when it comes to people in leadership positions.
+2015-04-16T14:43:21  <kmlussier> Thanks all! :)
+2015-04-16T14:43:59  <kmlussier> We've had that discussion among ourselves (ourselves being Safety Commitee and incident responders), but I just want to put it out there for the EOB to see if there were any thoughts on it.
+2015-04-16T14:44:46  <kmlussier> I think gmcharlt had an excellent idea of having people in leadership roles actually signing off on the CoC and agreeing to sanctions handed down by the Safety Committee. Appeals can be made to the EOB.
+2015-04-16T14:44:52  <kmlussier> So that's the direction we're heading.
+2015-04-16T14:45:35  <kmlussier> Now that I think of it, nearly everyone participating in the EOB meeting today  was already brought into that discussion earlier. :)
+2015-04-16T14:46:28  <kmlussier> I want to polish it a bit more. At some point, either today or via email, I think we need to appoint the Safety Committee reps.
+2015-04-16T14:46:43  <bbqben> kmlussier thanks for looping us all in
+2015-04-16T14:47:10  <kmlussier> I also would like you all to consider my recommendation that we donate $200 to the Ada Initiative as a thank you for reviewing our procedures and meeting with the people who volunteered to be incident responders.
+2015-04-16T14:47:55  <kmlussier> The Ada Initiative has done a lot of great work getting conferences to create and implement Codes of Conduct and depends on donations to keep their operations going.
+2015-04-16T14:49:03  <yboston> My only concern is making sure enough people have copies of these procedures handy during the cnference. I don't expect it would be hard to have copies of the procedures handy in the "registration area"
+2015-04-16T14:49:23  <kmlussier> yboston: They will be in the printed program.
+2015-04-16T14:49:36  <yboston> great
+2015-04-16T14:49:57  <kmlussier> I'm also planning to write a blog post ahead of time. I think we also have some time to talk about them during the Thursday morning session, before the keynote.
+2015-04-16T14:50:07  <kmlussier> I'll need to re-confirm that, though.
+2015-04-16T14:50:24  <kmlussier> I basically want everyone to see the faces of the incident responders.
+2015-04-16T14:50:51  <kmlussier> Given the time, I think we can hold off on appointing Safety Committee members and do it via email. But would we be able to vote on the donation today?
+2015-04-16T14:51:22  <bbqben> any discussion about the donation before we call a vote?
+2015-04-16T14:51:57  <bbqben> FWIW - don't see any policy/guidleines in this regard for us to be aware of, but happy to be corrected
+2015-04-16T14:53:01  <bbqben> hearing none...
+2015-04-16T14:53:25  <bbqben> #startvote donate $200 to the Ada Initiative as a thank you for reviewing our procedures and meeting with the people who volunteered to be incident responders.
+2015-04-16T14:53:25  <pinesol_green> Unable to parse vote topic and options.
+2015-04-16T14:53:32  <bbqben> poop.
+2015-04-16T14:53:38  <csharp> I bet it's the $
+2015-04-16T14:54:09  <graced> I bet csharp is right
+2015-04-16T14:54:16  <kmlussier> I'm not aware of any.
+2015-04-16T14:54:36  <kmlussier> Sorry, I lost my Internet connectin for a minute there.
+2015-04-16T14:54:42  <bbqben> #startvote Does the EOB donate 200 dollars to the Ada Initiative as a thank you for reviewing our procedures and meeting with the people who volunteered to be incident responders? Yes, No, Abstain
+2015-04-16T14:54:42  <pinesol_green> Begin voting on: Does the EOB donate 200 dollars to the Ada Initiative as a thank you for reviewing our procedures and meeting with the people who volunteered to be incident responders? Valid vote options are Yes, No, Abstain.
+2015-04-16T14:54:42  <pinesol_green> Vote using '#vote OPTION'. Only your last vote counts.
+2015-04-16T14:54:51  <csharp> #vote Yes
+2015-04-16T14:54:52  <kmlussier> #vote Yes
+2015-04-16T14:54:53  <yboston> #vote yes
+2015-04-16T14:54:53  <montgoc1> #vote Yes
+2015-04-16T14:54:58  <graced> #vote Yes
+2015-04-16T14:55:04  <bbqben> #vote Yes
+2015-04-16T14:55:17  <abneiman> #vote yes
+2015-04-16T14:55:24  <bbqben> #endvote
+2015-04-16T14:55:24  <pinesol_green> Voted on "Does the EOB donate 200 dollars to the Ada Initiative as a thank you for reviewing our procedures and meeting with the people who volunteered to be incident responders?" Results are
+2015-04-16T14:55:24  <pinesol_green> Yes (7): kmlussier, yboston, bbqben, graced, montgoc1, csharp, abneiman
+2015-04-16T14:55:35  <bbqben> kmlussier++ again.
+2015-04-16T14:55:56  <bbqben> ok, so moving on...
+2015-04-16T14:56:05  <bbqben> #topic 2016 Conference Selection Committee
+2015-04-16T14:56:16  <bbqben> graced over to you
+2015-04-16T14:56:28  <graced> Good afternoon
+2015-04-16T14:56:32  <graced> :)
+2015-04-16T14:56:35  <bbqben> indeed
+2015-04-16T14:56:46  <graced> We have two great proposals that the site selection committee reviewed.
+2015-04-16T14:56:51  *** Newziky has joined #evergreen
+2015-04-16T14:57:09  *** Dyrcona has quit IRC
+2015-04-16T14:57:18  <graced> We are ready to make a recommendation but would like to move it to a private discussion with the EOB if that is agreeable.
+2015-04-16T14:57:48  <yboston> fine with me
+2015-04-16T14:57:49  <graced> We wouldn't want the sites to find out the were selected or not selected in this IRC meeting
+2015-04-16T14:57:54  <kmlussier> I'm fine with that.
+2015-04-16T14:58:00  <bbqben> makes sense
+2015-04-16T14:58:13  <abneiman> Sounds good
+2015-04-16T14:58:47  <graced> I'm afraid I will have to ask montgoc1 to recuse himself from that discussion though since he's a proposal submitter.
+2015-04-16T14:59:08  <montgoc1> No problem.
+2015-04-16T14:59:14  <graced> IF that is agreeable, I will follow up with an email.
+2015-04-16T14:59:25  <graced> Questions or concerns?
+2015-04-16T14:59:31  <csharp> looks like we're all in agreement on that
+2015-04-16T14:59:35  <bbqben> cool, so to confirm graced will follow up with EOB members via email
+2015-04-16T14:59:56  <bbqben> thanks to montgoc1 for bowing out on that
+2015-04-16T15:00:10  <bbqben> #action graced to connect with EOB re: next steps
+2015-04-16T15:00:26  <bbqben> anyhoo - great to see interest in EG2016 - exciting stuff!
+2015-04-16T15:00:44  <kmlussier> Indeed! It is exciting to get 2 proposals! :)
+2015-04-16T15:01:50  *** Dyrcona has joined #evergreen
+2015-04-16T15:01:56  <bbqben> ok, moving on
+2015-04-16T15:02:03  <bbqben> graced++ et al++
+2015-04-16T15:02:05  <bbqben> :)
+2015-04-16T15:02:28  <bbqben> #Topic New Business - Lanyards for EG2015 etc
+2015-04-16T15:02:34  <bbqben> graced over to you again
+2015-04-16T15:02:46  <graced> I'd like to propose that the EOB consider budgeting for (and paying for)  the new lanyards in bulk and not on a per conference basis.  Since these lanyards tie into the photography policy and will be used for many years to come it makes sense to me to budget for it and buy in bulk.
+2015-04-16T15:03:03  <graced> There isn't really a vendor sponsorship opportunity attached to it any more, so it's a known recurring expense which, to me, makes it unique. And it will be one less thing for local committees to deal with.
+2015-04-16T15:03:14  <graced> Thoughts?
+2015-04-16T15:03:19  <bbqben> graced - quantos deniros?
+2015-04-16T15:03:30  <graced> kmlussier: what were the final numbers?
+2015-04-16T15:03:43  <abneiman>  I imagine it's probably far cheaper to buy in bulk, yeah?
+2015-04-16T15:03:47  * graced has an accomplice
+2015-04-16T15:04:03  <kmlussier> It's $1,250 to purchase 500 green, 250 yellow, 250 red.
+2015-04-16T15:04:18  <yboston> I like that it also opens up an opportunity to reuse items / reduce waste
+2015-04-16T15:04:22  <graced> abneiman, yes indeed - and most shops have minimums of 250
+2015-04-16T15:04:24  <kmlussier> As a reminder, green means it's okay to take a photo, yellow means a person must ask first, and 250 means no photos.
+2015-04-16T15:04:26  <graced> per color
+2015-04-16T15:04:46  <bbqben> graced 3750 all-in?
+2015-04-16T15:04:56  <kmlussier> With the red and yellow, we're not really seeing a savings because we're getting the minimum. There is a savings with the green.
+2015-04-16T15:05:04  <kmlussier> I expect most people will choose green.
+2015-04-16T15:05:11  <graced> $1,250 I think
+2015-04-16T15:05:29  <kmlussier> Yes, the total for all of them is $1,250
+2015-04-16T15:05:46  <kmlussier> We were thinking they could also be used for other Evergreen events, like the hack-a-way.
+2015-04-16T15:05:59  <graced> Of course we can order more and see greater savings
+2015-04-16T15:06:00  <graced> I will happily volunteer Equinox to ship the lanyards to each conference site and store them between conferences.
+2015-04-16T15:06:36  <bbqben> seems like a no-brainer. Shall we call a vote?
+2015-04-16T15:06:58  <kmlussier> Sounds good to me, but, bear in mind, I'm the accomplice. :)
+2015-04-16T15:07:11  <csharp> bbqben: yep
+2015-04-16T15:07:21  <bbqben> ...
+2015-04-16T15:08:05  <bbqben> #startvote Does the EOB support buying lanyards in bulk re: Photography policy per the raw log minutes of this meeting? Yes, No, Abstain
+2015-04-16T15:08:05  <pinesol_green> Begin voting on: Does the EOB support buying lanyards in bulk re: Photography policy per the raw log minutes of this meeting? Valid vote options are Yes, No, Abstain.
+2015-04-16T15:08:05  <pinesol_green> Vote using '#vote OPTION'. Only your last vote counts.
+2015-04-16T15:08:14  <csharp> #vote Yes
+2015-04-16T15:08:14  <kmlussier> #vote Yes
+2015-04-16T15:08:15  <montgoc1> #vote Yes
+2015-04-16T15:08:17  <graced> #vote Yes
+2015-04-16T15:08:17  <abneiman> #vote yes
+2015-04-16T15:08:25  <bbqben> #vote Yes
+2015-04-16T15:08:52  <yboston> #vote yes
+2015-04-16T15:08:57  <bbqben> #endvote
+2015-04-16T15:08:57  <pinesol_green> Voted on "Does the EOB support buying lanyards in bulk re: Photography policy per the raw log minutes of this meeting?" Results are
+2015-04-16T15:08:57  <pinesol_green> Yes (7): kmlussier, abneiman, bbqben, graced, montgoc1, csharp, yboston
+2015-04-16T15:09:10  <bbqben> Vote fatigue, anyone? ;)
+2015-04-16T15:09:19  <bbqben> any other new business?
+2015-04-16T15:09:25  <yboston> I get paid by the vote
+2015-04-16T15:09:44  <kmlussier> Then we need to do more votes!
+2015-04-16T15:09:46  * csharp gets paid overtime for meetings that run over 1 hour ;-)
+2015-04-16T15:10:24  <bbqben> conflicting issues here - type more slowly and vote more often
+2015-04-16T15:10:36  <bbqben> any other new business?
+2015-04-16T15:10:44  <bbqben> moving on in 10 ...
+2015-04-16T15:11:05  <bbqben> #topic Next meeting: 14.05.15 @ 1900 Pacific - in person during conference.
+2015-04-16T15:11:17  <bbqben> anyone from the EOB not planning to attend the conference?
+2015-04-16T15:11:29  <bbqben> more specifically - will anyone need to dial or skype in?
+2015-04-16T15:11:37  <bbqben> (to our meeting, that is)
+2015-04-16T15:12:02  <kmlussier> I'll be there.
+2015-04-16T15:12:26  <kmlussier> I wouldn't want to miss my last EOB meeting. :)
+2015-04-16T15:12:29  <bbqben> ok, cool, see y'all soon.
+2015-04-16T15:13:03  <bbqben> I should not that the Emergency Fund establishment committee will have a report out to youbefore then
+2015-04-16T15:13:12  <bbqben> #endmeeting
+2015-04-16T15:13:12  <pinesol_green> Meeting ended Thu Apr 16 15:13:12 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-04-16T15:13:12  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-16-14.02.html
+2015-04-16T15:13:12  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-16-14.02.txt
+2015-04-16T15:13:12  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-04-16-14.02.log.html
+2015-04-16T15:13:17  <csharp> bbqben++
+2015-04-16T15:13:19  <graced> bbqben++
+2015-04-16T15:13:20  <kmlussier> bbqben++
+2015-04-16T15:13:25  <bbqben> all y'all++
+2015-04-16T15:13:27  <montgoc1> bbqben++
+2015-04-16T15:13:28  <abneiman> bbqben++
+2015-04-16T15:13:34  <yboston> bbqben++
+2015-04-16T15:13:43  <bbqben> thanks for your time today
+2015-04-16T15:13:48  <kmlussier> @karma y'all
+2015-04-16T15:13:48  <pinesol_green> kmlussier: Karma for "y'all" has been increased 7 times and decreased 0 times for a total karma of 7.
+2015-04-16T15:14:03  <bbqben> ---we now resume regular programming ---
+2015-04-16T15:14:16  <bbqben> kmlussier :)
+2015-04-16T15:14:27  <kmlussier> krvmga: Are you still around?
+2015-04-16T15:14:40  <krvmga> kmlussier: yes
+2015-04-16T15:14:54  <kmlussier> krvmga: Did you get an answer to your earlier question regarding the All Books filter?
+2015-04-16T15:15:06  <csharp> @karma all y'all
+2015-04-16T15:15:06  <pinesol_green> csharp: Karma for "all y'all" has been increased 2 times and decreased 0 times for a total karma of 2.
+2015-04-16T15:15:24  <krvmga> kmlussier: not yet arrived at satisfactory answer, although i did see the patch in the bug
+2015-04-16T15:15:48  <krvmga> kmlussier: we'll have to see on monday. we may just disable All Books if it's a problem
+2015-04-16T15:15:52  *** abneiman has quit IRC
+2015-04-16T15:15:57  <kmlussier> As far as removing the filter, I think it's a matter of going into your Coded Value Maps and removing All Books for the OPAC format group.
+2015-04-16T15:16:05  <bbqben> @karma moving on
+2015-04-16T15:16:05  <pinesol_green> bbqben: moving on has neutral karma.
+2015-04-16T15:16:10  <bbqben> hah!
+2015-04-16T15:16:18  <krvmga> kmlussier: yes, i was showing management here how i would do it
+2015-04-16T15:16:26  <krvmga> it's easy
+2015-04-16T15:16:27  <kmlussier> krvmga: Oh, ok. I thought that was your original question.
+2015-04-16T15:16:35  <krvmga> well, as long as you know where to find it :)
+2015-04-16T15:16:42  <Dyrcona> @blame office wifi
+2015-04-16T15:16:42  <pinesol_green> Dyrcona: It's all office wifi's fault!
+2015-04-16T15:16:47  *** jihpringle has joined #evergreen
+2015-04-16T15:16:48  <krvmga> kmlussier: no, i just don't want the searches to be slow.
+2015-04-16T15:17:11  <krvmga> kmlussier: since i'm the public face of the opac around here, i would be hanged in effigy if not in reality
+2015-04-16T15:18:12  <krvmga> i even get scowls from central site staff sometimes as though i'm truly the god of the opac and can do anything mwahahahahaha!
+2015-04-16T15:18:16  <gmcharlt> krvmga: I'm quite sure you'll be fine - there's a workable patch available for testing that can be tested on Monday before you all go fully live
+2015-04-16T15:18:36  <krvmga> gmcharlt: thanks.
+2015-04-16T15:24:34  *** montgoc1 has quit IRC
+2015-04-16T15:26:03  *** krvmga has quit IRC
+2015-04-16T15:47:33  <Dyrcona> Though krvmga has left, I have loaded the branch in question on my development server and searches with formats don't seem slower than those without.
+2015-04-16T15:48:46  <Dyrcona> IOW, it appears to have helped things.
+2015-04-16T15:55:50  <kmlussier> Dyrcona++
+2015-04-16T15:56:57  <kmlussier> If I had looked at the Ada Initiative site before the EOB meeting, I would have recommended a donation of $256 instead of $200.
+2015-04-16T15:57:07  <Dyrcona> Hah!
+2015-04-16T15:57:33  <Dyrcona> Donald Knuth used to pay that much for anyone who found "bugs" in his books, or maybe it was $2.56.
+2015-04-16T15:57:43  <Dyrcona> No one every cashes the checks, they frame them.
+2015-04-16T15:58:00  <Dyrcona> Gah. typos.
+2015-04-16T15:58:06  * Dyrcona hangs his head in shame.
+2015-04-16T15:58:13  <kmlussier> If it were $256, I would actively hunt down the bugs in his books.
+2015-04-16T15:58:29  <kmlussier> Dyrcona: Will you pay me $256 if I find "bugs" in your IRC posts?
+2015-04-16T15:58:42  <Dyrcona> No. :)
+2015-04-16T16:00:31  <Dyrcona> It was bugs in tex, actually. I'm buggy today.
+2015-04-16T16:09:58  <Dyrcona> And, it started at $2.56, 1 hexadecimal dollar.
+2015-04-16T16:11:56  *** Newziky has quit IRC
+2015-04-16T16:26:06  *** Newziky has joined #evergreen
+2015-04-16T16:29:26  *** rjackson_isl has quit IRC
+2015-04-16T16:42:30  *** Dyrcona has quit IRC
+2015-04-16T16:43:44  <kmlussier> Is anyone from ESI still around who could answer a question regarding shipping something to your office?
+2015-04-16T16:43:49  *** maryj has quit IRC
+2015-04-16T16:44:04  * dbs wonders if gmcharlt is going to respond to Tony about the Evergreen logo & policy usage questions
+2015-04-16T16:44:06  <eeevil> kmlussier: um...
+2015-04-16T16:44:18  <dbs> (specifically around altering the logo)
+2015-04-16T16:44:19  <kmlussier> eeevil: Are you worried?
+2015-04-16T16:44:43  <eeevil> kmlussier: um ... let's start with "no?" ;)
+2015-04-16T16:44:53  <gmcharlt> dbs: in due course; not actually at the top of my priority list just now
+2015-04-16T16:44:59  <kmlussier> eeevil: I just need to know what your shipping address is if UPS is used. Looks like you typically use a PO Box?
+2015-04-16T16:45:13  <eeevil> ah, I'll PM you
+2015-04-16T16:45:19  <dbs> gmcharlt: fair enough, I'm only mentioning you specifically because I know the web page around the policy is somewhere on that list :)
+2015-04-16T16:45:45  <gmcharlt> dbs: indeed; FWIW, I had noticed and was already planning to resond
+2015-04-16T16:45:52  <gmcharlt> just not when I'm in rm -Rf * danger ;)
+2015-04-16T16:46:07  <kmlussier> eeevil++
+2015-04-16T16:47:19  *** Newziky has left #evergreen
+2015-04-16T16:57:10  *** yboston has quit IRC
+2015-04-16T17:03:31  *** graced has quit IRC
+2015-04-16T17:22:54  *** mmorgan has left #evergreen
+2015-04-16T17:35:19  *** akilsdonk has quit IRC
+2015-04-16T17:36:29  <eeevil> @later tell Dyrcona belated thanks for testing the search branch, though  think your dataset may not need it?
+2015-04-16T17:36:29  <pinesol_green> eeevil: The operation succeeded.
+2015-04-16T17:38:01  *** akilsdonk has joined #evergreen
+2015-04-16T17:40:55  *** mrpeters has quit IRC
+2015-04-16T17:44:22  <csharp> gmcharlt++ # clarifying the logo stuff
+2015-04-16T18:54:39  <kmlussier> gmcharlt: Is that policy really still a draft? I thought we had voted on it.
+2015-04-16T18:56:00  *** bmills has joined #evergreen
+2015-04-16T19:02:00  *** bmills has quit IRC
+2015-04-16T19:11:53  *** dMiller_ has joined #evergreen
+2015-04-16T19:36:30  *** bbqben has quit IRC
+2015-04-16T19:47:01  *** akilsdonk has quit IRC
+2015-04-16T19:56:00  *** dMiller_ has quit IRC
+2015-04-16T20:24:52  *** jihpringle has quit IRC
+2015-04-16T20:42:54  *** BigRig has quit IRC
+2015-04-16T20:43:20  *** BigRig has joined #evergreen
+2015-04-16T21:36:34  *** dMiller_ has joined #evergreen
+2015-04-16T21:43:01  *** dMiller_ has quit IRC
+2015-04-16T22:02:26  <dbs> gmcharlt++

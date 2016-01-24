@@ -1,0 +1,372 @@
+2015-03-16T00:52:39  *** wlayton has joined #evergreen
+2015-03-16T01:17:48  *** wlayton has quit IRC
+2015-03-16T07:34:48  <kmlussier> Happy Monday #evergreen
+2015-03-16T07:36:48  *** jboyer-isl has joined #evergreen
+2015-03-16T07:36:53  *** graced has joined #evergreen
+2015-03-16T08:07:14  *** rjackson_isl has joined #evergreen
+2015-03-16T08:13:56  *** ericar has joined #evergreen
+2015-03-16T08:16:49  *** mrpeters has joined #evergreen
+2015-03-16T08:18:35  *** akilsdonk has joined #evergreen
+2015-03-16T08:19:18  *** collum has joined #evergreen
+2015-03-16T08:32:39  *** mmorgan has joined #evergreen
+2015-03-16T08:54:43  *** Dyrcona has joined #evergreen
+2015-03-16T09:03:38  *** tsbere has joined #evergreen
+2015-03-16T09:05:30  *** Newziky has joined #evergreen
+2015-03-16T09:08:33  <jeff> Morning!
+2015-03-16T09:09:07  <tsbere> Coming back from a vacation today means I am not getting anything done. Too many things to catch up on. <_<
+2015-03-16T09:11:04  <Dyrcona> hmm. takes a while to index 17.9 million rows.
+2015-03-16T09:11:33  <Dyrcona> Good thing I didn't load all 347 million.
+2015-03-16T09:28:28  *** dbwells_ is now known as dbwells
+2015-03-16T09:29:22  *** yboston has joined #evergreen
+2015-03-16T09:39:09  *** sarabee has joined #evergreen
+2015-03-16T10:10:13  *** MrMayor has joined #evergreen
+2015-03-16T10:11:40  <MrMayor> Hey guys (and gals). Does anyone know if it is possible to add a custom circ duration rule to an entire permission group instead of items?
+2015-03-16T10:13:55  <bshum> MrMayor: I think gsams left you a later message over the weekend explaining it is possible.
+2015-03-16T10:14:21  <bshum> http://irc.evergreen-ils.org/evergreen/2015-03-14#i_164181
+2015-03-16T10:14:39  <bshum> That's a link back to his comment from the logs
+2015-03-16T10:15:41  <tsbere> MrMayor: For the really short answer: Yes, if your system is configured properly for it. ;)
+2015-03-16T10:20:06  <MrMayor> I see haha. But I believe everything we have has item info so I don't know how much of a solution it might be. Nothing to do but give it a shot though.
+2015-03-16T10:20:13  *** jonadab has quit IRC
+2015-03-16T10:20:31  *** eady has quit IRC
+2015-03-16T10:20:48  <tsbere> MrMayor: If your weights are set to make permission group the most important field then it will trump anything else.
+2015-03-16T10:21:52  <MrMayor> Woulnd't those weights affect everything?
+2015-03-16T10:22:57  <tsbere> Depends. Permission group is, if I recall, near the top already on default weights.
+2015-03-16T10:24:50  <Dyrcona> I think it is second-most important after the location.
+2015-03-16T10:25:06  <Dyrcona> But, my memory has been faulty lately.
+2015-03-16T10:27:20  <MrMayor> Thanks for all your help guys. I was on the right track, just wasn't changing the permission group properly. I got it working correctly
+2015-03-16T10:33:44  *** MrMayor has quit IRC
+2015-03-16T10:36:13  *** dreuther has joined #evergreen
+2015-03-16T10:54:29  *** mllewellyn has joined #evergreen
+2015-03-16T11:13:04  <jeff> well, this just starts to taste like xulrunner and remote xul: https://code.google.com/p/chromium/issues/detail?id=378566 "Block sub-resource loads from the web to private networks and localhost"
+2015-03-16T11:17:45  <Dyrcona> I *love* comment #40. That' really a common use case? A remote web site wanting to refer to local daemons?
+2015-03-16T11:19:54  <jeff> Seems like Opera already does similar to this with an interstitial to bypass the block (that you might have to trigger in wacky ways since it doesn't come up for background requests by default)
+2015-03-16T11:20:25  <Dyrcona> Yeah.
+2015-03-16T11:20:50  <Dyrcona> This sounds like it might bugger the web staff client, no?
+2015-03-16T11:23:16  <jeff> It has the potential to complicate web staff client communication with a locally-running hatch instance. Currently the web client makes a wss://localhost:8443/hatch connection to talk to hatch.
+2015-03-16T11:25:21  <jeff> from the submitter elsewhere: ``We also appreciate the concerns for legacy apps, local servers, etc. That's why we plan on supporting blocking UI overrides, opt-in by the page on localhost/private (maybe via CORS headers), and permanent exceptions via the command-line and enterprise policy.''
+2015-03-16T11:26:20  <jeff> more freeform discussion here, in addition to the comments in the bug: https://news.ycombinator.com/item?id=9210484
+2015-03-16T11:27:14  <jeff> The nice thing is that in contrast with "kill remote XUL", we seem to have much more company in the camp of "please don't do this without a good path that supports our use case". :-)
+2015-03-16T11:27:43  <jeff> statements like "Dropbox does this, Github for Mac does this (and incidentally, my own home-grown solution for reading barcode scanners does this too)."
+2015-03-16T11:39:52  <Dyrcona> Stuff like that makes me think they choose the wrong platform.
+2015-03-16T11:40:04  *** vlewis has joined #evergreen
+2015-03-16T11:40:09  <Dyrcona> If you want that local connectivity, you should have written a desktop application.
+2015-03-16T11:42:41  * jeff plays the "which email address and username did i use here" game
+2015-03-16T11:46:52  <jeff> ah, right. dokuwiki sets list-id header, so it gets auto-filtered.
+2015-03-16T11:54:14  <Dyrcona> kmlussier: My development VM is back up and running with fresh data and fresh code.
+2015-03-16T11:54:49  <jeff> added websockets localhost issue to dev agenda.
+2015-03-16T11:57:03  <jeff> oh.
+2015-03-16T11:57:08  <jeff> nope, added to wrong agenda. :P
+2015-03-16T11:57:14  <jeff> thought that didn't look familiar.
+2015-03-16T11:59:34  <jeff> reverted and waiting on edit lock to expire before adding to agenda for today
+2015-03-16T12:01:07  <Dyrcona> Thanks for the reminder. I forgot to add it to my calendar.
+2015-03-16T12:02:02  <Dyrcona> So, where's Chromium going once cod.google.com is shut down?
+2015-03-16T12:02:09  <Dyrcona> code, even. :)
+2015-03-16T12:02:27  <kmlussier> Dyrcona: Thank you very much!
+2015-03-16T12:02:42  <Dyrcona> I apparently own two projects on code.google.com and completely forgot about them.
+2015-03-16T12:03:01  <Dyrcona> kmlussier: You're welcome very much!
+2015-03-16T12:10:46  <jeff> I also updated the http://wiki.evergreen-ils.org/doku.php?id=dev:meetings page so that "Next meeting" correctly shows today's upcoming meeting, moved Feb to Past, etc.
+2015-03-16T12:13:00  <Dyrcona> jeff: Will you facilitate the meeting, too? ;)
+2015-03-16T12:13:05  <Dyrcona> jeff++
+2015-03-16T12:19:05  <jeff> Dyrcona: first person to admit forgetting about the meeting runs it. :-)
+2015-03-16T12:19:24  <Dyrcona> Hah.
+2015-03-16T12:19:47  <Dyrcona> +++ATH0 laghajhre9bname/r9e0tq8*(*(HKNFo98eroenakfjeru8Y*&Y*&%&^&%$^%&*&*&(O
+2015-03-16T12:20:01  <Dyrcona> *No Carrier*
+2015-03-16T12:20:28  <Dyrcona> A little joke for jeff.
+2015-03-16T12:44:35  <collinanderson> Dyrcona: chromium and android are exceptions to code.google.com shutting down
+2015-03-16T12:45:39  <jeff> ``Google will continue to provide Git and Gerrit hosting for certain projects like Android and Chrome. We will also continue maintaining our mirrors of projects like Eclipse, kernel.org and others.''
+2015-03-16T12:47:03  <jeff> heh. if you have any issues exporting your project from google code, you are asked to open an issue at code.google.com...
+2015-03-16T12:50:21  <Dyrcona> Well, seeing as I had forgotten about the two projects I have up there, I think I'll just let 'em die.
+2015-03-16T12:56:23  *** akilsdonk has quit IRC
+2015-03-16T12:58:05  *** jeff__ has quit IRC
+2015-03-16T12:59:13  *** jeff_ has joined #evergreen
+2015-03-16T13:04:44  *** jonadab has joined #evergreen
+2015-03-16T13:05:49  *** sandbergja has joined #evergreen
+2015-03-16T13:12:55  *** mrpeters has left #evergreen
+2015-03-16T13:46:12  *** krvmga has joined #evergreen
+2015-03-16T13:46:46  <krvmga> i'm curious why the new icons in search results aren't showing up in our test 2.7.3 installation. Did i miss some configuration bit?
+2015-03-16T13:53:21  <kmlussier> krvmga: I know there was a bit of reingesting that went along with the MVF work. Do you know if that was done on your test system?
+2015-03-16T13:53:53  <krvmga> kmlussier: i do not know. i can find out tomorrow.
+2015-03-16T13:54:20  <krvmga> kmlussier: was a full reingest needed?
+2015-03-16T13:55:32  <Dyrcona> krvmga: You upgraded from what version?
+2015-03-16T13:55:36  *** user259205087017 has joined #evergreen
+2015-03-16T13:55:41  *** DPearl has joined #evergreen
+2015-03-16T13:55:56  <krvmga> Dyrcona: 2.5
+2015-03-16T13:56:09  <krvmga> local thinking seems to be no reingest was done
+2015-03-16T13:56:33  <kmlussier> I don't recall what type of reingest was required; I just remember that it was long.
+2015-03-16T13:57:46  <Dyrcona> You'll need to do a metabib.reingest_record_attributes on each record to get the pictures to show up properly.
+2015-03-16T13:57:57  <Dyrcona> You might as well do a complete reingest.
+2015-03-16T13:59:01  <krvmga> Dyrcona: thanks. that's very helpful
+2015-03-16T13:59:03  <Dyrcona> I recommend using this to do it: http://git.mvlcstaff.org/?p=jason/evergreen_utilities.git;a=blob;f=scripts/pingest.pl;h=28cb031b23f271ad7a36667402642ed85a93dd43;hb=5ec82e38e8465bafc56fdb19961b1b78c49f5075
+2015-03-16T13:59:11  <krvmga> kmlussier++
+2015-03-16T13:59:14  <krvmga> Dyrcona++
+2015-03-16T14:01:16  *** krvmga has quit IRC
+2015-03-16T14:16:34  *** julialima has joined #evergreen
+2015-03-16T14:21:45  <kmlussier> @coffee
+2015-03-16T14:21:45  * pinesol_green brews and pours a cup of Honduras Fernandez Farm, and sends it sliding down the bar to kmlussier
+2015-03-16T14:21:54  <kmlussier> Hello julialima!
+2015-03-16T14:22:27  <julialima> kmlussier: Hello!
+2015-03-16T14:32:59  <Dyrcona> @swill
+2015-03-16T14:32:59  * pinesol_green grabs a can of Sparks and sends it sliding down the bar to Dyrcona
+2015-03-16T14:38:07  * jboyer-isl thinks a @topshelf plugin would be a good compliment to @swill.
+2015-03-16T14:40:42  *** jihpringle has joined #evergreen
+2015-03-16T14:41:24  <jeff> @whose @topshelf is another person's @swill?
+2015-03-16T14:41:24  <pinesol_green> jeff: Yeah, well, you know, that's just, like, your opinion, man.
+2015-03-16T14:41:32  <jeff> boring.
+2015-03-16T14:42:28  <Dyrcona> @who stole the cookie from the cookie jar
+2015-03-16T14:42:28  <pinesol_green> substack stole the cookie from the cookie jar.
+2015-03-16T14:47:43  *** akilsdonk has joined #evergreen
+2015-03-16T14:56:38  *** buzzy has joined #evergreen
+2015-03-16T14:58:55  *** buzzy has quit IRC
+2015-03-16T14:58:58  *** Bmagic has joined #evergreen
+2015-03-16T15:03:28  <gmcharlt> so, dev meeting time?
+2015-03-16T15:03:50  <jeff> agreed.
+2015-03-16T15:03:59  <Bmagic> I was wondering
+2015-03-16T15:04:23  <gmcharlt> #startmeeting Development meeting, 16 March 2015
+2015-03-16T15:04:23  <pinesol_green> Meeting started Mon Mar 16 15:04:23 2015 US/Eastern.  The chair is gmcharlt. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-03-16T15:04:23  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-03-16T15:04:23  <pinesol_green> The meeting name has been set to 'development_meeting__16_march_2015'
+2015-03-16T15:04:37  <gmcharlt> #info Agenda is http://wiki.evergreen-ils.org/doku.php?id=dev:meetings:2015-03-16
+2015-03-16T15:04:53  <gmcharlt> #topic Introductions
+2015-03-16T15:04:59  <gmcharlt> #info gmcharlt = Galen Charlton, ESI
+2015-03-16T15:05:09  <Bmagic> #info Bmagic = Blake GH, MOBIUS
+2015-03-16T15:05:09  <DPearl> #info DPearl = Dan Pearl, C/W MARS
+2015-03-16T15:05:14  <julialima> #info julialima = Julia Lima. UI Style Guide (OPW), Argentina.
+2015-03-16T15:05:16  <Dyrcona> #info Dyrcona = Jason Stephenson, MVLC
+2015-03-16T15:05:18  <jeff> #info jeff = Jeff Godin, Traverse Area District Library (TADL)
+2015-03-16T15:05:33  <dbwells> #info dbwells = Dan Wells, Hekman Library (Calvin College)
+2015-03-16T15:05:37  <remingtron> #info remingtron = Remington Steed, Hekman Library (Calvin College)
+2015-03-16T15:06:03  <bshum> #info bshum = Ben Shum, Bibliomation
+2015-03-16T15:06:09  <dbs> #info dbs = Dan Scott, Laurentian University
+2015-03-16T15:06:17  <dbs> (land o' the flaky wireless)
+2015-03-16T15:06:28  <gmcharlt> dbs: Thanks, Harper!
+2015-03-16T15:06:55  <kmlussier> #info kmlussier is Kathy Lussier, MassLNC
+2015-03-16T15:08:00  <gmcharlt> ok, moving on
+2015-03-16T15:08:05  <gmcharlt> #topic OpenSRF release
+2015-03-16T15:08:48  <gmcharlt> not much specifically to say at the moment, beyond http://git.evergreen-ils.org/?p=working/OpenSRF.git;a=shortlog;h=refs/heads/collab/gmcharlt/better_osrf_control_diagnostic and websocket port standardization being on the radar
+2015-03-16T15:09:24  * gmcharlt notes that csharp has an update to the Fedora instructions in the working repo as well
+2015-03-16T15:09:36  <eeevil> #info eeevil = Mike Rylander, ESI
+2015-03-16T15:09:54  <phasefx> #info phasefx = Jason Etheridge, ESI
+2015-03-16T15:10:06  <bshum> Does that sort of change warrant 2.5? I'm not sure the particulars of how we decide versioning for OpenSRF.
+2015-03-16T15:10:52  *** julialima has quit IRC
+2015-03-16T15:11:02  <gmcharlt> bshum: it could, though I lean more towards those changes warranint just a 2.4.1
+2015-03-16T15:11:20  <gmcharlt> I don't have particularly strong feelings either way
+2015-03-16T15:11:27  <gmcharlt> what *would* warrant a 2.5 is http2 support, IMO
+2015-03-16T15:12:07  <gmcharlt> any other comments
+2015-03-16T15:12:07  <gmcharlt> ?
+2015-03-16T15:13:05  <Dyrcona> Doesn't look it warrants a 2.5 just for the diagnostic changes.
+2015-03-16T15:13:32  *** hopkinsju has joined #evergreen
+2015-03-16T15:13:55  <gmcharlt> agreed
+2015-03-16T15:13:56  *** julialima has joined #evergreen
+2015-03-16T15:13:58  <gmcharlt> moving on
+2015-03-16T15:14:05  <gmcharlt> #topic Evergreen release
+2015-03-16T15:14:08  <gmcharlt> berick: about?
+2015-03-16T15:15:18  <berick> omg, yes
+2015-03-16T15:15:26  <gmcharlt> :)
+2015-03-16T15:15:27  <berick> odd morning
+2015-03-16T15:15:30  <gmcharlt> welcome, berick
+2015-03-16T15:15:33  <berick> thanks ;)
+2015-03-16T15:15:39  <berick> so, we ready for an RC1?
+2015-03-16T15:15:44  <gmcharlt> (you've been volunteered to do all the things, by the way ;) )
+2015-03-16T15:15:49  <berick> heh
+2015-03-16T15:15:57  <bshum> berick++
+2015-03-16T15:16:30  <berick> i think we're ready for an RC1.  so i will cut one very soon
+2015-03-16T15:16:34  <berick> probaby tomorrow
+2015-03-16T15:16:46  <gmcharlt> berick: +1 to an RC1
+2015-03-16T15:17:08  <gmcharlt> #info berick to cut an RC1 for Evergreen 2.8.0 in the next day or so
+2015-03-16T15:17:17  <berick> i have not heard any problems w/ the beta, fwiw, apart from standard bug reports
+2015-03-16T15:17:38  <bshum> Fwiw, we're still testing up our upgraded DB to master, but the upgrade scripts didn't blow up anywhere so far for us.
+2015-03-16T15:17:48  <bshum> So far.
+2015-03-16T15:18:33  <berick> thanks, bshum
+2015-03-16T15:19:20  <gmcharlt> berick: anything else to say about 2.8 rc1?
+2015-03-16T15:19:59  <berick> nothing at the moment to add
+2015-03-16T15:20:30  <gmcharlt> ok, moving on
+2015-03-16T15:20:37  <gmcharlt> #topic Questions about Security Bugs/Process
+2015-03-16T15:21:16  <gmcharlt> #info Kathy Lussier's questions + responses - http://markmail.org/thread/fqrhegamnyej2s57
+2015-03-16T15:21:42  <gmcharlt> #info Proposal for defined process for security team membership - http://wiki.evergreen-ils.org/doku.php?id=dev:security#security_team
+2015-03-16T15:21:57  <gmcharlt> #info Current security team - http://wiki.evergreen-ils.org/doku.php?id=dev:security#current_security_team_members
+2015-03-16T15:22:25  <gmcharlt> as you can see, kmlussier has joined the team (as of today)
+2015-03-16T15:22:26  <gmcharlt> kmlussier++
+2015-03-16T15:22:30  <berick> kmlussier++
+2015-03-16T15:22:47  <bshum> kmlussier++
+2015-03-16T15:22:53  <Bmagic> kmlussier++
+2015-03-16T15:23:03  <jeff> kmlussier++
+2015-03-16T15:23:11  * kmlussier hasn't done much yet beyond making a lot of noise. ;)
+2015-03-16T15:23:52  <dbwells> kmlussier++
+2015-03-16T15:24:48  <gmcharlt> so, at this point, the floor is open to any follow-up discussion
+2015-03-16T15:25:58  * kmlussier has nothing to add.
+2015-03-16T15:28:09  <gmcharlt> I propose that we carry on any further discussion on the ML, then
+2015-03-16T15:28:26  <gmcharlt> moving on in 15 seconds
+2015-03-16T15:28:26  <bshum> It seems like it'll be good to see how the new policy and members work out for awhile and then see what else needs adjustment.
+2015-03-16T15:29:05  <dbwells> I agree
+2015-03-16T15:29:42  <gmcharlt> ok
+2015-03-16T15:29:46  <gmcharlt> #topic Style Guide Project
+2015-03-16T15:29:56  <gmcharlt> #info OPW project finsihed on 3/9
+2015-03-16T15:30:08  <gmcharlt> #info Project blog is at http://lima-julia.tumblr.com/
+2015-03-16T15:30:19  <gmcharlt> #info Project branch is at https://github.com/JuliaLima/Evergreen/tree/patch-1/docs/style_guide
+2015-03-16T15:30:27  <gmcharlt> julialima: you have the floor
+2015-03-16T15:31:00  <dbwells> julialima has agreed to join us today for at least one more time (hopefully more again, someday :)
+2015-03-16T15:32:02  <dbwells> I took the opportunity to post some public gists to the agenda to perhaps encourage more review of what has been accomplished so far.
+2015-03-16T15:32:27  <dbwells> The guide is much more interesting and entertaining with all the pictures in place.
+2015-03-16T15:33:18  <dbwells> Finally, the "Next Steps" is my interpretation of some of julialima's recommendations in her last blog post.
+2015-03-16T15:33:43  <dbwells> Basically, how do we get this to a point where it is in full use?
+2015-03-16T15:33:57  <gmcharlt> julialima: I'd be interested in hearing your thoughts
+2015-03-16T15:35:58  <julialima> Well, I know it is not easy the implementation of the UI style guide, so I try to think in the starting points about how to implement it (that is what I wrote in my blog post)
+2015-03-16T15:36:59  <julialima> And I think dbwells understand what I mean in his proposal. I really hope it can be achieve
+2015-03-16T15:37:07  <gmcharlt> julialima: thanks, that helps :)
+2015-03-16T15:39:11  <gmcharlt> so, I think there are some details to digest
+2015-03-16T15:39:17  <gmcharlt> do folks have any immediate feedback?
+2015-03-16T15:39:20  <kmlussier> I would like to see the full style guide posted somewhere on the Evergreen web site. Maybe as an appendix to the docs?
+2015-03-16T15:39:28  <Bmagic> julialima++
+2015-03-16T15:39:57  <hopkinsju> julialima++
+2015-03-16T15:41:22  <gmcharlt> julialima++
+2015-03-16T15:41:45  <dbwells> It seems like engagement here is pretty light today, so it probably makes sense to extend the "next steps" proposal discussion to the list as well?  I want to be clear that this proposal as written is my own, just so there is no confusion about it.
+2015-03-16T15:42:11  <gmcharlt> yeah, I think moving the discussion onto open-ils-dev is the next step
+2015-03-16T15:42:34  <gmcharlt> any other comments before we move on to the next agenda item?
+2015-03-16T15:42:46  <dbwells> will do.  Does anyone have any immediate feedback on the idea of a new team?
+2015-03-16T15:43:21  <dbwells> I'd like to address any concerns if possible when I email the list.
+2015-03-16T15:43:28  <remingtron> I like the idea of a new team to help facilitate adoption of the guide
+2015-03-16T15:43:44  * kmlussier agrees
+2015-03-16T15:43:45  <gmcharlt> -1 unless a reason can be articulated why a discussion cannot be held on open-ils-general and open-ils-dev
+2015-03-16T15:44:46  <kmlussier> I don't see why discussion can't happen in our normal communication channels.
+2015-03-16T15:45:39  <dbwells> I am thinking meetings would happen in #evergreen, certainly.  It is really more about commitment than anything else.
+2015-03-16T15:45:40  <dbs> Let's start with the regular mailing lists and see what develops
+2015-03-16T15:46:38  <kmlussier> I'm mostly interested in the commitment factor too. I actually wouldn't want to see too much more expansion happen with the style guide at this point. I would rather focus on starting to incorporate what's already there.
+2015-03-16T15:47:14  <dbs> A big part of this is just building out the basic pieces that have been laid out
+2015-03-16T15:47:43  <dbs> and we'll rename the .txt files to .adoc to get fancy highlighting in github :)
+2015-03-16T15:47:54  <dbwells> +1 to that :)
+2015-03-16T15:50:41  <gmcharlt> ok
+2015-03-16T15:50:43  <julialima> Once more, I want to thank you all. It was an awesome experience for me. I am willing to help in whatever (opinions in general or questions about my work). I will try to be aware of the project and say hi once in a while. It was a real pleasure :)
+2015-03-16T15:50:52  <gmcharlt> thanks, julialima!
+2015-03-16T15:50:54  <gmcharlt> julialima++
+2015-03-16T15:50:57  <dbs> julialima++
+2015-03-16T15:50:58  <jboyer-isl> julialima++
+2015-03-16T15:50:59  <dbwells> julialima++
+2015-03-16T15:51:04  <remingtron> julialima++
+2015-03-16T15:51:11  <jeff> julialima++ thank you!
+2015-03-16T15:52:13  <gmcharlt> #topic Potential upcoming localhost WebSockets restrictions
+2015-03-16T15:52:38  <gmcharlt> #info Link to discussion of Chromium potentially blocking localhost websockets access https://code.google.com/p/chromium/issues/detail?id=378566
+2015-03-16T15:54:08  <jeff> I added this -- there's not much in stone yet, but I wanted to ensure that as wide an audience was aware of the issue (and how it could potentially affect Evergreen).
+2015-03-16T15:55:50  <gmcharlt> jeff++ # thanks for the heads-up
+2015-03-16T15:56:07  <kmlussier> Monday must be a bad day for meetings.
+2015-03-16T15:56:09  <jeff> We do not seem to be alone in having a use case for localhost WebSockets connections from Chrome, which is good.
+2015-03-16T15:56:25  <gmcharlt> yeah, but we should add our voice to the chorus
+2015-03-16T15:56:34  <gmcharlt> berick: are you up for that/
+2015-03-16T15:56:35  <gmcharlt> ?
+2015-03-16T15:56:53  <jeff> kmlussier: I'm just glad I didn't #startmeeting -- i'm presently out on the floor tag-teaming a recalcitrant microfilm scanner. :-)
+2015-03-16T15:57:16  <kmlussier> heh
+2015-03-16T15:57:27  * dbs needs to split for kids
+2015-03-16T15:57:56  * Bmagic is glad dbs is not splitting kids
+2015-03-16T15:58:22  <gmcharlt> ok, I"m going to assign an action anyway
+2015-03-16T15:58:38  <gmcharlt> #action berick, gmcharlt, and eeevil will add a response to the chromium localhost ws bug
+2015-03-16T15:58:56  <gmcharlt> and finally, very briefly
+2015-03-16T15:59:09  <gmcharlt> #topic Feedback for new features under development
+2015-03-16T15:59:18  <gmcharlt> does anybody have new stuff in the works they want to mention?
+2015-03-16T16:00:23  <jeff> equally briefly: we're looking at adding some things to Missing Pieces with regard to default circ duration after marking missing, etc. If others are interested, let me know or look for a launchpad wishlist bug in the near future.
+2015-03-16T16:00:53  <gmcharlt> sounds intriguing
+2015-03-16T16:00:57  <gmcharlt> thanks, jeff!
+2015-03-16T16:01:14  <gmcharlt> and as it is 16:01 here...
+2015-03-16T16:01:16  <gmcharlt> #endmeeting
+2015-03-16T16:01:16  <pinesol_green> Meeting ended Mon Mar 16 16:01:16 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-03-16T16:01:16  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-16-15.04.html
+2015-03-16T16:01:16  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-16-15.04.txt
+2015-03-16T16:01:16  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-03-16-15.04.log.html
+2015-03-16T16:01:21  <jeff> gmcharlt++
+2015-03-16T16:01:43  <jboyer-isl> appologies for the partial attention, I was trying to get up to speed on the websockets issue.
+2015-03-16T16:01:44  <eeevil> I'll mention here that there is a broad status update coming RSN for the sprint 1 web staff client bug hunting.  tl;dr: of 137 bugs opened, 7 remain unresolved (or undeferred)
+2015-03-16T16:01:57  <eeevil> ha! I missed the end of the meeting with that. oops
+2015-03-16T16:02:31  <jboyer-isl> I must not have been successful, because from what I'm reading it sounds like it's already too late for Firefox?
+2015-03-16T16:03:11  *** DPearl has left #evergreen
+2015-03-16T16:03:22  <berick> gmcharlt: re: websocket, yes, thanks
+2015-03-16T16:03:27  <berick> .. for adding the action
+2015-03-16T16:05:15  <dbwells> gmcharlt++ # running the meeting
+2015-03-16T16:06:45  <kmlussier> gmcharlt++
+2015-03-16T16:07:10  *** collum has quit IRC
+2015-03-16T16:23:07  <kmlussier> @karma
+2015-03-16T16:23:07  <pinesol_green> kmlussier: Highest karma: "dbs" (978), "bshum" (945), and "tsbere" (659).  Lowest karma: "ie" (-62), "^" (-29), and "marc" (-28).  You (kmlussier) are ranked 6 out of 2459.
+2015-03-16T16:24:39  *** julialima has left #evergreen
+2015-03-16T16:25:10  <Dyrcona> ^-- # just because.
+2015-03-16T16:26:23  <dbwells> can't stand that character.  So uppity.
+2015-03-16T16:28:03  *** rjackson_isl has quit IRC
+2015-03-16T16:28:23  <Dyrcona> heh
+2015-03-16T16:29:57  * kmlussier chuckles
+2015-03-16T16:39:13  <kmlussier> v++
+2015-03-16T16:50:06  <kmlussier> If a 14-year-old were getting started in programming, what language would be a good one to start them off in?
+2015-03-16T16:50:47  <Dyrcona> Python or HTML/Javascript, but only the good parts of JavaScript.
+2015-03-16T16:51:24  <Dyrcona> You can get instant gratification in both languages and getting to the fun stuff is not very hard.
+2015-03-16T16:51:26  *** sandbergja has quit IRC
+2015-03-16T16:51:51  <kmlussier> Ha ha. I just turned to my Twitter feed, and floating to the top was a tweet that said "Which programming language is best for beginners? "
+2015-03-16T16:52:53  <kmlussier> My son was just looking through the local hs course catalog, and he said "the one elective I know I want to take is programming." Warmed my heart.
+2015-03-16T16:53:37  <kmlussier> But then I looked at the description for their intro to programming...Visual Basic
+2015-03-16T16:54:55  <Dyrcona> Well, it makes sense given how Microsoft has turned "computer science" in public High Schools into a "learn MS products" curriculum.
+2015-03-16T16:55:31  <kmlussier> Sigh
+2015-03-16T16:55:47  <eeevil> kmlussier: perl! (not kidding)
+2015-03-16T16:55:49  <phasefx> kmlussier: PyLogo might be fun
+2015-03-16T16:56:06  <Dyrcona> eeevil: You just earned your nick. ;)
+2015-03-16T16:56:38  <Dyrcona> ...but only the good parts of Perl! ;)
+2015-03-16T16:57:11  <kmlussier> eeevil: I was thinking perl might be something to pursue later. After getting started in something like python. No?
+2015-03-16T16:57:27  <Dyrcona> kmlussier: I made that remark about JavaScript earlier, because there is a book entitled JavaScript: The Good Parts.
+2015-03-16T16:57:34  <_bott_> Perl's regex handling has ruined me for all others
+2015-03-16T16:57:54  <Dyrcona> _bott_: libpcre, you can take it with you. :)
+2015-03-16T16:58:07  <Dyrcona> Well, most of it, anyway.
+2015-03-16T16:58:07  <jonadab> Eww, visualbasic--
+2015-03-16T16:58:09  <eeevil> kmlussier: python's no easier or harder than any other language ... in reality, learning /any/ language but PHP will teach you a LOT
+2015-03-16T16:58:12  <eeevil> IMNSHO
+2015-03-16T16:58:30  <Dyrcona> PHP will teach a lot. Mostly how *not* to do things.
+2015-03-16T16:58:34  <jonadab> Any of the major VHLLs would be fine -- Perl, Python, Ruby.
+2015-03-16T16:58:37  <eeevil> Dyrcona: point
+2015-03-16T16:58:53  <jonadab> And yes, avoid PHP.
+2015-03-16T16:58:58  <Dyrcona> Actually, I've seen good PHP code.
+2015-03-16T16:59:03  <eeevil> and also IMNSHO, the camel book is one of the best "learn to think like a programmer" books ever
+2015-03-16T16:59:04  <tsbere> I think PHP teaches you how to do things better than VB. <_<
+2015-03-16T16:59:11  <jonadab> PHP is actually much, MUCH better than it used to be.
+2015-03-16T16:59:15  <jonadab> But that's relative.
+2015-03-16T16:59:41  <Dyrcona> Well, I picked up VB late. I started back when computers booted to a BASIC prompt.
+2015-03-16T16:59:48  <jonadab> Inform6 is also a decent choice, albeit with a very limited application domain.
+2015-03-16T17:00:10  <eeevil> (and by that I mean it teaches you what happens as you interact with the computer through the language, not just "here's the syntax")
+2015-03-16T17:00:21  <_bott_> I don't trust languages I can't write with vi
+2015-03-16T17:00:36  <Dyrcona> Nothing like programming in C on Mac System 7 for learning discipline.
+2015-03-16T17:00:50  <Dyrcona> But, anyway, time to go.
+2015-03-16T17:01:04  <kmlussier> Dyrcona: I started on BASIC too
+2015-03-16T17:01:09  <phasefx> jonadab: xyzzy!
+2015-03-16T17:01:17  <jonadab> Dyrcona: I've been learning C by studing the NetHack codebase.  Really.
+2015-03-16T17:01:30  <jonadab> And yes, that's every bit as crazy as it sounds.
+2015-03-16T17:01:32  <kmlussier> The plan was to move on to Cobol and Pascal, but then my high school replaced all of the TRS-80's with these new things called Macs.
+2015-03-16T17:01:37  <kmlussier> I haven't used a Mac since.
+2015-03-16T17:01:45  <kmlussier> Well, not willingly. :)
+2015-03-16T17:01:47  <jonadab> phasefx: Yes.
+2015-03-16T17:01:48  * phasefx has an Inform5 manual in the next room
+2015-03-16T17:01:56  *** Dyrcona has quit IRC
+2015-03-16T17:02:09  <jonadab> phasefx: Yeah, I have a print copy of the DM4.
+2015-03-16T17:02:26  <jonadab> Which is a really well-written book.
+2015-03-16T17:02:51  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-16T17:03:06  <kmlussier> Thanks for the tips! Have a nice night everyone!
+2015-03-16T17:03:24  <Bmagic> kmlussier: HTML, QBASIC, Java, C#, PERL in that order
+2015-03-16T17:03:24  <phasefx> jonadab: cool deal. I just looked at the date on this thing.  Oy :)
+2015-03-16T17:03:31  <jonadab> Heh.
+2015-03-16T17:04:36  <phasefx> kmlussier: you missed a good humble bundle recently that had programming books for young people
+2015-03-16T17:05:51  <kmlussier> phasefx: Really? Do they do those often?
+2015-03-16T17:06:06  *** graced has quit IRC
+2015-03-16T17:06:33  <phasefx> kmlussier: I haven't seen a repeat on the books, but some games have repeated.  Might be useful as a reading list if nothing else
+2015-03-16T17:06:44  <kmlussier> phasefx: OK, thanks!
+2015-03-16T17:07:29  <phasefx> it was called the Humble Brainiac Book Bundle
+2015-03-16T17:09:26  *** mmorgan has left #evergreen
+2015-03-16T17:23:06  *** ericar has quit IRC
+2015-03-16T17:23:20  *** mllewellyn has quit IRC
+2015-03-16T17:37:50  *** dreuther_ has joined #evergreen
+2015-03-16T17:40:18  *** dreuther has quit IRC
+2015-03-16T17:43:04  *** wlayton has joined #evergreen
+2015-03-16T17:44:35  *** dreuther has joined #evergreen
+2015-03-16T17:47:22  *** dreuther_ has quit IRC
+2015-03-16T18:00:11  *** mglass has joined #evergreen
+2015-03-16T18:28:25  *** yboston has quit IRC
+2015-03-16T19:01:39  *** vlewis has quit IRC
+2015-03-16T19:02:43  *** dcook has quit IRC
+2015-03-16T19:12:52  *** dcook has joined #evergreen
+2015-03-16T19:50:11  *** mglass has quit IRC
+2015-03-16T19:58:23  *** wlayton has quit IRC
+2015-03-16T20:16:07  *** akilsdonk has quit IRC
+2015-03-16T20:48:13  *** akilsdonk has joined #evergreen
+2015-03-16T20:54:04  *** jihpringle has quit IRC
+2015-03-16T21:03:47  *** wlayton has joined #evergreen
+2015-03-16T21:10:15  *** wlayton has quit IRC
+2015-03-16T21:31:36  *** akilsdonk has quit IRC

@@ -1,0 +1,299 @@
+2015-04-10T01:49:52  *** bmills1 has joined #evergreen
+2015-04-10T01:49:52  *** bmills has quit IRC
+2015-04-10T01:53:35  *** BigRig has quit IRC
+2015-04-10T01:54:06  *** BigRig has joined #evergreen
+2015-04-10T02:02:01  *** bmills1 has quit IRC
+2015-04-10T02:47:15  *** bshum has quit IRC
+2015-04-10T02:49:37  *** bshum has joined #evergreen
+2015-04-10T04:38:16  *** dcook has quit IRC
+2015-04-10T04:58:53  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-10T07:22:46  *** collum has joined #evergreen
+2015-04-10T07:44:03  *** graced has joined #evergreen
+2015-04-10T07:48:09  *** rjackson_isl has joined #evergreen
+2015-04-10T07:56:31  <kmlussier> Good morning #evergreen
+2015-04-10T07:56:39  <kmlussier> @tea
+2015-04-10T07:56:39  * pinesol_green brews and pours a pot of Home, and sends it sliding down the bar to kmlussier (http://ratetea.com/)
+2015-04-10T07:57:05  <kmlussier> A pot of Home?
+2015-04-10T07:58:17  <kmlussier> @coffee [someone]
+2015-04-10T07:58:17  * pinesol_green brews and pours a cup of Resiprocate Verita Espresso, and sends it sliding down the bar to ldw
+2015-04-10T08:00:18  *** pmurray_away is now known as pmurray
+2015-04-10T08:00:25  *** pmurray is now known as pmurray_away
+2015-04-10T08:00:36  *** mrpeters has joined #evergreen
+2015-04-10T08:04:48  <rjackson_isl> Happy Friday kmlussier!
+2015-04-10T08:07:20  *** _bott_ has quit IRC
+2015-04-10T08:10:50  *** _bott_ has joined #evergreen
+2015-04-10T08:10:54  *** remingtron_ is now known as remingtron
+2015-04-10T08:21:56  *** akilsdonk has joined #evergreen
+2015-04-10T08:22:56  *** Newziky has joined #evergreen
+2015-04-10T08:25:02  <kmlussier> rjackson_isl: Happy Friday! :)
+2015-04-10T08:26:04  <rjackson_isl> Best work day of week - especially around 4:30 PM - with added bonus of 67 for a high tomorrow and sunshine
+2015-04-10T08:36:51  *** mmorgan has joined #evergreen
+2015-04-10T08:40:01  <kmlussier> @weather 02771
+2015-04-10T08:40:03  <pinesol_green> kmlussier: The current temperature in Rumford, East Providence, Rhode Island is 39.7°F (8:35 AM EDT on April 10, 2015). Conditions: Light Rain. Humidity: 97%. Dew Point: 39.2°F. Windchill: 39.2°F. Pressure: 30.06 in 1018 hPa (Falling). 
+2015-04-10T08:40:26  <kmlussier> The weekend holds much more promise.
+2015-04-10T08:41:46  <mmorgan> Maybe by Monday all the snow will finally be gone :)
+2015-04-10T08:46:31  *** ericar has joined #evergreen
+2015-04-10T08:47:23  *** Shae has joined #evergreen
+2015-04-10T08:47:41  *** mrpeters has quit IRC
+2015-04-10T08:55:41  *** pmurray_away is now known as pmurray
+2015-04-10T08:56:02  *** sarabee has joined #evergreen
+2015-04-10T09:01:23  <gmcharlt> csharp: Mailman 3 is looking quite interesting
+2015-04-10T09:02:05  *** Dyrcona has joined #evergreen
+2015-04-10T09:03:34  *** mrpeters has joined #evergreen
+2015-04-10T09:03:43  *** maryj has joined #evergreen
+2015-04-10T09:08:25  *** akilsdonk has quit IRC
+2015-04-10T09:17:10  *** akilsdonk has joined #evergreen
+2015-04-10T09:36:03  <Bmagic> Is there any setting in Evergreen to remove items from the items out screen? Lost for example? Never checked in.
+2015-04-10T09:36:29  <Dyrcona> Don't think so.
+2015-04-10T09:36:44  <Bmagic> So, they need to be checked in to be removed
+2015-04-10T09:36:51  <Dyrcona> They only disappear when the transaction is closed, i.e. xact_finish set.
+2015-04-10T09:37:01  <Dyrcona> They need to be checked in and paid up.
+2015-04-10T09:37:22  <Bmagic> Checking in Lost items would be a lie
+2015-04-10T09:37:36  <Bmagic> and it messes with the billing, which we dont want
+2015-04-10T09:37:53  <Dyrcona> Then why do you want them to go away?
+2015-04-10T09:38:11  <Dyrcona> If they are lost and the patrons owes, I think you'd want to see the transactions.
+2015-04-10T09:38:20  <Bmagic> The patron doesnt owe
+2015-04-10T09:38:22  <Bmagic> they paid
+2015-04-10T09:38:34  <Bmagic> then you check it in, and it voids the original fine
+2015-04-10T09:38:57  <Bmagic> but the item is technically checked out, and therefore, still shows in the items out screen (on the bottom)
+2015-04-10T09:39:05  <Dyrcona> Right. So, you have to add a fee to balance it out.
+2015-04-10T09:39:12  <mmorgan> Bmagic: There's an org unit setting to control the display of Lost items, "Items Out Lost Display Setting"
+2015-04-10T09:39:23  <Bmagic> mmorgan: I discovered that setting
+2015-04-10T09:39:32  <Bmagic> mmorgan: it doesn't work the way we want it to
+2015-04-10T09:39:50  <Bmagic> mmorgan: it would appear that the item still needs to be checked in for it to get totally off the screen
+2015-04-10T09:40:02  <Dyrcona> There's code being worked on to take care of situations like this, but two people have worked on it for over two years, so I wouldn't hold my breath.
+2015-04-10T09:40:13  <mmorgan> Did you say they have paid for the item?
+2015-04-10T09:40:20  <Bmagic> yep, paid
+2015-04-10T09:40:37  <mmorgan> Hmm. Ours disappear at that point.
+2015-04-10T09:40:38  <jeff> Bmagic: are you aware of the new "lost and paid" support?
+2015-04-10T09:41:03  <Bmagic> jeff: I am aware, but it's not implemented, Would this impact our situation if we were to implement it?
+2015-04-10T09:41:30  <mmorgan> What about the org unit setting "Leave transaction open when lost balance equals zero"? How is that set for you?
+2015-04-10T09:44:01  * mmorgan thinks that if the transaction is closing, the item should disappear from items out.
+2015-04-10T09:44:10  <Bmagic> mmorgan: Set to false
+2015-04-10T09:44:25  <Bmagic> mmorgan: I think the code looks for the column checkin_time and not xact_finish
+2015-04-10T09:44:55  <Dyrcona> Bmagic: It might look for both.
+2015-04-10T09:44:56  *** yboston has joined #evergreen
+2015-04-10T09:45:01  <mmorgan> In our experience, patron loses item, patron pays for item, item no longer shows on items out.
+2015-04-10T09:45:09  <Bmagic> well, even both, means that checkin_time is required
+2015-04-10T09:45:36  <Bmagic> and we are not checking it in (or don't think that's correct)
+2015-04-10T09:46:46  <Bmagic> I'm going to run some more expierements
+2015-04-10T09:47:38  <mmorgan> Just marked an item Lost on my test patron. Paid the bill and the item is gone from items out.
+2015-04-10T09:48:12  <mmorgan> Item never got checked in.
+2015-04-10T09:49:19  <Bmagic> mmorgan: that is good news, let me see what is going on here
+2015-04-10T09:51:25  <kmlussier> I thought the setting mmorgan referred to above is the one that removed it from Items Out if it was fully paid. Strange that it isn't working for you that way.
+2015-04-10T09:51:45  *** RoganH has joined #evergreen
+2015-04-10T09:53:06  <mmorgan> "Leave transaction open when lost balance equals zero" is unset for us, and my understanding is that would default to FALSE
+2015-04-10T09:53:26  <mmorgan> Could be that the transactions aren't closing for some reason.
+2015-04-10T09:54:36  <bshum> Well it might be a bad setting. Meaning it's bugged and false doesn't do what we expect, while unset is better...
+2015-04-10T10:02:32  <Dyrcona> Bmagic: Is that setting set to true or false or not set?
+2015-04-10T10:02:51  <Dyrcona> If it is true, it will leave the transactions open on the patron account.
+2015-04-10T10:03:05  <Dyrcona> At least, that is my understanding of how it is supposed to work.
+2015-04-10T10:03:35  <Bmagic> it's false
+2015-04-10T10:04:09  <Bmagic> I think that long overdue is part of the equation here. I am going to ask the library for some details
+2015-04-10T10:04:27  <kmlussier> Bmagic: That could be. I think csharp has reported a bug on that.
+2015-04-10T10:04:34  <Dyrcona> Ah, long overude.... The code may not be checking that status correctly.
+2015-04-10T10:04:35  <Bmagic> oh?
+2015-04-10T10:04:51  <Dyrcona> over-rude? :)
+2015-04-10T10:05:05  <kmlussier> bug 1424646
+2015-04-10T10:05:05  <pinesol_green> Launchpad bug 1424646 in Evergreen "Paid-For Long Overdue Items Still Appear in "Other/Special Circulations" Window" (affected: 3, heat: 16) [Undecided,New] https://launchpad.net/bugs/1424646
+2015-04-10T10:05:09  <Bmagic> I think perhaps, since long overdue assess bills just like lost, our libraries are voiding those bills
+2015-04-10T10:05:39  <bshum> berick: gmcharlt asked about backporting https://bugs.launchpad.net/evergreen/+bug/1435494 to 2.8. To me, I read it as new feature meaning closed to backport, but will defer this to your decision on how to include it.
+2015-04-10T10:05:39  <pinesol_green> Launchpad bug 1435494 in Evergreen "Clark Kent can over-consume system resources" (affected: 1, heat: 6) [Wishlist,Fix committed]
+2015-04-10T10:07:14  <Bmagic> This code should stop long overdue from creating bills LP1331174
+2015-04-10T10:07:32  <gmcharlt> bshum: yeah, it straddles the line; I entered the bug as the wishlist, but it could also be viewed as a bugfix mitigated the bug "reporter allows users to write reports that can cause server indigestion"
+2015-04-10T10:07:37  <jeff> bug 1331174
+2015-04-10T10:07:37  <pinesol_green> Launchpad bug 1331174 in Evergreen "Long Overdue processing needs org unit settings separate from Lost Processing" (affected: 3, heat: 14) [Wishlist,Confirmed] https://launchpad.net/bugs/1331174
+2015-04-10T10:09:53  <berick> bshum: i'd call that a bug fix
+2015-04-10T10:10:31  <berick> bshum++ kmlussier++ ACQ merging/tseting
+2015-04-10T10:11:02  <kmlussier> berick: We're always happy to test acq improvements in these parts. :)
+2015-04-10T10:11:19  <kmlussier> berick++
+2015-04-10T10:11:45  * berick rebases bug 1380803
+2015-04-10T10:11:45  <pinesol_green> Launchpad bug 1380803 in Evergreen "PO totals do not include all amounts" (affected: 1, heat: 8) [Medium,Confirmed] https://launchpad.net/bugs/1380803
+2015-04-10T10:12:07  <bshum> berick: Alrighty, up to you.  Since it has a release note, we probably should move that into the mainline notes for 2.8 so that it doesn't get lost in the darkness.
+2015-04-10T10:13:59  <kmlussier> That reminds me. I have to merge another release note change.
+2015-04-10T10:14:05  * kmlussier does it right now before she forgets again.
+2015-04-10T10:18:44  * bshum decides to remove the 2.next milestones from all the bugs he merged yesterday.  If they're fixes for 2.8.1, then it'd be good to have them closed and not lurking in 2.next (or moved to 2.9, since they'll likely be fix released and can be closed once 2.8.1 is cut)
+2015-04-10T10:20:36  * berick wonders why bug fixes would ever target 2.next
+2015-04-10T10:20:56  <bshum> berick: Pretty much.
+2015-04-10T10:20:57  <bshum> :)
+2015-04-10T10:21:03  <berick> ;)
+2015-04-10T10:26:45  <jeff> @eightball will this be the upgrade that drives us away from our 2.1-era opac templates?
+2015-04-10T10:26:45  <pinesol_green> jeff: No clue.
+2015-04-10T10:28:16  <berick> heh
+2015-04-10T10:29:15  *** eeevil is now known as pinesol_blue
+2015-04-10T10:29:16  <Dyrcona> I sometimes target 2.next just to target something.
+2015-04-10T10:29:23  <pinesol_blue> jeff: It is certain.
+2015-04-10T10:29:25  *** Dyrcona is now known as soylent_green
+2015-04-10T10:29:29  *** pinesol_blue is now known as eeevil
+2015-04-10T10:30:22  <berick> soylent_green: why don't you have nutritional labels?
+2015-04-10T10:30:39  <soylent_green> It would only confuse the consumer.
+2015-04-10T10:31:07  <berick> true
+2015-04-10T10:31:16  <soylent_green> It's good for you. Stop asking questions.
+2015-04-10T10:31:49  *** soylent_green is now known as Dyrcona
+2015-04-10T10:32:06  * Dyrcona is surprised soylent_green isn't a registered nick.
+2015-04-10T10:34:16  <bshum> Alright, in lieu of a future decision at the next dev meeting over how to handle release notes for maintenance .x releases of Evergreen series, I'm going to start a new heading for stuff like this for 2.7
+2015-04-10T10:34:23  <pinesol_green> [evergreen|Remington Steed] DOCS: Simplify release notes entry for AccessHandler - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=21a5a96>
+2015-04-10T10:34:49  *** soylent_green has joined #evergreen
+2015-04-10T10:35:09  *** collum has quit IRC
+2015-04-10T10:35:41  <bshum> I'm not sure what I'm going to name it quite yet... "Bug Fixes for Maintenance Releases" sounded wordy and annoying.
+2015-04-10T10:36:42  <Dyrcona> Just Bug Fixes works for me.
+2015-04-10T10:37:11  * bshum goes with the simple answer
+2015-04-10T10:37:13  <bshum> Dyrcona++
+2015-04-10T10:37:51  <kmlussier> bshum: For 2.7? Awesome!
+2015-04-10T10:38:00  <kmlussier> BTW, is that on the dev meeting agenda already?
+2015-04-10T10:38:03  *** sandbergja has joined #evergreen
+2015-04-10T10:38:14  <bshum> kmlussier: It merged cleanly, and basically I'm running it on a 2.7-ish system right now.
+2015-04-10T10:38:24  <bshum> If it's a bug fix, push it, push it real good.
+2015-04-10T10:39:30  <berick> bshum++
+2015-04-10T10:40:02  *** collum has joined #evergreen
+2015-04-10T10:47:41  *** Shae_ has joined #evergreen
+2015-04-10T10:50:32  *** Shae has quit IRC
+2015-04-10T10:50:45  *** Shae_ is now known as Shae
+2015-04-10T10:52:28  <pinesol_green> [evergreen|Ben Shum] Docs: Start a new section for bug fixes for 2.7 series - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=55555b7>
+2015-04-10T10:52:29  <pinesol_green> [evergreen|Ben Shum] Docs: Move security bug fix note into the Bug Fixes area of 2.7 RELEASE NOTES - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=9cc10e9>
+2015-04-10T10:52:30  <pinesol_green> [evergreen|Ben Shum] Docs: Update 2.8 RELEASE NOTES to include new Bug Fixes section - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=6c8a070>
+2015-04-10T10:52:56  * bshum thinks in hindsight, he should have started with the backport to rel_2_6 first, and worked forward.  Darn.
+2015-04-10T10:53:06  * bshum learns his lesson and tries to fix everything anyways
+2015-04-10T10:58:30  <pinesol_green> [evergreen|Ben Shum] Docs: Update 2.6 RELEASE NOTES to include new section on Bug Fixes - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=612ea94>
+2015-04-10T11:25:47  *** bmills has joined #evergreen
+2015-04-10T11:26:27  *** krvmga has joined #evergreen
+2015-04-10T11:27:42  *** bmills has joined #evergreen
+2015-04-10T11:28:09  <gmcharlt> bshum: berick: I suppose I ought to send an EOL message to open-ils-general for 2.5?
+2015-04-10T11:28:45  <krvmga> i don't recall seeing a resolution for reported 2.7 search slowness with format filters that was talked about on one of the mailing lists. was there?
+2015-04-10T11:30:01  <berick> gmcharlt: that would be super.  maybe include a note that 2.6 will also be EOL (technically, anyway) in a few months.
+2015-04-10T11:30:39  <berick> hm, do we need to update the downloads page to show 2.6 as security only?
+2015-04-10T11:31:01  <gmcharlt> berick: indeed - are we all in agreement that 2.6 is now security-only?
+2015-04-10T11:31:31  <Dyrcona> krvmga: There has been discussion on Bug 1438136
+2015-04-10T11:31:31  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438136
+2015-04-10T11:31:46  <berick> gmcharlt: good question.  (The déjà vu is overwhelming)
+2015-04-10T11:32:24  <krvmga> Dyrcona: thanks
+2015-04-10T11:33:15  <kmlussier> krvmga: One thing to remember is that C/W MARS is currently using search filter groups for format filters. The bug in question isn't related to search filter groups.
+2015-04-10T11:33:29  <kmlussier> When you do your upgrade, you should probably move to MVF for your format limiting.
+2015-04-10T11:33:59  <krvmga> kmlussier: thanks
+2015-04-10T11:37:02  *** soylent_green has quit IRC
+2015-04-10T11:37:04  <bshum> berick: gmcharlt: I think that we decided that because 2.6 was released on 2014-04-16, we should keep it in regular release to get the full 12 months support, then move it to security-only next month.
+2015-04-10T11:37:17  <bshum> But 2.5 is definitely done and over.
+2015-04-10T11:38:04  <bshum> So more than likely, 2.6.8 will be the last regular bug fix 2.6 milestone.
+2015-04-10T11:38:44  <berick> bshum: that's right, thanks for the reminder
+2015-04-10T11:41:53  <gmcharlt> ok, then I think we can defer saying anything about 2.6 until after 2.6.8 is cut
+2015-04-10T11:43:03  <kmlussier> Was dbwells part of that discussion on 2.6 when we had it earlier? Just want to make sure he is okay with/aware of it since he's the release maintainer.
+2015-04-10T11:44:34  *** bbqben has joined #evergreen
+2015-04-10T11:49:17  <Bmagic> mmorgan jeff Dyrcona kmlussier  This turned out to be this bug https://bugs.launchpad.net/evergreen/+bug/1424646
+2015-04-10T11:49:17  <pinesol_green> Launchpad bug 1424646 in Evergreen "Paid-For Long Overdue Items Still Appear in "Other/Special Circulations" Window" (affected: 4, heat: 20) [Undecided,New]
+2015-04-10T11:49:51  <jeff> Bmagic: ah!
+2015-04-10T11:50:02  <Bmagic> yep!
+2015-04-10T11:50:03  <jeff> Bmagic: and yes, now that you link that i should have remembered that bug.
+2015-04-10T11:51:09  <Bmagic> Here is a related question. We are finding that Lost triggers do not run on circulations that have already been turned to long overdue. Is that correct?
+2015-04-10T11:51:23  * mmorgan nudges the heat on that bug.
+2015-04-10T11:54:04  <berick> Bmagic: http://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_5.html -- section 1.2.1 might be what you need
+2015-04-10T11:54:55  <Bmagic> berick: hmmm, I messed with this file awhile back
+2015-04-10T11:54:56  <berick> basically.. http://git.evergreen-ils.org/?p=Evergreen.git;a=blobdiff;f=Open-ILS/examples/action_trigger_filters.json.example;h=31d713d79bccb275866866ed26d03737323d2e21;hp=d599d7bd42a7a0026eb2ff8ce642f2cb5495d3d5;hb=18f672d40658964f85657713c743acafe22f3633;hpb=feb1c3f2044add1cf6a262824f7e2082a372253c
+2015-04-10T11:54:56  <pinesol_green> [evergreen|Bill Erickson] LP 1169193 long-overdue automated processing - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=18f672d>
+2015-04-10T11:54:57  <pinesol_green> [evergreen|Bill Erickson] LP 1169193 long-overdue SQL seed data - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=feb1c3f>
+2015-04-10T11:56:01  *** bbqben has quit IRC
+2015-04-10T11:56:08  <berick> i'm shooting from the hip, but I think that's probably the issue
+2015-04-10T11:56:30  <Bmagic> berick: My config has this code merged
+2015-04-10T11:56:45  <Bmagic> my line looks like this  [ { "stop_fines"  : ["MAXFINES"] },
+2015-04-10T11:57:02  <berick> hmm, actually
+2015-04-10T11:57:19  <berick> for this, you would want the list to include LONGOVERDUE
+2015-04-10T11:57:27  <Bmagic> oh, i see
+2015-04-10T11:57:51  <berick> you might need to use a separate filters file for auto lost processing
+2015-04-10T11:58:15  <berick> which you can specify via a_t_runner.pl command line option
+2015-04-10T11:58:59  <berick> --custom-filters=/path/to/custom.json
+2015-04-10T11:59:03  <Bmagic> oh, pass the perl file an overrided action_trigger_filters.json file ?
+2015-04-10T11:59:16  <berick> yeah
+2015-04-10T11:59:16  <Bmagic> I am ok with changing the default file though
+2015-04-10T11:59:23  <berick> well, but you may not want to
+2015-04-10T11:59:39  <Bmagic> explain
+2015-04-10T12:00:34  <berick> if you add LONGOVERDUE back, then longoverdue items might get marked as longoverdue again.  or, more likely, you'll re-process (and evetually ignore) a bunch of circs you don't need to
+2015-04-10T12:00:55  <Bmagic> oh jees
+2015-04-10T12:01:02  <berick> the validators should prevent anything from getting the full treatment twice.
+2015-04-10T12:01:13  <berick> but they'd have to be loaded and tested
+2015-04-10T12:01:17  <berick> over and over again
+2015-04-10T12:01:28  <Bmagic> so, I need to setup an AT with a grainularity, and pass that cron the special config
+2015-04-10T12:01:54  <berick> yes
+2015-04-10T12:02:05  <Bmagic> sounds doable
+2015-04-10T12:02:09  <berick> the mark-lost event def probably already has a granularity
+2015-04-10T12:02:18  <berick> oh, you mean the cron job
+2015-04-10T12:02:32  <Bmagic> both, the cron and the AT need to match grainularity
+2015-04-10T12:02:50  <Bmagic> so that only the Lost trigger will include LONGOVERDUE
+2015-04-10T12:02:50  <berick> yes, it needs its own cron job w/ the mark lost granularity, and --granularity-only applied, and --custom-filters applied
+2015-04-10T12:03:00  <berick> right
+2015-04-10T12:03:05  <Bmagic> berick++
+2015-04-10T12:07:34  *** tsbere has quit IRC
+2015-04-10T12:39:58  *** jihpringle has joined #evergreen
+2015-04-10T12:57:08  *** ericar_ has joined #evergreen
+2015-04-10T12:58:13  *** sarabee has quit IRC
+2015-04-10T12:59:22  *** ericar has quit IRC
+2015-04-10T12:59:31  *** ericar_ is now known as ericar
+2015-04-10T13:50:08  *** ericar_ has joined #evergreen
+2015-04-10T13:51:47  *** ericar has quit IRC
+2015-04-10T13:52:00  *** ericar_ is now known as ericar
+2015-04-10T14:07:31  <kmlussier> Ooh! I missed bug 1429317 when it was first posted.
+2015-04-10T14:07:31  <pinesol_green> Launchpad bug 1429317 in Evergreen "Serials in holdings view should be able to sort in ascending and descending order as well as by call number" (affected: 2, heat: 14) [Wishlist,New] https://launchpad.net/bugs/1429317
+2015-04-10T14:09:06  *** krvmga has quit IRC
+2015-04-10T14:12:26  *** krvmga has joined #evergreen
+2015-04-10T14:22:23  <Dyrcona> Bug 1442752 seems to ring a bell, but when I searched for something related, I naturally couldn't find anything.
+2015-04-10T14:22:23  <pinesol_green> Launchpad bug 1442752 in Evergreen "oils_xpath invalid xpath expression in acquisitions record upload" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1442752
+2015-04-10T14:28:40  *** tsbere has joined #evergreen
+2015-04-10T14:33:34  <kmlussier> Dyrcona: That's interesting. I have the order records in question. Your report is showing a different value in one of the subfield u's than is in the actual record.
+2015-04-10T14:33:40  <kmlussier> I think I've seen that happen before.
+2015-04-10T14:34:16  <Dyrcona> IDK. I copied directly from the postgres log on the server.
+2015-04-10T14:34:26  <kmlussier> Dyrcona: Never mind. I'm looking at the wrong thing.
+2015-04-10T14:43:17  <kmlussier> @dessert Dyrcona
+2015-04-10T14:43:17  * pinesol_green grabs some Banana Puddin' for Dyrcona
+2015-04-10T14:43:45  <kmlussier> Pudding is such a disappointing dessert when it comes down to it.
+2015-04-10T14:43:48  <Dyrcona> It's not coconut cream pie, but it'll do.
+2015-04-10T14:43:55  <Dyrcona> ;)
+2015-04-10T14:43:57  <kmlussier> @dessert [someone]
+2015-04-10T14:43:57  * pinesol_green grabs some Mint Chocolate Chip Ice Cream for ningalls
+2015-04-10T14:49:58  *** tsbere has quit IRC
+2015-04-10T14:52:15  *** tsbere has joined #evergreen
+2015-04-10T14:52:56  *** dreuther_ has quit IRC
+2015-04-10T15:07:58  *** dreuther has joined #evergreen
+2015-04-10T15:20:06  *** krvmga has quit IRC
+2015-04-10T15:26:02  *** RoganH has quit IRC
+2015-04-10T15:29:41  *** collum has quit IRC
+2015-04-10T16:16:00  *** ericar has quit IRC
+2015-04-10T16:20:17  *** Shae has quit IRC
+2015-04-10T16:29:49  *** rjackson_isl has quit IRC
+2015-04-10T16:52:04  <gmcharlt> @coffee
+2015-04-10T16:52:04  * pinesol_green brews and pours a cup of Belle Espresso, and sends it sliding down the bar to gmcharlt
+2015-04-10T16:52:20  <kmlussier> It's a little late in the day for that, isn't it gmcharlt?
+2015-04-10T16:52:31  <mmorgan> Especially Espresso!
+2015-04-10T16:52:33  <kmlussier> @bartendar
+2015-04-10T16:52:34  <pinesol_green> kmlussier: As great as you are man, you'll never be greater than yourself.
+2015-04-10T16:52:51  * gmcharlt is a little bee, buzzing around today
+2015-04-10T16:52:55  <gmcharlt> emphasis on the buzzing
+2015-04-10T16:53:06  * kmlussier does know to spell FWIW
+2015-04-10T16:53:17  <kmlussier> @bartender
+2015-04-10T16:53:17  * pinesol_green fills a pint glass with Icehouse, and sends it sliding down the bar to kmlussier (http://beeradvocate.com/beer/profile/105/1299/)
+2015-04-10T16:53:36  <kmlussier> And I know how to type too. Just not in IRC
+2015-04-10T16:55:58  <berick> ouch, Icehouse
+2015-04-10T16:56:17  <berick> @bartender
+2015-04-10T16:56:17  * pinesol_green fills a pint glass with Full Sail Rip Curl, and sends it sliding down the bar to berick (http://beeradvocate.com/beer/profile/5316/2893/)
+2015-04-10T16:56:19  <kmlussier> Bmagic++ #Long Overdue fixes
+2015-04-10T16:56:34  <kmlussier> berick: Is Icehouse a bad thing?
+2015-04-10T16:56:59  <kmlussier> Oh, it gets terrible ratings on beeradvocate
+2015-04-10T16:58:15  <berick> :)
+2015-04-10T17:05:06  *** Dyrcona has quit IRC
+2015-04-10T17:12:25  *** mmorgan has left #evergreen
+2015-04-10T17:21:04  *** graced has quit IRC
+2015-04-10T17:30:42  <kmlussier> @sortinghat
+2015-04-10T17:30:42  <pinesol_green> Hmm... kmlussier... Let me see now... SLYTHERIN!
+2015-04-10T17:31:26  <kmlussier> bwahahaha
+2015-04-10T17:43:20  *** gsams has joined #evergreen
+2015-04-10T17:45:17  *** geoffsams has quit IRC
+2015-04-10T17:46:35  *** maryj has quit IRC
+2015-04-10T17:49:05  *** Newziky has left #evergreen
+2015-04-10T17:57:57  * kmlussier decides to remove the webstafclient tag from bugs that aren't specifically related to the web client.
+2015-04-10T18:18:07  *** mrpeters has quit IRC
+2015-04-10T18:49:37  *** yboston has quit IRC
+2015-04-10T18:53:57  *** pmurray is now known as pmurray_away
+2015-04-10T19:16:33  *** akilsdonk has quit IRC
+2015-04-10T19:28:54  *** dreuther has quit IRC
+2015-04-10T19:30:28  *** sandbergja has quit IRC
+2015-04-10T19:41:30  *** akilsdonk has joined #evergreen
+2015-04-10T21:16:14  *** akilsdonk has quit IRC
+2015-04-10T21:50:54  *** jihpringle has quit IRC
+2015-04-10T23:59:37  *** BigRig has quit IRC

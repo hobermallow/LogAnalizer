@@ -1,0 +1,313 @@
+2015-01-07T00:00:38  <bshum> dbwells++ # 2.6.5
+2015-01-07T00:28:11  *** abowling has quit IRC
+2015-01-07T01:16:41  *** akilsdonk has joined #evergreen
+2015-01-07T01:19:24  *** akilsdonk_ has quit IRC
+2015-01-07T04:08:07  *** dbwells has quit IRC
+2015-01-07T04:08:25  *** dbwells has joined #evergreen
+2015-01-07T04:54:55  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-07T06:07:23  *** phasefx has quit IRC
+2015-01-07T06:08:12  *** BigRig has quit IRC
+2015-01-07T06:10:17  *** maryj has quit IRC
+2015-01-07T06:12:07  *** BigRig has joined #evergreen
+2015-01-07T06:12:08  *** phasefx has joined #evergreen
+2015-01-07T06:12:08  *** maryj has joined #evergreen
+2015-01-07T07:38:06  *** rjackson-isl has joined #evergreen
+2015-01-07T07:43:10  *** Shae has joined #evergreen
+2015-01-07T07:57:01  *** jboyer-isl has joined #evergreen
+2015-01-07T08:05:44  *** collum has joined #evergreen
+2015-01-07T08:19:20  *** ericar has joined #evergreen
+2015-01-07T08:34:10  *** Dyrcona has joined #evergreen
+2015-01-07T08:34:49  <Dyrcona> @wunder 01845
+2015-01-07T08:34:50  <pinesol_green> Dyrcona: The current temperature in WB1CHU, Lawrence, Massachusetts is 12.9°F (8:34 AM EST on January 07, 2015). Conditions: Scattered Clouds. Humidity: 100%. Dew Point: 12.2°F. Windchill: 12.2°F. Pressure: 29.87 in 1011 hPa (Steady).  Wind Chill Advisory in effect from 5 PM this afternoon to 10 am EST Thursday...
+2015-01-07T08:36:27  <csharp> yowza
+2015-01-07T08:36:33  <csharp> @wunder 30345
+2015-01-07T08:36:34  <pinesol_green> csharp: The current temperature in Lakeside, Atlanta, Georgia is 32.5°F (8:30 AM EST on January 07, 2015). Conditions: Clear. Humidity: 66%. Dew Point: 23.0°F. Windchill: 28.4°F. Pressure: 30.29 in 1026 hPa (Rising).  Wind Advisory in effect from 10 am this morning to 1 am EST Thursday...
+2015-01-07T08:42:19  <Dyrcona> Yep. Winter finally showed up.
+2015-01-07T08:45:22  *** StephenGWills_ has joined #evergreen
+2015-01-07T08:48:08  *** abowling has joined #evergreen
+2015-01-07T08:53:22  <Dyrcona> @wunder zqn
+2015-01-07T08:53:23  <pinesol_green> Dyrcona: An error has occurred and has been logged. Please contact this bot's administrator for more information.
+2015-01-07T08:53:34  *** julialima_ has joined #evergreen
+2015-01-07T08:53:34  <Dyrcona> @wunder wzqn
+2015-01-07T08:53:35  <pinesol_green> Dyrcona: Error: No such location could be found.
+2015-01-07T08:53:47  <Dyrcona> Oh well.
+2015-01-07T08:58:09  *** StephenGWills_ has left #evergreen
+2015-01-07T09:10:08  <gmcharlt> @wunder 30096
+2015-01-07T09:10:09  <pinesol_green> gmcharlt: The current temperature in City of Berkeley Lake, Berkeley Lake, Georgia is 32.5°F (9:05 AM EST on January 07, 2015). Conditions: Clear. Humidity: 60%. Dew Point: 19.4°F. Windchill: 32.0°F. Pressure: 30.27 in 1025 hPa (Falling).  Wind Advisory in effect from 10 am this morning to 1 am EST Thursday...
+2015-01-07T09:12:28  *** mrpeters has joined #evergreen
+2015-01-07T09:16:01  *** mmorgan has joined #evergreen
+2015-01-07T09:18:49  <rjackson-isl> @wunder 46280
+2015-01-07T09:18:50  <pinesol_green> rjackson-isl: The current temperature in Clay Township N7CZ, Indianapolis, Indiana is 3.0°F (9:18 AM EST on January 07, 2015). Conditions: Partly Cloudy. Humidity: 80%. Dew Point: -2.2°F. Windchill: -5.8°F. Pressure: 30.57 in 1035 hPa (Falling).  Wind chill warning in effect until 10 am EST Thursday... 
+2015-01-07T09:19:45  *** finnx has joined #evergreen
+2015-01-07T09:19:52  <gmcharlt> rjackson-isl: YOU WIN!
+2015-01-07T09:19:56  * gmcharlt is so sorry
+2015-01-07T09:20:15  <rjackson-isl> I lose!
+2015-01-07T09:20:29  *** finnx has quit IRC
+2015-01-07T09:20:42  *** finnx has joined #evergreen
+2015-01-07T09:23:08  *** RoganH has joined #evergreen
+2015-01-07T09:26:56  *** ericar_ has joined #evergreen
+2015-01-07T09:28:19  *** ericar has quit IRC
+2015-01-07T09:28:20  *** ericar_ is now known as ericar
+2015-01-07T09:35:59  *** buzzy has joined #evergreen
+2015-01-07T09:51:49  <jeff> @wunder KTVC
+2015-01-07T09:51:50  <pinesol_green> jeff: The current temperature in Traverse City, Michigan is 6.8°F (9:36 AM EST on January 07, 2015). Conditions: heavy snow. Humidity: 87%. Dew Point: 3.2°F. Windchill: -11.2°F. Pressure: 30.39 in 1029 hPa (Falling).  Winter Weather Advisory in effect until noon EST today... 
+2015-01-07T09:52:01  <dbs> @wunder p3e 2c6
+2015-01-07T09:52:02  <pinesol_green> dbs: The current temperature in Sudbury, Ontario is -17.0°F (9:50 AM EST on January 07, 2015). Conditions: Low Drifting Snow. Humidity: 71%. Dew Point: -23.8°F. Windchill: -16.6°F. Pressure: 30.29 in 1026 hPa (Rising). 
+2015-01-07T09:52:40  * dbs walked into work (1/2 hour) this morning
+2015-01-07T09:53:06  <dbs> windchill is warmer than the actual temperature? Umm.
+2015-01-07T09:54:12  <jeff> heh
+2015-01-07T09:54:16  <jeff> must be summer breezes.
+2015-01-07T09:59:42  * csharp now has https://www.youtube.com/watch?v=MsW8rXPcnM0 in his head
+2015-01-07T10:16:45  <jeff> visibility is bad this morning.
+2015-01-07T10:17:08  <jeff> METAR KTVC 071453Z 34014G23KT 1/4SM +SN BLSN VV004 M14/M15 A3040 RMK AO2 PK WND 32028/1434 SLP309 P0001 60001 T11391150 51040 $
+2015-01-07T10:23:13  *** RoganH has quit IRC
+2015-01-07T10:35:11  *** RoganH has joined #evergreen
+2015-01-07T10:41:09  <jeff> METAR falls somewhere between SIP messages and serials holding/prediction codes.
+2015-01-07T10:42:22  <Dyrcona> So between background radiation and line noise for level of meaningfulness?
+2015-01-07T10:43:20  <jboyer-isl> tag soup; some hot, some cold, some smooth, some chunky, all one bowl!
+2015-01-07T10:43:39  <jboyer-isl> HTML is also this style of dish.
+2015-01-07T10:44:11  <Dyrcona> Which HTML? ;)
+2015-01-07T10:44:35  <jboyer-isl> Exactly.
+2015-01-07T10:45:33  <Dyrcona> <blink/>
+2015-01-07T10:55:00  <csharp> @quote random
+2015-01-07T10:55:00  <pinesol_green> csharp: Quote #73: "< dbs> jumped from LaTeX-like markup on the commodore 64 to WordPerfect w/ reveal codes to straight-up WYSWIWYG stuff, then back to SGML/XML things like DocBook, then abstracted out to AsciiDoc, now working closer to the source - circle of doc life" (added by csharp at 10:17 AM, January 13, 2014)
+2015-01-07T11:02:14  * csharp checks lupin
+2015-01-07T11:02:29  <berick> csharp++
+2015-01-07T11:02:33  <berick> was just trying to load a page...
+2015-01-07T11:02:55  *** ericar_ has joined #evergreen
+2015-01-07T11:03:08  * csharp restarted apache
+2015-01-07T11:03:12  <csharp> should be back up
+2015-01-07T11:03:18  <berick> yep
+2015-01-07T11:03:27  <csharp> gonna wade into the server logs to see what was up
+2015-01-07T11:03:27  <RoganH> @blame apache
+2015-01-07T11:03:27  <pinesol_green> RoganH: It really IS apache's fault!
+2015-01-07T11:04:10  <RoganH> At first I assumed it was just my crappy ISP.  "Oh, you'll just randomly block just one domain's traffic from loading.  Well, not the first time."
+2015-01-07T11:04:29  *** ericar has quit IRC
+2015-01-07T11:04:33  *** ericar_ is now known as ericar
+2015-01-07T11:05:32  * jeff watches for long-running downloads
+2015-01-07T11:05:45  <jeff> plan: check. time:
+2015-01-07T11:07:07  <Bmagic> Is there a switch somewhere to make the action triggers that send emails to change the email headers to flag the content as HTML instead of plain/text ?
+2015-01-07T11:08:30  <eeevil> Bmagic: the templates that send email control the headers, IIRC, so you can just set the mime type I'd think
+2015-01-07T11:08:45  <Bmagic> I was wondering about that
+2015-01-07T11:09:18  * Dyrcona shudders.
+2015-01-07T11:09:26  <bshum> https://bugs.launchpad.net/evergreen/+bug/1031335
+2015-01-07T11:09:26  <pinesol_green> Launchpad bug 1031335 in Evergreen 2.7 "Email templates should always escape headers" (affected: 2, heat: 10) [Undecided,Incomplete]
+2015-01-07T11:09:47  <bshum> It's incomplete, but some of this was discussed on that bug I think?
+2015-01-07T11:10:39  * bshum goes back to randomly digging for explanations for "weird holds"
+2015-01-07T11:12:52  <jeff> huh. the "maintenance required" indicator on that METAR report hasn't been on for as long as I assumed -- just kicked in this morning.
+2015-01-07T11:15:03  <berick> bshum: time permitting, i may create a page like this for EG release cutting.. I just want to be sure you didn't already do that and I missed it.  http://wiki.evergreen-ils.org/doku.php?id=dev:release_process:opensrf:2.0
+2015-01-07T11:18:46  <bshum> berick: Sounds good, we should probably delete this old page for Evergreen 2.0 (subversion steps)
+2015-01-07T11:18:47  <bshum> http://wiki.evergreen-ils.org/doku.php?id=dev:release_process:evergreen:2.0
+2015-01-07T11:19:05  <bshum> berick: dbwells shared with me a google doc when we were RMs that outlined the steps process.
+2015-01-07T11:19:14  <bshum> I added some minor notes to it based on my own dealings
+2015-01-07T11:19:25  <bshum> Maybe we can use that as a baseline to create a new page.
+2015-01-07T11:20:43  <berick> bshum: mind sharing it back? i'd like to see your notes
+2015-01-07T11:21:41  <bshum> berick: Most of my notes were for pre-req stuff
+2015-01-07T11:21:55  <bshum> Which you'll handle better once we merge the dev/packager makefile stuff
+2015-01-07T11:22:53  *** jwoodard has joined #evergreen
+2015-01-07T11:24:17  <bshum> berick++ # let me know once you have a wiki page going.  I'll be glad to help read over and add further notes or refinements.
+2015-01-07T11:25:22  <berick> bshum: thanks!
+2015-01-07T11:26:21  <berick> bshum: did you make any headway on finalizing the list of needed prereqs for building releases on servers w/o EG installed?
+2015-01-07T11:26:36  <berick> thinking back to the dev/packager makefile stuff
+2015-01-07T11:26:51  <bshum> berick: It wasn't too much extra stuff.  I can probably get you a list momentarily of specific packages.
+2015-01-07T11:27:06  <berick> that would be great.  no rush, though
+2015-01-07T11:33:19  <bshum> berick: Yeah it's not a long list
+2015-01-07T11:33:34  <bshum> make, automake, autoconf, libtool (just to be sure the basics are done)
+2015-01-07T11:34:32  <bshum> libtemplate-perl liblocale-maketext-lexicon-perl
+2015-01-07T11:34:59  <bshum> That's it.
+2015-01-07T11:35:08  <bshum> Everything else is covered.
+2015-01-07T11:35:27  <berick> great, thanks
+2015-01-07T11:35:32  <berick> i'll add those to the LP branch
+2015-01-07T11:35:45  <bshum> Oh, I guess except for source-highlight asciidoc :)
+2015-01-07T11:35:52  <bshum> But that's for documentors
+2015-01-07T11:36:16  <berick> hmm
+2015-01-07T11:36:35  <berick> that's a good question.  i usually generate asciidoc output on the same machine I build releases on
+2015-01-07T11:36:40  <berick> and it it part of the process
+2015-01-07T11:36:44  <bshum> Right.
+2015-01-07T11:37:14  <bshum> Not hyper critical, just naming extras
+2015-01-07T11:37:18  <berick> so, we'd also need asciidoc (and source-highlight)
+2015-01-07T11:39:03  <bshum> We talked about calling the developer target if we select packager right?
+2015-01-07T11:39:15  <bshum> Since we need the developer pre-req's to build the web client properly
+2015-01-07T11:39:45  <berick> yes, i'll add that too
+2015-01-07T11:39:59  <bshum> berick++ # looking forward to testing :)
+2015-01-07T11:42:17  <dbwells> berick: bshum: I'd be happy to look over and otherwise help out with a EG build wiki page.  For maintenence releases, I have it mostly boiled down now to a list of 20 or so commands which I copy and paste :)
+2015-01-07T11:42:53  <dbwells> A few parts could be easily scripted, but I haven't gotten lazy enough yet.
+2015-01-07T11:45:17  <berick> dbwells: this list of which you speak...
+2015-01-07T11:45:18  <berick> ;)
+2015-01-07T11:45:20  <berick> mind sharing?
+2015-01-07T11:45:34  <berick> together we'll triangulate the real process
+2015-01-07T11:45:42  <Dyrcona> I have. I've scripted the whole thing.
+2015-01-07T11:46:08  <Dyrcona> Though I have a few manual steps in the middle of the process.
+2015-01-07T11:46:33  <dbwells> berick: sure, I'll paste it up somewhere.
+2015-01-07T11:47:00  <Dyrcona> Although, you're talking about building tarballs... Never mind me.
+2015-01-07T11:55:55  <pastebot> "dbwells" at 64.57.241.14 pasted "Dan's quick and dirty maintence build commands" (36 lines) at http://paste.evergreen-ils.org/24
+2015-01-07T11:56:51  <dbwells> berick: bshum: ^^ (also, I can't spell maintenance, apparently)
+2015-01-07T11:57:55  <dbwells> nothing special to it, I just got tired of forgetting a little detail here and there
+2015-01-07T11:58:08  <berick> dbwells++
+2015-01-07T11:58:15  <berick> will def refer to this
+2015-01-07T11:59:30  <dbwells> Those cherry-picks might be from local branches.  If that's the case, I can find the appropriate live commits.
+2015-01-07T11:59:49  <dbwells> They are definitely out there in the tags.
+2015-01-07T11:59:54  <berick> dbwells: nope, i see 'em
+2015-01-07T12:00:08  <dbwells> cool
+2015-01-07T12:02:55  <berick> dbwells: should b347e2bb be merged to master?
+2015-01-07T12:02:55  <pinesol_green> [evergreen|Dan Wells] Changes to smooth out make_release - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=b347e2b>
+2015-01-07T12:03:05  <berick> heh, pinesol_green++
+2015-01-07T12:04:03  <dbwells> berick: Yeah, I mentioned that in the notes at the bottom of the paste.  I think so.  I am not 100% confident that the ... range is better, but it seemed to give a better changelog for me in certain cases.
+2015-01-07T12:04:40  <dbwells> The HEAD url thing is just broken the way it is, so that part I am more confident in.
+2015-01-07T12:04:40  * berick would have to man-page that one
+2015-01-07T12:05:14  <berick> the '...', i mean
+2015-01-07T12:07:21  <bshum> Hmm, just noticed tsbere's idea for https://bugs.launchpad.net/evergreen/+bug/1018011
+2015-01-07T12:07:21  <pinesol_green> Launchpad bug 1018011 in Evergreen "Incorrect copy status caused by reshelving process colliding with item checkout" (affected: 5, heat: 24) [Medium,Confirmed]
+2015-01-07T12:08:38  <bshum> dbwells: berick: Hmm, I haven't added that commit prior to any of my builds for 2.7 series.  But I agree with the general direction :)
+2015-01-07T12:09:12  <dbwells> bshum: It's a very small deal :)
+2015-01-07T12:11:18  <dbwells> berick: It's pretty dense, but I think this helped me understand it:  http://git.661346.n2.nabble.com/Question-about-right-only-td6763571.html
+2015-01-07T12:12:31  <dbwells> Basically, I think 'right-only' only works with the '...' range selector, so it helped filter out bug fixes which had gotten into, for example, both 2.5.x and 2.6.0.
+2015-01-07T12:15:01  <dbwells> To quote the page "For example, --cherry-pick --right-only A...B omits those commits from B which are in A or are patch-equivalent to a commit in A."
+2015-01-07T12:18:43  <dbwells> The "patch-equivalent" part is what we are after.  Otherwise, ".." does the same thing for us.
+2015-01-07T12:19:09  <berick> dbwells: in the specific case of a bug committed to both 2.5.x and 2.6.0, i'm curious why we wouldn't want it represented in the 2.5.x release notes.
+2015-01-07T12:19:16  <berick> or am I misunderstanding?
+2015-01-07T12:20:37  <dbwells> No, this keeps it from reappearing in the 2.6.0 changelog, not the other way.
+2015-01-07T12:21:01  *** jihpringle has joined #evergreen
+2015-01-07T12:21:05  <berick> oh, ok, i am misunderstanding.  thanks.
+2015-01-07T12:22:28  <dbwells> With ".." we see every commit since the common ancestor.  With "--cherry-pick --right-only A...B", we see every commit since the common ancestor, minus those which have an equivalent commit on "the other side".  That's my understanding, at least :)
+2015-01-07T12:23:25  <dbwells> Plus, I think the "--cherry-pick --right-only" options we have in there do nothing with the ".." operator, so something has to give.
+2015-01-07T12:24:37  * berick escorts 2 git commands into the thunderdome
+2015-01-07T12:34:03  <dbwells> I think it only matters when crossing a major version, as that's the only time the common ancestor won't be linear with the possible changes.
+2015-01-07T12:36:56  <dbwells> berick: You're probably trying the same thing, but I just tested a changelog from rel_2_5_5...rel_2_6_0 vs rel_2_5_5..rel_2_6_0, and the "..." successfully excluded 950dede414 / 6ec8bcea7e as being equivalent (and thus not a real change).
+2015-01-07T12:36:56  <pinesol_green> [evergreen|Liam Whalen] LP#1037171 Removed Expert Search paramters from subject links - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=950dede>
+2015-01-07T12:36:57  <pinesol_green> [evergreen|Liam Whalen] LP#1037171 Removed Expert Search paramters from subject links - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=6ec8bce>
+2015-01-07T12:38:12  <dbwells> With the full command being that from the build script: git log --cherry-pick --right-only --no-merges --pretty --summary --numstat rel_2_5_5...rel_2_6_0
+2015-01-07T12:38:37  <dbwells> vs. git log --cherry-pick --right-only --no-merges --pretty --summary --numstat rel_2_5_5..rel_2_6_0
+2015-01-07T12:39:59  <berick> dbwells: got sidetracked, so thanks for testing..  shall I pull it into master?
+2015-01-07T12:40:27  <dbwells> berick: Yes, I am confident now :)
+2015-01-07T12:40:35  <berick> cool, will do in a few minutes
+2015-01-07T12:40:39  <bshum> dbwells++
+2015-01-07T12:41:02  <dbwells> berick: thank you, sir
+2015-01-07T12:50:02  *** bmills has joined #evergreen
+2015-01-07T12:52:04  * berick notes this will have to change again when we move to git-tag'ed releases 
+2015-01-07T12:52:20  <berick> if we do, that is
+2015-01-07T12:52:25  <bshum> +1 :)
+2015-01-07T12:54:04  <pinesol_green> [evergreen|Dan Wells] Changes to smooth out make_release - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7af5e29>
+2015-01-07T13:27:46  *** julialima_ has quit IRC
+2015-01-07T13:28:39  *** julialima_ has joined #evergreen
+2015-01-07T13:59:49  *** b_bonner has quit IRC
+2015-01-07T14:00:09  *** b_bonner has joined #evergreen
+2015-01-07T14:00:31  <kmlussier> Dyrcona: Cake pans? That sounds fun!
+2015-01-07T14:01:02  <Dyrcona> Yep. Moses Greeley Parker Memorial Library in Dracut.
+2015-01-07T14:02:53  <kmlussier> Dyrcona: Hmmm...this is a case where the custom code NOBLE uses to incorporate digital images in their records might come in handy at MVLC.
+2015-01-07T14:03:07  <kmlussier> Because it would be nice to see what the cake pan looks like before making a trip to the library to check it out.
+2015-01-07T14:03:40  <Dyrcona> Yes, we thought of that.
+2015-01-07T14:03:54  <Dyrcona> They don't allow requests, IIRC.
+2015-01-07T14:04:35  <kmlussier> Also, they have a lot of pans on one bib record. It probably wouldn't work well in that case.
+2015-01-07T14:05:55  <dbs> Oh, that's a cataloguing anti-pattern
+2015-01-07T14:06:47  <dbs> Can't define the proper extents (9" x 9" x 2") if you don't have one record per different cake pan dimensions, etc.
+2015-01-07T14:08:36  <collum> We had pans at one time, but they were also on a single bib.
+2015-01-07T14:08:50  <collum> I wonder how you would measure that Mickey Mouse shaped pan.
+2015-01-07T14:09:01  <Dyrcona> Yep.
+2015-01-07T14:09:04  <jeff> by volume? :-)
+2015-01-07T14:10:00  <Dyrcona> Ideally, you'd want a different bib record for each shape.
+2015-01-07T14:13:45  <RoganH> Under physical description you could define it as irregular shape.  Hmmm.... if you measured enough points of reference you could define the shape.  Where to put that.....
+2015-01-07T14:15:37  <Dyrcona> RoganH++ for mentioning tools
+2015-01-07T14:15:54  <RoganH> I'd say you could define dimensions in the 300 even of an irregular shape.
+2015-01-07T14:18:54  <Dyrcona> I suppose my answer could have been more helpful such as offering information about how they're cataloged and offering to put them in touch with someone at the library.
+2015-01-07T14:21:00  <Dyrcona> I guess you'd catalog a sewing pattern as an artifact.
+2015-01-07T14:21:08  <RoganH> I assume at this point that everything that happens by email is a hallucination and they should go on a vision quest to find the right person.  Maybe their spirit animal will help them.
+2015-01-07T14:21:16  <Dyrcona> heh.
+2015-01-07T14:21:20  <RoganH> (Yes, it has been one of those weeks.)
+2015-01-07T14:38:22  <berick> @band add Sewing Pattern Spirit Animal
+2015-01-07T14:38:23  <pinesol_green> berick: No, you're a puzzleheaded kraken!
+2015-01-07T14:38:26  <berick> pinesol_green: i know
+2015-01-07T14:38:26  <pinesol_green> berick: Yeah, well, you know, that's just like uh, your opinion, man.
+2015-01-07T14:56:08  *** buzzy has joined #evergreen
+2015-01-07T14:59:49  *** krvmga has joined #evergreen
+2015-01-07T15:00:50  <Dyrcona> heh
+2015-01-07T15:01:16  <Dyrcona> @eightball Will it blend?
+2015-01-07T15:01:16  <pinesol_green> Dyrcona: What are you asking me for?
+2015-01-07T15:01:33  *** sbrylander has joined #evergreen
+2015-01-07T15:01:42  *** mtcarlson has joined #evergreen
+2015-01-07T15:03:57  *** sarabee has quit IRC
+2015-01-07T15:16:20  *** krvmga has quit IRC
+2015-01-07T15:28:16  *** dreuther has joined #evergreen
+2015-01-07T15:30:30  *** dreuther_ has quit IRC
+2015-01-07T15:38:22  <collum> kmlussier++  Our serials person was very excited when she looked at the CWMars serials list.
+2015-01-07T15:49:05  <kmlussier> collum: Glad to hear it helped somebody!
+2015-01-07T15:54:02  <kmlussier> tspindler++ #for creating the script that updates the C/W MARS serials page.
+2015-01-07T15:54:21  <kmlussier> @karma tspindler
+2015-01-07T15:54:21  <pinesol_green> kmlussier: Karma for "tspindler" has been increased 25 times and decreased 0 times for a total karma of 25.
+2015-01-07T15:57:24  <bshum> kmlussier++
+2015-01-07T15:57:29  <bshum> :D
+2015-01-07T15:59:54  *** dreuther_ has joined #evergreen
+2015-01-07T16:00:18  *** nhilton has joined #evergreen
+2015-01-07T16:01:46  *** vlewis has joined #evergreen
+2015-01-07T16:02:03  *** vlewis_ has joined #evergreen
+2015-01-07T16:02:39  *** ericar has quit IRC
+2015-01-07T16:03:25  *** dreuther has quit IRC
+2015-01-07T16:09:06  <jwoodard> Hello good peoples. Is it possible to get a list of patrons with duplicate accounts in at multiple libraries through the reports interface.
+2015-01-07T16:10:09  <jwoodard> What I want to know is if patrons at our libraries have accounts at other consortium libraries if that makes any sense.
+2015-01-07T16:11:14  <bshum> So... probably a list based on factors like similar names?  (assuming that you can't re-use barcodes for being unique)
+2015-01-07T16:11:29  * bshum doesn't know offhand of how to do something like that via the reports module.
+2015-01-07T16:12:57  <jeff> bshum: it's all just matchpoints. :-)
+2015-01-07T16:13:16  <bshum> jeff: True enough.
+2015-01-07T16:13:20  <jeff> first_given_name + family_name + dob + zip code, etc.
+2015-01-07T16:13:25  *** RoganH has quit IRC
+2015-01-07T16:13:42  <jeff> it seems likely that you're going to run into problems of accuracy.
+2015-01-07T16:14:20  <Dyrcona> I've done things like that recently, but not in reports.
+2015-01-07T16:14:23  <Dyrcona> It's not easy.
+2015-01-07T16:15:33  <jeff> i wouldn't recommend using reports. it would be possible to get a report saying that X patrons have exactly this name and exactly this phone number, or exactly this name and address, but you're going to have very little room for fuzziness or other tweaking.
+2015-01-07T16:16:47  <jeff> Other than at registration time, is detection of duplicate patrons something that would be a feature many would desire?
+2015-01-07T16:17:28  <jeff> If you've access and feel comfortable with SQL, I'd start there.
+2015-01-07T16:19:15  *** collum has quit IRC
+2015-01-07T16:25:59  <jwoodard> Thanks for the ideas. I know a feature to detect duplicate patrons would be received well in our consortium.
+2015-01-07T16:27:53  <jwoodard> I didn't think it was possible through the reports module but though I would ask.
+2015-01-07T16:27:53  <jeff> jwoodard: how would you see yourself using such a feature?
+2015-01-07T16:29:28  *** rjackson-isl has quit IRC
+2015-01-07T16:29:48  <jwoodard> Recenlty we had a very larger library join our consortium. When they join many of their patrons had library cards with several of our consortium libraries that were nearby.
+2015-01-07T16:30:58  <jwoodard> We would use it to identify patrons with duplicate accounts and merge those accounts.
+2015-01-07T16:31:40  *** jboyer-isl has quit IRC
+2015-01-07T16:32:27  <jwoodard> Also to prevent patrons from running up fines at one library and getting another card and doing the same but at a different library.(a issue we have ran into a few times)
+2015-01-07T16:32:36  * jeff nods
+2015-01-07T16:33:07  <jeff> there is built-in functionality that attempts to alert staff when they find a patron with the same address/etc.
+2015-01-07T16:33:27  <jeff> that doesn't help in the case you described where a migration took place and resulted in duplicate patrons.
+2015-01-07T16:34:35  <jwoodard> That and I'm OCD about things like this. Duplicate records are the enemy to my sanity.
+2015-01-07T16:35:18  <jeff> "incorrectly merged" records are also a bit of a pain.
+2015-01-07T16:35:28  <jeff> sometimes "this is obviously a duplicate"... isn't.
+2015-01-07T16:36:31  <jeff> so, given a report of "duplicate" patrons -- would you flag them so that the patron would need to clarify if they were duplicate or not, or would you merge first, ask questions later?
+2015-01-07T16:36:39  <jeff> (that second option scares me a bit)
+2015-01-07T16:37:08  *** nhilton_ has joined #evergreen
+2015-01-07T16:38:30  <jwoodard> We are developing policies to handled that now. The way it would be handled is that the home library would be contacted and they would handled as our policy dictates.
+2015-01-07T16:38:36  <jeff> in a given set of patrons seen as duplicate to each other, you could mark all but the oldest (or "nearest", whatever) accould as inactive and flag it with an alert message -- or just put an alerting note on all of them, or...
+2015-01-07T16:39:06  *** julialima_ has left #evergreen
+2015-01-07T16:39:43  *** nhilton has quit IRC
+2015-01-07T16:40:26  <jwoodard> In that scenario one library would handle contacting the patron and from there the decision to merge or not would be made.
+2015-01-07T16:49:06  *** nhilton has joined #evergreen
+2015-01-07T16:49:24  *** Shae has quit IRC
+2015-01-07T16:51:39  *** nhilton_ has quit IRC
+2015-01-07T16:55:06  <Dyrcona> jwoodard: We had a similar scenario here last year.
+2015-01-07T16:55:42  <Dyrcona> We basically did what Jeff suggested by finding them using SQL queries.
+2015-01-07T16:56:26  <Dyrcona> Sorry I haven't paid much attention to the conversation. One of our servers decided to eat itself.
+2015-01-07T17:01:49  *** Dyrcona has quit IRC
+2015-01-07T17:01:56  *** bshum has quit IRC
+2015-01-07T17:02:01  *** mceraso has quit IRC
+2015-01-07T17:03:02  *** bshum has joined #evergreen
+2015-01-07T17:04:40  *** mceraso has joined #evergreen
+2015-01-07T17:08:04  *** nhilton_ has joined #evergreen
+2015-01-07T17:09:33  *** sbrylander has quit IRC
+2015-01-07T17:10:39  *** nhilton has quit IRC
+2015-01-07T17:23:18  *** mmorgan has left #evergreen
+2015-01-07T17:50:41  *** abowling has quit IRC
+2015-01-07T17:52:24  *** dreuther has joined #evergreen
+2015-01-07T17:52:33  *** mrpeters has quit IRC
+2015-01-07T17:55:13  *** dreuther_ has quit IRC
+2015-01-07T18:10:05  *** dreuther_ has joined #evergreen
+2015-01-07T18:13:33  *** dreuther has quit IRC
+2015-01-07T18:15:57  *** mtcarlson is now known as mtcarlson_away
+2015-01-07T18:38:01  *** nhilton_ has quit IRC
+2015-01-07T18:59:28  *** vlewis_ has quit IRC
+2015-01-07T18:59:29  *** vlewis has quit IRC
+2015-01-07T19:43:56  *** gsams has quit IRC
+2015-01-07T19:45:11  *** gsams has joined #evergreen
+2015-01-07T20:04:07  *** jwoodard has quit IRC
+2015-01-07T20:04:30  *** jihpringle has quit IRC
+2015-01-07T20:37:23  *** buzzy has joined #evergreen
+2015-01-07T20:44:46  *** mtcarlson_away is now known as mtcarlson
+2015-01-07T22:24:46  *** bmills has quit IRC

@@ -1,0 +1,32 @@
+2015-01-01T00:01:07  <bshum> Happy 2015! :)
+2015-01-01T00:06:27  <jcamins> bshum: what are we doing on IRC?
+2015-01-01T00:07:32  <jcamins> Six floors and 20 feet away, several million people are honking noisemakers and screaming, and here I am on the computer.
+2015-01-01T00:09:31  <eeevil> happy seacrest, every one!
+2015-01-01T00:16:16  <jcamins> Oh god.
+2015-01-01T00:16:20  <jcamins> It goes until 1:30?
+2015-01-01T00:16:42  * jcamins is currently staying in Times Square. :'(
+2015-01-01T00:18:45  <jcamins> In case anyone here was wondering, Array.forEach in Javascript really is insanely inefficient.
+2015-01-01T00:18:48  <jcamins> Do not use it.
+2015-01-01T00:36:20  <bshum> jcamins: Heh, I was here and then there.
+2015-01-01T02:13:17  *** abowling has joined #evergreen
+2015-01-01T02:34:39  *** abowling has left #evergreen
+2015-01-01T04:12:29  *** Griff`Ron has quit IRC
+2015-01-01T05:04:26  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-01T06:32:57  *** BigRig has quit IRC
+2015-01-01T06:36:39  *** BigRig has joined #evergreen
+2015-01-01T06:58:18  *** pie_ has joined #evergreen
+2015-01-01T10:56:14  *** Griff`Ron has joined #evergreen
+2015-01-01T17:03:34  *** RBecker_ has joined #evergreen
+2015-01-01T17:03:43  *** artunit has quit IRC
+2015-01-01T17:04:10  *** artunit has joined #evergreen
+2015-01-01T17:05:59  *** RBecker has quit IRC
+2015-01-01T17:06:10  *** RBecker_ is now known as RBecker
+2015-01-01T17:06:10  *** RBecker has joined #evergreen
+2015-01-01T17:17:44  *** dcook has joined #evergreen
+2015-01-01T17:21:29  *** artunit_ has joined #evergreen
+2015-01-01T17:21:48  *** artunit has quit IRC
+2015-01-01T17:21:53  *** artunit_ is now known as artunit
+2015-01-01T18:00:44  *** Griff`Ron is now known as Griff`Lebron
+2015-01-01T18:53:59  *** sarabee has joined #evergreen
+2015-01-01T20:26:08  *** pie_ has quit IRC
+2015-01-01T20:48:40  *** sarabee has quit IRC

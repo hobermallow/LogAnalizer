@@ -1,0 +1,22 @@
+2015-03-21T04:57:45  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-21T13:07:25  *** bmills has joined #evergreen
+2015-03-21T14:03:38  *** user259205087017 has quit IRC
+2015-03-21T14:03:46  *** user259205087017 has joined #evergreen
+2015-03-21T14:36:12  *** user259205087017 has quit IRC
+2015-03-21T14:41:59  *** user259205087017 has joined #evergreen
+2015-03-21T16:35:50  <jcamins> Anyone here have any resources for learning how to use Linux that they particularly recommend?
+2015-03-21T16:38:12  <jonadab> Dunno.  I started out by multi-booting on my home computer, after a while found that I spent more time in Linux than DOS much less Windows 95, and eventually stopped multibooting and just ran Linux.
+2015-03-21T16:38:45  <jonadab> But that took a couple of years.  So I don't really know how to learn it all at once.
+2015-03-21T16:40:21  <jonadab> Also, there are probably much better resources now than then.  But I don't know what they are really.
+2015-03-21T16:50:11  <jcamins> jonadab: yeah, I'm trying to come up with resources for a developer who doesn't know anything about *nix or system administration and would like to learn.
+2015-03-21T16:51:14  <jcamins> I thought about saying "it's very similar to *BSD, once you get past the lack of a ports system and the weird init infrastructure," but decided that would be less helpful than not saying anything.
+2015-03-21T17:45:58  <jonadab> Yeah.  Actually, if you want Linux with a ports system, there's Gentoo.
+2015-03-21T17:52:55  <jcamins> On the other hand, if you want to compile everything, you might as well just download FreeBSD.
+2015-03-21T17:54:01  <jonadab> Yeah.  I used FreeBSD on my home computer for a couple of years.
+2015-03-21T17:54:06  <jonadab> Switched back when sarge came out.
+2015-03-21T17:54:29  <jonadab> Because I was tired of recompiling Every Single Thing Ever every time I wanted to upgrade anything.
+2015-03-21T17:55:07  <jonadab> That would probably be less of a problem on a server.
+2015-03-21T17:55:19  <jcamins> Yeah, that's why I stuck with Ubuntu after my wife started using it and I borrowed her computer.
+2015-03-21T17:55:30  <jonadab> Also, I've heard they've done good things with the pre-compiled packages system these days.  It was in its infancy back then.
+2015-03-21T22:28:46  *** RBecker has quit IRC
+2015-03-21T22:33:53  *** RBecker has joined #evergreen

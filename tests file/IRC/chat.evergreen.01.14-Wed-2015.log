@@ -1,0 +1,133 @@
+2015-01-14T00:09:57  *** dat_ has joined #evergreen
+2015-01-14T01:03:26  *** mtcarlson_away is now known as mtcarlson
+2015-01-14T01:12:54  *** mtcarlson is now known as mtcarlson_away
+2015-01-14T01:29:07  *** mtcarlson_away is now known as mtcarlson
+2015-01-14T03:18:23  *** artunit has quit IRC
+2015-01-14T03:39:53  *** mtcarlson is now known as mtcarlson_away
+2015-01-14T06:02:34  *** nhilton has joined #evergreen
+2015-01-14T06:13:30  *** graced has quit IRC
+2015-01-14T06:13:42  *** phasefx has quit IRC
+2015-01-14T06:13:42  *** mtate has quit IRC
+2015-01-14T06:13:42  *** eeevil has quit IRC
+2015-01-14T06:13:45  *** maryj has quit IRC
+2015-01-14T06:14:19  *** TaraC has quit IRC
+2015-01-14T06:14:19  *** BigRig has quit IRC
+2015-01-14T06:14:19  *** Callender has quit IRC
+2015-01-14T06:17:05  *** eeevil has joined #evergreen
+2015-01-14T06:21:27  *** eeevil has quit IRC
+2015-01-14T06:31:22  *** mtcarlson_away is now known as mtcarlson
+2015-01-14T06:31:47  *** chatley has quit IRC
+2015-01-14T06:40:46  *** nhilton has quit IRC
+2015-01-14T06:40:50  *** mtcarlson is now known as mtcarlson_away
+2015-01-14T07:15:11  *** artunit has joined #evergreen
+2015-01-14T07:47:29  *** eeevil has joined #evergreen
+2015-01-14T07:48:38  *** mtate has joined #evergreen
+2015-01-14T07:57:58  *** Callender has joined #evergreen
+2015-01-14T07:58:05  *** akilsdonk has joined #evergreen
+2015-01-14T08:00:09  *** pmurray_away is now known as pmurray
+2015-01-14T08:00:20  *** pmurray is now known as pmurray_away
+2015-01-14T08:06:39  *** rjackson-isl has joined #evergreen
+2015-01-14T08:22:42  *** Ghid0rah has joined #evergreen
+2015-01-14T08:24:08  <Ghid0rah> Good morning all. Does anyone know if there is a way to test Evergreen's email notification configuration in Evergreen 2.7.2?
+2015-01-14T08:29:53  *** pmurray_away is now known as pmurray
+2015-01-14T08:29:54  *** mrpeters has joined #evergreen
+2015-01-14T08:37:49  *** mmorgan has joined #evergreen
+2015-01-14T08:47:25  *** graced has joined #evergreen
+2015-01-14T08:52:58  *** Shae has joined #evergreen
+2015-01-14T08:59:32  *** phasefx has joined #evergreen
+2015-01-14T09:00:18  *** Ghid0rah has quit IRC
+2015-01-14T09:20:52  <Stompro> @later tell Ghid0rah There are several ways to debug action/triggers.  You can take a look at the tables under action_trigger.* to see what is being processed.  You can take a look at /openils/var/log/osrfsys.log while running action_trigger_runner.pl to see exactly what is happening.  You can also add the --verbose argument to action_trigger_runner.pl to see more details of what it is doing.
+2015-01-14T09:20:52  <pinesol_green> Stompro: The operation succeeded.
+2015-01-14T09:22:47  <tsbere> He could probably place a copy hold for himself with email notification turned on, then check the copy in, then wait to see if he got an email too. :P
+2015-01-14T09:23:27  <tsbere> (though depending on what the state of configuration is that may not provide a lot of info as to what is wrong if it doesn't show up)
+2015-01-14T09:29:24  *** TaraC has joined #evergreen
+2015-01-14T09:35:20  *** maryj has joined #evergreen
+2015-01-14T09:37:19  *** BigRig has joined #evergreen
+2015-01-14T09:37:24  *** abowling has joined #evergreen
+2015-01-14T09:38:55  *** yboston has joined #evergreen
+2015-01-14T10:12:57  *** aubjordan has joined #evergreen
+2015-01-14T10:20:34  *** Dyrcona has joined #evergreen
+2015-01-14T10:50:09  <kmlussier> When a change is made to one of the templates in action_trigger.event_definition, do any other changes (roll bricks, etc) need to be made in order for the new event_definition code to take effect?
+2015-01-14T10:50:23  <kmlussier> The change in question is to the PO JEDI template.
+2015-01-14T10:52:11  <tsbere> kmlussier: I don't believe anything else has to be done. Though obviously already-fired events won't use the new template.
+2015-01-14T10:52:56  <kmlussier> Yup. This would have been a new event.
+2015-01-14T10:53:00  <kmlussier> Thanks tsbere!
+2015-01-14T11:13:44  *** vlewis has joined #evergreen
+2015-01-14T11:27:56  *** mllewellyn has joined #evergreen
+2015-01-14T11:30:44  *** nhilton has joined #evergreen
+2015-01-14T11:44:29  <kmlussier> berick++
+2015-01-14T11:55:19  *** nhilton has quit IRC
+2015-01-14T12:02:01  *** nhilton has joined #evergreen
+2015-01-14T12:05:29  *** mtcarlson_away is now known as mtcarlson
+2015-01-14T12:28:37  *** kitteh_ has joined #evergreen
+2015-01-14T12:35:31  *** RoganH has joined #evergreen
+2015-01-14T12:47:47  *** RoganH has quit IRC
+2015-01-14T12:54:10  *** RoganH has joined #evergreen
+2015-01-14T13:01:42  *** akilsdonk has quit IRC
+2015-01-14T13:07:40  *** jihpringle has joined #evergreen
+2015-01-14T13:18:59  *** buzzy has joined #evergreen
+2015-01-14T13:26:21  *** RoganH has quit IRC
+2015-01-14T13:57:21  *** akilsdonk has joined #evergreen
+2015-01-14T14:16:04  *** chatley has joined #evergreen
+2015-01-14T14:42:00  *** buzzy has quit IRC
+2015-01-14T15:02:07  *** mtcarlson is now known as mtcarlson_away
+2015-01-14T15:17:12  *** RoganH has joined #evergreen
+2015-01-14T15:29:41  *** mtcarlson_away is now known as mtcarlson
+2015-01-14T15:37:53  *** geoffsams is now known as gsams
+2015-01-14T16:08:53  *** bmills has joined #evergreen
+2015-01-14T16:28:24  *** rjackson-isl has quit IRC
+2015-01-14T17:00:27  *** Dyrcona has quit IRC
+2015-01-14T17:08:50  *** Shae has quit IRC
+2015-01-14T17:11:28  *** mceraso has quit IRC
+2015-01-14T17:11:47  *** bshum has quit IRC
+2015-01-14T17:11:49  *** kmlussier has quit IRC
+2015-01-14T17:12:05  *** RoganH has quit IRC
+2015-01-14T17:12:51  *** dcook__ is now known as dcook
+2015-01-14T17:13:25  *** bshum has joined #evergreen
+2015-01-14T17:13:38  *** mceraso has joined #evergreen
+2015-01-14T17:13:49  *** mrpeters has left #evergreen
+2015-01-14T17:13:56  *** kmlussier has joined #evergreen
+2015-01-14T17:20:50  <aubjordan> When creating a report that is pulling info on transited items is it possible to not have it pull info on items that have completed its transit?
+2015-01-14T17:21:59  <aubjordan> I hope that makes sense
+2015-01-14T17:22:47  <eeevil> aubjordan: yes, just filter for dest_recv_time (I don't recall the label) is NULL
+2015-01-14T17:23:05  *** mllewellyn has quit IRC
+2015-01-14T17:23:11  <eeevil> that will get you transits that have not yet arrived
+2015-01-14T17:26:31  <aubjordan> I keep forgetting about NULL
+2015-01-14T17:29:14  *** mmorgan has left #evergreen
+2015-01-14T17:29:21  <aubjordan> What I am seeing is different though.
+2015-01-14T17:30:06  <aubjordan> I ran a report looking a for all transits over a given time frame. What I am trying to filter out is those that are no long in transit or at another library.
+2015-01-14T17:31:31  <aubjordan> Im thinking it may be two separate reports.
+2015-01-14T18:18:21  *** mtcarlson is now known as mtcarlson_away
+2015-01-14T18:35:30  *** buzzy has joined #evergreen
+2015-01-14T18:36:47  <csharp> aubjordan: run the report on the unfiltered data, then use Excel to get fancy
+2015-01-14T18:59:05  *** vlewis has quit IRC
+2015-01-14T19:07:40  *** nhilton has quit IRC
+2015-01-14T19:09:38  *** mtcarlson_away is now known as mtcarlson
+2015-01-14T19:19:07  *** mtcarlson is now known as mtcarlson_away
+2015-01-14T19:22:18  *** conlinism has joined #evergreen
+2015-01-14T19:23:45  <conlinism> hello
+2015-01-14T19:23:50  <csharp> conlinism: hi
+2015-01-14T19:24:36  <conlinism> hows it going?
+2015-01-14T19:26:09  <conlinism> If I were looking to get involved in contributing to the web front end of Evergreen, how would I do that?
+2015-01-14T19:29:31  *** jihpringle has quit IRC
+2015-01-14T19:35:05  <csharp> ~contribute
+2015-01-14T19:35:05  <pinesol_green> Interested in contributing to the Evergreen project?  Please see http://www.evergreen-ils.org/dokuwiki/doku.php?id=contributing and http://evergreen-ils.org/dokuwiki/doku.php?id=eg_developer_overview.
+2015-01-14T19:35:42  <csharp> conlinism: basically, read this^^, then install evergreen on a test server and start hacking!
+2015-01-14T19:39:27  <conlinism> thanks!
+2015-01-14T19:44:57  *** yboston has quit IRC
+2015-01-14T19:50:48  *** conlinism has quit IRC
+2015-01-14T20:05:45  *** buzzy has quit IRC
+2015-01-14T20:22:03  *** rangi has quit IRC
+2015-01-14T20:22:03  *** rangi has joined #evergreen
+2015-01-14T20:36:57  *** nhilton has joined #evergreen
+2015-01-14T20:40:38  *** burper has joined #evergreen
+2015-01-14T20:40:39  *** burper has left #evergreen
+2015-01-14T20:55:07  *** nhilton has quit IRC
+2015-01-14T21:03:18  *** akilsdonk has quit IRC
+2015-01-14T21:20:07  *** burper has joined #evergreen
+2015-01-14T21:20:09  *** burper has left #evergreen
+2015-01-14T22:11:26  *** bmills has quit IRC
+2015-01-14T22:15:47  *** bmills has joined #evergreen
+2015-01-14T22:17:26  *** pmurray is now known as pmurray_away
+2015-01-14T23:43:18  *** mtcarlson_away is now known as mtcarlson
+2015-01-14T23:43:53  *** mtcarlson is now known as mtcarlson_away

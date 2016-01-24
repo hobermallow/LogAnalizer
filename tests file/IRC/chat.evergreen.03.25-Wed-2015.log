@@ -1,0 +1,202 @@
+2015-03-25T00:16:48  *** akilsdonk has quit IRC
+2015-03-25T00:50:57  *** bmills has joined #evergreen
+2015-03-25T03:15:55  *** Shae has quit IRC
+2015-03-25T04:19:15  *** dcook has joined #evergreen
+2015-03-25T04:21:26  *** dcook__ has quit IRC
+2015-03-25T05:09:17  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-25T07:14:33  *** graced has joined #evergreen
+2015-03-25T07:42:25  *** Callender has quit IRC
+2015-03-25T07:50:21  *** Callender has joined #evergreen
+2015-03-25T07:50:57  *** jboyer-isl has joined #evergreen
+2015-03-25T08:18:38  *** akilsdonk has joined #evergreen
+2015-03-25T08:23:51  *** ckolasinski has joined #evergreen
+2015-03-25T08:25:24  *** Dyrcona has joined #evergreen
+2015-03-25T08:35:03  *** ericar has joined #evergreen
+2015-03-25T08:35:36  *** mmorgan has joined #evergreen
+2015-03-25T08:49:09  *** Shae has joined #evergreen
+2015-03-25T08:54:37  *** ericar_ has joined #evergreen
+2015-03-25T08:56:01  *** ericar has quit IRC
+2015-03-25T08:56:14  *** ericar_ is now known as ericar
+2015-03-25T08:56:17  *** mrpeters has joined #evergreen
+2015-03-25T09:11:28  *** TaraC has joined #evergreen
+2015-03-25T09:14:13  *** maryj has joined #evergreen
+2015-03-25T09:19:39  <ckolasinski> Has anyone been able to successfully send EDI orders to the new Penguin/Random House?
+2015-03-25T09:21:33  * kmlussier waves to ckolasinski
+2015-03-25T09:25:43  *** yboston has joined #evergreen
+2015-03-25T09:29:51  <kmlussier> ckolasinski: If you don't get an answer here, it might be worthwhile to send your question to the list. It also tends to be quiet in here this early in the day.
+2015-03-25T09:37:55  *** sarabee has joined #evergreen
+2015-03-25T10:03:17  <ckolasinski> thanks, kmlussier!
+2015-03-25T10:55:52  *** bmills has joined #evergreen
+2015-03-25T11:29:03  *** ericar has quit IRC
+2015-03-25T11:30:16  *** dreuther has quit IRC
+2015-03-25T11:30:25  *** dreuther has joined #evergreen
+2015-03-25T11:40:48  <pinesol_green> [sipserver|Mike Rylander] Typo fix for inline documentation (cut/paste hazard) - <http://git.evergreen-ils.org/?p=SIPServer.git;a=commit;h=8545ee2>
+2015-03-25T11:43:58  <gmcharlt> Alas, poor Mulletplex! We knew you well!
+2015-03-25T11:45:24  *** edoceo has quit IRC
+2015-03-25T11:49:13  <eeevil> it /was/ the MacGyver of Net::Server personalities
+2015-03-25T11:54:02  *** ericar has joined #evergreen
+2015-03-25T12:09:25  *** akilsdonk has quit IRC
+2015-03-25T12:09:27  <Dyrcona> Heh.
+2015-03-25T13:02:53  *** jihpringle has joined #evergreen
+2015-03-25T13:07:24  *** ckolasinski has left #evergreen
+2015-03-25T13:07:56  *** remingtron_ is now known as remingtron
+2015-03-25T13:10:34  *** jwoodard has joined #evergreen
+2015-03-25T13:19:59  *** akilsdonk has joined #evergreen
+2015-03-25T13:25:55  *** collum has joined #evergreen
+2015-03-25T14:06:15  <csharp> so, is there a way in the report to link a payment directly back the library where the payment was made?
+2015-03-25T14:06:23  <csharp> s/report/reporter/
+2015-03-25T14:06:42  <csharp> payment line item, that is
+2015-03-25T14:08:09  *** collum has quit IRC
+2015-03-25T14:11:00  <tsbere> csharp: Depends
+2015-03-25T14:11:32  <tsbere> csharp: If you are saying "any payment": No. If you are talking desk payments you can link through the cash_drawer (which is a workstation ID), assuming that is set.
+2015-03-25T14:15:13  <csharp> tsbere: the request is for a report of "total amount paid to the library" displaying line-item information
+2015-03-25T14:15:36  <csharp> so the challenge appears to be what constitutes "paid to the library
+2015-03-25T14:15:37  <csharp> "
+2015-03-25T14:15:48  * tsbere wonders if his "money collected" report script would help here....not that it is a reporter template
+2015-03-25T14:17:46  *** jwoodard has quit IRC
+2015-03-25T14:19:03  *** vlewis has joined #evergreen
+2015-03-25T14:25:02  *** collum has joined #evergreen
+2015-03-25T14:27:52  *** dMiller_ has joined #evergreen
+2015-03-25T14:33:51  *** maryj has quit IRC
+2015-03-25T14:38:19  *** maryj has joined #evergreen
+2015-03-25T14:41:18  *** RoganH has joined #evergreen
+2015-03-25T14:45:19  *** mglass has quit IRC
+2015-03-25T14:48:17  *** RoganH has quit IRC
+2015-03-25T14:49:39  *** RoganH has joined #evergreen
+2015-03-25T15:03:09  *** jwoodard has joined #evergreen
+2015-03-25T15:07:08  *** buzzy has joined #evergreen
+2015-03-25T16:00:52  *** buzzy has quit IRC
+2015-03-25T16:05:24  <Bmagic> Can the staff client search the patrons by date of birth? What am I missing here
+2015-03-25T16:06:35  <mmorgan> No, it doesn't. You're not missing anything.
+2015-03-25T16:07:18  <Bmagic> mmorgan: oh ok, that's good. LOL. Was there an issue with this that I am not aware of (from a developer's point of view) ?
+2015-03-25T16:07:55  <mmorgan> We've had that quesiton a few times, too. I'm not sure of the reasoning behind why it's not available.
+2015-03-25T16:08:22  <Bmagic> mmorgan: I see, thanks
+2015-03-25T16:08:42  <bshum> It's probably an easy enough field to add to the search form.
+2015-03-25T16:08:58  <bshum> Though the formatting for said field is probably annoying.
+2015-03-25T16:09:10  <Bmagic> bshum: yeah, that was the only thing I could think of
+2015-03-25T16:09:29  <Bmagic> aka date picker would be nice
+2015-03-25T16:10:34  <Dyrcona> A number of our patrons have no date of birth.
+2015-03-25T16:10:53  <Dyrcona> Just throwin' that out there.
+2015-03-25T16:13:27  <mmorgan> We have some patrons without. Some will not provide it. I was never sure whether there was a technical reason for it not being an option or if there was a concern about security of that information.
+2015-03-25T16:15:23  <jeff> What's the circumstance where you're wanting to search by dete of birth?
+2015-03-25T16:16:09  <Dyrcona> We've had staff ask about it in the past.
+2015-03-25T16:16:17  <Bmagic> it was just a request from one of our branches
+2015-03-25T16:16:27  <Bmagic> I didn't see a wishlist item on launchpad
+2015-03-25T16:16:29  <Dyrcona> I believe it is usually to differentiate a JR from a SR.
+2015-03-25T16:16:51  <Dyrcona> Or to narrow down a list of patrons with common names.
+2015-03-25T16:17:31  <jeff> normally i look at the date of birth in the search results listing to determine that -- not search by dob.
+2015-03-25T16:17:49  <jeff> Bmagic: do you know why they asked? that's sometimes more helpful.
+2015-03-25T16:18:43  <Dyrcona> But, if you get more results than will display, using the dob to narrow it down might be handy.
+2015-03-25T16:18:44  <Bmagic> Of course, with the web based staff client coming, features that are staff client specific, I tend to put off
+2015-03-25T16:18:45  * jeff thinks
+2015-03-25T16:18:49  <mmorgan> Some of our libraries have issues with the spelling of names, nicknames and changed names. A search by birthdate might allow them to recognize a different spellin.
+2015-03-25T16:18:54  *** mglass has joined #evergreen
+2015-03-25T16:19:01  *** vlewis_ has joined #evergreen
+2015-03-25T16:19:05  <mmorgan> er, spelling.
+2015-03-25T16:19:08  <tsbere> As a note: A number of people want to not only search on DOB, but want to search on just the month or day of the DOB.
+2015-03-25T16:19:35  <Bmagic> tsbere: good point, an interesting twist for parsing the input
+2015-03-25T16:19:49  <jeff> tsbere: same question as i had for Bmagic -- do you know why?
+2015-03-25T16:20:19  <tsbere> jeff: Probably for some of the same reasons I have been asked if it would be possible to enter a DOB without the year at all. Some people are sensitive about their ages. :P
+2015-03-25T16:20:24  <Bmagic> jeff: I don't know why, I could ask them for the goal of such a feature and perhaps the answer is using the staff client differently than they are
+2015-03-25T16:21:20  <jeff> tsbere: is there a library business value in having someone's month or month + day of birth without having the year?
+2015-03-25T16:23:18  <tsbere> jeff: More DOB data for people that are really anal about giving out their full DOB?
+2015-03-25T16:23:40  <jeff> sorry, i don't follow.
+2015-03-25T16:24:50  <tsbere> jeff: Some of it is that the *patron* doesn't want anyone to know their full DOB, but just month or month+day is fine to them. I am not one of those patrons, so I can't fully explain their reasoning. End result, they don't want their DOB in the system if the year is required to be part of it, or won't tell staff the year if the entire thing is in the system.
+2015-03-25T16:24:56  <mmorgan> I can see it useful for helping identify the correct patron. Month and day is often enough to distinguish between patrons with the same name.
+2015-03-25T16:26:03  <jeff> tsbere: right, i got all that. i was just wondering why there was a library desire/need to have a partial DOB as opposed to just leaving that DOB null for those patrons who do not wish (and are not required) to provide it.
+2015-03-25T16:26:15  <Dyrcona> I've stopped asking "why."
+2015-03-25T16:26:32  <Dyrcona> I just say, "open a ticket, and we'll get to it when/if we get to it."
+2015-03-25T16:26:50  <tsbere> jeff: Searching or identifying patrons that are anal about the entire DOB being in the system but have no problem with the month+day being there? "Better to have part of it than none of it" mentality?
+2015-03-25T16:27:13  *** collum has quit IRC
+2015-03-25T16:27:18  <jeff> Dyrcona: to quote Mo Willems' pigeon, "Hey, I'm a curious bird!"
+2015-03-25T16:28:36  <jeff> mmorgan: seems to me that there are many other ways of distinguishing patrons, not the least of which being their library card number... :-)
+2015-03-25T16:28:48  <jeff> (or numbers, as the case may be)
+2015-03-25T16:29:03  <Dyrcona> Ah, but see, many of our libraries don't require to have your card to check out....
+2015-03-25T16:29:13  *** rjackson_isl_ has quit IRC
+2015-03-25T16:29:30  <mmorgan> Jeff: What Dyrcona said :)
+2015-03-25T16:29:56  <mmorgan> And also when registering new patrons, to make sure they don't already have a record in the database.
+2015-03-25T16:30:13  <Dyrcona> And, what mmorgan just said. :)
+2015-03-25T16:30:58  <jonadab> We search by date of birth whenever we register a new adult female patron, because we know from past experience most of them don't volunteer "Oh, my name used to be...", and we have in the past had a lot of duplicate-card problems.
+2015-03-25T16:31:29  <jonadab> We have a lot fewer duplicate cards if we are faithful about doing this.
+2015-03-25T16:32:18  <jonadab> We probably *should* do the same for everyone under the age of about thirty, male or female, adult or not, because a lot of kids on our town don't *know* their last name, and sometimes their parents don't know it either.
+2015-03-25T16:34:26  <jeff> so if Amy Smith registered for a card and you had an Amy Jones in the database who was also born on January 1, you'd ask the Amy in front of you if she had a previous last name?
+2015-03-25T16:34:54  *** Shae has quit IRC
+2015-03-25T16:35:13  <mmorgan> Our libraries deal with lots of complex family issues, and lots of non-english names. Names can change, and the spelling of the same name can vary, too, for the same person.
+2015-03-25T16:35:13  <jonadab> Yes, we're small.
+2015-03-25T16:35:35  <jonadab> Any given date of birth, there's unlikely to be very many people with the same given name.
+2015-03-25T16:36:06  <jonadab> And yes, we have name spelling, abbreviation, and nickname issues too.
+2015-03-25T16:36:31  <jonadab> The staff all know about the really egregious ones, e.g., the one that's spelled "Martha" and pronounced "Sunny".
+2015-03-25T16:36:55  *** jboyer-isl has quit IRC
+2015-03-25T16:38:19  <jonadab> Actually, for any given full date of birth, with the year (which we do use), we probably don't have more than a handful of patrons total.
+2015-03-25T16:38:52  <mmorgan> jeff: I'm not sure a first name and month/day match would be enough to point to Ms. Jones being the same patron, as Ms. Smith. Usually there's more data that matches or is close, which would lead staff to ask the question.
+2015-03-25T16:39:23  <jeff> mmorgan: right, like address, phone number, etc.
+2015-03-25T16:40:31  <jonadab> Oh, the address and phone number are usually different.
+2015-03-25T16:40:47  <jeff> they change more often than dob does. :-)
+2015-03-25T16:40:51  <jonadab> Yes.
+2015-03-25T16:41:08  <jonadab> People move in and out of relatives' homes sometimes several times a year.
+2015-03-25T16:41:16  <mmorgan> Right, or middle name, email address, etc.
+2015-03-25T16:42:06  <jeff> looks like 18 patrons sharing the same DOB is as high as we go, once you eliminate the likely "year only" ones that are clustered on Jan 1 and/or Dec 31.
+2015-03-25T16:42:32  <jeff> 2200 null, 1200 1970-01-01, etc.
+2015-03-25T16:43:23  <jonadab> Usually, when we do the date-of-birth search, we get 1-3 records, total, before we start looking for anything to line up.  If the given name is the same, that's definitely enough for us to ask the patron, "Did you used to live on [street]?"
+2015-03-25T16:44:01  <jeff> jonadab: at the point in time that you ask them that question, have you verified their ID?
+2015-03-25T16:44:11  <jonadab> jeff: Yes, we start with ID.
+2015-03-25T16:44:20  <jeff> just wondering -- a tangent, really.
+2015-03-25T16:44:37  <jonadab> We didn't used to require ID, but it became necessary, about ten years ago or so.
+2015-03-25T16:44:52  <jeff> would you look at those patrons born before 1900... and all those patrons born after 2016!
+2015-03-25T16:44:59  *** maryj has quit IRC
+2015-03-25T16:45:38  <jonadab> Heh.  I don't think we have any from before 1900 any more.  We did when I started working here...
+2015-03-25T16:46:06  <jeff> we have patrons born in 0944, 0951, 0953... i think i'm seeing a pattern here.
+2015-03-25T16:46:31  <jeff> not sure about the one born in 1036.
+2015-03-25T16:46:33  <jonadab> Those look like school districts.
+2015-03-25T16:47:16  <mmorgan> Hmm, appears we have more than a few born in the first century :-(
+2015-03-25T16:47:24  <jonadab> Or I suppose it could be fingers on the wrong keys.
+2015-03-25T16:47:31  <jeff> 1979-1983 are our top five years.
+2015-03-25T16:47:34  <jonadab> mmorgan: @blame data migration
+2015-03-25T16:47:56  <jeff> jonadab: i was guessing fingers on the wrong keys more than school districts.
+2015-03-25T16:48:33  <jeff> after those five years, we get into 1969-1970, which i can't trust for epoch reasons.
+2015-03-25T16:48:59  <mmorgan> ...and one born in 3327 :)
+2015-03-25T16:49:07  <jonadab> Ok, wow.
+2015-03-25T16:49:09  <jonadab> Time traveller.
+2015-03-25T16:49:46  <mmorgan> Time traveller/historian :)
+2015-03-25T16:49:53  <jeff> since we don't have a dob precision field, and since many records had just a year, then were "transformed" into a date by making them Jan 1 of said year, I've no way to know which of these patrons were actually born on Jan 1.
+2015-03-25T16:50:37  <jonadab> @blame data migration
+2015-03-25T16:50:37  <pinesol_green> jonadab: It really IS data migration's fault!
+2015-03-25T16:51:43  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-25T16:52:04  <jeff> mmorgan: i have 6 patrons from farther in the future than that -- farthest being 9149
+2015-03-25T16:53:08  <mmorgan> Wow! It's so gratifying that they would travel so far back in time to get a library card! ;-)
+2015-03-25T16:55:09  <tsbere> We have dobs ranging from the year 0002 to 9962
+2015-03-25T16:55:35  *** RoganH has quit IRC
+2015-03-25T16:57:01  <tsbere> (most of our future ones are < 2023, with one 2039 and the 9962)
+2015-03-25T16:57:30  *** ericar has quit IRC
+2015-03-25T16:58:24  <Dyrcona> Trouble with that 0002 birth day is you have to change calendars and off set by some number of days, and then does the offset happen in the 18th or the 17th cenury?
+2015-03-25T16:58:42  <Bmagic> jeff: our library responded with the reason: "If we could search by name AND birthdate the extra step of sifting through patrons with the same name would be eliminated."
+2015-03-25T16:59:26  <jeff> got it.
+2015-03-25T16:59:52  <jeff> when searching by name, i generally search by name and then ask for further details if the search results require it.
+2015-03-25T16:59:58  *** Dyrcona has quit IRC
+2015-03-25T17:00:01  <jeff> as opposed to asking for every patron to give me their dob.
+2015-03-25T17:05:26  *** mrpeters has left #evergreen
+2015-03-25T17:08:05  *** graced has quit IRC
+2015-03-25T17:20:20  *** mmorgan has left #evergreen
+2015-03-25T17:27:35  *** jihpringle has quit IRC
+2015-03-25T17:48:54  *** yboston has quit IRC
+2015-03-25T18:09:01  *** buzzy has joined #evergreen
+2015-03-25T18:19:36  *** dMiller_ has quit IRC
+2015-03-25T18:22:07  *** bmills has quit IRC
+2015-03-25T18:36:21  *** jihpringle has joined #evergreen
+2015-03-25T18:41:40  *** jwoodard has quit IRC
+2015-03-25T18:51:27  *** dMiller_ has joined #evergreen
+2015-03-25T18:54:25  *** vlewis has quit IRC
+2015-03-25T18:54:29  *** vlewis_ has quit IRC
+2015-03-25T18:54:40  *** vlewis has joined #evergreen
+2015-03-25T19:18:25  *** dMiller_ has quit IRC
+2015-03-25T19:43:57  *** dMiller_ has joined #evergreen
+2015-03-25T19:47:40  *** buzzy has quit IRC
+2015-03-25T20:24:12  *** dMiller_ has quit IRC
+2015-03-25T20:39:54  *** akilsdonk has quit IRC
+2015-03-25T20:43:18  *** akilsdonk has joined #evergreen
+2015-03-25T22:25:02  *** akilsdonk has quit IRC
+2015-03-25T22:53:39  *** jeff has quit IRC
+2015-03-25T22:53:46  *** jeff has joined #evergreen
+2015-03-25T22:53:46  *** jeff has joined #evergreen
+2015-03-25T23:17:43  *** pmurray is now known as pmurray_away
+2015-03-25T23:52:02  *** dcook has quit IRC

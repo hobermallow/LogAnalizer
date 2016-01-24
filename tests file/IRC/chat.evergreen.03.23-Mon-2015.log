@@ -1,0 +1,212 @@
+2015-03-23T06:15:56  *** gsams has quit IRC
+2015-03-23T06:17:09  *** gsams has joined #evergreen
+2015-03-23T07:21:40  *** graced has joined #evergreen
+2015-03-23T07:37:48  *** remingtron has joined #evergreen
+2015-03-23T07:56:50  *** jboyer-isl has joined #evergreen
+2015-03-23T07:57:45  *** rjackson_isl has joined #evergreen
+2015-03-23T07:57:53  *** sarabee has joined #evergreen
+2015-03-23T08:14:02  *** ericar has joined #evergreen
+2015-03-23T08:35:08  *** mrpeters has joined #evergreen
+2015-03-23T08:45:09  *** mmorgan has joined #evergreen
+2015-03-23T08:45:10  *** Shae has joined #evergreen
+2015-03-23T08:48:55  *** collum has joined #evergreen
+2015-03-23T08:56:58  *** dbwells has joined #evergreen
+2015-03-23T09:14:19  *** maryj has joined #evergreen
+2015-03-23T09:20:50  *** pmurray_away is now known as pmurray
+2015-03-23T09:27:38  *** yboston has joined #evergreen
+2015-03-23T09:28:43  *** Dyrcona has joined #evergreen
+2015-03-23T09:29:16  <Dyrcona> Best explanation of pointers in C ever: http://en.wikipedia.org/wiki/Haddocks%27_Eyes
+2015-03-23T09:30:03  <Dyrcona> Actually, not the poem itself, but the lead up to it.
+2015-03-23T09:32:46  <Dyrcona> Start here with "You are sad," the Knight said in an anxious tone: http://en.wikisource.org/wiki/Page%3AThrough_the_Looking-Glass%2C_and_What_Alice_Found_There.djvu/194
+2015-03-23T09:32:58  <Dyrcona> And that's your programming lesson for today. :)
+2015-03-23T09:35:12  <Dyrcona> Or, better: http://en.wikisource.org/wiki/Through_the_Looking-Glass,_and_What_Alice_Found_There/Chapter_VIII#174
+2015-03-23T09:35:53  *** pmurray has quit IRC
+2015-03-23T09:36:17  *** pmurray_away has joined #evergreen
+2015-03-23T09:36:32  *** pmurray_away is now known as pmurray
+2015-03-23T09:36:42  *** pmurray has joined #evergreen
+2015-03-23T09:37:27  <mmorgan> I thought stored somewhere in the db was the total circ count for copies ( including active, aged, and legacy). Maybe I dreamed this?
+2015-03-23T09:38:44  <csharp> mmorgan: extend_reporter.full_circ_count is where I go for that
+2015-03-23T09:39:23  <mmorgan> Yes! I didn't dream it after all :)
+2015-03-23T09:39:35  <mmorgan> csharp++
+2015-03-23T09:39:39  <mmorgan> Thanks!
+2015-03-23T09:41:06  <jeff> extend_reporter.full_circ_count outputs a row for each row in asset.copy, and gives a count that includes extend_reporter.legacy_circ_count, action.circulation, and action.aged_circulation
+2015-03-23T09:43:29  <Dyrcona> It depends on legacy_circ_count having been filled at migration time.
+2015-03-23T09:43:44  <Dyrcona> If not, legacy circs aren't included.
+2015-03-23T09:43:55  <jeff> right. it isn't THAT magic. :-)
+2015-03-23T09:44:03  <Dyrcona> :)
+2015-03-23T09:44:24  <Dyrcona> It's all magic when you don't understand it.
+2015-03-23T09:45:42  <mmorgan> Magic or not, it's pretty handy - as long as one knows where to look for it ;-)
+2015-03-23T09:47:43  <jonadab> Any sufficiently advanced magic is indistinguishable from technology.
+2015-03-23T09:52:37  <Dyrcona> jonadab++
+2015-03-23T09:52:54  <Dyrcona> I imagine if ancient people could see us, they would believe we are gods.
+2015-03-23T09:56:45  *** RoganH has joined #evergreen
+2015-03-23T09:58:03  <csharp> @who is a god to the ancient people?
+2015-03-23T09:58:03  <pinesol_green> dbwells is a god to the ancient people.
+2015-03-23T10:24:25  <Dyrcona> @who is the OOM killer.
+2015-03-23T10:24:25  <pinesol_green> kitteh_ is the OOM killer.
+2015-03-23T10:24:46  * Dyrcona thinks his new hardware cannot come too soon.
+2015-03-23T10:26:10  <Dyrcona> beam.smp is typically using around 1.8GB of virtual memory on our main server.
+2015-03-23T10:26:19  <Dyrcona> I'm curious what others may see.
+2015-03-23T10:31:11  <dbwells> csharp: sweet :)
+2015-03-23T10:36:36  <dbs> Dyrcona: 1094m on our main (and only) server
+2015-03-23T10:36:59  <dbs> Per top, anyway
+2015-03-23T10:37:18  <Dyrcona> dbs: thanks, ours currently says: 1911m, but it varies.
+2015-03-23T10:37:50  <Dyrcona> OOM killer decided to kill beam.smp yesterday afternoon.
+2015-03-23T10:47:16  <csharp> @blame the OOM killa
+2015-03-23T10:47:16  <pinesol_green> csharp: the OOM killa forgot to give the gerbils their chocolate-frosted sugar bombs
+2015-03-23T11:03:11  *** dreuther has joined #evergreen
+2015-03-23T11:09:41  <csharp> hmm - I have a helpdesk ticket on long (> 25s) bib search queries - any clues on where I should be looking to decrease that?
+2015-03-23T11:10:20  <bshum> Well, suggesting more refined search terms never hurts :)
+2015-03-23T11:10:21  * csharp recalls conversations between eeevil and bshum at the hack-a-way about this, but doesn't know if they're relevant to him
+2015-03-23T11:11:09  <bshum> csharp: What are they searching and how?
+2015-03-23T11:11:32  <bshum> Certainly stuff can be slow depending on how they're searching.
+2015-03-23T11:11:40  <kmlussier> csharp: Did they just start getting slow?
+2015-03-23T11:11:48  <bshum> Like MARC expert search is still slow.
+2015-03-23T11:11:49  <csharp>  title:Night embrace search_format(book) site(URRLS-MA) depth(2) took 23s
+2015-03-23T11:11:55  <bshum> Or copy location search
+2015-03-23T11:12:26  <csharp> kmlussier: this is the first report of it, I'm only looking at Friday's logs right now and I haven't compared to earlier logs
+2015-03-23T11:13:09  <bshum> csharp: All the stuff me and eeevil were talking about at the Hackaway were pushed to master and rel_2_7
+2015-03-23T11:13:12  <csharp> looking at the previous Friday's logs, there are similar search times
+2015-03-23T11:13:19  <bshum> So, you probably should have everything.
+2015-03-23T11:13:24  <csharp> bshum: great
+2015-03-23T11:13:40  <bshum> And you did tune your PostgreSQL 9.3 with the different settings right?
+2015-03-23T11:13:47  <bshum> Instead of what pgtune says to do
+2015-03-23T11:14:14  <Dyrcona> Too much voodoo there.
+2015-03-23T11:14:20  * Dyrcona is not a witchdoctor.
+2015-03-23T11:15:07  <csharp> keyword: World War I  search_format(book) depth(0) took 31s
+2015-03-23T11:15:15  <csharp> bshum: yessir
+2015-03-23T11:15:58  <Dyrcona> I'd expect a broad keyword search like that to take longer.
+2015-03-23T11:16:55  <csharp> hmm - looks like search_format() may be a factor - still siftin
+2015-03-23T11:16:56  <csharp> g
+2015-03-23T11:17:56  <csharp> yep - excluding 'search_format' limits from the logs shows only 2-5 second queries
+2015-03-23T11:19:30  <kmlussier> csharp: I think we've found that search_format does affect search times.
+2015-03-23T11:19:53  <kmlussier> csharp: You might want to check with mmorgan when she's back. I know NOBLE has spent a lot of time recently trying to pin down search slowness.
+2015-03-23T11:21:11  * csharp finally sees it - the example given to him was 'lusitania' which when searched scoped to a certain library only takes a second or two, but adding the books filter makes it sit and spin for many seconds
+2015-03-23T11:23:31  <csharp> looks like item_type causes similar slowness
+2015-03-23T11:24:01  <Dyrcona> Yep. I believe most of the filters go through a view made up of other views.
+2015-03-23T11:24:20  <Dyrcona> Views built from views are generally not fast.
+2015-03-23T11:24:24  <bshum> Not exactly anymore.
+2015-03-23T11:24:41  <Dyrcona> Well, there were some improvements made, and I forget the details.
+2015-03-23T11:24:49  <bshum> That was the work we were doing at the hackway, to not make them views of views.
+2015-03-23T11:25:01  <bshum> Well, views of views of views?
+2015-03-23T11:25:03  <bshum> :D
+2015-03-23T11:25:07  <Dyrcona> :)
+2015-03-23T11:26:36  <Dyrcona> I can say that we avoid those views in our SQL reports when searching by or retrieving that information.
+2015-03-23T11:26:51  <Dyrcona> Using the views slows the queries down quite a lot.
+2015-03-23T11:27:14  <Dyrcona> We generally join directly with ccvm and mravl.
+2015-03-23T11:36:39  <Dyrcona> @blame mvf
+2015-03-23T11:36:39  <pinesol_green> Dyrcona: mvf 's bugfix broke Dyrcona's feature!
+2015-03-23T11:36:59  <Dyrcona> Hmm.. "Strike that. Reverse it."
+2015-03-23T11:37:11  <Dyrcona> ;)
+2015-03-23T11:43:04  <jeff> huh. postgresql is tolerant of ambiguities in subqueries.
+2015-03-23T11:47:37  <jeff> for example, https://gist.github.com/jeff/377e78b62f8aefcc3a7c
+2015-03-23T11:49:00  <jeff> I was surprised that didn't trigger ``column reference "label" is ambiguous''
+2015-03-23T11:52:34  <Dyrcona> Interesting.
+2015-03-23T11:54:52  <Dyrcona> Probably because there is no actual join in the subquery.
+2015-03-23T11:54:53  <jeff> not sure if that's a bug (possibly even fixed after 9.2.mumble), or if I'm wrong to expect an error to be raised on that ambiguity.
+2015-03-23T11:54:56  <jboyer-isl> Since it is a subselect it makes sense to me. I’d have been much more surprised if you said it treated it as acn.label rather than acnsub.
+2015-03-23T11:56:03  <jeff> i guess "while acn.label can be explicitly referenced, the columns from acn are not otherwise made available to the subquery automatically" might explain it.
+2015-03-23T11:56:10  <jeff> (if indeed that theory is correct)
+2015-03-23T11:57:01  <Dyrcona> Maybe someone in #postgresql know?
+2015-03-23T11:57:08  <Dyrcona> knows...
+2015-03-23T11:57:16  *** ningalls has quit IRC
+2015-03-23T11:57:22  <jeff> yeah, i might wrap it up in a form suitable for asking there.
+2015-03-23T11:57:31  <jeff> after checking docs a little more.
+2015-03-23T11:57:35  <jeff> tracking down something else first.
+2015-03-23T12:12:17  <eeevil> jeff: pg nests "scopes" for subqueries. the nearest alias wins, given ambiguities
+2015-03-23T12:14:06  <jeff> eeevil: thanks!
+2015-03-23T12:14:27  <jeff> eeevil: any pointer / keywords offhand that i could use to find reference to that in the docs?
+2015-03-23T12:22:18  <eeevil> jeff:  the end of 2.1.2 (http://www.postgresql.org/docs/7.3/static/queries.html#QUERIES-WHERE) is pretty clear
+2015-03-23T12:24:19  <jeff> not seeing a 2.1.2 there...
+2015-03-23T12:24:20  <eeevil> heh... and for a /modern/ pg (same content) http://www.postgresql.org/docs/9.3/static/queries-table-expressions.html#QUERIES-WHERE
+2015-03-23T12:25:03  <eeevil> the en d of 7.2.2 in that one
+2015-03-23T12:25:51  <jeff> ah, there we go. thanks!
+2015-03-23T12:25:53  <jeff> eeevil++
+2015-03-23T12:27:37  <jeff> i find myself pondering a function to rename a call number, or in the case of an existing call number with that label being already present, moving copies and optionally deleting the now-empty (when empty!) call number.
+2015-03-23T12:28:35  <jeff> we do batch call number updates when moving/re-labeling, and while i can avoid trying to create a duplicate, the cleanup being manual is sometimes annoying.
+2015-03-23T12:28:38  <eeevil> hrm... I thought there was a perl opensrf call to do exactly that... (obv less performant)
+2015-03-23T12:29:17  <jeff> there might be -- it might require that the gaining/losing call numbers be known in advance.
+2015-03-23T12:29:18  *** jihpringle has joined #evergreen
+2015-03-23T12:29:20  * jeff looks
+2015-03-23T12:29:48  <jeff> because if i do the bulk of the update in sql then leave cleanup to a helper script that makes opensrf calls...
+2015-03-23T12:31:42  <Dyrcona> Y'know, it occurs to me that I pretty much never refer to the "parent" query in a subquery. Habit, I guess.
+2015-03-23T12:32:02  <Dyrcona> If I need to, I usually end up with a join or a with clause.
+2015-03-23T12:32:43  <jeff> open-ils.cat.asset.volume.fleshed.batch.update has logic to auto-merge volumes if one with the same record+owner+label
+2015-03-23T12:49:55  *** Dyrcona has quit IRC
+2015-03-23T12:51:19  *** Dyrcona has joined #evergreen
+2015-03-23T12:52:50  *** yboston_ has joined #evergreen
+2015-03-23T12:52:51  *** yboston has quit IRC
+2015-03-23T12:52:51  *** yboston_ is now known as yboston
+2015-03-23T12:54:05  *** Dyrcona has quit IRC
+2015-03-23T12:54:38  *** Dyrcona has joined #evergreen
+2015-03-23T12:56:42  *** Dyrcona1 has joined #evergreen
+2015-03-23T12:57:14  *** Dyrcona has quit IRC
+2015-03-23T12:57:30  *** Dyrcona1 is now known as Dyrcona
+2015-03-23T12:58:24  <Dyrcona> Whee! Fun with wifi!
+2015-03-23T13:08:39  * jeff vaguely wonders how old an evergreen database must be to have an action.billable_cirulations view
+2015-03-23T13:14:05  <jeff> ah, was killed around 2009.
+2015-03-23T13:30:47  *** mllewellyn has joined #evergreen
+2015-03-23T13:36:37  <jeff> that moment when someone hands you a printout and you think "wait, how was this generated?"
+2015-03-23T13:37:00  <jeff> good reminder that there are corners of the UI that I never use, but others may use often.
+2015-03-23T14:07:03  <jonadab> Heh.  Our old ILS came with a bunch of canned reports.  Every single time someone comes to me with a printout from one of them, asking what the numbers on it mean, I cringe.
+2015-03-23T14:09:19  <jeff> "oh, you see, when sending a copy from library A to library B, the old ILS first checked it out to a pseudo-patron representing library B, then you applied the temporary barcode and sent it via courier..."
+2015-03-23T14:10:01  <jeff> "once it arrived, library B checked it in, which checked it out to a pseudopatron account representing the hold shelf at library B, and in a day or two a postal notice would be printed at the main branch, and placed in the mail."
+2015-03-23T14:10:15  <jonadab> That's actually remarkably similar to how we handle interlibrary loans.  Except the other organization checks the book out to us...
+2015-03-23T14:10:16  <jeff> "when the patron received the postal notice and came to library B, the item would be checked out to the patron's account"
+2015-03-23T14:10:51  <jeff> "and yes, this item has now 'circulated' three more times than it had before the patron placed their request"
+2015-03-23T14:10:56  <jonadab> ... and we change the item-call-number associated with the barcode to the book title, then put it on the hold shelf...
+2015-03-23T14:11:08  <jonadab> (The barcode on the 3x5 card, that is...)
+2015-03-23T14:11:36  <jeff> "the item was 'checked out' to Library B, then to Library B's Hold Shelf, then to Patron Name Here. see? three circulations!"
+2015-03-23T14:11:46  <jonadab> Heh.
+2015-03-23T14:12:08  <jonadab> Well, I don't know about the Hold Shelf thing, but it's reasonable IMO for both library A and library B to count a circulation.
+2015-03-23T14:12:43  <jeff> all a matter of intent and awareness.
+2015-03-23T14:14:58  <Dyrcona> jonadab: The way we count things, both libraries do get credit for the 1 circulation in Evergreen.
+2015-03-23T14:15:31  <Dyrcona> Library A gets a "reciprocal lending" credit for their item being circulated at Library B.
+2015-03-23T14:15:52  <Dyrcona> Library B gets a simple circulation count for circulating an item.
+2015-03-23T14:16:39  <Dyrcona> Only 1 goes into total circulations.
+2015-03-23T14:16:49  <csharp> our libraries are pretty comfortable with the idea that circulations are counted only at the checkout library with the idea that it all comes out in the wash
+2015-03-23T14:17:10  <csharp> however, they do keep stats on holds and transits to justify things too
+2015-03-23T14:17:18  <Dyrcona> Our state wants to know how much libraries share materials, so we report that.
+2015-03-23T14:17:35  <csharp> same here - it's PINES' raison d'etre
+2015-03-23T14:41:30  <jonadab> Dyrcona: That makes sense.
+2015-03-23T14:45:10  <jeff> and i've just spent several minutes editing the value in the following line wondering why i can't get it to work:
+2015-03-23T14:45:13  <jeff> #log_min_duration_statement = 3         # -1 is disabled, 0 logs all statements
+2015-03-23T14:45:20  <jeff> yes, that's commented out. :P
+2015-03-23T14:46:16  <bshum> Heh
+2015-03-23T14:47:02  <jeff> (and of course I meant a value much closer to 3000 than 3)
+2015-03-23T14:50:07  <Dyrcona> Yep, that's the new standard in configuration files. Comment them out to use defaults.
+2015-03-23T14:58:51  <jonadab> jeff: I once spent several *months* trying to figure out why about half my changes to a program didn't work.  Somehow the entire source file had gotten duplicated, one copy after the other in the same file; the compiler ignored everything after the end of the first one...
+2015-03-23T14:59:17  <jonadab> (This was on DOS, so needless to say I was not using version control.)
+2015-03-23T15:01:45  *** ningalls has joined #evergreen
+2015-03-23T15:01:58  *** kbutler has joined #evergreen
+2015-03-23T15:04:18  *** dbs has quit IRC
+2015-03-23T15:04:25  *** dbs has joined #evergreen
+2015-03-23T15:22:54  *** sarabee has quit IRC
+2015-03-23T15:29:02  *** mglass has joined #evergreen
+2015-03-23T15:33:54  *** sarabee has joined #evergreen
+2015-03-23T16:23:43  *** collum has quit IRC
+2015-03-23T16:29:25  *** rjackson_isl has quit IRC
+2015-03-23T16:35:19  *** jboyer-isl has quit IRC
+2015-03-23T16:38:33  *** maryj has quit IRC
+2015-03-23T16:43:30  *** ericar has quit IRC
+2015-03-23T16:47:40  *** alynn26 has joined #evergreen
+2015-03-23T16:47:45  <csharp> gmcharlt++ # clip-the-cape-of-clark
+2015-03-23T16:48:32  <berick> heh.  kryptonite-lite
+2015-03-23T16:57:49  *** Dyrcona has quit IRC
+2015-03-23T16:58:16  *** Newziky has left #evergreen
+2015-03-23T16:58:58  *** graced has quit IRC
+2015-03-23T17:06:00  *** kbutler has quit IRC
+2015-03-23T17:07:38  *** RoganH has quit IRC
+2015-03-23T17:09:58  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-23T17:22:48  *** mmorgan has left #evergreen
+2015-03-23T17:24:45  <csharp> @test
+2015-03-23T17:24:46  <pinesol_green> csharp: Yeah, well, you know, that's just, like, your opinion, man.
+2015-03-23T17:37:56  *** alynn26 has quit IRC
+2015-03-23T18:28:55  *** mllewellyn has quit IRC
+2015-03-23T18:29:43  *** mrpeters has quit IRC
+2015-03-23T18:41:53  *** wlayton has joined #evergreen
+2015-03-23T18:42:08  *** yboston has quit IRC
+2015-03-23T20:30:35  *** wlayton has quit IRC
+2015-03-23T20:39:18  *** jihpringle has quit IRC
+2015-03-23T22:27:23  *** dcook__ has joined #evergreen
+2015-03-23T22:30:40  *** dcook has quit IRC

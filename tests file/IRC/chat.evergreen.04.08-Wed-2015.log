@@ -1,0 +1,474 @@
+2015-04-08T02:30:56  *** sarabee has quit IRC
+2015-04-08T02:31:51  *** dcook has joined #evergreen
+2015-04-08T02:32:10  *** sarabee has joined #evergreen
+2015-04-08T02:34:33  *** dcook__ has quit IRC
+2015-04-08T03:28:16  *** dcook has quit IRC
+2015-04-08T03:44:58  *** sarabee has quit IRC
+2015-04-08T05:02:49  *** _bott_ has quit IRC
+2015-04-08T05:03:37  *** dkyle1 has quit IRC
+2015-04-08T05:07:11  *** dkyle has joined #evergreen
+2015-04-08T05:08:08  *** _bott_ has joined #evergreen
+2015-04-08T05:28:49  *** BigRig has quit IRC
+2015-04-08T05:30:02  *** BigRig has joined #evergreen
+2015-04-08T07:06:14  *** Callender has quit IRC
+2015-04-08T07:18:50  *** Callender has joined #evergreen
+2015-04-08T07:31:49  *** graced has joined #evergreen
+2015-04-08T07:40:32  *** mrpeters has joined #evergreen
+2015-04-08T08:00:12  *** pmurray_away is now known as pmurray
+2015-04-08T08:00:22  *** pmurray is now known as pmurray_away
+2015-04-08T08:02:59  *** rjackson_isl has joined #evergreen
+2015-04-08T08:07:58  * bshum does a little dance knowing that the print notices did not explode overnight...
+2015-04-08T08:16:14  *** akilsdonk has joined #evergreen
+2015-04-08T08:23:56  *** pmurray_away is now known as pmurray
+2015-04-08T08:31:44  *** Shae has joined #evergreen
+2015-04-08T08:34:10  *** pmurray is now known as pmurray_away
+2015-04-08T08:36:17  *** Newziky1 has joined #evergreen
+2015-04-08T08:36:17  *** Newziky1 has left #evergreen
+2015-04-08T08:41:00  *** mmorgan has joined #evergreen
+2015-04-08T08:42:11  *** jboyer-isl has joined #evergreen
+2015-04-08T08:42:32  *** krvmga has joined #evergreen
+2015-04-08T08:56:47  *** Dyrcona has joined #evergreen
+2015-04-08T09:01:30  <csharp> @dunno search cat
+2015-04-08T09:01:31  <pinesol_green> csharp: 2 found: #31: "What we have here is a failure to communicate." and #9: "http://cat.evergreen-ils.org.meowbify.com/"
+2015-04-08T09:06:12  <krvmga> i found a catalog display issue that only seems to affect the firefox browser.
+2015-04-08T09:07:15  <krvmga> in advanced search, when choosing a format, if you click on the arrow to move down on the list, the list advances in such a way that the fifth item on the list is hidden
+2015-04-08T09:07:26  <krvmga> you only get to see it if you scroll to the end of the list and then back up
+2015-04-08T09:07:53  <krvmga> this doesn't happen in IE, Opera, Safari, or Chrome
+2015-04-08T09:07:57  <krvmga> only firefox
+2015-04-08T09:08:52  <krvmga> is this worth mentioning on launchpad?
+2015-04-08T09:09:41  <csharp> krvmga: can you see the same issue on http://gapines.org?
+2015-04-08T09:10:03  * csharp is not, if he's understanding the complaint correctly
+2015-04-08T09:10:33  <csharp> (FF36 on Fedora 21)
+2015-04-08T09:11:19  <krvmga> csharp: i don't see it there...i think because the lists are short
+2015-04-08T09:12:24  <csharp> krvmga: what's the URL for your OPAC?
+2015-04-08T09:14:07  <krvmga> csharp: i do see it in the gapines.org language selection list. you can check it for yourself. try to choose the language that comes directly after German.
+2015-04-08T09:14:19  <Bmagic> krvmga: I see it happening on my opac, I'm not sure if this is an EG issue or the browser taking liberties
+2015-04-08T09:14:26  <krvmga> it's Hindi, but you don't get to see it
+2015-04-08T09:14:53  <krvmga> the list moves so that you see Italian
+2015-04-08T09:15:54  <krvmga> Bmagic: since it works fine in the other browsers, i'm inclined to think it might be a firefox issue.
+2015-04-08T09:16:05  <csharp> so what I'm doing is clicking on the top item of the list, then using the down arrow key to move down the list - is that what you're doing?
+2015-04-08T09:16:28  <krvmga> csharp: using the down arrow on the slider beside the box
+2015-04-08T09:16:36  <Bmagic> csharp: You have to click the down arrow on the scroll bar UI
+2015-04-08T09:16:45  <krvmga> if you use your keyboard down arrow, you'll see Hindi
+2015-04-08T09:17:02  <Bmagic> It advances 5 lines instead of the displayed 4
+2015-04-08T09:17:36  <csharp> ah - Fedora isn't rendering the scrollbar like that
+2015-04-08T09:18:13  <Bmagic> csharp: I agree, the firefox installation on different OS's changes things
+2015-04-08T09:18:29  <krvmga> yes, i'm sorry. i should have mentioned this was on windows
+2015-04-08T09:18:32  <Bmagic> I see the behavior on Windows+Firefox
+2015-04-08T09:18:54  <Dyrcona> It skips Finnish, too, for the record.
+2015-04-08T09:19:15  <Dyrcona> My suggestion is open a bug in Mozilla's Bugzilla.
+2015-04-08T09:19:46  <Bmagic> I wonder what would happen if the scroll box was 5 elements tall?
+2015-04-08T09:20:00  <bshum> Doesn't help
+2015-04-08T09:20:04  <bshum> I tried that using the inspector editor
+2015-04-08T09:20:11  <bshum> And it just skips the sixth entry instead
+2015-04-08T09:20:14  <Bmagic> haha!
+2015-04-08T09:20:19  <bshum> So it definitely seems like a weird Firefox issue
+2015-04-08T09:21:01  <csharp> s/Firefox/Firefox on Windows/
+2015-04-08T09:21:19  * csharp doesn't know if mac works the same way
+2015-04-08T09:21:37  * krvmga doesn't have a mac to test on.
+2015-04-08T09:21:48  <Dyrcona> I'm using Firefox 37.0.1 on Ubuntu and I see it the behavior as described.
+2015-04-08T09:21:58  * jeff looks
+2015-04-08T09:22:00  * jboyer-isl is using a mac at this very moment. I’ll go grab FF.
+2015-04-08T09:22:02  <Bmagic> bshum: Using firebug, I changed the box to have size="5" and it fixed the issue
+2015-04-08T09:22:09  <Bmagic> <select title="Select item type:" size="5" multiple="multiple" name="fi:item_type" id="adv_selector_item_type">
+2015-04-08T09:23:13  <jeff> I'm unable to repro on Firefox 38.0 on OS X
+2015-04-08T09:23:15  <Bmagic> But perhaps if the page was originally delivered to the firefox engine with size="5" then it would skip the 6th element like you said
+2015-04-08T09:26:48  <Bmagic> Anyone had success adding z39.50 targets to EG? I am pondering the "Format" and the "Code" values. Title, I have code 4 and Format 6
+2015-04-08T09:27:04  <Bmagic> I think I understand what code is from this http://www.indexdata.com/yaz/doc/bib1.html
+2015-04-08T09:27:13  <jboyer-isl> FF 37.0.1 on OSX also works properly. Does FF still mix custom / native controls depending on the system, or are they all custom or all native?
+2015-04-08T09:27:18  <bshum> Bmagic: Yes, we've had success.  But yes, it also depends on the Z-targets.
+2015-04-08T09:27:32  <Bmagic> So, a value of 4=Title, What is format?
+2015-04-08T09:27:32  <Dyrcona> What bshum just said.
+2015-04-08T09:28:15  <Bmagic> bshum: I figured as much, So I am probing them using ZOOM in perl, and getting success, but EG doesnt return anything
+2015-04-08T09:28:43  <Dyrcona> Bmagic: Is the target running Evergreen?
+2015-04-08T09:29:56  <Bmagic> Dyrcona: no, this is my example http://mainecat.maine.edu
+2015-04-08T09:30:07  <Bmagic> mainecat.maine.edu:210/INNOPAC
+2015-04-08T09:30:27  <Bmagic> With Zoom, query @attr 1=4 "harry potter"
+2015-04-08T09:30:33  <Bmagic> I get over 400 results
+2015-04-08T09:30:47  <Bmagic> 0 results on EG
+2015-04-08T09:31:31  <bshum> Bmagic: What's your settings look like in config.z3950_attr for the source you set up?
+2015-04-08T09:31:40  <Dyrcona> Format 6 and truncation of 1 usually works for title.
+2015-04-08T09:31:41  * bshum is most interested in the "trunction"
+2015-04-08T09:31:46  <bshum> *truncation
+2015-04-08T09:32:22  <bshum> Depends.  For LOC you need 1.  For OCLC, they set it to 0 (at least in our live settings)
+2015-04-08T09:32:43  <Bmagic> Source mainecat.maine.edu, Label Maincat, Host mainecat.maine.edu, port 210, DB INNOPAC, Record format FI, transmission usmarc
+2015-04-08T09:32:59  <Bmagic> I will try changing the truncation number
+2015-04-08T09:33:08  <Dyrcona> Well, truncation is 0 for all OCLC.
+2015-04-08T09:33:17  <bshum> Ah, indeed.
+2015-04-08T09:34:01  *** yboston has joined #evergreen
+2015-04-08T09:34:35  <Dyrcona> Interesting....I just noticed that I have ISBN configured differently for Bibliomation than I do for NOBLE and CW/MARS.
+2015-04-08T09:35:15  <bshum> Dyrcona: Interesting indeed... I know we tinkered with the z-config when we were testing between us to figure out what was weird with Evergreen...
+2015-04-08T09:36:02  <jeff> @dunno add Have you confirmed your ISBN SPIDs with your service provider?
+2015-04-08T09:36:02  <pinesol_green> jeff: The operation succeeded.  Dunno #38 added.
+2015-04-08T09:36:49  <Dyrcona> Ah.... Turns out the configuration for Bibliomation is incomplete, or was partially removed.
+2015-04-08T09:36:56  <bshum> Heh :)
+2015-04-08T09:37:17  <Dyrcona> Guess the catalogers didn't want to use you guys as a source for records in production.
+2015-04-08T09:42:10  <Dyrcona> So, just continuing the z39.50 conversation a bit.
+2015-04-08T09:43:07  <Bmagic> I had to run into a meeting. I did quickly check the truncation setting and it didn't help. I'll see what I can see in the eg logs
+2015-04-08T09:43:26  <Dyrcona> If you're configuring an Evergreen target, everything is pretty much the same as LoC or Biblios, except for ISBN.
+2015-04-08T09:43:44  <Dyrcona> On ISBN you want to set truncation to 100 for Evergreen.
+2015-04-08T09:44:17  <Bmagic> What is truncation?
+2015-04-08T09:44:29  <Dyrcona> Bmagic: Don't think you'll see much useful in the logs.
+2015-04-08T09:45:31  <Bmagic> You think the the biggest impact is in the truncation setting. What about format?
+2015-04-08T09:46:04  <Dyrcona> Might be format. I've never connected to INNOPAC.
+2015-04-08T09:46:06  <bshum> well that stuff has to match whatever they're saying.
+2015-04-08T09:46:18  <bshum> Code and format.
+2015-04-08T09:46:23  <bshum> and truncation.
+2015-04-08T09:46:34  <Bmagic> Ok so I need to call them?
+2015-04-08T09:46:39  <Dyrcona> Here are the allowed truncations from LoC: http://www.loc.gov/z3950/lcserver.html#trua
+2015-04-08T09:46:59  <Dyrcona> That is what LoC supports for truncation.
+2015-04-08T09:49:36  <Dyrcona> This library appears to use the same INNOPAC software as maine: http://wellcomelibrary.org/using-the-library/how-to/z3950/#anchor1
+2015-04-08T09:51:05  <Bmagic> Oooo, that is a good find
+2015-04-08T09:51:35  <dbs> speaking of biblios: bug 1441634
+2015-04-08T09:51:35  <pinesol_green> Launchpad bug 1441634 in Evergreen "Remove Biblios from the default Z39.50 targets" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1441634
+2015-04-08T09:51:39  *** Newziky1 has joined #evergreen
+2015-04-08T09:51:55  <bshum> dbs: +1
+2015-04-08T09:53:40  <Dyrcona> Ideally, the target should have information available somewhere on their site.
+2015-04-08T09:56:17  <Dyrcona> Would we want an upgrade script to also remove it from existing installations?
+2015-04-08T09:56:29  <Dyrcona> Biblios, that is.
+2015-04-08T09:56:57  *** akilsdonk has quit IRC
+2015-04-08T10:01:08  *** krvmga has quit IRC
+2015-04-08T10:04:32  <jboyer-isl> Can someone help me sanity check an opac change?
+2015-04-08T10:05:20  <Dyrcona> @roll d20
+2015-04-08T10:05:20  <pinesol_green> Dyrcona: As great as you are man, you'll never be greater than yourself.
+2015-04-08T10:05:21  <kmlussier> sure
+2015-04-08T10:05:34  <kmlussier> I live for sanity checks.
+2015-04-08T10:05:57  *** jwoodard has joined #evergreen
+2015-04-08T10:06:02  <csharp> @quote add < kmlussier> I live for sanity checks.
+2015-04-08T10:06:02  <pinesol_green> csharp: The operation succeeded.  Quote #109 added.
+2015-04-08T10:06:25  <jboyer-isl> I’m looking to make the Audience advanced search for juvenile (j) to include several other audience codes (a,b, and c), Is it appropriate to change the coded value map for Juvenile to ‘a,b,c,j’ or to just make a custom Audience filte box for the opac?
+2015-04-08T10:06:42  <kmlussier> My first quote! You just made my day csharp!
+2015-04-08T10:07:26  <jboyer-isl> I guess it’s more a question of “Will this require a reingest and break our DB, or does playing with coded value mapes just change what the opac filters do”
+2015-04-08T10:07:46  *** sarabee has joined #evergreen
+2015-04-08T10:08:02  <csharp> kmlussier++
+2015-04-08T10:08:28  <kmlussier> jboyer-isl: Alas, I can't help with this one. :(
+2015-04-08T10:09:20  <csharp> jboyer-isl: I would assume the latter unless someone like eeevil knows differently
+2015-04-08T10:09:26  <csharp> sorry, the former
+2015-04-08T10:09:27  <jboyer-isl> kmlussier: It’s definitely not common knowledge and the docs aren’t really clear on that. :(
+2015-04-08T10:09:48  <csharp> I would assume breakage/required reingest, that is
+2015-04-08T10:10:00  <tsbere> jboyer-isl: I can help! If you edit the existing things will get weird. I add a new one, mark it as a "Simple" one to push it to the top.
+2015-04-08T10:11:18  <Dyrcona> You'll need to do a partial reingest either way, IIRC.
+2015-04-08T10:11:31  <jboyer-isl> Ah, “Danger, keep fingers clear of machinery” it sounds like. So, tsbere, is it really worth messing with mapping and etc., or just make a custom filter box since it’s so simple? I’m kind of leaning toward the custom box myself.
+2015-04-08T10:11:53  * eeevil 's ears are buring, reads up
+2015-04-08T10:12:28  <tsbere> jboyer-isl: I just add a new CCVM row for the existing set. It won't ever match for indexing but will work for searching. If you want I can dig up some MVLC examples.
+2015-04-08T10:12:57  <jboyer-isl> Dyrcona: What I’m after is more like selecting multiple values from the audience box when selecting “juvenile,” can that not be done with just a custom template change?
+2015-04-08T10:15:06  <Dyrcona> jboyer-isl: I was referring to tsbere's suggestion with the either, and I'm apparently wrong in that case.
+2015-04-08T10:16:00  *** mllewellyn has joined #evergreen
+2015-04-08T10:16:28  <Dyrcona> A template change is relatively cheap. I'd try it on a dev/test system to see if it did what I wanted. If it does, then there you go!
+2015-04-08T10:17:05  <tsbere> Template change in this case is harder due to the dynamic nature of the advanced search boxes. Database insert (compared to edit) is easier. ;)
+2015-04-08T10:17:30  <Dyrcona> Well then. I'm wrong again. :)
+2015-04-08T10:17:35  * Dyrcona shuts up.
+2015-04-08T10:17:51  <jboyer-isl> I’m working on a dev server change, our dev db is just so lousy that it might be quicker to ask people that might nkow one way or the other. ;)
+2015-04-08T10:17:53  <eeevil> jboyer-isl: you can't use the comma separated "trick" anymore.  it was never intended to work that way, it was just an implementation quirk that allowed it.  what you want is to use are composite record attributes
+2015-04-08T10:18:13  <eeevil> s/can't/shouldn't/
+2015-04-08T10:18:16  <kmlussier> eeevil: But that would require a reingest, right?
+2015-04-08T10:18:52  <jboyer-isl> eeevil: That’s what I was thinking, but I don’t want to accidentally change what Juvenile means  in the database, just for search filters. Is that still the appropriate place to start changing things?
+2015-04-08T10:18:55  <eeevil> kmlussier: of the specific (new) attribute, yes, but nothing will break, per se
+2015-04-08T10:19:56  <eeevil> jboyer-isl: sec, checking the db
+2015-04-08T10:20:33  * tsbere is still find with the comma separated "trick" because it is a lot easier than rigging a new composite variant and requires no reingest of any kind
+2015-04-08T10:21:24  <tsbere> Oh, and the comma-separated bit doesn't create a new selector, it just adds to an existing one. >_>
+2015-04-08T10:24:32  *** tsbere_ has joined #evergreen
+2015-04-08T10:26:10  *** tsbere_ has quit IRC
+2015-04-08T10:37:08  <eeevil> jboyer-isl: so, interestingly, everything is already set up to do exactly what you want, if you just create a new composite attr def called "audience_group" (with parallel ccvm defs for the stock audience) and reingest just that attr def. see: templates/opac/parts/config.tt2:103 (in master)
+2015-04-08T10:38:44  <eeevil> It would be interesting, I think, to teach the logic using search.adv_config in the tpac to optionally make use of /all/ listed adv_attr values, so you could effectively mix them -- just disable the opac_visible flag on the stock audience:juvenile, and add just audience_group:juvenile
+2015-04-08T10:39:09  <eeevil> but, that's the future
+2015-04-08T10:40:40  <jboyer-isl> I see. That way I can also pre-define everything and it can just sit until the reingest and then switch over.
+2015-04-08T10:41:30  <eeevil> jboyer-isl: yeppers. well, take audience_group out of that list while you're setting it up, then put it back in to enable it in the tpac
+2015-04-08T10:41:43  <jboyer-isl> Even though it lists audience_group,audience, it only picks the first that exists?
+2015-04-08T10:41:53  <eeevil> correct
+2015-04-08T10:41:58  <jboyer-isl> OK.
+2015-04-08T10:42:57  <jboyer-isl> I might be using that in a couple other places to use some MVR filters for some other search filters.
+2015-04-08T10:45:40  *** dreuther has joined #evergreen
+2015-04-08T10:48:51  *** dreuther_ has joined #evergreen
+2015-04-08T10:49:16  *** dreuther_ has joined #evergreen
+2015-04-08T10:51:38  *** dreuther has quit IRC
+2015-04-08T10:52:31  <kmlussier> @dessert add pineapple coconut cheesecake
+2015-04-08T10:52:31  <pinesol_green> kmlussier: The operation succeeded.  Dessert #34 added.
+2015-04-08T10:52:43  <kmlussier> @dessert 34 [someone]
+2015-04-08T10:52:43  * pinesol_green grabs some pineapple coconut cheesecake for substack
+2015-04-08T11:24:14  <csharp> @quote random
+2015-04-08T11:24:14  <pinesol_green> csharp: Quote #88: "< eeevil> Now I am become Death, the destroyer of SIP2." (added by csharp at 04:45 PM, August 13, 2014)
+2015-04-08T11:24:23  <csharp> hehe
+2015-04-08T11:24:30  *** bmills has joined #evergreen
+2015-04-08T11:24:36  <csharp> @karma sip
+2015-04-08T11:24:36  <pinesol_green> csharp: Karma for "sip" has been increased 0 times and decreased 4 times for a total karma of -4.
+2015-04-08T11:24:39  <csharp> @karma sip2
+2015-04-08T11:24:39  <pinesol_green> csharp: Karma for "sip2" has been increased 0 times and decreased 6 times for a total karma of -6.
+2015-04-08T11:26:57  *** abowling has joined #evergreen
+2015-04-08T11:37:38  <dbs> <xsl:output method="xml" indent="yes" encoding="UTF-8"/> vs. <xsl:output method="xml" indent="yes"/>
+2015-04-08T11:37:58  <dbs> guess which MODS stylesheet has encoding="UTF-8" declared
+2015-04-08T11:57:44  *** RoganH has joined #evergreen
+2015-04-08T12:03:08  <dbs> Oh, sonofa...
+2015-04-08T12:03:53  * dbs wonders whether the MODS stylesheet encoding corruption is a result of a PostgreSQL xslt behaviour change
+2015-04-08T12:06:01  *** akilsdonk has joined #evergreen
+2015-04-08T12:06:04  *** buzzy has joined #evergreen
+2015-04-08T12:09:00  <jeff> dbs: what are you chasing down?
+2015-04-08T12:09:27  <jeff> rather, where should i look for more context, if any? :-)
+2015-04-08T12:10:05  <dbwells> jeff: I'm guessing the MODS/Zotero issue on the mailing list.
+2015-04-08T12:12:26  <jeff> ah! i was looking at the list just now. :-)
+2015-04-08T12:13:04  <dbs> dbwells++
+2015-04-08T12:13:49  <dbs> so the "funny" thing is that the MODS3 and on stylesheets have xsl:output encoding="UTF-8" declared, and they're the ones that corrupt characters.
+2015-04-08T12:15:30  * dbs looks at evergreen.oils_xslt_process
+2015-04-08T12:18:21  <dbs> we use output_string() but http://search.cpan.org/~shlomif/XML-LibXSLT-1.94/LibXSLT.pm says that's deprecated in favour of more explicit output_as_bytes and output_as_chars
+2015-04-08T12:19:27  <dbs> of course XML::LibXSLT 1.75 on our production box
+2015-04-08T12:20:15  <dbs> but output_string() was deprecated even then
+2015-04-08T12:21:22  <dbs> so it appears we want to use output_as_bytes()
+2015-04-08T12:24:23  <pinesol_green> [evergreen|Dan Scott] LP#1441634 Remove biblios.net from Z39.50 sources - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=d601e7c>
+2015-04-08T12:24:24  <pinesol_green> [evergreen|Galen Charlton] LP#1441634: add release notes for removal of biblios.net Z39.50 target - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=9629026>
+2015-04-08T12:25:06  <dbs> gmcharlt++
+2015-04-08T12:25:57  * gmcharlt sheds a single tear for the promise of biblios.net
+2015-04-08T12:32:11  <jcamins> gmcharlt: wow, that lasted a really long time in EG.
+2015-04-08T12:32:19  <jcamins> Didn't it go down four years ago?
+2015-04-08T12:33:14  <gmcharlt> jcamins: probably; one thing that's deceptive is that it still listens on port 210 and does the initial handshake with a Z39.50 client
+2015-04-08T12:33:31  <gmcharlt> it just doesn't recognize the "bibliographic" database it used to advertise
+2015-04-08T12:41:21  *** chatley_ has joined #evergreen
+2015-04-08T12:41:51  *** chatley has quit IRC
+2015-04-08T12:42:33  *** chatley has joined #evergreen
+2015-04-08T12:44:59  *** chatley__ has joined #evergreen
+2015-04-08T12:46:19  *** chatley_ has quit IRC
+2015-04-08T12:47:23  *** chatley has quit IRC
+2015-04-08T12:51:01  *** jihpringle has joined #evergreen
+2015-04-08T12:51:23  *** akilsdonk has quit IRC
+2015-04-08T12:53:02  *** chatley has joined #evergreen
+2015-04-08T12:56:07  *** chatley__ has quit IRC
+2015-04-08T13:09:36  *** plux has joined #evergreen
+2015-04-08T13:10:47  <dbs> ahhh, and output_string() is also used in WWW::SuperCat::Feed
+2015-04-08T13:15:20  <Dyrcona> dbs: Would you rather want output_as_chars() ?
+2015-04-08T13:16:12  <Dyrcona> I guess it comes down to respecting the encoding in the stylesheet or not.
+2015-04-08T13:17:32  <dbs> Dyrcona: you would think so, but based on the MODS stylesheet not having a declared output encoding and thus defaulting to output_as_bytes (and getting the desired behaviour)
+2015-04-08T13:18:00  <dbs> alternately, we do output_as_chars() and utf8_encode() throughout
+2015-04-08T13:18:23  <dbs> More messing about than I had anticipated
+2015-04-08T13:19:16  <Dyrcona> Well, what do you get with output_as_bytes when no encoding is specified? UTF-8? Something else?
+2015-04-08T13:21:01  <Dyrcona> It probably makes more sense to just fix the stylesheets and use output_as_bytes.
+2015-04-08T13:23:04  * dbs welcomes anyone else who wants to dig into this to go ahead and put together a fix for the bug.
+2015-04-08T13:29:32  <plux> on another note….anyone noting SSL issues with 2.74 on Ubuntu 14.04 post openssl upgrades - seems to affect the staff client only
+2015-04-08T13:29:56  <plux> the infamous “SSL input filter read failed”
+2015-04-08T13:30:59  <Dyrcona> We're not running production on Ubuntu 14.04, but I have not had any SSL issues with my development VM which runs Ubuntu 14.04.
+2015-04-08T13:31:26  <Dyrcona> Actually, I just built a new client and updated stuff yesterday. Let me check again with that.
+2015-04-08T13:32:44  *** Newziky1 has quit IRC
+2015-04-08T13:34:26  <Dyrcona> Well, yes, guess I do see log messages.
+2015-04-08T13:35:48  <plux> it may be smoke and mirrors but we’re getting intermittent/erratic hanging in the client that seems to parallel the SSL read fail times
+2015-04-08T13:36:10  <plux> it seemed fine prior to the latest openssl patches
+2015-04-08T13:37:20  <Dyrcona> I doubt the hanging has much to do with it.
+2015-04-08T13:37:27  <jeffdavis> I see a few "SSL input filter read failed" messages in the logs for our Ubuntu 14.04 test server running EG2.8 beta. Haven't had any reports of client issues so far.
+2015-04-08T13:37:38  <Dyrcona> http://serverfault.com/questions/565703/apache-producing-lots-of-ssl-only-errors-even-though-the-data-in-browser-seems-f
+2015-04-08T13:38:01  <Dyrcona> Looks it has to do with named virtual hosting and SSL being established before that happens.
+2015-04-08T13:42:07  <Dyrcona> Well, that's not it in this case, apparently.
+2015-04-08T13:44:41  <dbs> Oh, for more fun it could be the use of XML::LibXML::Document::toString() without an explicit setEncoding('UTF-8') call messing things up (due to the addition of created strings that have not had the utf8 flag set)
+2015-04-08T13:45:01  <dbs> @hate encodings
+2015-04-08T13:45:01  <pinesol_green> dbs: The operation succeeded.  dbs hates encodings.
+2015-04-08T13:48:46  <Dyrcona> Meh, just everyone use American English....problem solved. :)
+2015-04-08T13:49:02  <Dyrcona> Honestly, though, I mostly agree about encodings.
+2015-04-08T13:49:32  <Dyrcona> plux: Dunno what's going on. Google points at stuff like the above. Making the config changes and restarting Apache doesn't "fix" it.
+2015-04-08T13:49:36  <plux> so long as it will copy/paste from MS Word :)
+2015-04-08T13:50:03  <plux> yes…tried those…..and it may well be unrelated
+2015-04-08T13:50:07  <Dyrcona> Just don't try middle-clicking with Google Docs!
+2015-04-08T13:50:22  <Dyrcona> Exact same error, though, so puzzling.
+2015-04-08T13:52:42  <plux> right…at it’s worst it comes across as a timout which kind of fits…was wondering if it could be related to client mozilla wanting older version of SSLv
+2015-04-08T13:52:55  <Dyrcona> Hmm. Wonder if XULRunner is trying something like SSLv2 or 3 that is disabled, then going with TLS?
+2015-04-08T13:53:03  <Dyrcona> heh.
+2015-04-08T13:53:18  <Dyrcona> I think we just shared the same thought at more or less the same time. :)
+2015-04-08T13:53:23  <plux> yep
+2015-04-08T13:53:25  <Dyrcona> That's probably it.
+2015-04-08T13:54:23  <plux> I’ll play with that and see what I come up with up….keeps them on their toes down at the circ desk
+2015-04-08T13:57:23  <bshum> bug 1441772 makes my head hurt.
+2015-04-08T13:57:23  <pinesol_green> Launchpad bug 1441772 in Evergreen "It is possible to delete a patron record with open transactions through Merge Patrons function in patron group" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1441772
+2015-04-08T14:02:34  <csharp> @blame powerpoint
+2015-04-08T14:02:34  <pinesol_green> csharp: powerpoint is NOT CONNECTED TO THE NETWORK!!!
+2015-04-08T14:09:29  *** mglass has joined #evergreen
+2015-04-08T14:11:05  <RoganH> @blame holds targeter
+2015-04-08T14:11:05  <pinesol_green> RoganH: Your failure is now complete, holds targeter.
+2015-04-08T14:13:12  <Dyrcona> @blame Dyrcona
+2015-04-08T14:13:12  <pinesol_green> Dyrcona: Your failure is now complete, Dyrcona.
+2015-04-08T14:13:26  <Dyrcona> Ah, bummer. I was hoping to steal my ice cream again.
+2015-04-08T14:15:19  <RoganH> :)
+2015-04-08T14:16:22  *** vlewis has joined #evergreen
+2015-04-08T14:18:13  <csharp> @blame search h4x
+2015-04-08T14:18:13  <pinesol_green> csharp: No matching blames were found.
+2015-04-08T14:18:58  <jboyer-isl> No matching blames? pinesole si h4x!
+2015-04-08T14:19:25  <csharp> @blame pinesol_green
+2015-04-08T14:19:25  <pinesol_green> csharp: itself caused the white screen of death!
+2015-04-08T14:24:25  *** krvmga has joined #evergreen
+2015-04-08T14:25:10  <krvmga> do we already know that unescaped HTML in a formatted content note can break the OPAC display?
+2015-04-08T14:25:36  <krvmga> http://bark.cwmars.org/opacrecord/1206603 for example
+2015-04-08T14:26:00  * bshum fixes the rest of that syntax...
+2015-04-08T14:26:01  <bshum> And looks
+2015-04-08T14:26:07  <bshum> ../eg/opac/record/..
+2015-04-08T14:26:55  <krvmga> bshum: sorry typos :(
+2015-04-08T14:27:19  <krvmga> http://bark.cwmars.org/eg/opac/record/1206603
+2015-04-08T14:28:18  <tsbere> That looks like nobody did a "| html" and that it should be in a <pre> block
+2015-04-08T14:29:06  <tsbere> No, wait, it doesn't look like a <pre> would help now that I opened the source. <_<
+2015-04-08T14:29:25  *** dMiller_ has joined #evergreen
+2015-04-08T14:29:46  <tsbere> Is -- supposed to be a newline marker?
+2015-04-08T14:30:21  <Dyrcona> Compared to our record, that one does look a bit borked: http://catalog.mvlc.org/eg/opac/record/1302771
+2015-04-08T14:33:21  <krvmga> when i look at the record in MARC View, i can see that some of the section headings in the chapters include the tags. the next section after "Javascript 101" is "<script> element"
+2015-04-08T14:34:47  <tsbere> I think contents.tt2 needs "total_contents;" to become "total_contents | html;" but I am not sure.
+2015-04-08T14:35:31  <Bmagic> Has anyone seen an evergreen client display a patron's birthday off by 1 day? The database shows "1958-07-13 00:00:00-05" but the client shows 7/13/1958 ! Only on one workstation. It's doing this for all patrons. Is there a setting somewhere?
+2015-04-08T14:35:56  <Bmagic> correction 7/12/1958
+2015-04-08T14:35:57  <krvmga> there's also a section later on "<embed> element"
+2015-04-08T14:36:04  <bshum> Bmagic: More like a bad timezone setting on the workstation.
+2015-04-08T14:36:04  *** bmills has quit IRC
+2015-04-08T14:36:10  <bshum> What's the PC clock say?
+2015-04-08T14:36:11  <jeff> Bmagic: first i suspect time zone / DST issues
+2015-04-08T14:36:21  <Bmagic> bshum: that is the first thing we checked
+2015-04-08T14:37:08  <Bmagic> So, nothing else comes to mind?
+2015-04-08T14:37:24  <Bmagic> EG staff client doesn't have time settings of any kind?
+2015-04-08T14:38:14  <krvmga> tsbere: to answer your question, i think they were using "--" as a divider between sections in chapters.
+2015-04-08T14:38:58  <krvmga> tsbere: i can change contents.tt2 as you suggest and see what happens
+2015-04-08T14:39:04  <Dyrcona> Looks to me that the MARC probably had tags in it like so: <embed> <script>
+2015-04-08T14:39:20  <Dyrcona> That's being stripped/mangled on the way out.
+2015-04-08T14:39:59  <tsbere> krvmga: If it works make a patch and submit it. If it doesn't or causes other breakage then I didn't dig deep enough.
+2015-04-08T14:41:08  <bshum> Bmagic: so, it's stored as -05, but right now, we're at -04 aren't we?
+2015-04-08T14:41:29  <Bmagic> Central is -05 I think
+2015-04-08T14:41:38  <bshum> Oh right.
+2015-04-08T14:41:39  <bshum> :)
+2015-04-08T14:41:44  <krvmga> tsbere: i'm looking in contents.tt2 in BLOCK render_contents
+2015-04-08T14:43:08  <krvmga> tsbere: that seems to have fixed it.
+2015-04-08T14:43:16  * bshum hates time zones
+2015-04-08T14:43:36  <bshum> Bmagic: I'm not aware of any time settings in the staff client.  I just presumed it grabbed it from Windows or whatnot.
+2015-04-08T14:43:55  <tsbere> krvmga: Woo then. Make a patch, get credit for actually making the change and testing it. ;)
+2015-04-08T14:43:59  <Bmagic> ok, cool, I will focus my direction
+2015-04-08T14:44:04  <bshum> So I have seen it shift dates weirdly if it was recorded in one timezone but got time changed into the wrong time on another workstation
+2015-04-08T14:45:47  <krvmga> tsbere: thank you. i will do that.
+2015-04-08T14:45:50  <krvmga> tsbere++
+2015-04-08T14:48:02  <Bmagic> bshum: interesting, I will take a close look at that as well
+2015-04-08T14:48:14  *** bmills has joined #evergreen
+2015-04-08T14:49:12  <Dyrcona> Bmagic: My first thought was, "After 57 years, what difference does a day make?"
+2015-04-08T14:49:27  <Bmagic> lol
+2015-04-08T14:50:11  *** bmills has quit IRC
+2015-04-08T14:50:30  <bshum> Bmagic: Yeah my Googling is only turning up stuff for PC timezone settings stuff.  Like right time, wrong timezone in Windows affecting Firefox, etc.
+2015-04-08T14:50:36  <bshum> Or like DOS variables or something.
+2015-04-08T14:50:39  <bshum> But yeah...
+2015-04-08T14:50:53  *** dMiller_ has quit IRC
+2015-04-08T14:51:03  <Bmagic> roger that, thank you so much for the ideas and your time!
+2015-04-08T14:51:14  <Bmagic> no pun intended
+2015-04-08T14:52:19  *** buzzy has quit IRC
+2015-04-08T14:54:29  <Dyrcona> @blame DST
+2015-04-08T14:54:29  <pinesol_green> Dyrcona: DST stole Dyrcona's ice cream!
+2015-04-08T14:54:40  <Dyrcona> Well, that figures.....
+2015-04-08T14:55:13  *** bmills has joined #evergreen
+2015-04-08T14:55:24  *** vlewis_ has joined #evergreen
+2015-04-08T14:56:02  *** krvmga has quit IRC
+2015-04-08T14:56:07  *** vlewis_ has quit IRC
+2015-04-08T14:56:21  *** vlewis_ has joined #evergreen
+2015-04-08T14:58:57  *** RoganH has quit IRC
+2015-04-08T15:00:54  <jeffdavis> There are a number of LP bugs with the pullrequest tag that apparently haven't been reviewed (status of New, no milestone, no comments). What's the best way to get those reviewed by testers/committers?
+2015-04-08T15:02:23  <jeffdavis> In the past I've often just mentioned specific bugs here...
+2015-04-08T15:02:40  *** plux has quit IRC
+2015-04-08T15:02:48  <Dyrcona> Well, that's one way.
+2015-04-08T15:03:11  <Dyrcona> You could email the dev list with the list of bugs.
+2015-04-08T15:12:12  <jeffdavis> For sure. I guess I'm wondering if it's an indication that there's a gap in the process.
+2015-04-08T15:13:15  <bshum> jeffdavis: In general, I would also just start targeting things in LP to what you think works.  If you feel like being more proactive :)
+2015-04-08T15:13:40  <kmlussier> Promoting particular bugs right before bug squashing day may be a good idea too.
+2015-04-08T15:14:03  <Dyrcona> Yeah to both suggestions. Untargeted bugs tend to be ignored.
+2015-04-08T15:14:12  <Dyrcona> As for "process" there really isn't one.
+2015-04-08T15:14:26  <Dyrcona> Devs look at stuff that interests them/their employer.
+2015-04-08T15:14:28  * bshum also accepts bribes for pullrequest reviews in the form of cash or chocolates
+2015-04-08T15:15:36  <jeffdavis> I'm happy to target bugs. I don't have rights in LP to assign milestones though - would someone be willing to grant that (user is jdavis-sitka)?
+2015-04-08T15:15:59  <jeffdavis> ldw (whalen-ld in LP, I think) could also use that ability I think.
+2015-04-08T15:16:33  <jeffdavis> bshum: I won't be at the EG conference this year, but perhaps I can get one of my coworkers to smuggle some cash/chocolate there... ;)
+2015-04-08T15:16:33  <Dyrcona> Maybe we need an official bug wrangler again?
+2015-04-08T15:17:11  <bshum> Dyrcona: I semi-took that hat from you.  But didn't officially declare myself dictator for life
+2015-04-08T15:17:51  <Dyrcona> Part of the problem is different people have different opinions about a number of the bugs.
+2015-04-08T15:18:02  <bshum> Well, that's just a given.
+2015-04-08T15:18:21  <Dyrcona> There are a bunch of old bugs that I think should be just written off as won't fix, or whatever.
+2015-04-08T15:18:45  <bshum> I do that when I get insomnia early in the morning.  From time to time.
+2015-04-08T15:19:52  <jeffdavis> Hmm, I guess I can apply to join the Evergreen Bug Wranglers team in LP?
+2015-04-08T15:20:13  <Dyrcona> Yep. That may be all you need. I forget.
+2015-04-08T15:20:14  <bshum> jeffdavis: That appears to be how it would work, yes.
+2015-04-08T15:20:20  <bshum> And then one of the admins can approve it.
+2015-04-08T15:20:54  <jeffdavis> Ok, thanks.
+2015-04-08T15:21:33  <bshum> jeffdavis: Welcome aboard.
+2015-04-08T15:21:48  <bshum> Use your powers wisely. And for good.
+2015-04-08T15:22:01  <bshum> A minor tip for you
+2015-04-08T15:22:07  <bshum> Since you now have milestone powers
+2015-04-08T15:22:15  <Dyrcona> @praise bshum
+2015-04-08T15:22:15  * pinesol_green bshum is kind and patient to newbies
+2015-04-08T15:22:16  <bshum> Try to only target bug fixes to specific milestones.
+2015-04-08T15:22:20  <kmlussier> jeffdavis++
+2015-04-08T15:22:30  <kmlussier> bshum++
+2015-04-08T15:22:33  <bshum> If it's a new feature, apply those towards 2.next (or 2.9 or whatever when that comes along)
+2015-04-08T15:23:39  <jeffdavis> bshum: Noted, will do, thank you.
+2015-04-08T15:23:55  <bshum> If you have any other questions, feel free to pester someone in IRC.
+2015-04-08T15:24:13  <bshum> I tend to check in if I have doubts about how to target a bug.
+2015-04-08T15:24:20  <bshum> Otherwise, no permanent damage ;)
+2015-04-08T15:24:48  <jeffdavis> heh, sounds good
+2015-04-08T15:25:27  <Dyrcona> @praise 7 bshum
+2015-04-08T15:25:27  * pinesol_green bshum is the hardest working person in #evergreen.
+2015-04-08T15:25:45  * kmlussier agrees
+2015-04-08T15:26:15  <bshum> Haha.... wow.
+2015-04-08T15:26:29  * bshum goes back to thinking about candy.
+2015-04-08T15:26:34  <Dyrcona> hehe
+2015-04-08T15:28:10  <bshum> So actually I think that they have to be part of the "Evergreen Drivers" team to do things like make Series targets, etc.
+2015-04-08T15:29:02  <bshum> And that team is moderated by dbs
+2015-04-08T15:29:06  <Dyrcona> You mean to create the new targets.
+2015-04-08T15:29:18  <bshum> No that's the "release team"
+2015-04-08T15:29:18  <Dyrcona> I think bug wranglers can apply them to bugs.
+2015-04-08T15:29:24  <kmlussier> bshum: I know there was something I could only do by becoming a member of Evergreen Drivers. Yes, it was targeting a series. You can only nominate to target for a series.
+2015-04-08T15:29:41  <bshum> kmlussier: Yeah that's it.  I knew I was missing a minor detail somewhere.
+2015-04-08T15:30:11  <kmlussier> Bmagic: https://bugs.launchpad.net/evergreen/+bug/1245376/comments/2
+2015-04-08T15:30:11  <pinesol_green> Launchpad bug 1245376 in Evergreen "Patron Registration "Save & Clone" behaviour is unintuitive" (affected: 3, heat: 16) [Wishlist,Triaged]
+2015-04-08T15:31:37  <bshum> So jeffdavis, what you'll want to do is apply to https://launchpad.net/~evergreen-drivers and then you can actually setup the series targets for bug fixes to apply multiple milestones for a given bug.  If you're feeling extra saucy.
+2015-04-08T15:32:21  <Bmagic> kmlussier: oh!
+2015-04-08T15:32:24  <bshum> Unrelated, these will be great notes for me to cover in my Evergreen presentation with ericar...
+2015-04-08T15:32:35  <kmlussier> Is that the only difference between the two groups? If so, I think it would make sense to merge the two groups, if it's possible. If there are other differences, is there any reason why wranglers couldn't be given the ability to target series?
+2015-04-08T15:33:09  <bshum> kmlussier: I think it's cause wranglers were a lower barrier in the early days.  vs. "trusted" people who knew how to apply series targets, etc.
+2015-04-08T15:33:10  <Dyrcona> That may be a Launchpad thing....
+2015-04-08T15:33:16  <jeff> for some reason bug 1179614 caught my eye. looks like I can set that to Fix Released overall -- am I reading that right?
+2015-04-08T15:33:16  <pinesol_green> Launchpad bug 1179614 in Evergreen ""Export All Records" does not work from "Manage Record Buckets"" (affected: 2, heat: 12) [Medium,Fix committed] https://launchpad.net/bugs/1179614
+2015-04-08T15:33:23  <Dyrcona> I don't know that that was all set up.
+2015-04-08T15:33:45  <bshum> jeff: Yes, you can flip that over.  That's a common quirk of untargeted milestone churn.
+2015-04-08T15:33:50  <Dyrcona> jeff: I say yes.
+2015-04-08T15:34:05  <jeff> done.
+2015-04-08T15:34:12  <Dyrcona> @eightball Is it fix released?
+2015-04-08T15:34:12  <pinesol_green> Dyrcona: I doubt it very much.
+2015-04-08T15:34:17  <bshum> :)
+2015-04-08T15:34:27  <Dyrcona> @eightball Are you good for anything?
+2015-04-08T15:34:27  <pinesol_green> Dyrcona: Maybe...
+2015-04-08T15:34:30  <Dyrcona> heh
+2015-04-08T15:34:34  <bshum> I suppose we could try making the bug wranglers more powerful.
+2015-04-08T15:36:08  <bshum> jeff: Sigh, and now I feel like going through and finding all the fix committed and making them fix released if they appear done.
+2015-04-08T15:36:14  * bshum wrangles
+2015-04-08T15:36:33  * bshum will use the maintenance account though
+2015-04-08T15:37:57  * jeffdavis requests to join https://launchpad.net/~evergreen-drivers too
+2015-04-08T15:39:06  *** akilsdonk has joined #evergreen
+2015-04-08T15:39:17  * bshum will probably poke dbs about getting admin rights to that group later.
+2015-04-08T16:07:38  *** TaraC has quit IRC
+2015-04-08T16:11:14  *** Newziky has quit IRC
+2015-04-08T16:22:46  *** Shae has quit IRC
+2015-04-08T16:26:10  *** rjackson_isl has quit IRC
+2015-04-08T16:29:24  *** maryj has quit IRC
+2015-04-08T16:31:06  *** jboyer-isl has quit IRC
+2015-04-08T16:58:17  *** Dyrcona has quit IRC
+2015-04-08T17:01:23  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-08T17:13:52  *** yboston has quit IRC
+2015-04-08T17:14:28  *** mrpeters has left #evergreen
+2015-04-08T17:23:19  *** mllewellyn has quit IRC
+2015-04-08T17:24:16  *** mmorgan has left #evergreen
+2015-04-08T17:47:13  *** abowling has quit IRC
+2015-04-08T18:06:22  *** graced has quit IRC
+2015-04-08T18:42:28  *** bbqben has joined #evergreen
+2015-04-08T18:56:11  *** akilsdonk has quit IRC
+2015-04-08T19:03:52  <dbs> All members of the Evergreen Release Team are automatically members of the Evergreen Drivers team
+2015-04-08T19:04:10  <dbs> So theoretically we should just add people to the Evergreen Release Team?
+2015-04-08T19:04:46  *** dcook has joined #evergreen
+2015-04-08T19:04:47  <dbs> https://launchpad.net/~evergreen-release/+members#active
+2015-04-08T19:05:56  * dbs heads home
+2015-04-08T19:09:30  *** akilsdonk has joined #evergreen
+2015-04-08T19:15:53  *** vlewis has quit IRC
+2015-04-08T19:15:55  *** vlewis_ has quit IRC
+2015-04-08T19:23:01  *** jihpringle has quit IRC
+2015-04-08T19:45:40  *** bmills1 has joined #evergreen
+2015-04-08T19:47:21  *** bmills1 has left #evergreen
+2015-04-08T19:53:06  *** akilsdonk has quit IRC
+2015-04-08T19:55:09  *** mglass has quit IRC
+2015-04-08T19:55:23  <bshum> dbs: Hmm, the release team has slightly more powers than the drivers team. In that release team can make and close milestones.
+2015-04-08T19:55:47  <bshum> I think for bug wrangling, we can keep the drivers team around, and just be more inclusive if people want powers over bugs.
+2015-04-08T19:56:36  *** jwoodard has quit IRC
+2015-04-08T19:56:44  * bshum went ahead and approved jeffdavis and ldw
+2015-04-08T19:56:47  <bshum> Welcome aboard.
+2015-04-08T19:56:58  <bshum> jeffdavis++ ldw++ # use your powers for good :)
+2015-04-08T20:37:21  *** bbqben has quit IRC
+2015-04-08T20:37:57  *** bmills1 has joined #evergreen
+2015-04-08T20:39:06  *** bmills has quit IRC
+2015-04-08T20:55:33  *** sandbergja has quit IRC

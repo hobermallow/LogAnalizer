@@ -1,0 +1,180 @@
+2015-04-28T00:23:15  *** gsams has quit IRC
+2015-04-28T00:24:29  *** gsams has joined #evergreen
+2015-04-28T00:41:11  *** StomproJ has quit IRC
+2015-04-28T00:41:34  *** StomproJ has joined #evergreen
+2015-04-28T01:03:50  *** mglass_ has joined #evergreen
+2015-04-28T01:03:52  *** chatley_ has joined #evergreen
+2015-04-28T01:03:52  *** mglass has quit IRC
+2015-04-28T01:04:28  *** chatley has quit IRC
+2015-04-28T01:36:07  *** BigRig_ has joined #evergreen
+2015-04-28T01:39:13  *** BigRig has quit IRC
+2015-04-28T01:47:44  *** mglass_ has quit IRC
+2015-04-28T01:48:51  *** mglass has joined #evergreen
+2015-04-28T02:05:50  *** mglass has quit IRC
+2015-04-28T02:06:27  *** mglass has joined #evergreen
+2015-04-28T03:22:35  *** Guest51304 has quit IRC
+2015-04-28T04:21:34  *** StomproJosh has joined #evergreen
+2015-04-28T04:21:36  *** StomproJ has quit IRC
+2015-04-28T04:23:45  *** jeff__ has quit IRC
+2015-04-28T04:23:59  *** jeff_ has joined #evergreen
+2015-04-28T04:26:03  *** eady has quit IRC
+2015-04-28T04:26:10  *** eady has joined #evergreen
+2015-04-28T05:19:01  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-28T05:20:01  *** TaraC_ has joined #evergreen
+2015-04-28T05:22:36  *** TaraC has quit IRC
+2015-04-28T07:51:37  *** jboyer-isl has joined #evergreen
+2015-04-28T08:20:06  *** Newziky has joined #evergreen
+2015-04-28T08:26:00  *** mrpeters has joined #evergreen
+2015-04-28T08:30:29  *** ericar has joined #evergreen
+2015-04-28T08:31:53  <kmlussier> Good morning #evergreen
+2015-04-28T08:32:08  <kmlussier> @coffee [someone]
+2015-04-28T08:32:08  * pinesol_green brews and pours a cup of Colombia Tolima Reynel Perez Micro-Lot, and sends it sliding down the bar to rjackson_isl
+2015-04-28T08:32:50  <rjackson_isl> sounds interesting!
+2015-04-28T08:37:08  *** akilsdonk has joined #evergreen
+2015-04-28T08:37:25  *** ningalls_ has quit IRC
+2015-04-28T08:37:53  *** mmorgan has joined #evergreen
+2015-04-28T08:46:00  *** ningalls_ has joined #evergreen
+2015-04-28T08:52:23  *** jwoodard has joined #evergreen
+2015-04-28T09:01:38  <gmcharlt> @coffee [someone]
+2015-04-28T09:01:38  * pinesol_green brews and pours a cup of Ethiopia Yirgacheffe, and sends it sliding down the bar to eby
+2015-04-28T09:01:38  <gmcharlt> oh dear
+2015-04-28T09:01:44  <gmcharlt> *phew*
+2015-04-28T09:02:09  <tsbere> Perhaps the bot needs morning coffee. ;)
+2015-04-28T09:02:10  <eby> already brewed some india monsooned malabar
+2015-04-28T09:03:10  <gmcharlt> @coffee pinesol_green
+2015-04-28T09:03:10  * pinesol_green brews and pours a cup of Kenya Bourbon French Mission, and sends it sliding down the bar to pinesol_green
+2015-04-28T09:06:07  <kmlussier> pinesol_green: WAKE UP!
+2015-04-28T09:06:07  <pinesol_green> kmlussier: Mr. Spock: Something fascinating just happened.
+2015-04-28T09:06:31  <kmlussier> Appears to be awake now.
+2015-04-28T09:13:50  <kmlussier> At last week's dev meeting, there was a brief mention that we need an RM for 2.next. But did we settle on a course of action?
+2015-04-28T09:13:59  * kmlussier supposes she could read the log.
+2015-04-28T09:16:06  * kmlussier reads the logs and confirms that we didn't settle on a course of action.
+2015-04-28T09:16:52  <gmcharlt> hmm - something that can be finalized at the conference, I think
+2015-04-28T09:17:03  <kmlussier> It's a late conference this year.
+2015-04-28T09:17:32  <gmcharlt> but only three weeks away
+2015-04-28T09:17:38  <gmcharlt> (also... EEEK!)
+2015-04-28T09:17:56  <kmlussier> yeah
+2015-04-28T09:27:59  *** dbwells has joined #evergreen
+2015-04-28T09:41:35  *** yboston has joined #evergreen
+2015-04-28T09:41:43  *** akilsdonk_ has joined #evergreen
+2015-04-28T09:44:17  *** akilsdonk has quit IRC
+2015-04-28T09:57:57  *** akilsdonk_ has quit IRC
+2015-04-28T10:00:40  * mmorgan is interested in the answer to StomproJosh's question on the list.
+2015-04-28T10:01:30  * mmorgan can't provide the answer, unfortunately :-(
+2015-04-28T10:07:03  <kmlussier> tsbere: Didn't you all do something with opt-in settings for patron notifications?
+2015-04-28T10:07:29  <tsbere> kmlussier: I believe we did.
+2015-04-28T10:09:27  <kmlussier> tsbere: I thought so. I didn't know if you would have any insight to offer for the question StomproJ sent to the list yesterday.
+2015-04-28T10:09:40  * berick throws his hat in the ring, too
+2015-04-28T10:10:44  * tsbere will write up a quick list
+2015-04-28T10:17:51  *** graced has joined #evergreen
+2015-04-28T10:29:44  *** chatley_ has quit IRC
+2015-04-28T10:30:51  *** chatley has joined #evergreen
+2015-04-28T11:10:22  *** akilsdonk has joined #evergreen
+2015-04-28T11:20:23  *** RoganH has joined #evergreen
+2015-04-28T11:35:13  *** RoganH has quit IRC
+2015-04-28T11:41:25  *** Newziky has quit IRC
+2015-04-28T11:41:52  *** Newziky has joined #evergreen
+2015-04-28T11:48:04  *** BigRig_ is now known as BigRig
+2015-04-28T11:50:25  <csharp> @quote random
+2015-04-28T11:50:25  <pinesol_green> csharp: Quote #93: "< RoganH> Coffee is like religion, don't judge, just accept that people are different even if you will never understand it." (added by csharp at 10:20 AM, September 23, 2014)
+2015-04-28T11:53:29  *** Newziky1 has joined #evergreen
+2015-04-28T11:55:07  <kmlussier> Heh
+2015-04-28T11:55:11  <kmlussier> RoganH++
+2015-04-28T11:55:26  *** Newziky1 has left #evergreen
+2015-04-28T12:05:26  *** buzzy has joined #evergreen
+2015-04-28T12:11:10  *** bmills has joined #evergreen
+2015-04-28T12:11:27  <berick> curious if anyone else would be interested in a way to allow checkout of copies in certain statuses without the staff client warning dialog / need to override the checkout.
+2015-04-28T12:12:13  <kmlussier> Like missing items?
+2015-04-28T12:13:10  <berick> in spirit, yes, but there may be more layers invovled with missing items specifically I'm not thinking of though
+2015-04-28T12:13:43  <kmlussier> berick: This might not be what you're thinking of, but ESI is doing this for us - http://masslnc.cwmars.org/node/2764#AL-03:_Library_Setting_for_Some_System_Alerts
+2015-04-28T12:14:00  <kmlussier> But it's something that will be developed for the web client only.
+2015-04-28T12:14:11  <csharp> berick: what's the use case prompting your question?
+2015-04-28T12:14:44  *** BigRig_ has joined #evergreen
+2015-04-28T12:15:09  <eeevil> kmlussier / berick: without more specific use cases, I think the alert suppression part of that linked stuff will impact what berick's talking about
+2015-04-28T12:15:44  <eeevil> s/use cases/use cases I can't be sure, but/
+2015-04-28T12:16:24  <berick> so we do this thing w/ new branches where we put the copy into a local, non-holdable copy status called "grand opening".  it's basically "dibs" for people who go to the branch.  once it's checked out once, it's just like any other copy.  the rub is the warning dialog and override requirement.
+2015-04-28T12:18:58  <eeevil> ah ... that's not directly covered, but it could be a natural extension of the planned implementation
+2015-04-28T12:20:57  <berick> eeevil: that's encouraging.  is there a bug entry for that yet?
+2015-04-28T12:21:01  <berick> or specs
+2015-04-28T12:21:01  <eeevil> berick: if your timeline allows, we can collab so as to avoid me painting your use case out, instead of having a separate, layered "ignore these situations" function
+2015-04-28T12:21:34  * kmlussier mumbles something about responding to an email so that ESI can share specs on the project.
+2015-04-28T12:21:35  <eeevil> no bug yet. tech specs are having some rough edges filed off, and then we'll bug it
+2015-04-28T12:21:45  <eeevil> kmlussier++
+2015-04-28T12:22:15  <berick> one question i need to ask internally is whether the requirement to override (even if it happens magically under the covers) is OK.  /me will look into that
+2015-04-28T12:22:36  <berick> .. as I'm assuming that's what will happen based on kmlussier's docs
+2015-04-28T12:22:53  <eeevil> berick: the main thematic difference is we're concerned with specific "from" statuses, and I could see you generalizing that part
+2015-04-28T12:23:02  <berick> right
+2015-04-28T12:23:42  <eeevil> and, yes, the override may still happen, and be magic.
+2015-04-28T12:23:58  <eeevil> as in $method . ".override"
+2015-04-28T12:24:29  <berick> ok, good, thanks for confirming
+2015-04-28T12:29:42  <mmorgan> berick: we have a similar situation with an "On Display" status that some libraries use for new items. Not having to override there would be helpful
+2015-04-28T12:29:59  <berick> mmorgan: good to know.  that sounds very similar, indeed
+2015-04-28T12:32:11  * tsbere figured a temporary copy location would work better than a temporary status, if only for opac visbility purposes on Display items, but hasn't actually implemented his idea for temporary copy locations
+2015-04-28T12:33:24  *** jihpringle has joined #evergreen
+2015-04-28T13:22:13  *** mrpeters has quit IRC
+2015-04-28T13:25:28  *** mrpeters has joined #evergreen
+2015-04-28T13:42:31  *** jboyer-isl has quit IRC
+2015-04-28T13:44:31  *** jboyer-isl has joined #evergreen
+2015-04-28T13:46:12  *** BigRig has quit IRC
+2015-04-28T13:46:21  *** BigRig_ is now known as BigRig
+2015-04-28T14:01:37  *** RoganH has joined #evergreen
+2015-04-28T14:14:11  <csharp> trying to figure out if this is something we're doing wrong or if it's actually hard/impossible (related to Leslie St. John's General list email)...
+2015-04-28T14:14:39  <csharp> we need vandelay to remove $ characters from the price fields when importing bibs
+2015-04-28T14:15:50  <csharp> does the "Remove" field in Cataloging -> MARC Batch Import/Export -> Record Display Attributes do that?
+2015-04-28T14:16:36  <csharp> if so, we currently have the value "$" in that field for "price" (020 or 022 $c)
+2015-04-28T14:16:47  <csharp> and it's not removing the $
+2015-04-28T14:17:05  <csharp> I thought it was worth asking before diving into the perl to see what's going on
+2015-04-28T14:20:01  * csharp dives in and hopes for the best
+2015-04-28T14:20:32  <jboyer-isl> csharp: If that will work, you'll likely have to use \$ because it looks like it's expecting regex syntax, where $ is special.
+2015-04-28T14:22:21  <berick> csharp: record display attributes only affect display :(
+2015-04-28T14:22:26  <csharp> it makes sense to me that it would be regexp syntax, and I'm told that was tried and didn't work, but I'll test it myself
+2015-04-28T14:22:33  <csharp> berick: ah
+2015-04-28T14:23:14  <csharp> hmm - so the acq code expects *no* dollar sign, but the file has them - is there a way to remove them within EG? or would that have to be done externally?
+2015-04-28T14:23:41  <csharp> well, specifically, the DB rejects the '$' character as non-numeric
+2015-04-28T14:23:58  <csharp> so I guess the acq code doesn't know or care
+2015-04-28T14:24:27  <berick> code would have to be added to make that happen within ACQ
+2015-04-28T14:27:01  * tsbere loves the vendor "But other <ils> customers have no issues" response - Half the time I get a list of those "other customers" I find they aren't using Evergreen.
+2015-04-28T14:27:42  <berick> acq being what it is, there are a number of vendor-specific hacks in the acq code.  adding one to strip '$' from the price field does not seem crazy.
+2015-04-28T14:28:00  <tsbere> Of course, then there are the vendors that say "But other <ils> customers have no issues" with <ils> *not* being Evergreen. At which point I get to say "That is all well and good. We are using Evergreen, not <other ils>" >_>
+2015-04-28T14:28:05  <berick> or strip all non-numbers
+2015-04-28T15:26:08  * csharp creates bug 1449724
+2015-04-28T15:26:08  <pinesol_green> Launchpad bug 1449724 in Evergreen "Acq Record Import Fails because of dollar sign in price field" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1449724
+2015-04-28T15:29:42  *** ericar has quit IRC
+2015-04-28T15:40:58  *** mglass has quit IRC
+2015-04-28T15:45:52  *** maryj has joined #evergreen
+2015-04-28T15:48:27  *** RoganH has quit IRC
+2015-04-28T16:02:24  *** graced has quit IRC
+2015-04-28T16:12:11  *** Newziky1 has joined #evergreen
+2015-04-28T16:22:15  *** ericar has joined #evergreen
+2015-04-28T16:25:48  *** Newziky1 has joined #evergreen
+2015-04-28T16:27:30  *** rjackson_isl has quit IRC
+2015-04-28T16:32:51  *** buzzy has quit IRC
+2015-04-28T16:34:00  *** Newziky1 has joined #evergreen
+2015-04-28T16:34:47  *** jboyer-isl has quit IRC
+2015-04-28T16:40:19  *** mrpeters has quit IRC
+2015-04-28T16:47:37  *** mrpeters has joined #evergreen
+2015-04-28T16:56:12  *** Newziky1 has joined #evergreen
+2015-04-28T17:01:36  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-28T17:06:57  *** mmorgan has left #evergreen
+2015-04-28T17:21:53  *** mrpeters has quit IRC
+2015-04-28T17:27:56  *** maryj has quit IRC
+2015-04-28T17:36:10  *** bbqben has joined #evergreen
+2015-04-28T17:42:10  *** ericar has quit IRC
+2015-04-28T17:44:37  *** Newziky has left #evergreen
+2015-04-28T17:57:24  *** yboston has quit IRC
+2015-04-28T18:00:04  *** buzzy has joined #evergreen
+2015-04-28T18:43:50  *** akilsdonk has quit IRC
+2015-04-28T18:53:11  *** buzzy has quit IRC
+2015-04-28T19:07:42  *** dcook has joined #evergreen
+2015-04-28T19:10:36  *** akilsdonk has joined #evergreen
+2015-04-28T19:21:13  *** bbqben has quit IRC
+2015-04-28T19:55:58  *** jwoodard has quit IRC
+2015-04-28T20:04:07  *** maryj has joined #evergreen
+2015-04-28T20:30:57  *** jihpringle has quit IRC
+2015-04-28T21:02:00  *** maryj has quit IRC
+2015-04-28T21:09:46  *** akilsdonk has quit IRC
+2015-04-28T22:07:49  *** akilsdonk has joined #evergreen
+2015-04-28T22:09:57  *** bmills has quit IRC
+2015-04-28T23:12:36  *** akilsdonk has quit IRC
+2015-04-28T23:15:58  *** akilsdonk has joined #evergreen
+2015-04-28T23:33:25  *** akilsdonk has quit IRC

@@ -1,0 +1,475 @@
+2015-05-04T00:07:14  *** sarabee has quit IRC
+2015-05-04T00:08:35  *** sarabee has joined #evergreen
+2015-05-04T05:09:26  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-04T07:42:43  *** ericar has joined #evergreen
+2015-05-04T07:51:55  *** graced has joined #evergreen
+2015-05-04T07:55:42  *** jboyer-isl has joined #evergreen
+2015-05-04T07:56:38  *** rjackson_isl has joined #evergreen
+2015-05-04T08:09:42  *** Newziky has joined #evergreen
+2015-05-04T08:11:58  *** collum has joined #evergreen
+2015-05-04T08:30:13  *** akilsdonk has joined #evergreen
+2015-05-04T08:32:10  *** mrpeters has joined #evergreen
+2015-05-04T08:38:25  *** mmorgan has joined #evergreen
+2015-05-04T08:39:56  *** Newziky has quit IRC
+2015-05-04T08:40:00  *** Shae has joined #evergreen
+2015-05-04T08:45:33  *** Dyrcona has joined #evergreen
+2015-05-04T08:56:08  <Dyrcona> And, today we build a new development VM and attempt to install the browser-based staff client.
+2015-05-04T08:56:29  <dkyle1> `history
+2015-05-04T08:57:42  *** pmurray_away is now known as pmurray
+2015-05-04T08:58:41  <mrpeters> morning guys -- i've talked to a few of you about being able to obtain information about the staff member that created a record and many have asked "why?" -- I got an answer, and I think it's a pretty fair one.
+2015-05-04T09:01:20  <Dyrcona> AFAIK, that information is only kept for bibliographic records.
+2015-05-04T09:02:03  <mrpeters> A library is finding that about 5% of their new patron records are being entered incorrectly (errors in permissions, typos, etc.) and they are trying to identify whether or not this is isolated to 1 or 2 staff members, or spread amongst all staff.  We have creator/editor information for bibs, I think for similar reasons, so I'm going to file a wishlist bug to modify the actor.usr schema to include this information.
+2015-05-04T09:02:54  <mrpeters> I should clarify -- i know that is not the ONLY reason that info is kept for bibs, but I'm sure it is one of them
+2015-05-04T09:04:14  <mrpeters> as for how to deal with upgrades, i would propose setting the global superuser (au.id=1) as the creator for all records when the upgrade is applied, and then going forward, record the actor.usr.id of the creating staff user
+2015-05-04T09:04:39  <Dyrcona> Yeah, put it in the bug. Doubt it would go in soon, though.
+2015-05-04T09:05:31  *** Newziky has joined #evergreen
+2015-05-04T09:05:51  <mrpeters> yeah, probably not, and they are ok with that -- they realize it was just probably one of those things nobody ever brought up, but as things have evolved, it's become something that would be handy in the future
+2015-05-04T09:09:05  *** TaraC has quit IRC
+2015-05-04T09:13:51  <bshum> Drycona: When you say I'm missing a sudo, what are you working from?
+2015-05-04T09:19:00  *** maryj has joined #evergreen
+2015-05-04T09:20:32  <Dyrcona> http://evergreen-ils.org/~bshum/Evergreen-README.html#_optional_extra_steps_for_browser_based_staff_client
+2015-05-04T09:20:50  <Dyrcona> bshum: I was gonna ask you if there is a git branch for that.
+2015-05-04T09:21:10  <bshum> Ah, that thing. Okay, I think that there might be some lingering issue on that step.
+2015-05-04T09:21:29  <Dyrcona> Are those the best instructions available?
+2015-05-04T09:21:38  <bshum> There used to be a git branch somewhere for that, though I'm not 100% where right now.
+2015-05-04T09:22:01  <bshum> More or less, I based them on the README file in the webclient directory.
+2015-05-04T09:22:30  <bshum> I'll dig up the branch for you in a bit.
+2015-05-04T09:22:40  *** yboston has joined #evergreen
+2015-05-04T09:24:18  <bshum> Hmm, I thought I made one but now I can't seem to locate it. I'll make a new branch for you.
+2015-05-04T09:26:32  <Dyrcona> One thing that isn't answered by any of the docs is do you do this before installing the rest of Evergreen, or can it be done after?
+2015-05-04T09:27:17  <bshum> It's supposed to be before you compile
+2015-05-04T09:27:47  <bshum> Otherwise the web client pages aren't in place before you do the configure/make steps
+2015-05-04T09:28:04  <bshum> And it doesn't automatically get moved into the installed places during make install
+2015-05-04T09:28:18  <Dyrcona> OK. That might explain my problems yesterday.
+2015-05-04T09:28:26  <Dyrcona> I'll give it another shot.
+2015-05-04T09:29:08  <bshum> Yeah, the position of the instruction in my doc is intentionally if not explicitly defined.
+2015-05-04T09:29:17  <Dyrcona> My VM is almost done being created.
+2015-05-04T09:29:54  <Dyrcona> Oh. It finished 6 minutes ago. Another window was covering the prompt in the terminal. ;)
+2015-05-04T09:30:09  <bshum> You might be right about that npm install needing a sudo on it. I vaguely recall doing something similar at one point.
+2015-05-04T09:30:25  <bshum> Though I'm unsure if maybe there were weird permission issue or something.
+2015-05-04T09:31:21  <Dyrcona> Well, I got several errors about stuff not being installed/not able to be opened without the sudo.
+2015-05-04T09:31:27  <Dyrcona> With sudo, it just worked.
+2015-05-04T09:31:59  <bshum> You testing with Ubuntu 12.04 or 14.04?
+2015-05-04T09:37:06  <bshum> Alright, so I can't find the branch anywhere, so I must have just been modifying a local copy Evergreen-README on lupin directly. We can diff those changes against master and get a branch started though.
+2015-05-04T09:42:30  *** RoganH has joined #evergreen
+2015-05-04T09:54:46  <Dyrcona> 14.04
+2015-05-04T09:55:19  <bshum> Dyrcona: I pushed a collab branch with the changes I started to http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/collab/bshum/README-webclient
+2015-05-04T10:00:22  *** mllewellyn has joined #evergreen
+2015-05-04T10:01:54  *** tsbere_ has joined #evergreen
+2015-05-04T10:02:04  *** tsbere has quit IRC
+2015-05-04T10:02:08  *** tsbere_ is now known as tsbere
+2015-05-04T10:05:39  <Dyrcona> If I'm using OpenSRF from master is there anything that I need to do for the browser-based staff client in OpenSRF?
+2015-05-04T10:06:44  <bshum> Dyrcona: I believe the websocket steps were incorporated into the README for OpenSRF master/2.4 series
+2015-05-04T10:06:51  <bshum> So you should be fine there as long as that's all setup.
+2015-05-04T10:07:12  <Dyrcona> Do you need websockets if I'm not using hatch? I assume yes.
+2015-05-04T10:07:17  <bshum> gmcharlt was going to add some samples later on for proxy to get it to run websockets off more traditional ports, or something.
+2015-05-04T10:07:34  <bshum> Yes, you need websockets configured or else you won't even be able to log into it.
+2015-05-04T10:07:46  <Dyrcona> OK. Thanks.
+2015-05-04T10:31:40  *** Stompro has joined #evergreen
+2015-05-04T10:59:26  *** Stompro has quit IRC
+2015-05-04T10:59:51  *** Stompro has joined #evergreen
+2015-05-04T11:10:36  *** Shirleyh has joined #evergreen
+2015-05-04T11:18:25  *** Shirleyh_ has joined #evergreen
+2015-05-04T11:29:49  *** Shirleyh has quit IRC
+2015-05-04T11:30:15  *** jjk has quit IRC
+2015-05-04T11:30:29  *** jjk has joined #evergreen
+2015-05-04T11:32:56  *** Shirleyh has joined #evergreen
+2015-05-04T11:42:07  <jjk> Good morning
+2015-05-04T11:42:25  <jeff> jjk: good morning!
+2015-05-04T11:43:25  <jjk> I'm attempting to upgrade an older 2.3 install to the current version but have run into issues with the database schema updates.  I'm hoping some folks here can point me in the right direction.
+2015-05-04T11:45:27  <jjk> I have a test database that started at 2.3.5 and I've successfully run the schema updates all the way up to 2.3.12.
+2015-05-04T11:47:17  <jjk> When trying to upgrade the schema using 2.3-2.4.0-upgrade-db.sql I quickly receive the following errors:
+2015-05-04T11:47:20  <jjk> psql:version-upgrade/2.3-2.4.0-upgrade-db.sql:96: NOTICE:  extension "tsearch2" already exists, skipping
+2015-05-04T11:47:29  <jjk> psql:version-upgrade/2.3-2.4.0-upgrade-db.sql:98: ERROR:  cannot drop extension tsearch2 because other objects depend on it
+2015-05-04T11:48:41  <jjk> I've not found much in the way of similar issues.
+2015-05-04T11:51:19  *** Shirleyh has quit IRC
+2015-05-04T11:53:33  <bshum> jjk: So that sounds like you have something custom in your database that relies on tsearch2 extension
+2015-05-04T11:54:41  <bshum> I found something like that when we upgraded as well, some locally created views for reporting had used that extension and needed to be rewritten
+2015-05-04T11:55:15  * bshum upgraded forever ago and doesn't remember how he ultimately identified all the things that used that extension.
+2015-05-04T11:57:35  <jjk> bshum: Thanks.  I'll look at the reports.
+2015-05-04T11:58:00  *** TaraC has joined #evergreen
+2015-05-04T12:01:05  <bshum> jjk: Out of curiosity, what version of PostgreSQL are you using for your tests?
+2015-05-04T12:01:17  <bshum> (i.e. did you also test upgrading your postgresql installation to newer versions 9.1+)
+2015-05-04T12:02:15  <bshum> And you might find it interesting
+2015-05-04T12:02:20  <bshum> To try the drop extension directly
+2015-05-04T12:02:37  <bshum> And see if it spits back what is still depending on it
+2015-05-04T12:03:25  <bshum> Hmm
+2015-05-04T12:03:34  <bshum> csharp: Did we archive the old evergreen-admin mailing list?
+2015-05-04T12:04:08  <bshum> csharp: Nevermind, found what I was looking for
+2015-05-04T12:04:48  <bshum> jjk: You might see some value in discussion from this mailing list entry: http://list.evergreen-ils.org/pipermail/evergreen-admin/2014-May/000086.html
+2015-05-04T12:05:22  <jjk> bshum: I'm running 9.1 on Debian, specifically 9.1.14-0+deb7u1
+2015-05-04T12:05:54  <bshum> jjk: Based on what they say there, I would check to make sure the search_path is set right, and then see if there's any "DETAIL" that comes up after the "ERROR" part when you try to drop the extension.
+2015-05-04T12:05:59  <bshum> ~search_path
+2015-05-04T12:05:59  <pinesol_green> After restoring a database, make sure to reset the search_path accordingly with something like: alter database unpredicable_haxxors_go_away set search_path = evergreen, public, pg_catalog;
+2015-05-04T12:08:03  <jjk> Thanks, I'll look these.
+2015-05-04T12:08:50  <bshum> jjk: As you work upwards in versions, I want to point you towards http://docs.evergreen-ils.org/2.7/_upgrade_the_evergreen_database_schema.html
+2015-05-04T12:08:58  <bshum> Which describes the path you'll want from 2.5+
+2015-05-04T12:09:25  <bshum> Specifically, you might want to skip over certain numbered scripts to avoid conflicts in the upgrade scripts.
+2015-05-04T12:09:37  <bshum> Due to x.y.z releases coming out at different times.
+2015-05-04T12:10:02  <bshum> i.e. skip 2.5.3-2.5.4 (if you're going to go past 2.5 towards 2.6), etc.
+2015-05-04T12:10:22  <bshum> You're not there yet.  But you'll get there, sometime.  And that can be a weird little stumbler.
+2015-05-04T12:10:47  <jjk> Does this apply for just 2.5 or 2.6 and 2.7 branches too?
+2015-05-04T12:10:58  * jeff somewhat idly wonders if he should expect to be able to make it from gate to shuttle in time to make the noon departure, or if he should plan on the 2:30
+2015-05-04T12:11:23  <bshum> jjk: It applies to everything.  I'm not sure how far along 2.3 went after 2.4 came along, etc.
+2015-05-04T12:11:50  <bshum> So you might find stuff in later version upgrade scripts that have already happened previously and might not successfully apply or whatnots.
+2015-05-04T12:12:22  <bshum> So you'll want to follow the path as best as you can if you want to cut down on the amount of manual intervention you'll need.
+2015-05-04T12:12:24  <jeff> hah! wondered why there were two calendar entries for my flights. one i created by hand, the other google created automatically.
+2015-05-04T12:12:36  <bshum> I'm unsure how comfortable you are with SQL stuffs.
+2015-05-04T12:12:54  <bshum> But if you love SQL, you'll enjoy it.  Or learn to enjoy it?  :\
+2015-05-04T12:13:04  <csharp> jeff: you might ask Buzzy or Brent about it - I'm in a similar spot with the 5:00 (final) shuttle
+2015-05-04T12:13:23  <csharp> they made it sound like they'd be able to hold it for me
+2015-05-04T12:13:49  <jeff> csharp: youch -- 9 minutes
+2015-05-04T12:13:51  <csharp> (arriving at 4:51 pm)
+2015-05-04T12:13:54  <csharp> yeah
+2015-05-04T12:14:15  * csharp doesn't have a very good backup plan :-/
+2015-05-04T12:14:40  <Dyrcona> csharp: Tuesday? You hang around until midnight when bshum and I get there.
+2015-05-04T12:14:46  <csharp> ha!
+2015-05-04T12:15:22  <csharp> if you see me asleep on a couch, please wake me up and drag me along ;-)
+2015-05-04T12:15:27  <bshum> Heh
+2015-05-04T12:16:16  <jjk> bshum: clear as mud!  It's not clear to me what is meant by 'run all incremental scripts' if for example 2.4.0-2.4.1 is not an incremental script.
+2015-05-04T12:17:24  <bshum> jjk: I think that's exactly what it means.  (And that the doc writer got lazy and meant to say, run 2.4.0-2.4.1, 2.4.1-2.4.2, 2.4.2-2.4.3
+2015-05-04T12:17:33  <bshum> Which is three incremental scripts
+2015-05-04T12:17:42  <bshum> *three separate
+2015-05-04T12:18:02  <kmlussier> csharp: I'm arriving at 5:15, just after the last shuttle. I've hitched a ride with gmcharlt later in the night. I don't know if he has more spots, but you might want to check.
+2015-05-04T12:18:12  <jjk> bshum: That's what I thought.  What is meant by 'additional scripts'?
+2015-05-04T12:18:17  <Dyrcona> Speaking of upgrade scripts, I have plans to make db_upgrade.pl smarter.
+2015-05-04T12:18:43  <jeff> The interesting one will be the return for me -- looks like I'll have 5 hours or so to burn.
+2015-05-04T12:18:46  * kmlussier has noticed that csharp and I have very similar flight times next week.
+2015-05-04T12:19:01  *** wjr has joined #evergreen
+2015-05-04T12:19:24  <Dyrcona> db_upgrade.pl is available here if you're scratching your head: http://git.mvlcstaff.org/?p=jason/evergreen_utilities.git;a=tree;f=scripts;h=05bddb674e4d91760392fc31333ef1104a055648;hb=5ec82e38e8465bafc56fdb19961b1b78c49f5075
+2015-05-04T12:20:21  <bshum> jjk: "additional scripts?"
+2015-05-04T12:20:39  <bshum> I'm not sure I know what you mean by that.
+2015-05-04T12:20:40  <jjk> Dyrcona: Is that directed at me?  I looked at db_upgrade.pl breifly but didn't see any mention in the docs and so chickened out.
+2015-05-04T12:21:05  <jjk> bshum: The docs read: 'Note that you do not want to run additional 2.5 scripts to upgrade to the newest version of 2.5'
+2015-05-04T12:21:13  <bshum> jjk: Right... so...
+2015-05-04T12:21:13  <Dyrcona> jjk: No, it's directed in general. db_upgrade.pl won't help you right now, but the changes I have in mind might help you in the future.
+2015-05-04T12:21:31  <jjk> got it.
+2015-05-04T12:21:40  <bshum> jjk: Gotcha now.  So, let's say there were other scripts like, 2.5.3-2.5.4, 2.5.4-2.5.5
+2015-05-04T12:22:07  <bshum> If you ran those, then the script for 2.5.3-2.6.0 (major upgrade) may not (read, *will not*) function seamlessly.
+2015-05-04T12:22:18  <bshum> Cause your database would be at the wrong state
+2015-05-04T12:22:49  <bshum> And you would end up having to edit the major upgrade script to remove stuff that might have already been applied during one of the other incremental scripts.
+2015-05-04T12:23:00  <bshum> Things of that nature.
+2015-05-04T12:25:03  <jjk> I think I understand.  Once I get over the 2.3-2.4 hurdle I'll compose a list of sql scripts that I believe should be run.  Can I post the URL to that file here and get a sanity check?
+2015-05-04T12:26:10  <csharp> kmlussier: thanks - I'll check
+2015-05-04T12:26:31  <bshum> jjk: You can always ask, but I don't promise I'll personally answer if I'm not around later.  (though I'm sure others might chime in, if you're patient)
+2015-05-04T12:26:52  <bshum> :)
+2015-05-04T12:27:08  <bshum> Upgrading from older versions can be interesting.  And that's where you discover all the quirks.
+2015-05-04T12:27:57  <bshum> jjk: Out of curiousity, who are you upgrading?
+2015-05-04T12:28:46  <csharp> kmlussier: looks like gmcharlt's car is full - I'll try to get some assurance that the 5:00 shuttle doesn't leave without me ;-)
+2015-05-04T12:28:52  *** bshum has quit IRC
+2015-05-04T12:28:52  *** mceraso has quit IRC
+2015-05-04T12:28:52  *** kmlussier has quit IRC
+2015-05-04T12:29:05  *** kmlussier has joined #evergreen
+2015-05-04T12:29:07  *** mceraso has joined #evergreen
+2015-05-04T12:29:09  *** bshum has joined #evergreen
+2015-05-04T12:29:42  <bshum> kmlussier: Sorry about that, I think my linode's quasslcore just updated...
+2015-05-04T12:29:46  <bshum> And bumped us all around a bit
+2015-05-04T12:29:59  <Dyrcona> Looks like it.
+2015-05-04T12:30:03  <kmlussier> bshum: Oh, that was you? I thought our wireless went out.
+2015-05-04T12:30:33  <bshum> Yeah I was doing an update and didn't notice it said "quassalcore" amongst the packages being updated.
+2015-05-04T12:30:38  <bshum> Sorry for the interruption there.
+2015-05-04T12:30:40  <csharp> @blame updates
+2015-05-04T12:30:40  <pinesol_green> csharp: updates caused the white screen of death!
+2015-05-04T12:30:42  <bshum> Carry on
+2015-05-04T12:30:45  *** jihpringle has joined #evergreen
+2015-05-04T12:31:47  <jboyer-isl> bshum: That's almost as fun as doing a remote Windows Update and noticing the network drivers are in there. It was a very tense couple of minutes before the remote desktop was available again. :D
+2015-05-04T12:32:07  <bshum> jboyer-isl: I've been there before... scary stuff.
+2015-05-04T12:32:23  <bshum> I feel that way every time I have to change the IP address for a system.
+2015-05-04T12:32:30  <bshum> Where are you and why aren't you online yet?
+2015-05-04T12:33:03  <csharp> jboyer-isl: whenever I hear the words "remote Windows Update", I'm reminded of this: http://thenextweb.com/shareables/2014/05/16/emory-university-server-accidentally-sends-reformat-request-windows-pcs-including/
+2015-05-04T12:34:32  <jeff> we live in a weird world.
+2015-05-04T12:34:42  <jeff> i just searched google for "quassel sasl"
+2015-05-04T12:35:57  * csharp watches his Helpdesk ticket queue grow as he tries to catch up on paperwork neglected during last week's PINES meetings
+2015-05-04T12:44:11  <bshum> berick: I'm going through master's server_upgrade doc and getting it updated to reflect path up towards 2.8.1
+2015-05-04T12:44:14  <kmlussier> OK, the group working on Evergreen outreach met today and talked about adding a contact email to the handouts we'll be distributing at conferences. I know we already have a feedback@evergreen-ils.org address, but we were thinking info@evergreen-ils.org might make more sense for the people we would be reaching at conferences.
+2015-05-04T12:44:29  <kmlussier> Is that something we could have set up?
+2015-05-04T12:44:34  <bshum> I'll push that out in a bit and we can get the docs server rebuilt overnight to put up a proper link for 2.8 upgrade path later tomorrow.
+2015-05-04T12:45:05  * kmlussier isn't sure if that's a csharp request or a gmcharlt request.
+2015-05-04T12:48:35  <gmcharlt> kmlussier: looking
+2015-05-04T12:49:39  *** jeff_ has joined #evergreen
+2015-05-04T12:50:06  * jeff_ waves
+2015-05-04T12:50:15  <gmcharlt> kmlussier: there's no info@ reflector, but I can easily create it given a set of email addresses
+2015-05-04T12:51:03  <gmcharlt> or it could be mapped to the set underlying list as feedback@
+2015-05-04T12:52:01  <kmlussier> Awesome! I think I like the idea of mapping it with the feedback address because it seems like they serve similar purposes. It really is just a matter of semantics.
+2015-05-04T12:52:07  <kmlussier> Who is on the feedback address?
+2015-05-04T12:52:18  * kmlussier waves to jeff_
+2015-05-04T12:53:16  <csharp> kmlussier: me, dbs and phasefx
+2015-05-04T12:53:29  <csharp> it's unfortunately 99.4% spam
+2015-05-04T12:53:44  <csharp> which reminds me
+2015-05-04T12:53:49  <kmlussier> ugh
+2015-05-04T12:53:55  <kmlussier> @hate spam
+2015-05-04T12:53:55  <pinesol_green> kmlussier: The operation succeeded.  kmlussier hates spam.
+2015-05-04T12:53:57  <csharp> note to self: set up spam filtering somewhere
+2015-05-04T12:54:15  <gmcharlt> csharp: kmlussier: also eeevil
+2015-05-04T12:54:23  <csharp> oh? good
+2015-05-04T12:55:18  <csharp> kmlussier: the other 0.6% are questions that would be better asked on Open-ILS-General (or even of specific sites' Helpdesks)
+2015-05-04T12:55:20  <gmcharlt> coins, sides, two
+2015-05-04T12:56:12  <gmcharlt> kmlussier: in fact, there'd be an argument to be made that info@ should be publicized *only* on printed materials
+2015-05-04T12:56:26  <kmlussier> csharp: Yeah, I think I heard that was the case. But if we were distributing the address in handouts at conference, it might get more use.
+2015-05-04T12:56:37  <kmlussier> gmcharlt: So that we could have an informational address that doesn't receive so much spam?
+2015-05-04T12:56:46  <gmcharlt> kmlussier: right
+2015-05-04T12:57:02  <kmlussier> gmcharlt: In that case, it might be better to separate it out from the feedback address, right?
+2015-05-04T12:57:03  <csharp> I think filtering is the only reasonable approach to the spam issue
+2015-05-04T12:57:21  <csharp> any address that is public anywhere is subject to that
+2015-05-04T12:57:46  <gmcharlt> and conveniently, open-ils-general already has filtering :)
+2015-05-04T12:57:48  <csharp> if'n y'all want, I can get awitter on the case ;-)
+2015-05-04T12:58:02  <Dyrcona> Even ones that aren't public, you should see all of the unknown address bounces in my logs. :)
+2015-05-04T12:58:02  <csharp> he's a seasoned veteran of such things
+2015-05-04T12:58:15  <jeff> info@ is going to get spam even if it's only on printed materials.
+2015-05-04T12:58:44  <kmlussier> Good point
+2015-05-04T12:58:49  <csharp> I'm pretty sure list.evergreen-ils.org has filtering on it too
+2015-05-04T13:01:18  <pinesol_green> [evergreen|Ben Shum] Docs: Change references to release 2.8.1 for server upgrade - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=dedc2dc>
+2015-05-04T13:05:20  <kmlussier> csharp: Sure, why not? Even without the info question, it sounds like it would benefit the people on feedback. :)
+2015-05-04T13:10:03  <berick> bshum++ # i've never actually looked at that doc
+2015-05-04T13:10:29  <bshum> berick: I started watching it after Stompro gave us all these patches for it.  And now I just try to keep it going.
+2015-05-04T13:11:07  <bshum> I'm editing up the various pages on the wordpress site too, to move things onto the "more staff clients" downloads page, and get rid of all the 2.5 stuff and put it onto the code museum page.
+2015-05-04T13:11:09  <bshum> Lots of editing.
+2015-05-04T13:14:35  <bshum> I suppose I should copy all the 2.6 stuff to the museum too in preparation for that going away.
+2015-05-04T13:14:38  <bshum> Since I'm editing anyways
+2015-05-04T13:30:27  <bshum> I'm kicking OpenSRF 2.2 off the screen from http://evergreen-ils.org/opensrf-downloads/  No currently supported Evergreen target it, so we can safely remove it.
+2015-05-04T13:41:53  <Stompro> bshum++, I was just thinking of working on the upgrade docs for 2.8, thanks.
+2015-05-04T13:42:18  <bshum> I'm spinning up a Jessie image to take a look over all the stuff you said was broken
+2015-05-04T13:45:33  <Stompro> Thanks, let me know if you see any issues with the patches that you would like me to look at.
+2015-05-04T13:46:09  <bshum> Stompro++ # I'm sure they'll help
+2015-05-04T13:56:01  *** buzzy has joined #evergreen
+2015-05-04T14:08:13  <gmcharlt> kmlussier: ok, info@ now exists, is directed towards feedback@, and has better filtering
+2015-05-04T14:08:19  <gmcharlt> also, you're now subscribed to it
+2015-05-04T14:08:36  <kmlussier> Wow! That was fast. Thanks gmcharlt!
+2015-05-04T14:08:42  <kmlussier> gmcharlt++
+2015-05-04T14:19:49  <jeffdavis> What's the status of NCIPServer?
+2015-05-04T14:22:16  <kmlussier> jeffdavis: We have it in testing now to use with AutoGraphics.
+2015-05-04T14:22:59  <jeffdavis> kmlussier: that's excellent, thank you
+2015-05-04T14:24:22  <Dyrcona> jeffdavis: You can't use the master branch with Evergreen at the moment.
+2015-05-04T14:24:57  <Dyrcona> rangi or someone (me?) has to do some integration. I changed the interfaces a good bit.
+2015-05-04T14:25:19  <kmlussier> Dyrcona: I was just looking for that. Is the Evergreen side of it available somewhere else?
+2015-05-04T14:25:39  <Dyrcona> It's in the better_abstraction working branch.
+2015-05-04T14:26:14  <Dyrcona> http://git.evergreen-ils.org/?p=working/NCIPServer.git;a=shortlog;h=refs/heads/user/dyrcona/better_abstraction
+2015-05-04T14:27:06  <Dyrcona> magnus over in #koha on oftc.net has apparently made his own branch for more internationalization or something to do with how NCIP is being used in Norway.
+2015-05-04T14:27:48  <Dyrcona> his nick is magnuse
+2015-05-04T14:27:51  <jeffdavis> FWIW we're not planning to use it at the moment, I'm just anticipating some questions about third-party integration with EG.
+2015-05-04T14:27:53  <bshum> Oy, the new ejabberd.yml config file layout is freaking me out.
+2015-05-04T14:28:19  <Dyrcona> jeffdavis: Lovely thing about NCIP, you need a new implementation for just about every vendor.
+2015-05-04T14:28:28  <bshum> Screwing with muscle memory for my OpenSRF installs.
+2015-05-04T14:29:57  <Dyrcona> And sometimes different products from the same vendor.
+2015-05-04T14:31:03  *** kitteh_ has joined #evergreen
+2015-05-04T14:31:18  <jeffdavis> Dyrcona: ah yes, "standards" that are actually their own special case of https://xkcd.com/927/ -- good times!
+2015-05-04T14:31:43  <bshum> Haha, the hover is funny
+2015-05-04T14:32:53  <bshum> Stompro++ # tested the change for OpenSRF instructions for Ejabberd for Debian Jessie and they look good.  I'll sign and push that on for a future OpenSRF 2.4.1 release.
+2015-05-04T14:33:37  <Dyrcona> Well, I don't even really consider NCIP to be a standard myself. It's list of features that you can implement.
+2015-05-04T14:34:27  <Dyrcona> And every vendor seems to pick their own way to do things, and too many messages are similar, but different.
+2015-05-04T14:34:54  <Dyrcona> So, yeah, we need an actual standard.
+2015-05-04T14:35:08  <Dyrcona> Where there's one way to do a given task.
+2015-05-04T14:35:12  <bshum> Stompro: Well, after I fix up some asciidoc weirdness in the formatting.
+2015-05-04T14:35:36  <Dyrcona> If TCP/IP were standardized like most library standards, we'd all be using AOL/CompuServe.
+2015-05-04T14:38:21  <jeffdavis> heh
+2015-05-04T14:38:48  <jeffdavis> Someone should add that to pinesol_green's quote repository.
+2015-05-04T14:43:26  <berick> @quote add "<Dyrcona> If TCP/IP were standardized like most library standards, we'd all be using AOL/CompuServe."
+2015-05-04T14:43:26  <pinesol_green> berick: The operation succeeded.  Quote #114 added.
+2015-05-04T14:43:39  <berick> @quote get 114
+2015-05-04T14:43:39  <pinesol_green> berick: Quote #114: "<Dyrcona> If TCP/IP were standardized like most library standards, we'd all be using AOL/CompuServe." (added by berick at 02:43 PM, May 04, 2015)
+2015-05-04T14:43:53  <berick> can't believe that worked the first time
+2015-05-04T14:46:56  <jeffdavis> berick++
+2015-05-04T14:46:59  <bshum> Bleh, asciidoc syntax can be annoying when you don't use it regularly :(
+2015-05-04T14:47:31  <Dyrcona> heh to berick and to bshum. :)
+2015-05-04T14:47:48  * Dyrcona wonders if asciidoc really has syntax. :)
+2015-05-04T15:21:09  *** dkyle1 has left #evergreen
+2015-05-04T15:22:40  * bshum has wrestled with asciidoc and is losing :(
+2015-05-04T15:24:10  <Bmagic> if I wanted to manually change a password in the database, I need to sha1? md5?  update actor.usr set passwd=digest('password', 'sha1') where id=926  ??
+2015-05-04T15:24:25  <tsbere> Bmagic: None of the above?
+2015-05-04T15:24:27  <bshum> Bmagic: Nah, there's a DB function that'll do that for you
+2015-05-04T15:24:38  <tsbere> Bmagic: set passwd = 'new password' ;)
+2015-05-04T15:24:44  <Bmagic> oh, lol
+2015-05-04T15:24:48  <bshum> Bmagic: You can just do UPDATE actor.usr SET passwd = 'something' WHERE id = sillyuser;
+2015-05-04T15:24:58  <Stompro> bshum, it took me a while to add the second example to the docs also... I thought I compiled it and tested how it looked, did you not like how it looked or did it break when you tried it.
+2015-05-04T15:24:58  <bshum> and the function will hash it out for you
+2015-05-04T15:25:15  <Bmagic> great! that worked
+2015-05-04T15:25:22  <bshum> Stompro: I was just trying to see if I could make it more consistent looking with the rest of the styling.
+2015-05-04T15:25:33  <bshum> Stompro: Your approach isn't wrong, just different.
+2015-05-04T15:25:45  <bshum> For myself, I might put the OS ahead of the Ejabberd version in the subheadings
+2015-05-04T15:26:16  <bshum> So like "(Debian Jessie) Ejabberd 13.x and 14.x" instead of "Ejabberd 13.x and 14.x, Debian Jessie"
+2015-05-04T15:26:31  <bshum> That seems to be how everything else is done.
+2015-05-04T15:26:59  <bshum> Then when I tried to make it the bold blue text with the .inlead, then I got weird generation errors with the bullets under each section.
+2015-05-04T15:27:07  <bshum> Still playing with it more
+2015-05-04T15:29:20  <Stompro> I wasn't quite sure with all the numbered steps how to best add in the different options, while continuing the numbering after those steps.  I think I remember that trying to use ".section" headings broke all the numbering afterwards.
+2015-05-04T15:29:35  <bshum> Yep, that's what I'm seeing too.
+2015-05-04T15:29:51  <bshum> I'm wondering next if we have to number it at all, and maybe we can get away with bullets instead.
+2015-05-04T15:33:35  <Stompro> I don't have a strong opinion on it, but don't the docs generally use numbed steps for most things.
+2015-05-04T15:34:27  <Dyrcona> Can you get "a" and "b" on the numbers? like 4.1a 4.1b
+2015-05-04T15:34:46  <Dyrcona> Or maybe something like X.Y option A X.Y option B
+2015-05-04T15:35:06  <Dyrcona> But, seriously if there are options, don't go past C, 'cause people just get confused at that point.
+2015-05-04T15:44:35  <mmorgan> I'm puzzling over some strange catalog searches in our logs. Wonder if anyone has seen searches similar to the following ...
+2015-05-04T15:44:42  <pastebot> "mmorgan" at 64.57.241.14 pasted "Curious catalog search" (217 lines) at http://paste.evergreen-ils.org/50
+2015-05-04T15:45:40  <mmorgan> The searches have a random string of characters for author, title, etc, and have multiple languages and filter groups selected.
+2015-05-04T15:46:01  <bshum> Sounds like a very entertaining advanced search.
+2015-05-04T15:46:16  <mmorgan> I see a fair number of similar searches in the logs.
+2015-05-04T15:46:18  * bshum doesn't know anything, is just musing
+2015-05-04T15:46:39  <mmorgan> Heh. "Entertaining" for sure ;-)
+2015-05-04T15:47:36  <mmorgan> Had to kill about ten of these today.
+2015-05-04T15:47:54  *** bmills has joined #evergreen
+2015-05-04T15:49:05  <bshum> That join against a facet looks interesting.
+2015-05-04T15:49:48  <mmorgan> They all seem to limit to "before(1012)"
+2015-05-04T15:54:33  <kmlussier> mmorgan: Before 1012, eh?
+2015-05-04T15:55:26  <mmorgan> Yeah. Don't *think* we have anything that old. ;-)
+2015-05-04T15:56:03  <kmlussier> mmorgan: Given that it's before the Pilgrims landed, I would think not. :)
+2015-05-04T15:56:20  <bshum> Well it is a geographic search for "asia" so, I dunno.....
+2015-05-04T15:56:47  <bshum> subject|geographic[Asia]
+2015-05-04T15:56:48  <bshum> Whee
+2015-05-04T15:58:08  <mmorgan> And some of them don't seem to have any 'real' search terms in them at all. Just the random characters and the limiters.
+2015-05-04T15:58:35  <bshum> Yeah, (-"OQcYe" && title:-"2scg4") && author:-"V3oH2") doesn't seem quite... real looking at all.
+2015-05-04T15:59:05  <kmlussier> They look like passwords
+2015-05-04T15:59:53  <tsbere> Or some of the random negations someone might use to do a "not cached' search
+2015-05-04T16:00:34  <bshum> mmorgan: Have you tried tracing back into apache what leads to these queries?
+2015-05-04T16:00:43  <kmlussier> Ah, that's true. I do thsoe sometimes. But usually you have a real keyword with those negations.
+2015-05-04T16:01:12  <bshum> kmlussier: Well, keyword: subject|geographic[Asia] seems real to me.
+2015-05-04T16:01:18  <bshum> If a bit broad.
+2015-05-04T16:02:25  * kmlussier isn't looking at the queries closely enough.
+2015-05-04T16:04:07  <mmorgan> bshum: How would I go about that?
+2015-05-04T16:04:46  <bshum> Well I would have gone with time.
+2015-05-04T16:05:07  <bshum> Like, before the timestamp of the DB query, what happens in apache, osrfsys, etc.
+2015-05-04T16:05:22  <bshum> And slowly try recontructing the actual thing that made that weird query
+2015-05-04T16:06:18  <mmorgan> Ok, I have done some poking around, but haven't been able to pin anything down.
+2015-05-04T16:06:54  <mmorgan> Our logs are very busy :)
+2015-05-04T16:08:23  <mmorgan> And I'm not sure of all the ways to follow the threads of what's going on. :-(
+2015-05-04T16:11:52  <kmlussier> Isn't there a conference presentation next week on reading Evergreen logs?
+2015-05-04T16:12:02  *** Newziky has left #evergreen
+2015-05-04T16:12:04  <bshum> kmlussier: Yeah, csharp is giving one.
+2015-05-04T16:12:49  <kmlussier> mmorgan:  I'll try sitting in on that one so that I can bring back lots of knowledge for you. :)
+2015-05-04T16:12:50  <kmlussier> I hope it isn't up against one of my programs.
+2015-05-04T16:13:21  <mmorgan> kmlussier: Thanks!
+2015-05-04T16:15:34  <mmorgan> I'm sure the presentation will be posted, too, afterward for posterity :)
+2015-05-04T16:20:09  *** collum has quit IRC
+2015-05-04T16:25:57  <mrpeters> is an  INSERT INTO config.metabib_field, followed by a reingest of those records, still the fastest way to add a particular marc tag to a keyword search?
+2015-05-04T16:27:32  *** rjackson_isl has quit IRC
+2015-05-04T16:31:25  *** jboyer-isl has quit IRC
+2015-05-04T16:33:25  *** Shae has quit IRC
+2015-05-04T16:39:49  *** ericar has quit IRC
+2015-05-04T16:40:20  *** maryj has quit IRC
+2015-05-04T16:43:01  * mrpeters takes note that "label" is also a new required field so that magic spell is a little dated
+2015-05-04T16:44:07  <mmorgan> mrpeters: Not an expert, but I don't know of any other way to do that.
+2015-05-04T16:44:49  <Dyrcona> I was going to say that I think it is the only way to do it, but got sidetracked.
+2015-05-04T16:45:03  <mrpeters> mmorgan: i didnt think so either, but so much awesome stuff has been done with the in-staff client configuration menus that i wasnt sure
+2015-05-04T16:46:11  *** RoganH has quit IRC
+2015-05-04T16:52:00  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-05-04T16:58:02  *** Dyrcona has quit IRC
+2015-05-04T17:06:10  *** graced has quit IRC
+2015-05-04T17:16:18  <pinesol_green> [opensrf|Ben Shum] Docs: Keep all source syntax consistent in README - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=ef80e4c>
+2015-05-04T17:16:19  <pinesol_green> [opensrf|Ben Shum] Docs: Add [source, bash] to code blocks that were not defined in README - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=52b6eca>
+2015-05-04T17:16:20  <pinesol_green> [opensrf|Ben Shum] Docs: Emphasize variables and paths consistently in README - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=86e6d84>
+2015-05-04T17:16:21  <pinesol_green> [opensrf|Josh Stompro] LP#1445503 - Updated Ejabberd setup steps for Ejabberd 14.x for Debian Jessie - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=e421bb3>
+2015-05-04T17:18:18  <pinesol_green> [opensrf|Ben Shum] Docs: Fix mailing list link for help in README - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=966fb05>
+2015-05-04T17:18:37  <bshum> I give up on the asciidoc syntax for now.  I will slay that eventually though.
+2015-05-04T17:18:54  *** mmorgan has left #evergreen
+2015-05-04T17:21:38  <bshum> So, for the Evergreen bugs targeting issues with Debian Jessie
+2015-05-04T17:21:48  <bshum> I'm thinking to backport those to rel_2_8 and rel_2_7
+2015-05-04T17:22:04  <bshum> Since both of those versions contained support for Jessie as a target.
+2015-05-04T17:22:16  <bshum> And likely require those fixes to work successfully.
+2015-05-04T17:23:08  <Stompro> That makes sense to me.
+2015-05-04T17:27:32  * bshum is going to create new milestones
+2015-05-04T17:28:21  <pinesol_green> [evergreen|Josh Stompro] LP#1445150 Update Debian Jessie depend make to PG9.4 - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=7cc3ee6>
+2015-05-04T17:29:26  <bshum> dbwells: I'm not going to add a 2.6 milestone unless we determine more work is to be done for that series.
+2015-05-04T17:29:42  <dbwells> bshum: sounds good
+2015-05-04T17:33:53  * bshum shakes fist at Launchpad for timing out
+2015-05-04T17:34:42  <jeff> @blame launchpad
+2015-05-04T17:34:42  <pinesol_green> jeff: launchpad wants the TRUTH?! launchpad CAN'T HANDLE THE TRUTH!!
+2015-05-04T17:37:59  <jeff_> No results for search _TRUTH_
+2015-05-04T17:38:23  <pinesol_green> [evergreen|Josh Stompro] LP#1447195 Updates for Debian Jessie in README - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3200c8d>
+2015-05-04T17:44:25  <pinesol_green> [evergreen|Josh Stompro] LP#1445187 - Force disable of deflate - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=b949202>
+2015-05-04T17:44:26  <pinesol_green> [evergreen|Josh Stompro] LP#1362260 - Email::Sender/libemail-send-perl change in Jessie - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=ad879d4>
+2015-05-04T17:45:49  *** rashma is now known as rashma_away
+2015-05-04T17:50:26  <pinesol_green> [evergreen|Josh Stompro] LP#1445182 Changed Debian Jessie dependency install to use packages for dbi dbd-pgsql. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=d5089b7>
+2015-05-04T17:54:52  <bshum> Stompro++ # I pushed ahead everything and I seem to be well on my way towards a happy Jessie test server.
+2015-05-04T18:03:27  *** bmills has quit IRC
+2015-05-04T18:08:54  <bshum> Hmm
+2015-05-04T18:10:44  <bshum> Looks like we'll need to create a file for 000.english.pg94.fts-config.sql
+2015-05-04T18:10:58  <bshum> In order for PG 9.4 to be used when creating the database
+2015-05-04T18:11:10  <bshum> To test, I've just copied the 93 one to be named 94 and seeing how that goes.
+2015-05-04T18:24:33  *** yboston has quit IRC
+2015-05-04T18:25:13  <bshum> I appended my findings to the bug
+2015-05-04T18:30:53  <bshum> Stompro: I set https://bugs.launchpad.net/evergreen/+bug/1445150 back to Triaged while we test the last little bit I think we need to create a working database on PG 9.4 using the scripts.
+2015-05-04T18:30:53  <pinesol_green> Launchpad bug 1445150 in Evergreen 2.7 "Debian Jessie includes Postgresql 9.4 - update software dependency makefile" (affected: 1, heat: 6) [Medium,Triaged]
+2015-05-04T18:31:14  <bshum> When we get time, someone else should check that initial working branch, and then make any special adjustments.
+2015-05-04T18:31:48  <bshum> Otherwise, as far as I can see, I have a functional Evergreen install on Debian 8.0 Jessie
+2015-05-04T18:32:43  * bshum shuts down his VMs and goes to find a quiet (and cooler) room to space out in
+2015-05-04T18:48:00  *** mllewellyn has quit IRC
+2015-05-04T19:03:39  * kmlussier wonders how jcamins packs cookies when he goes to conferences.
+2015-05-04T19:05:31  <dcook> kmlussier: The last cookies I had from jcamins at a conference were a bit squished... but yummy!
+2015-05-04T19:06:09  <dcook> Oh man... I forgot that it's spring/summer in North America...
+2015-05-04T19:15:24  *** buzzy has quit IRC
+2015-05-04T19:27:02  <kmlussier> dcook: The calendar says it's spring, but I don't think the weather has been paying attention to the calendar.
+2015-05-04T19:27:11  <kmlussier> Although the last few days have been quite nice.
+2015-05-04T19:28:33  <dcook> Yeah, it's supposed to be autumn/winter here, but I think it's supposed to be something like 26 today
+2015-05-04T19:28:45  <dcook> This has to be one of the weirder years I've been in Oz...
+2015-05-04T19:42:38  <jonadab> Where I come from, 26 is a nice brisk fall day.  (Granted, that's 26 F.)
+2015-05-04T19:42:55  <dcook> I was waiting for that ;)
+2015-05-04T19:44:03  <kmlussier> Heh
+2015-05-04T19:45:05  <jonadab> Happy to oblige.
+2015-05-04T19:49:52  *** sarabee has quit IRC
+2015-05-04T19:51:40  *** sarabee has joined #evergreen
+2015-05-04T20:01:15  *** mrpeters has quit IRC
+2015-05-04T20:03:22  <jcamins> kmlussier: how far is the conference?
+2015-05-04T20:03:42  <kmlussier> jcamins: All the way across the country. Hood River, Oregon
+2015-05-04T20:03:46  <jcamins> And how many cookies?
+2015-05-04T20:03:48  <jcamins> Hm.
+2015-05-04T20:04:38  <kmlussier> I don't know how many yet. I'm thinking I may make bshum and his crew get theirs at another time. Since they aren't that far away from me.
+2015-05-04T20:04:59  <kmlussier> I offered to make them for Evergreen sites that partnered with us on development projects.
+2015-05-04T20:05:13  <kmlussier> The conference seemed so far away back then.
+2015-05-04T20:05:17  <bshum> kmlussier: So in other words I'll probably never get cookies
+2015-05-04T20:05:28  <jcamins> Are you checking any luggage?
+2015-05-04T20:05:29  <kmlussier> bshum: Of course you'll get them!
+2015-05-04T20:05:39  <kmlussier> Yes, I was planning to pack it in the checked luggage
+2015-05-04T20:05:49  <kmlussier> I didn't know if I could get them through security.
+2015-05-04T20:05:55  <kmlussier> How many do you usually travel with?
+2015-05-04T20:06:10  <kmlussier> bshum: When you get yours, they probably won't be squished.
+2015-05-04T20:06:13  <jcamins> I'd probably bring 4-5 takeout containers with cookies, then.
+2015-05-04T20:06:32  <kmlussier> What kind of takeout containers do you use?
+2015-05-04T20:06:42  <jcamins> The cookies dcook had were squished because I wasn't checking a suitcase, so I put them in ziploc bags, the better to fit them in my single carry-on.
+2015-05-04T20:06:51  <kmlussier> Ah.
+2015-05-04T20:06:52  <jcamins> My favorite are the rectangular Chinese ones.
+2015-05-04T20:07:01  <bshum> I had those cookies, didn't I?
+2015-05-04T20:07:27  <jcamins> *The cookies dcook and bshum had...
+2015-05-04T20:08:38  <jcamins> Of course, if you really need to bring a *ton* your best bet is fudge.
+2015-05-04T20:08:52  <jcamins> Though you'll spend hours wrapping it.
+2015-05-04T20:09:01  <kmlussier> Fudge is yummy.
+2015-05-04T20:09:19  <kmlussier> But I haven't made it in years.
+2015-05-04T20:10:40  <jcamins> I make cheating fudge.
+2015-05-04T20:11:00  <kmlussier> I don't really need to bring that many. There's PINES, COOL, and rfrasur's library. Since I've already decided that Bibliomation can wait.
+2015-05-04T20:11:15  <jcamins> Yeah, true. PINES is really small.
+2015-05-04T20:11:39  * dcook is getting hungry now but it's only 10:11am...
+2015-05-04T20:11:47  <kmlussier> Yeah, that's what people always say when they talk about PINES. It's so small!
+2015-05-04T20:11:49  * dcook needs to figure out when Aussies take tea...
+2015-05-04T20:12:03  <jcamins> dcook: 10, 11...
+2015-05-04T20:12:16  <jcamins> Oh, hey, it's 10 11, time for tea!
+2015-05-04T20:12:27  <dcook> hehe
+2015-05-04T20:13:15  <dcook> I could actually really go for some hummus about now...
+2015-05-04T20:15:15  <jcamins> I should eat some dinner...
+2015-05-04T20:15:20  <jcamins> kmlussier: isn't it a bit late for you?
+2015-05-04T20:15:53  <kmlussier> Yeah, I'm suffering the consequences of my procrastination.
+2015-05-04T20:16:06  <kmlussier> I have a presentation to deliver at 8:30 a.m. tomorrow.
+2015-05-04T20:16:33  <bshum> Can you fit chocolate in your presentation
+2015-05-04T20:16:35  <bshum> ?
+2015-05-04T20:16:49  <bshum> I think that always makes things better.
+2015-05-04T20:17:07  <kmlussier> Chocolate at 8:30 a.m.?
+2015-05-04T20:17:26  <bshum> True, might be too early for most.
+2015-05-04T20:19:22  * bshum might just be thinking about chocolate cause he wants some right now. 
+2015-05-04T20:20:48  *** akilsdonk has quit IRC
+2015-05-04T20:21:07  <jcamins> kmlussier: sounds good to me!
+2015-05-04T20:22:24  <jonadab> Is there ever a wrong time of day for chocolate?
+2015-05-04T20:22:44  <jonadab> 8:30am is a good time of day for hot chocolate.
+2015-05-04T20:23:57  <jcamins> jonadab: any kind of chocolate, really.
+2015-05-04T20:29:32  <jeff_> Hrm. I don't think quasseldroid is what I'm looking for.
+2015-05-04T20:31:20  *** rashma_away is now known as rashma
+2015-05-04T20:38:26  <jeff> theae aren't the droids you're looking for?
+2015-05-04T21:19:24  *** jihpringle has quit IRC
+2015-05-04T21:55:04  *** bmills has joined #evergreen
+2015-05-04T22:20:02  *** sarabee has quit IRC
+2015-05-04T22:21:36  *** sarabee has joined #evergreen
+2015-05-04T22:47:43  *** book` has quit IRC
+2015-05-04T23:01:29  *** book` has joined #evergreen
+2015-05-04T23:18:39  *** book` has quit IRC
+2015-05-04T23:21:23  *** sarabee has quit IRC
+2015-05-04T23:22:45  *** sarabee has joined #evergreen
+2015-05-04T23:23:19  *** book` has joined #evergreen
+2015-05-04T23:38:22  *** sandbergja has quit IRC
+2015-05-04T23:41:11  *** bmills has quit IRC
+2015-05-04T23:47:29  *** sarabee has quit IRC
+2015-05-04T23:49:15  *** sarabee has joined #evergreen

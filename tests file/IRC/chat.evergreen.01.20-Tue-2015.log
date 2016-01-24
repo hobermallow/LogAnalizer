@@ -1,0 +1,323 @@
+2015-01-20T01:36:15  *** abowling has quit IRC
+2015-01-20T07:41:45  *** jboyer-isl has joined #evergreen
+2015-01-20T07:42:57  *** mrpeters has joined #evergreen
+2015-01-20T07:51:36  <csharp> ls
+2015-01-20T07:51:44  <csharp> bah
+2015-01-20T07:52:06  <csharp> @later tell jeff thanks for the pointer
+2015-01-20T07:52:06  <pinesol_green> csharp: The operation succeeded.
+2015-01-20T08:03:43  <csharp> dbs: we have our memcache set to 6144 MB - probably unnecessarily high, but we wanted it available for caution's sake
+2015-01-20T08:04:17  <csharp> since we never (/me knocks on wood) have had memcached problems, I've not investigated much further
+2015-01-20T08:08:27  *** ericar has joined #evergreen
+2015-01-20T08:09:46  *** collum has joined #evergreen
+2015-01-20T08:21:36  *** akilsdonk has joined #evergreen
+2015-01-20T08:35:28  *** julialima_ has joined #evergreen
+2015-01-20T08:36:22  *** RoganH has joined #evergreen
+2015-01-20T08:41:44  *** RoganH has joined #evergreen
+2015-01-20T08:41:58  *** mmorgan1 has left #evergreen
+2015-01-20T08:42:13  *** abowling has joined #evergreen
+2015-01-20T08:45:25  *** mmorgan has joined #evergreen
+2015-01-20T08:53:00  <dbs> csharp: thanks! looks like browse is just timing out in the database on "SELECT * FROM metabib.browse( 'title', 'mines', '117', NULL, 'f', NULL, '10' ) AS "metabib.browse";" for that one OU for some reason
+2015-01-20T08:54:28  *** Shae has joined #evergreen
+2015-01-20T08:54:37  * dbs will dig a bit further
+2015-01-20T08:55:12  *** Dyrcona has joined #evergreen
+2015-01-20T09:03:41  *** pmurray_away is now known as pmurray
+2015-01-20T09:18:20  *** krvmga has joined #evergreen
+2015-01-20T09:21:34  <krvmga> in our opac, in the advanced search screen, our format filters box has suddenly is no longer populated. i don't know why.
+2015-01-20T09:24:43  <kmlussier> krvmga: What should be populating that box? The default formats that shipped with Evergreen 2.5 or did you have search filter groups there?
+2015-01-20T09:24:52  <kmlussier> krvmga: Also, I see a similar problem on your basic search page.
+2015-01-20T09:25:13  <krvmga> kmlussier: we're wondering if autogen needed to be run after some work that was done over the weekend
+2015-01-20T09:25:19  <krvmga> we're doing that now
+2015-01-20T09:25:57  <krvmga> kmlussier: we have a custom config for the format filter box that points to the format_filters that we use.
+2015-01-20T09:27:03  <kmlussier> krvmga: So I'm guessing that would be search filter groups since you aren't on an MVF release yet?
+2015-01-20T09:27:33  <krvmga> kmlussier: yes, we aren't on an MVF release yet. and yes, it's search filter groups
+2015-01-20T09:28:11  <krvmga> apparently some changes were made to fm_IDL.xml over the weekend but i didn't think that would mess this up.
+2015-01-20T09:30:26  *** yboston has joined #evergreen
+2015-01-20T09:31:19  <krvmga> i hate it when i come in and find something has been working has suddenly stopped working :(
+2015-01-20T09:33:33  <Dyrcona> krvmga: Always run autogen.sh after changing fm_IDL.xml.
+2015-01-20T09:34:26  <krvmga> Dyrcona: thanks. i think that got skipped when the changes were made.
+2015-01-20T09:34:54  <Dyrcona> krvmga: That happens a lot. ;)
+2015-01-20T09:35:23  * Dyrcona goes off tilting at windmills.
+2015-01-20T09:39:50  <krvmga> Dyrcona: unfortunately, that doesn't seem to have fixed the issue. :(
+2015-01-20T09:40:33  <Dyrcona> Hmm. Probably a syntax problem somewhere, but I don't know where to look off the top of my head.
+2015-01-20T09:42:58  <csharp> hmmm - I'm getting posgresql syntax errors around series searches: http://pastie.org/9843687
+2015-01-20T09:43:48  *** ericar has quit IRC
+2015-01-20T09:43:50  <kmlussier> krvmga: Did you see my pm?
+2015-01-20T09:45:55  <csharp> eeevil: if you get a chance, would you mind looking at the paste I just posted?
+2015-01-20T09:47:14  <eeevil> csharp: what's the actual search string
+2015-01-20T09:47:45  <csharp> eeevil: I don't see it in the activity log :-(
+2015-01-20T09:48:03  <eeevil> you've managed to convince QP to pass a []-enclosed string all the way down to the db, it seems
+2015-01-20T09:48:06  <csharp> if I can get Elaine on it, maybe she can recreate
+2015-01-20T09:48:23  <csharp> eeevil: I'll look into it and let you know
+2015-01-20T09:49:01  <eeevil> I'll bet it's something like "programs for children series_title[PBS Kids]"
+2015-01-20T09:51:23  <dbs> metabib.browse() Total runtime: 942310.511 ms -- for that one library. 5700ms if I run it for a different library. what the...
+2015-01-20T09:51:59  <dbs> Possibly horribly sparse visible browsable results for that one library?
+2015-01-20T09:52:45  <eeevil> csharp: it doesn't look like you currently have series|series_title set as a facet, but someone is probably using either a bookmark or maybe the kpac to add that to searches.  You'll need to add that back as a facet
+2015-01-20T09:53:15  <eeevil> or stop using it in links ... which is not easy, of course
+2015-01-20T09:54:57  <csharp> eeevil:
+2015-01-20T09:55:01  <csharp> eeevil: ok
+2015-01-20T09:55:03  <csharp> :-)
+2015-01-20T09:55:05  <csharp> thanks
+2015-01-20T09:55:05  <dbs> I guess people can trigger postgresql syntax errors with quasi-arbitrary GET params.
+2015-01-20T09:55:58  <eeevil> dbs: they sure can ... but this happens to not be arbitrary ;)
+2015-01-20T09:56:12  <dbs> We could maybe be defensive, load up the configured facets / OUs / search fields and filter before passing on to the db I guess
+2015-01-20T10:00:44  <eeevil> dbs: we do that ... but obviously not well enough for all cases
+2015-01-20T10:06:12  * dbs clearly needs to step through the constituent parts of metabib.browse() to find the bottleneck
+2015-01-20T10:07:24  <krvmga> does autogen clear the cache on the server?
+2015-01-20T10:08:34  * krvmga wondered if the format filters not displaying was a cache problem after autogen was run a little while ago
+2015-01-20T10:09:37  <kmlussier> krvmga: I was just looking back on logs when I encountered a similar problem. At the time, reloading apache loaded the search filter groups.
+2015-01-20T10:10:04  <krvmga> thanks. we can try that.
+2015-01-20T10:10:05  <kmlussier> In my case, the entries weren't displaying immediately after I created the filter groups.
+2015-01-20T10:10:28  <kmlussier> It seems odd that it would need to be done again for existing filter groups.
+2015-01-20T10:11:04  <krvmga> yes, it does seem odd. but maybe it's worth a try.
+2015-01-20T10:13:42  <kmlussier> krvmga: Also, reading further down in the log where reloading apache was recommended, I see it didn't fix the problem. :-/
+2015-01-20T10:14:01  <krvmga> kmlussier: pooh
+2015-01-20T10:14:45  <Dyrcona> krvmga: autogen does not clear the cache on the server.
+2015-01-20T10:14:49  *** RoganH has quit IRC
+2015-01-20T10:14:54  <krvmga> Dyrcona: thanks
+2015-01-20T10:15:14  <Dyrcona> If it did, it would destroy all of the logged in sessions.
+2015-01-20T10:16:27  * krvmga sees strong positive value in not destroying all the logged in sessions. :)
+2015-01-20T10:18:05  <mmorgan> krvmga: I recall a few cases in the past where we have seen the same problem with an empty format box. Sadly, I can't offer a solution, but we did find that the problem went away overnight. Seems to suggest a caching problem somewhere.
+2015-01-20T10:19:02  <krvmga> mmorgan: thanks
+2015-01-20T10:26:14  <krvmga> clearing the server cache: does that mean flushing the memcached server?
+2015-01-20T10:26:27  <krvmga> will this not wipe out logged in sessions?
+2015-01-20T10:26:50  *** RoganH has joined #evergreen
+2015-01-20T10:26:53  <jeff> if you clear/flush memcached, you will invalidate every logged in session.
+2015-01-20T10:28:28  *** jwoodard has joined #evergreen
+2015-01-20T10:28:35  <krvmga> i'm not sure which cache to clear. :(
+2015-01-20T10:37:08  <jboyer-isl> krvmga, you almost never need to clear the memcached cache, but Apache keeps a local cache on each machine that's wiped out on a 'service apache2 restart', and of course staff clients also have local caches. (restart or Admin/Developer menu option to clear)
+2015-01-20T10:37:25  <jboyer-isl> That's not to say that either of those things will fix your issue. :(
+2015-01-20T10:38:31  <krvmga> jboyer-isl: thanks
+2015-01-20T10:39:57  <jeff> jboyer-isl: are you referencing the various in-process mod_perl bits there, or some other more specific "cache"?
+2015-01-20T10:44:34  <Dyrcona> Does OpenILS/Application/PermaCrud.pm actually serve any purpose?
+2015-01-20T10:45:11  <Dyrcona> I haven't found any other code that uses it, and it appears to create cstore transactions that will not be closed if the code ever is called, at in search_permacrud.
+2015-01-20T10:45:14  *** rjackson-isl has joined #evergreen
+2015-01-20T10:45:18  <berick> Dyrcona: it's used in a few places (vandelay.js), but it's effectively deprecated
+2015-01-20T10:45:50  <berick> +1 to getting rid of it if feasible
+2015-01-20T10:46:03  <Dyrcona> berick: Thanks.
+2015-01-20T10:46:10  <jeff> vandelay, serials, and... Open-ILS/web/js/dojo/openils/widget/TranslatorPopup.js?
+2015-01-20T10:46:34  <Dyrcona> I only checked the other perl modules...
+2015-01-20T10:46:51  <Dyrcona> but I didn't check for it as a service.
+2015-01-20T10:47:00  <jeff> it's the implementation of the (mostly-deprecated, as berick noted) open-ils.permacrud service.
+2015-01-20T10:47:22  *** jwoodard has quit IRC
+2015-01-20T10:47:42  <Dyrcona> Yep.
+2015-01-20T10:47:58  <jboyer-isl> jeff: Yes. I'm assuming there's some stuff in-memory for the perlmods loaded on apache startup and apache possibly caching things that may have a non-0 cache lifetime. (though there may not be many of those that matter)
+2015-01-20T10:48:37  <jeff> jboyer-isl: pretty sure there are a few -- just wanted to make sure you weren't referencing something else :-)
+2015-01-20T10:49:22  <berick> Dyrcona: oh, think that's the source of your cstore proliferation?
+2015-01-20T10:49:35  <jboyer-isl> Well, I suppose that restarting a large service like apache could cause some FS cache churn, but I wouldn't count on that. ;)
+2015-01-20T10:49:54  <Dyrcona> berick: Not necessarily, but I've started checking everything that does xact=>1 with new editor.
+2015-01-20T10:50:12  <Dyrcona> PermaCrud has a couple of troubling bits, so it could be contributing.
+2015-01-20T10:53:33  <Dyrcona> I'm not finding any open-ils.permacrud calls in the log, except for ones that actually call opensrf.system.echo.atomic.
+2015-01-20T10:54:01  <jboyer-isl> LP lets me down again. Does anyone know if you can create a copy location and then immediately create items in it (in the same staff client session)? I was thinking that the xul copy editor may be using the cached list of acpl
+2015-01-20T10:54:30  <jboyer-isl> 's from login, not going to the DB each time (like some of the TT2 based interfaces clearly do, since you can see the new locations)
+2015-01-20T10:54:55  <jboyer-isl> Basically, do you need to restart the client to create items in a brand new location?
+2015-01-20T10:55:18  <Dyrcona> jboyer-isl: I seem to recall that you do have to restart the client.
+2015-01-20T10:55:45  <bshum> That sounds right to me too.
+2015-01-20T10:55:47  <tsbere> Or at least log out and back in again
+2015-01-20T10:56:52  <jboyer-isl> Excellent. that was my assumption, but I wanted to verify it real quick.
+2015-01-20T11:06:25  *** julialima_ has quit IRC
+2015-01-20T11:06:45  <csharp> eeevil: that appears to have been the issue - Terran added back the facet and I'm no longer seeing the error
+2015-01-20T11:07:50  *** julialima_ has joined #evergreen
+2015-01-20T11:11:45  <krvmga> just for the record: rolling our brickheads fixed the problem with format filters not showing up. i'm not sure what caused the problem to begin with.
+2015-01-20T11:14:28  <kmlussier> krvmga: Thanks for reporting back!
+2015-01-20T11:16:03  <krvmga> additional note, apparently some services weren't started correctly after work done on the weekend.
+2015-01-20T11:21:51  <krvmga> start-all was used for drones instead of start-services
+2015-01-20T11:22:16  <krvmga> LPT: if you accidentally do start-all instead of start-services, stop-all and start over.
+2015-01-20T11:22:50  <krvmga> heartfelt thanks to our great support! :)
+2015-01-20T11:23:40  <bshum> That sounds weird.
+2015-01-20T11:24:03  <bshum> But I haven't run separate drones in awhile... I would have expected brick_ctl.sh to deal with stuff like that.
+2015-01-20T11:24:28  <csharp> hmm - offline patron list download is 404-ing, but the file is there: /openils/var/data/offline/blocked/patron-blocked-list.2015-01-20.txt
+2015-01-20T11:24:39  <krvmga> bshum: what i know about this might fill a thimble.
+2015-01-20T11:24:49  <krvmga> and i may be flattering myself there.
+2015-01-20T11:25:11  <bshum> csharp: With the date like that?
+2015-01-20T11:25:18  * bshum didn't think it had dates attache
+2015-01-20T11:25:20  <bshum> *attached
+2015-01-20T11:25:25  <csharp> yep - the way we've always done it
+2015-01-20T11:25:36  <csharp> I know nothing we're doing has changed since 2.1
+2015-01-20T11:25:46  *** nhilton has joined #evergreen
+2015-01-20T11:26:28  <bshum> csharp: Does apache say anything?
+2015-01-20T11:26:35  <bshum> In terms of what the 404 requested page was
+2015-01-20T11:26:56  *** ericar has joined #evergreen
+2015-01-20T11:27:06  <jeff> you might be missing apache config bits related to access control of that data... and you might also have had a process that was copying things from the date-based to another? :-)
+2015-01-20T11:27:52  <bshum> Heh jeff++
+2015-01-20T11:28:22  *** krvmga has quit IRC
+2015-01-20T11:28:31  *** ericar has quit IRC
+2015-01-20T11:29:30  <dbs> Hmm. Hold capture delayed. "This item could fulfill a hold request but capture has been delayed by policy."
+2015-01-20T11:29:42  <jeff> that's a boolean on asset.copy_location
+2015-01-20T11:29:43  * dbs doing lots of catch-up with 2.4-2.7 changes
+2015-01-20T11:29:53  <jeff> new in 1.2.0.4, I think ;-)
+2015-01-20T11:30:16  <Dyrcona> dbs: Do you use booking?
+2015-01-20T11:30:38  * Dyrcona is just curious.
+2015-01-20T11:31:29  <dbs> Dyrcona: we tried, once upon a time, but gave up
+2015-01-20T11:31:45  <dbs> no auditor table on asset.copy_location here so I can't see when that changed
+2015-01-20T11:32:07  <Dyrcona> dbs: OK. I asked mainly 'cause it appears to be riddled with dangling database transactions.
+2015-01-20T11:32:49  <Dyrcona> It creates cstoreditors with xact=>1 and later calls disconnect, but disconnect doesn't do a rollback or commit.
+2015-01-20T11:33:33  * Dyrcona praises C-x n d
+2015-01-20T11:33:43  <dbs> Dyrcona++
+2015-01-20T11:34:01  <dbs> hunting the open db xacts
+2015-01-20T11:34:12  <csharp> [20/Jan/2015:11:33:33 -0500] "GET /standalone/list.txt HTTP/1.1" 404 3654
+2015-01-20T11:34:16  <csharp> bshum: ^^
+2015-01-20T11:34:29  <csharp> that's obviously not what the file is called
+2015-01-20T11:34:32  <bshum> csharp: Yeah so maybe jeff is right
+2015-01-20T11:34:48  <csharp> jeff: ahhh
+2015-01-20T11:34:50  <bshum> That's what I thought we named the file on our systems
+2015-01-20T11:34:57  <csharp> argh
+2015-01-20T11:34:57  <jeff> i'm not aware of anything in the staff client that ever used a date in the request. you could probably verify with your historical apache access logs.
+2015-01-20T11:34:59  <bshum> So I was surprised by the styling of yours
+2015-01-20T11:35:22  <csharp> if it's not one thing, it's another
+2015-01-20T11:35:50  <dbs> missing cp or ln mebbe?
+2015-01-20T11:39:11  <csharp> aw man
+2015-01-20T11:39:21  <csharp> it's changed SSH host keys
+2015-01-20T11:39:52  <csharp> @eightball is it possible THAT SOMEONE IS DOING SOMETHING NASTY?
+2015-01-20T11:39:52  <pinesol_green> csharp: Maybe...
+2015-01-20T11:40:03  <berick> heh
+2015-01-20T11:47:09  <dbs> and of course opportunistic hold capture works fine when I try it myself. now to see if it's a permission thing.
+2015-01-20T11:48:05  <bshum> So, some fun this morning with lost and paid status.  It looks like a situation occurred where an item was checked out, went overdue, generated some overdue fines, was renewed (2nd transaction)
+2015-01-20T11:48:09  <bshum> Then it went to lost
+2015-01-20T11:48:25  <bshum> And when they went to pay off the first transaction's overdues
+2015-01-20T11:48:31  <bshum> It might have marked the item as "lost and paid"
+2015-01-20T11:48:42  <bshum> Even though the 2nd transaction still has a pending lost bill on it
+2015-01-20T11:49:10  <bshum> We're still investigating, but I might be opening an LP on that.
+2015-01-20T11:51:00  <kmlussier> Wait, what? They renewed an overdue transaction and it went to Lost? Did I understand that correctly?
+2015-01-20T11:51:16  <Dyrcona> They probably renewed a lost.
+2015-01-20T11:51:27  <Dyrcona> lost--
+2015-01-20T11:51:40  <dbs> Lost was not renewed for another season
+2015-01-20T11:51:41  <kmlussier> But you can't renew a lost. You get that terrible error message.
+2015-01-20T11:52:00  <Dyrcona> Erm, well, I "fixed" that, IIRC.
+2015-01-20T11:52:10  <mmorgan> I read it as the *second* transaction went to lost.
+2015-01-20T11:52:30  <kmlussier> Dyrcona: That branch still had bugs in it, so it never went into core.
+2015-01-20T11:54:24  <bshum> mmorgan is correct, the second transaction went to lost.
+2015-01-20T11:54:31  <bshum> The first one was just renewed, so it should have ended
+2015-01-20T11:54:51  <bshum> But paying the overdues on the first transaction caused the item to go into a lost and paid state.
+2015-01-20T11:55:04  <bshum> They didn't touch the lost bill or the lost transaction
+2015-01-20T11:55:06  <bshum> it is still open
+2015-01-20T11:55:20  <mmorgan> Yeah, but did the first transaction get a finish date when it was renewed since there were overdue charges?
+2015-01-20T11:55:28  <bshum> That's what I'm checking now
+2015-01-20T11:55:45  <bshum> It's from 2014, so it should have.
+2015-01-20T11:55:55  <bshum> But "should" is an evil thing
+2015-01-20T11:56:30  <dbs> right up there with "in theory"
+2015-01-20T11:57:57  *** mnsri_away is now known as mnsri
+2015-01-20T11:58:08  <bshum> Huh....
+2015-01-20T11:58:23  <bshum> The xact_finish on the first transaction is the date that the item was paid
+2015-01-20T11:58:33  <bshum> So maybe it didn't have a proper end date for some reason.
+2015-01-20T11:58:38  <bshum> That's super weird.
+2015-01-20T11:58:43  <bshum> I thought renewing an item would close the transaction
+2015-01-20T11:59:55  <jeff> my understanding is that (barring various bugs over the years both ways) renewing an item with a balance owed will not close the tranaction.
+2015-01-20T12:00:20  <jeff> because while the item is indeed "checked in" in the scope of that one circ, there is money owed.
+2015-01-20T12:00:21  <bshum> And hmm
+2015-01-20T12:00:32  * mmorgan agrees with jeff
+2015-01-20T12:00:46  <bshum> Yeah that makes sense I guess...
+2015-01-20T12:03:32  <bshum> Well then that sounds like that's how the bug happens
+2015-01-20T12:03:49  <bshum> If the transaction is being closed for the first time, because we're finally paying off the fines from a previous transaction
+2015-01-20T12:04:00  <jboyer-isl> csharp, I looked through our config and the example files in git, and we don't have any reference to the blocked list. (We don't use it, but I would have set it up, just in case). The only reference to list.txt anywhere is in the crontab.example.
+2015-01-20T12:04:01  <bshum> but the item is in a state of "lost" presently (from other later transactions)
+2015-01-20T12:04:12  <bshum> And the org unit setting is set
+2015-01-20T12:04:17  <bshum> It'll kick the item into "lost and paid"
+2015-01-20T12:04:23  <jboyer-isl> I don't know where it's referenced (unles it's hard coded into the client)
+2015-01-20T12:04:49  <jboyer-isl> Oh, I suppose so: xul/staff_client/chrome/content/main/menu.js:                        var url = 'https://' + XML_HTTP_SERVER + '/standalone/list.txt';
+2015-01-20T12:06:10  <jboyer-isl> So you probably do just need a ln somewhere, unless you've been customizing your clients to do something else.
+2015-01-20T12:08:20  <mmorgan> bshum: How long have you had the Lost and Paid org unit setting set?
+2015-01-20T12:08:51  *** yboston has quit IRC
+2015-01-20T12:08:57  <bshum> mmorgan: I'd have to check our org unit setting history to know exactly, but not longer than the last two months or so
+2015-01-20T12:10:10  *** mtcarlson_away is now known as mtcarlson
+2015-01-20T12:11:19  <mmorgan> bshum: ok, thanks. We haven't implemented it yet, but will very soon.
+2015-01-20T12:11:48  <bshum> mmorgan: I think the biggest gripe we've had so far is that people still want to delete the item from the system.
+2015-01-20T12:11:55  <bshum> Especially now that they see it's "lost and paid"
+2015-01-20T12:12:13  <bshum> But the permission is still a broad, copy in bad status override
+2015-01-20T12:12:21  <bshum> Which would allow them to delete any copy they wanted.
+2015-01-20T12:12:32  <mmorgan> We're actually planning on NOT delete restricting the lost and paid status.
+2015-01-20T12:13:11  <mmorgan> Book's paid for, and no longer on the patron record, so out it goes!
+2015-01-20T12:13:18  <bshum> mmorgan: That's nice, in theory.
+2015-01-20T12:13:38  <bshum> If you figure out how to do it without giving staff the ability to delete other materials, like lost, longoverdue, etc. let me know.
+2015-01-20T12:13:45  <bshum> I don't think it's granular enough for that.  Yet.
+2015-01-20T12:14:37  <bshum> I believe we need further development there to make the permissions more precise to allow for that possibility of deleting a lost and paid copy, but not a lost one.
+2015-01-20T12:18:37  <mmorgan> I was planning on changing the restrict_copy_delete flag in config.copy_status to false.
+2015-01-20T12:19:04  <bshum> mmorgan: Hmm, that sounds like it might work :)
+2015-01-20T12:19:12  <Dyrcona> mmorgan++
+2015-01-20T12:19:29  <bshum> mmorgan++
+2015-01-20T12:20:25  <bshum> Filed: https://bugs.launchpad.net/evergreen/+bug/1412893
+2015-01-20T12:20:25  <pinesol_green> Launchpad bug 1412893 in Evergreen "Applying lost and paid status at the wrong time" (affected: 1, heat: 6) [Undecided,New]
+2015-01-20T12:20:42  <mmorgan> can't think of a reason for anyone *not* to delete the lost and paids.
+2015-01-20T12:21:15  <Dyrcona> senator++ # For line 374 of OpenILS::Application::Acq::Invoice
+2015-01-20T12:22:02  * bshum wants "easy_money"
+2015-01-20T12:23:21  <mmorgan> bshum++
+2015-01-20T12:24:33  *** julialima_ has quit IRC
+2015-01-20T12:24:42  *** yboston has joined #evergreen
+2015-01-20T12:24:51  <bshum> Dyrcona: I wonder if maybe if we added a check to say, only run the block for marking an item lost and paid if the transaction itself has a stop fines of lost or longoverdue
+2015-01-20T12:25:09  <bshum> But that assumes that those transactions will definitely have that status
+2015-01-20T12:25:28  * bshum wonders what the status of circs that are manually marked vs. automatically
+2015-01-20T12:25:41  <bshum> Or if an item hits maxfines, and then is later marked lost manually
+2015-01-20T12:25:55  <bshum> I would think the stop_fines doesn't get substituted in that case.
+2015-01-20T12:26:04  <bshum> If there wasn't an automated switchover
+2015-01-20T12:29:09  * bshum tries to think of other pitfalls in specifying based on the stop_fines reason.
+2015-01-20T12:29:36  <bshum> Circulation and billings are so complicated :(
+2015-01-20T12:29:56  <Dyrcona> Yes.
+2015-01-20T12:30:00  * mmorgan agrees with bshum :-(
+2015-01-20T12:30:17  <csharp> jboyer-isl: thanks - the script runs on the utility server and scp's files to the right location/filename on each brick head - I just hadn't updated my .ssh/known_hosts file so all of them were refusing to connect
+2015-01-20T12:31:20  <mmorgan> Seems like there are too many places to look when trying to determine the true status of a transaction.
+2015-01-20T12:31:30  <jboyer-isl> I see. I thought your message above meant that you were getting an error when ssh'ing in to the machine, I didn't realize that was the cause of the issue. Makes sense.
+2015-01-20T12:32:11  <Dyrcona> mmorgan: And some things happen more than once during a transaction.
+2015-01-20T12:32:24  * csharp will have to read this scrollback sometime later
+2015-01-20T12:32:35  <mmorgan> Yes, many more times than once ;-)
+2015-01-20T12:35:29  <Stompro> mmorgan: I think we have people that pay for items that are lost, then find them later and want a refund.  Would that be a reason to not delete?
+2015-01-20T12:36:20  <bshum> Stompro: That'd be mainly a problem if the library then wanted to just start reusing that barcoded material again.
+2015-01-20T12:36:29  <bshum> Since the barcode would no longer exist.
+2015-01-20T12:36:41  <mmorgan> Stompro: It may be. I should have said in our system :).
+2015-01-20T12:37:59  <mmorgan> Refunds are generally not automatic in our libraries.
+2015-01-20T12:38:09  *** ericar has joined #evergreen
+2015-01-20T12:40:11  <Dyrcona> Most of our members do not issue refunds.
+2015-01-20T12:40:24  <Dyrcona> Once the patrons has paid, it is their book.
+2015-01-20T12:40:38  <Dyrcona> But lost stuff shows up all the time.
+2015-01-20T12:41:33  <jeff> "thank you for your kind donation to the library"
+2015-01-20T12:41:44  <jeff> (of your book)
+2015-01-20T12:47:53  <Dyrcona> heh
+2015-01-20T13:16:38  *** jihpringle has joined #evergreen
+2015-01-20T14:17:03  *** RoganH has quit IRC
+2015-01-20T14:29:40  *** mtcarlson is now known as mtcarlson_away
+2015-01-20T14:41:18  *** mtcarlson_away is now known as mtcarlson
+2015-01-20T14:51:18  *** mrpeters has left #evergreen
+2015-01-20T14:54:54  <kmlussier> It always gives me a fuzzy, warm feeling to see a happy Evergreen user - https://www.facebook.com/EvergreenILS/posts/788352871250712?notif_t=wall
+2015-01-20T14:55:37  <bshum> :)
+2015-01-20T15:10:36  *** RoganH has joined #evergreen
+2015-01-20T15:18:00  *** rangi has quit IRC
+2015-01-20T15:18:00  *** rangi has joined #evergreen
+2015-01-20T15:27:40  *** ericar_ has joined #evergreen
+2015-01-20T15:29:08  *** ericar has quit IRC
+2015-01-20T15:29:18  *** ericar_ is now known as ericar
+2015-01-20T15:36:04  * dbs tries removing timeout="60" from oils_sip.xml to see if that prevents the self-check from reporting connection failures every 60 seconds. heh.
+2015-01-20T15:39:05  *** RoganH has quit IRC
+2015-01-20T16:06:01  <dbs> ding ding ding
+2015-01-20T16:06:29  <dbs> The timer on my phone finally got past 60 seconds without seeing the self-check report a connection error.
+2015-01-20T16:07:40  <dbs> seems to be included in the examples for both oils_sip.xml and SIPconfig.xml
+2015-01-20T16:14:00  *** kbutler has joined #evergreen
+2015-01-20T16:14:29  *** collum has quit IRC
+2015-01-20T16:16:42  <jeff> dbs: this is the one in acsconfig/institutions/institution/policy?
+2015-01-20T16:17:08  <jeff> (and not the one in acsconfig/listeners/service)
+2015-01-20T16:20:11  *** RoganH has joined #evergreen
+2015-01-20T16:22:13  <dbs> service
+2015-01-20T16:24:05  <dbs> seems to take priority: my $timeout = $self->{service}->{timeout} || $self->{config}->{timeout} || 0;
+2015-01-20T16:27:03  *** ericar has quit IRC
+2015-01-20T16:27:49  *** rjackson-isl has quit IRC
+2015-01-20T16:29:03  *** jboyer-isl has quit IRC
+2015-01-20T16:30:07  *** nhilton_ has joined #evergreen
+2015-01-20T16:32:31  *** nhilton has quit IRC
+2015-01-20T16:38:50  *** RoganH has quit IRC
+2015-01-20T16:52:22  *** Shae has quit IRC
+2015-01-20T16:57:03  *** Dyrcona has quit IRC
+2015-01-20T17:02:35  *** nhilton has joined #evergreen
+2015-01-20T17:04:01  *** nhilton_ has quit IRC
+2015-01-20T17:11:40  *** mmorgan has left #evergreen
+2015-01-20T17:16:27  *** yboston has quit IRC
+2015-01-20T17:30:51  *** mtcarlson is now known as mtcarlson_away
+2015-01-20T17:30:56  *** mtcarlson_away is now known as mtcarlson
+2015-01-20T18:04:20  *** kbutler has quit IRC
+2015-01-20T18:32:13  *** sandbergja has joined #evergreen
+2015-01-20T18:33:10  *** sandbergja has joined #evergreen
+2015-01-20T18:35:39  *** nhilton has quit IRC
+2015-01-20T19:01:28  *** buzzy has joined #evergreen
+2015-01-20T19:02:03  *** buzzy has quit IRC
+2015-01-20T19:29:52  *** mtcarlson is now known as mtcarlson_away
+2015-01-20T21:05:46  *** jihpringle has quit IRC
+2015-01-20T22:01:35  *** sandbergja has quit IRC
+2015-01-20T22:29:58  *** akilsdonk has quit IRC
+2015-01-20T23:23:26  *** akilsdonk has joined #evergreen
+2015-01-20T23:34:33  *** akilsdonk has quit IRC

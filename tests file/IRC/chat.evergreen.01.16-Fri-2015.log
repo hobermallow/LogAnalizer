@@ -1,0 +1,292 @@
+2015-01-16T00:19:40  *** nhilton has joined #evergreen
+2015-01-16T00:34:40  *** nhilton has quit IRC
+2015-01-16T01:15:05  *** mrpeters has left #evergreen
+2015-01-16T01:45:32  *** dcook has quit IRC
+2015-01-16T03:03:05  *** jihpringle has quit IRC
+2015-01-16T03:17:02  *** sarabee has quit IRC
+2015-01-16T03:21:57  *** dexap is now known as paxed
+2015-01-16T03:31:32  *** mtcarlson_away is now known as mtcarlson
+2015-01-16T03:53:04  *** mtcarlson is now known as mtcarlson_away
+2015-01-16T06:02:19  *** b_bonner has quit IRC
+2015-01-16T06:02:33  *** mnsri_away has quit IRC
+2015-01-16T06:02:55  *** mtcarlson_away has quit IRC
+2015-01-16T06:03:39  *** rashma has quit IRC
+2015-01-16T06:12:25  *** BigRig has quit IRC
+2015-01-16T06:12:59  *** TaraC has quit IRC
+2015-01-16T06:13:05  *** mtate has quit IRC
+2015-01-16T06:13:05  *** eeevil has quit IRC
+2015-01-16T06:13:11  *** maryj has quit IRC
+2015-01-16T06:13:31  *** graced has quit IRC
+2015-01-16T06:13:33  *** phasefx has quit IRC
+2015-01-16T06:13:33  *** Callender_ has quit IRC
+2015-01-16T06:14:38  *** mtate has joined #evergreen
+2015-01-16T06:14:38  *** eeevil has joined #evergreen
+2015-01-16T06:15:38  *** phasefx has joined #evergreen
+2015-01-16T06:15:40  *** maryj has joined #evergreen
+2015-01-16T06:15:40  *** BigRig has joined #evergreen
+2015-01-16T06:15:40  *** TaraC has joined #evergreen
+2015-01-16T06:15:41  *** Callender has joined #evergreen
+2015-01-16T06:16:40  *** graced has joined #evergreen
+2015-01-16T06:17:36  *** bmills has joined #evergreen
+2015-01-16T06:21:53  *** bmills has quit IRC
+2015-01-16T07:34:59  *** sarabee has joined #evergreen
+2015-01-16T07:40:22  *** remingtron_ is now known as remingtron
+2015-01-16T07:53:49  *** ericar has joined #evergreen
+2015-01-16T08:06:15  *** _bott_ has joined #evergreen
+2015-01-16T08:15:27  <kmlussier> eeevil: I'll see if I can get some end user testing here on webby for those web client fixes.
+2015-01-16T08:26:22  *** rjackson-isl has joined #evergreen
+2015-01-16T08:31:39  *** Shae has joined #evergreen
+2015-01-16T08:34:44  *** abowling has joined #evergreen
+2015-01-16T08:37:26  *** collum has joined #evergreen
+2015-01-16T08:48:19  *** akilsdonk has quit IRC
+2015-01-16T08:51:05  *** gmcharlt_ is now known as gmcharlt
+2015-01-16T08:51:11  *** gmcharlt has joined #evergreen
+2015-01-16T08:56:13  *** akilsdonk has joined #evergreen
+2015-01-16T09:12:15  *** Dyrcona has joined #evergreen
+2015-01-16T09:16:04  *** tsbere__ is now known as tsbere
+2015-01-16T09:16:17  <Dyrcona> I should probably ask in #launchpad, but does the Hide function in comments actually hide it from everyone or just from your current session?
+2015-01-16T09:16:29  <Dyrcona> I thought it only did the latter.
+2015-01-16T09:17:34  <kmlussier> Dunno. Send me a link to a Launchpad bug where you hid a comment and I'll let you know if I can see it. :)
+2015-01-16T09:18:17  <Dyrcona> kmlussier: That's OK. It's academic at this point.
+2015-01-16T09:18:39  <kmlussier> If it only hides it from you for a given session, it seems rather useless.
+2015-01-16T09:18:50  <Dyrcona> Also, is launchpad based on MoinMoin? If not, the help search is just as bad as regular search.
+2015-01-16T09:19:20  <Dyrcona> kmlussier: Agreed, but I've seen less useful features implemented on web sites before.
+2015-01-16T09:21:21  <Dyrcona> Apparently, the help search is just as bad as regular launchpad search.
+2015-01-16T09:22:19  <Dyrcona> Ah. The help is based on MoinMoin wiki....
+2015-01-16T09:22:51  <Dyrcona> So, I when I search for help on comments, I got the help for the comments on MoinMoin. Still not useful.
+2015-01-16T09:23:35  <Dyrcona> +1 to ditching Launchpad for just about anything else, even a set of index cards stored in a disused Kensington lavatory with a sign on the door saying beware of leopard.
+2015-01-16T09:25:44  <collum> http://blog.launchpad.net/general/you-can-hide-your-bug-and-question-comments
+2015-01-16T09:25:58  <collum> Is that what you were looking for Dyrcona?
+2015-01-16T09:26:46  <Dyrcona> Probably, but I expected to find something at help.launchpad.net. Not very helpful to have to look up a blog post.
+2015-01-16T09:26:57  <collum> agreed
+2015-01-16T09:28:00  <Dyrcona> collum++
+2015-01-16T09:28:08  <Dyrcona> Thanks that answers my question.
+2015-01-16T09:28:32  *** dbs_ is now known as dbs
+2015-01-16T09:28:42  <Dyrcona> I tried hiding a comment and when I could still see it, I wasn't sure if it was universally hidden or not.
+2015-01-16T09:29:02  <Dyrcona> Anyway........
+2015-01-16T09:32:22  *** jeff___ has quit IRC
+2015-01-16T09:32:22  *** jeff___ has joined #evergreen
+2015-01-16T09:32:26  *** yboston has joined #evergreen
+2015-01-16T09:32:30  *** jeff___ is now known as jeff
+2015-01-16T09:34:21  <Dyrcona> Guess there were net splits last night, eh?
+2015-01-16T09:35:15  <bshum> Just a few. :)
+2015-01-16T09:46:24  *** StomproJosh has quit IRC
+2015-01-16T09:46:40  *** Stompro has joined #evergreen
+2015-01-16T09:48:23  *** mllewellyn has joined #evergreen
+2015-01-16T09:49:36  * csharp_ wonders if export from launchpad is even possible
+2015-01-16T09:49:42  *** csharp_ is now known as csharp
+2015-01-16T09:50:19  *** csharp is now known as Guest57232
+2015-01-16T09:51:42  *** Guest57232 is now known as csharp
+2015-01-16T09:51:47  *** csharp has joined #evergreen
+2015-01-16T09:52:05  <kmlussier> I wonder how quickly you have to hide the comment to prevent it from being sent out to everyone who subscribes to that bug.
+2015-01-16T09:55:29  <Dyrcona> Probably right away.
+2015-01-16T09:55:47  <Dyrcona> There's more than just email, btw.
+2015-01-16T09:56:01  <Dyrcona> There's RSS, XMPP, and other syndication methods.
+2015-01-16T09:57:13  * kmlussier nods.
+2015-01-16T09:58:30  <Dyrcona> Apparently the hid function was added as a compromise with people who wanted to be able to delete or edit comments after they were posted.
+2015-01-16T09:58:55  <Dyrcona> s/(hid)/\1e/
+2015-01-16T10:10:27  <dbs> csharp: export has been possible for years; there's an API
+2015-01-16T10:14:28  <csharp> dbs: ah - good to know
+2015-01-16T10:14:49  <csharp> Dyrcona++ # writing and sharing scripts to make upgrades actually doable ;-)
+2015-01-16T10:15:19  * csharp is finishing pingest.pl and moving on to the authority linker batcher/disbatcher shortly
+2015-01-16T10:17:39  <csharp> Dyrcona: speaking of, have you ever hit a limit on the number of batched authority processes that could be run concurrently?  I would love to run 24 batches at the same time.
+2015-01-16T10:18:11  <Dyrcona> I've never hit a limit, but I think I've only ever run about 8 at once.
+2015-01-16T10:18:21  <dbs> pingest.pl++
+2015-01-16T10:18:22  <csharp> that helps to know
+2015-01-16T10:18:24  <dbs> Dyrcona++
+2015-01-16T10:18:26  <Dyrcona> I generally do number of cores on db server divided by 2.
+2015-01-16T10:18:36  <csharp> yeah - that's what I'm doing here
+2015-01-16T10:18:53  <csharp> it's a beefy DB server ;-)
+2015-01-16T10:20:05  <Dyrcona> You could likely get away with more if you do it in the "off" hours.
+2015-01-16T10:20:31  <csharp> we're totally down, so maybe I'll try 32
+2015-01-16T10:20:36  * csharp laughs evilly
+2015-01-16T10:20:39  <jboyer-isl> It's particularly fun to use cores-1, provided it has the RAM to pull it off.
+2015-01-16T10:20:57  <csharp> jboyer-isl: daredevil!
+2015-01-16T10:21:29  <jboyer-isl> I like to test ACID compliance, keep postmaster on it's toes, etc. :D
+2015-01-16T10:21:37  * berick waits for a 'top' screenshot
+2015-01-16T10:22:17  <csharp> ERROR: not enough room on screen
+2015-01-16T10:22:30  <berick> says it all
+2015-01-16T10:22:45  <csharp> it's what we all aspire to
+2015-01-16T10:29:28  *** nhilton has joined #evergreen
+2015-01-16T10:35:49  *** nhilton has quit IRC
+2015-01-16T10:39:25  *** mrpeters has joined #evergreen
+2015-01-16T10:42:25  <jboyer-isl> Ugh, Seq Scan on circulation, Seq Scan on copy, this report is a horror show.
+2015-01-16T10:43:07  <jboyer-isl> Lots of research to do, apparently.
+2015-01-16T10:52:50  <jboyer-isl> csharp, I just had a thought re: pg replication vs slony. Are all of your DBs running the same (or similar) hardware?
+2015-01-16T10:53:01  <csharp> jboyer-isl: yes - identical
+2015-01-16T10:53:17  <jboyer-isl> Since we have such lopsided power on our primary vs. reports I think we've got some bad query plans floating around because the primary can do whatever while our reporter is practically an antique.
+2015-01-16T10:53:23  <csharp> that wasn't the case before this past year though
+2015-01-16T10:53:33  <jboyer-isl> Ah, you should be all set in either case then.
+2015-01-16T11:05:07  *** nhilton has joined #evergreen
+2015-01-16T11:06:12  *** bmills has joined #evergreen
+2015-01-16T11:07:34  *** chatley_ has joined #evergreen
+2015-01-16T11:10:33  *** chatley has quit IRC
+2015-01-16T11:10:35  *** chatley__ has joined #evergreen
+2015-01-16T11:12:23  *** nhilton has quit IRC
+2015-01-16T11:13:51  *** chatley_ has quit IRC
+2015-01-16T11:20:06  *** RoganH has joined #evergreen
+2015-01-16T11:25:38  <RoganH> We don't actually need holds policies do we?  They like they just suppress the proletariat.
+2015-01-16T11:26:11  <kmlussier> RoganH++
+2015-01-16T11:28:20  * dbs needs to investigate why opportunistic hold capturing seems to not be happening after our 2.4->2.7 upgrade
+2015-01-16T11:29:39  *** vlewis has joined #evergreen
+2015-01-16T11:38:14  <eeevil> dbs: one thing to confirm: is action.hold_copy_map.prox populated?
+2015-01-16T11:38:19  *** nhilton has joined #evergreen
+2015-01-16T11:40:22  *** Shae has quit IRC
+2015-01-16T11:45:57  <dbs> 94 entries in that table, I'll dig further
+2015-01-16T11:47:16  <dbs> ah, it was not populated for one of the holds that was not captured
+2015-01-16T11:47:41  <dbs> and the hold was placed after we migrated. Interesting.
+2015-01-16T11:48:07  <eeevil> disabled trigger?
+2015-01-16T11:48:41  <eeevil> (or missing trigger)
+2015-01-16T11:48:43  <dbs> Or not existing trigger
+2015-01-16T11:48:48  <dbs> yeah, seems to be missing
+2015-01-16T11:51:22  * dbs peers at 090.schema.action.sql
+2015-01-16T11:53:02  <dbs> didn't have  hold_request_clear_map_tgr but that's not the droid I'm looking for anyway
+2015-01-16T11:53:43  <dbs> hold_request_clear_map_tgr does not appear in sql/Pg/version-upgrade. ruh roh
+2015-01-16T11:53:52  <eeevil> boo
+2015-01-16T11:54:19  <eeevil> there's supposed to be a trigger on action.hold_copy_map that populates prox
+2015-01-16T11:54:23  <dbs> so upgrade/0902.schema.clear_hold_copy_map.sql got missed
+2015-01-16T11:54:31  <eeevil> that's the droid you're looking for, I think
+2015-01-16T11:54:42  <dbs> yes, clearly there's another missing trigger :)
+2015-01-16T11:55:09  <berick> hm, i don't think hold_request_clear_map_tgr is in 2.7
+2015-01-16T11:55:18  <gmcharlt> the saga of the lonely droid, the one nobody is looking for...
+2015-01-16T11:56:03  <dbs> upgrade/0869.schema.pre-calculate-prox-adjustment.sql perhaps
+2015-01-16T11:56:55  <dbs> oh yeah, should be looking at rel_2_7 not master. heh
+2015-01-16T11:59:10  <dbs> 2.5.3-2.5.4-upgrade-db.sql contains hold_copy_proximity_update_tgr
+2015-01-16T12:01:39  <dbs> and I already had that anyway
+2015-01-16T12:01:41  * dbs shakes head
+2015-01-16T12:02:20  <dbs> So is action.hold_copy_map not populated by database triggers?
+2015-01-16T12:04:00  <berick> dbs: hold targeter API
+2015-01-16T12:04:31  * dbs grepped all perlmods for ahcm and found reads only
+2015-01-16T12:04:32  <dbs> okay
+2015-01-16T12:05:08  <berick> new_hold_copy_targeter is the sub, i believe
+2015-01-16T12:05:56  <eeevil> dbs: are you using proximity adjustment, and if not, is action.org_unit_proximity populated?
+2015-01-16T12:06:42  <dbs> ah, was being too fancy expecting database-level logic / ahcm-only in code references
+2015-01-16T12:07:58  *** b_bonner has joined #evergreen
+2015-01-16T12:08:01  *** rashma_away has joined #evergreen
+2015-01-16T12:08:06  *** rashma_away is now known as rashma
+2015-01-16T12:08:12  *** mnsri_away has joined #evergreen
+2015-01-16T12:08:26  <dbs> actor.org_unit_proximity is indeed populated
+2015-01-16T12:08:32  *** mnsri_away is now known as mnsri
+2015-01-16T12:08:37  <dbs> AFAIK we're not using proximity adjustment
+2015-01-16T12:09:42  <dbs> We are still using scripts though! Which is always fun.
+2015-01-16T12:09:58  *** julialima_ has joined #evergreen
+2015-01-16T12:16:16  *** mtcarlson has joined #evergreen
+2015-01-16T12:39:00  <kmlussier> berick/eeevil: For commit b577d39, is there a specific bug with dates being fixed that we should be testing for?
+2015-01-16T12:39:17  <kmlussier> Hmm...I thought that would bring up the commit if I typed it that way.
+2015-01-16T12:39:25  *** buzzy has joined #evergreen
+2015-01-16T12:39:32  <berick> kmlussier: it's not a bug
+2015-01-16T12:39:38  <berick> it's part of the noncat circ display
+2015-01-16T12:39:47  <berick> (and eventually other things)
+2015-01-16T12:39:55  <kmlussier> berick: OK, I see, thanks!
+2015-01-16T12:40:08  <kmlussier> I may be asking more questions like that one as I go through this list. :)
+2015-01-16T12:42:47  *** bmills has quit IRC
+2015-01-16T12:58:30  *** mtcarlson is now known as mtcarlson_away
+2015-01-16T13:04:00  *** jihpringle has joined #evergreen
+2015-01-16T13:24:26  *** mrpeters has left #evergreen
+2015-01-16T13:25:49  *** nhilton_ has joined #evergreen
+2015-01-16T13:28:43  *** nhilton has quit IRC
+2015-01-16T13:29:58  *** nhilton has joined #evergreen
+2015-01-16T13:32:03  *** nhilton_ has quit IRC
+2015-01-16T13:33:39  <kmlussier> julialima_++ #Nice updates at http://lima-julia.tumblr.com/
+2015-01-16T13:34:02  <julialima_> :)
+2015-01-16T13:34:52  *** Shae has joined #evergreen
+2015-01-16T13:38:29  *** mrpeters has joined #evergreen
+2015-01-16T13:41:32  <mrpeters> what is current reccomended xulrunner for 2.72?  (building a mac client)
+2015-01-16T13:44:59  <berick> mrpeters: 14.0.1
+2015-01-16T13:45:08  <mrpeters> thanks berick!
+2015-01-16T13:45:33  <eeevil> kmlussier++ # testing! :)
+2015-01-16T13:57:21  *** mtcarlson_away is now known as mtcarlson
+2015-01-16T13:57:48  *** nhilton_ has joined #evergreen
+2015-01-16T13:59:20  *** Sally has joined #evergreen
+2015-01-16T14:00:09  *** nhilton has quit IRC
+2015-01-16T14:21:11  *** Sally has quit IRC
+2015-01-16T14:21:34  <dbs> julialima++ # great stuff
+2015-01-16T14:25:36  <julialima_> dbs: Thank you!
+2015-01-16T14:37:22  <jeffdavis> We've had a request to optionally allow patrons to renew items when they've hit their max fine amount. "Optionally" as in some of our libraries want this to be possible and some don't.
+2015-01-16T14:38:02  <jeffdavis> I was thinking of modifying the action.item_user_circ_test db function so that, if the patron has the PATRON_EXCEEDS_FINES penalty, EG checks an org setting to decide whether to override the block and permit the renewal.
+2015-01-16T14:38:10  <Dyrcona> jeffdavis: Kick the ones who want to out of the consortium. :)
+2015-01-16T14:38:48  <jeffdavis> Dyrcona: True, the easiest solution to many problems would be to have no patrons and no member libraries. :)
+2015-01-16T14:38:58  <jeffdavis> Does that approach seem reasonable, or am I opening a can of worms there?
+2015-01-16T14:39:09  <jeffdavis> (The actual suggested approach, not getting rid of all users.)
+2015-01-16T14:39:42  <Dyrcona> I'd have to give it some more thought.
+2015-01-16T14:40:25  <Dyrcona> My initial reaction was to create a new penalty for exceeds fines that doesn't block renewals, but then you'd have to figure out how to apply it.
+2015-01-16T14:40:58  <Dyrcona> Another question is who decides, the library doing the renewal, the library that applied the block, or the library that owns the item?
+2015-01-16T14:41:48  <Dyrcona> Though, I guess a library doesn't apply the block does it?
+2015-01-16T14:42:02  <Dyrcona> We can change that to "the library that circ'd the item."
+2015-01-16T14:42:18  <jeffdavis> Yeah, basing it on circ lib's org setting was my thinking.
+2015-01-16T14:43:38  <kmlussier> "[TADL] also happens to be the most user-friendly and inviting Evergreen catalog landing page out there, at least of the ones I’ve seen." Did you see that jeff? :)
+2015-01-16T14:44:20  * Dyrcona didn't see that, and I cannot say that I disagree. Where did that come from?
+2015-01-16T14:45:10  <Dyrcona> jeffdavis: I can see how others might want to base it on who owns the copy or something else, but I hesitate to suggest another setting or flag for that.
+2015-01-16T14:45:19  <kmlussier> Dyrcona: The general list. Alexey's email regarding call number shelf browse.
+2015-01-16T14:45:43  <Dyrcona> kmlussier: OK. I likely haven't read that one yet.
+2015-01-16T14:47:36  <jeff> kmlussier: thanks for calling that out. i've been reading that thread but apparently am not current.
+2015-01-16T14:49:46  *** nhilton has joined #evergreen
+2015-01-16T14:52:15  *** nhilton_ has quit IRC
+2015-01-16T14:52:32  <kmlussier> eeevil / berick: If you're still around, there were 4 bug fixes mentioned in Mike's most recent bug repairs comment that I was unsure on what to test for. http://pastebin.com/r21hv2ke
+2015-01-16T14:53:19  <kmlussier> Some may be related to other fixes to be tested there, but I just want to make sure I'm not missing anything.
+2015-01-16T14:53:39  <berick> kmlussier: for "Repair browser client dropdown buttons" -- it's an issue that would only appear on a fairly new server
+2015-01-16T14:54:05  *** mrpeters has left #evergreen
+2015-01-16T14:54:08  <berick> in the grids, the Actions drop-down buttons don't work w/o the patch
+2015-01-16T14:54:22  <berick> making sure they still work on older servers would be helpful, thoug
+2015-01-16T14:54:23  <berick> h
+2015-01-16T14:54:23  <kmlussier> berick: Ok. So the 1st isn't something I can really test for on webby?
+2015-01-16T14:55:02  <berick> checking Actions dropdowns in Webby to make sure the change didn't introduce a problem would be good
+2015-01-16T14:55:10  <kmlussier> berick: Sure, that we can do. :)
+2015-01-16T14:55:55  <berick> kmlussier: for "Avoid org tree retrieval race condition on patron app" -- without this patch, pages would sometimes fail to load with a JS error.  if you never saw the problem before, it's not really testable, apart from "hey, pages load!"
+2015-01-16T14:56:33  * kmlussier doesn't recall seeing that problem and therefore won't worry about it.
+2015-01-16T14:59:07  <RoganH> kmlussier: it's like evolution, you can always deny it and make your own reality
+2015-01-16T15:03:19  <kmlussier> RoganH: :)
+2015-01-16T15:05:02  <jeffdavis> "... as Karl Rove once aptly observed."
+2015-01-16T15:08:19  *** mtcarlson is now known as mtcarlson_away
+2015-01-16T15:14:29  <jeffdavis> I created bug 1411819 (is there a way to mark it as a feature request?).
+2015-01-16T15:14:29  <pinesol_green> Launchpad bug 1411819 in Evergreen "Allow patron renewal on max fines for some libraries, disallow it for others" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1411819
+2015-01-16T15:15:27  <jeff> jeffdavis: i set importance to "wishlist" -- that's the convention so far, iirc.
+2015-01-16T15:15:35  <jeffdavis> thanks!
+2015-01-16T15:15:45  <dbs> like bug 1411820
+2015-01-16T15:15:45  <pinesol_green> Launchpad bug 1411820 in Evergreen "Expose authority records with one or more public web interface" (affected: 1, heat: 6) [Wishlist,New] https://launchpad.net/bugs/1411820
+2015-01-16T15:15:59  * dbs pluralizes that
+2015-01-16T15:16:58  <jeffdavis> I'm planning to have a "fix" for 1411819 by the end of the month. I outlined my proposal in the bug report but happy to hear about alternative approaches/objections.
+2015-01-16T15:20:36  *** Sally has joined #evergreen
+2015-01-16T15:30:42  <tsbere> jeffdavis: An alternative might be another "result" field in the circ matrix for ignoring penalty blocks. Then you wouldn't be limited to just "by org unit" but could mix in other details like patron type. And easily cover item owning lib vs circ lib differences, for that matter.
+2015-01-16T15:31:21  * tsbere shakes his fist at launchpad throwing login errors at him
+2015-01-16T15:31:41  <eeevil> jeffdavis: I've been thinking about the hardcoded penalties for a while, actually, and was thinking that a "penalty event map" would be a good way to address it. each org could map an event to a penalty, including custom ones. it would default to the current hard-coded ones if no penalty was mapped
+2015-01-16T15:31:55  <Dyrcona> tsbere jeffdavis: And, though most ignore it, there is a is_renewal flag on circ_matrix_matchpoints, so it could apply only to renewals.
+2015-01-16T15:38:46  <eeevil> kmlussier: the third bug is part of another, I just didn't move it. it's the grid sorting feature
+2015-01-16T15:39:50  <eeevil> kmlussier: the forth, there was a bug about how you could select, say, "current copy" on the hold pull list and it would show a pile of JSON data. now we hide that column from selection
+2015-01-16T15:41:55  <kmlussier> eeevil: Thanks!
+2015-01-16T15:59:39  *** mtcarlson_away is now known as mtcarlson
+2015-01-16T16:06:07  * Dyrcona always feels like he should put "I" before this: DO $$DECLARE
+2015-01-16T16:12:44  *** collum has quit IRC
+2015-01-16T16:15:39  *** Sally has quit IRC
+2015-01-16T16:16:42  * dbs is pretty happy with current iteration of http://git.evergreen-ils.org/?p=contrib/Conifer.git;a=shortlog;h=refs/heads/feature/in-database-marc-update which now handles an exception when enriching a MARC record, records the problem, and plugs along to the next record
+2015-01-16T16:17:44  <dbs> (takes a given record, does a lookup using OCLC's xID service by LCCN, ISBN, or OCLC number, and adds any identifiers that might be missing so we can then link out to them)
+2015-01-16T16:18:21  <dbs> along with other miscellaneous cleanup. going to take forever at the default 1,000 xID api calls per day though :)
+2015-01-16T16:25:02  *** ericar has quit IRC
+2015-01-16T16:27:30  *** Shae has quit IRC
+2015-01-16T16:28:17  *** rjackson-isl has quit IRC
+2015-01-16T16:28:42  <eeevil> dbs: you should totally harass royt until he gets you an unlimited key
+2015-01-16T16:29:47  <dbs> eeevil: heh, yeah, somehow I don't think he's interested in doing me any favours
+2015-01-16T16:30:30  <dbs> "Dude I'm trying to use your API to show you how deficient WorldCat is from a discoverability perspective!"
+2015-01-16T16:30:44  * dbs turns that around
+2015-01-16T16:31:09  <dbs> "Dude I'm trying to use your API to show you via Evergreen how WorldCat discoverability could be even better!"
+2015-01-16T16:31:48  *** jboyer-isl has quit IRC
+2015-01-16T16:33:09  *** julialima_ has quit IRC
+2015-01-16T16:38:43  *** buzzy has quit IRC
+2015-01-16T17:00:17  *** Dyrcona has quit IRC
+2015-01-16T17:12:16  *** RoganH has quit IRC
+2015-01-16T17:23:41  *** mllewellyn has quit IRC
+2015-01-16T17:31:47  *** mtcarlson is now known as mtcarlson_away
+2015-01-16T17:33:31  *** vlewis has quit IRC
+2015-01-16T17:36:48  *** mtcarlson_away is now known as mtcarlson
+2015-01-16T17:59:51  *** buzzy has joined #evergreen
+2015-01-16T18:11:51  *** buzzy has quit IRC
+2015-01-16T18:14:14  *** mtcarlson is now known as mtcarlson_away
+2015-01-16T18:26:24  *** buzzy has joined #evergreen
+2015-01-16T18:30:14  *** edoceo has quit IRC
+2015-01-16T18:30:31  *** edoceo has joined #evergreen
+2015-01-16T19:12:53  *** nhilton has quit IRC
+2015-01-16T19:32:40  *** yboston has quit IRC
+2015-01-16T20:01:29  *** buzzy has quit IRC
+2015-01-16T20:38:45  *** jihpringle has quit IRC
+2015-01-16T20:49:27  *** Sally has joined #evergreen
+2015-01-16T21:17:09  *** pmurray is now known as pmurray_away

@@ -1,0 +1,453 @@
+2015-02-05T00:16:13  *** BigRig_ has joined #evergreen
+2015-02-05T00:18:37  *** BigRig has quit IRC
+2015-02-05T00:46:13  *** abowling has quit IRC
+2015-02-05T00:47:22  *** abowling has joined #evergreen
+2015-02-05T06:42:03  *** Callender_ has joined #evergreen
+2015-02-05T07:11:30  *** eeevil has quit IRC
+2015-02-05T07:12:03  *** sarabee has quit IRC
+2015-02-05T07:15:21  *** sarabee has joined #evergreen
+2015-02-05T07:16:03  *** eeevil has joined #evergreen
+2015-02-05T07:24:48  <bshum> Stompro++ # docs generated for upgrade instructions for 2.7 based on your changes.
+2015-02-05T07:24:54  <bshum> I have linked to them on the main downloads page now.
+2015-02-05T07:25:09  <bshum> Thanks for your efforts :)
+2015-02-05T07:25:17  <bshum> For fun reference: http://docs.evergreen-ils.org/2.7/_upgrading_the_evergreen_server.html
+2015-02-05T07:34:48  *** rjackson_isl has joined #evergreen
+2015-02-05T07:44:52  *** graced has joined #evergreen
+2015-02-05T07:55:17  *** Callender_ has quit IRC
+2015-02-05T08:00:20  *** pmurray_away is now known as pmurray
+2015-02-05T08:00:26  *** pmurray is now known as pmurray_away
+2015-02-05T08:05:59  *** ericar has joined #evergreen
+2015-02-05T08:08:02  <jboyer-isl> berick, bshum: Some Indiana folks will also be around Saturday evening in case there are sights that need seeing, food that needs eating, etc.
+2015-02-05T08:09:48  *** Dyrcona has joined #evergreen
+2015-02-05T08:11:40  *** Dyrcona1 has joined #evergreen
+2015-02-05T08:13:22  <bshum> jboyer-isl: Yay! :)
+2015-02-05T08:20:36  *** Dyrcona1 is now known as Dyrcona
+2015-02-05T08:28:43  *** mrpeters has joined #evergreen
+2015-02-05T08:35:40  *** pmurray_away is now known as pmurray
+2015-02-05T08:38:55  *** jwoodard has joined #evergreen
+2015-02-05T08:41:17  *** Shae has joined #evergreen
+2015-02-05T08:51:00  *** julialima_ has joined #evergreen
+2015-02-05T08:55:33  *** maryj has joined #evergreen
+2015-02-05T09:04:33  *** mmorgan has joined #evergreen
+2015-02-05T09:07:01  <jeff> popular holdshelf aliases (that have snuck past the patron-side filter preventing duplicates): https://gist.github.com/jeff/6318b9a5a84d26b9e7b9
+2015-02-05T09:08:32  <bshum> Heh
+2015-02-05T09:09:50  <bshum> jeff: How did those slip past?
+2015-02-05T09:09:58  *** sarabee has quit IRC
+2015-02-05T09:10:20  *** eeevil has quit IRC
+2015-02-05T09:11:03  <jeff> bshum: staff-side patron editor has no checks for duplicate holdshelf alias. We didn't put effort into closing that loophole.
+2015-02-05T09:11:13  <bshum> Ahh.
+2015-02-05T09:11:35  <jeff> bshum: So at least one of each group is staff or asked staff to set their alias to that value.
+2015-02-05T09:11:51  *** sarabee has joined #evergreen
+2015-02-05T09:12:41  <jeff> looking, the duplicate catwoman is a test/training account's alias.
+2015-02-05T09:12:47  *** eeevil has joined #evergreen
+2015-02-05T09:18:33  <mmorgan> jeff: speaking of popular - what are you looking at to get the "most popular" titles on your stats page? Circs? Holds? A combination?
+2015-02-05T09:36:22  <jeff> mmorgan: i think i owe you an email regarding that, too!
+2015-02-05T09:37:58  <jeff> mmorgan: but for those "top ten" lists, we're currently factoring in circs within the last 30 days. we are not presently using holds or hold:copy ratio or anything else.
+2015-02-05T09:41:41  <mmorgan> jeff: Okay, thanks! Also, wondering where you're getting the "title" from since it has proper case.
+2015-02-05T09:44:47  <jeff> Just a naive transform at display time -- the title and author are coming from reporter.materialized_simple_record and the abstract from the first 520$a that we find in metabib.real_full_rec (we're on 2.5 at present)
+2015-02-05T09:45:16  <jeff> we're also pulling the "date" from the 260$c, which explains why so many lack a date.
+2015-02-05T09:45:28  <jeff> and the abstract is a normalized value, so it looks... well, normalized.
+2015-02-05T09:45:35  <jeff> room for improvement there.
+2015-02-05T09:46:14  * csharp returns from three consecutive sick days
+2015-02-05T09:47:05  <csharp> @who is THE DOCTOR?
+2015-02-05T09:47:05  <pinesol_green> Dyrcona is THE DOCTOR.
+2015-02-05T09:47:16  <Dyrcona> Got that right.
+2015-02-05T09:47:18  <Dyrcona> ;)
+2015-02-05T09:47:33  * csharp cues Dr. Who them
+2015-02-05T09:47:34  <csharp> e
+2015-02-05T09:47:42  <Dyrcona> "You may be a doctor, but I am THE Doctor."
+2015-02-05T09:48:15  * jeff takes an illogical and completely imaginary step back from csharp
+2015-02-05T09:48:58  <Dyrcona> May the 4th be with you.
+2015-02-05T09:49:12  <jeff> oh man.
+2015-02-05T09:49:22  <jeff> so we have been deploying Intel NUC computers. Nice units.
+2015-02-05T09:49:31  <jeff> The box that they come in has a gimmick.
+2015-02-05T09:49:31  <bshum> jeff: I love those things.
+2015-02-05T09:49:43  <bshum> The box is awesome!
+2015-02-05T09:49:48  <bshum> And super annoying to show everyone
+2015-02-05T09:49:53  <jeff> bshum: if they had one with ECC RAM, I'd be even happier, but... I digress.
+2015-02-05T09:50:13  <jeff> So the box contains a light-activated sound gadget that plays the Intel chime/ding/whatever.
+2015-02-05T09:51:18  <jeff> csharp's comment about cueing the Doctor Who theme made me think of placing similar (or re-purposed) light-activated devices under books on the holdshelf that correspond to the patron's alias.
+2015-02-05T09:51:36  <bshum> Hehe
+2015-02-05T09:51:44  <Dyrcona> So each patron gets a different theme?
+2015-02-05T09:52:14  <jeff> well, a small handful (even 2-3) on the shelf at a given time.
+2015-02-05T09:53:19  <berick> bshum: jboyer-isl: good to know.  i'm going to try to stick around
+2015-02-05T09:53:30  <bshum> More the merrier :)
+2015-02-05T09:53:30  <berick> eeevil: got a page on webby doing the double pcrud commit I can look at?
+2015-02-05T09:54:08  <eeevil> berick: sure https://webby.evergreencatalog.com/eg/staff/cat/catalog/record/4010 ... watch the console and hit the save button at the bottom
+2015-02-05T09:55:57  <berick> eeevil: it drops me into the catalog view.  not seeing a save button.  are you in a different view?
+2015-02-05T09:56:21  <eeevil> berick: ha. sorry. yes,  the "marc edit" view
+2015-02-05T09:56:26  <berick> ah, k, thanks
+2015-02-05T09:57:03  <eeevil> I'm actively poking at context menus ATM, so there could be some instability, but the double-commit is always there
+2015-02-05T09:59:56  * csharp likes jeff's idea and connects it with bshum's desire to replace EG sounds with Super Mario sounds
+2015-02-05T10:00:55  * bshum wonders how library staff would react to suddenly hearing Mario sounds in the client.
+2015-02-05T10:01:03  <berick> eeevil: is this what you're seeing?  http://pastie.org/9889102
+2015-02-05T10:02:05  *** gdunbar has joined #evergreen
+2015-02-05T10:02:37  <eeevil> berick: yes. on on the server I see two calls to transaction.commit immediately following each other
+2015-02-05T10:02:49  <eeevil> going to the same pcrud process
+2015-02-05T10:02:58  <eeevil> from the same client, obv
+2015-02-05T10:03:23  <berick> hm, ok..
+2015-02-05T10:03:56  <eeevil> it's like the xactClose promise is being called twice
+2015-02-05T10:04:27  *** yboston has joined #evergreen
+2015-02-05T10:04:34  <eeevil> pcrud.js is completely unchanged (now... I was messing with it last night)
+2015-02-05T10:07:24  *** pmurray is now known as pmurray_away
+2015-02-05T10:10:13  *** pmurray_away is now known as pmurray
+2015-02-05T10:11:22  <berick> eeevil: ok, was able to reproduce locally
+2015-02-05T10:11:24  * berick pokes
+2015-02-05T10:12:24  <eeevil> berick: I suspect, but haven't tested, that it happens with every pcrud CUD call
+2015-02-05T10:26:25  *** mrpeters has quit IRC
+2015-02-05T10:31:43  *** dreuther has joined #evergreen
+2015-02-05T10:34:30  *** dMiller_ has joined #evergreen
+2015-02-05T10:36:11  <berick> eeevil: found it.  good stuff
+2015-02-05T10:36:13  <berick> http://git.evergreen-ils.org/?p=working/OpenSRF.git;a=commitdiff;h=1b25f487c0acdfa000becbccac6943e24bc0ca77
+2015-02-05T10:36:16  <berick> i'll open an LP
+2015-02-05T10:37:16  <berick> this code path (per-tab connections) got much less testing than the global WS connection code, which had to be disabled, because chrome started acting funky with global connections
+2015-02-05T10:37:21  <berick> will have to revisit that..
+2015-02-05T10:38:41  *** graced has quit IRC
+2015-02-05T10:42:36  *** mrpeters has joined #evergreen
+2015-02-05T10:44:07  *** dMiller_ has quit IRC
+2015-02-05T10:46:40  <berick> https://bugs.launchpad.net/opensrf/+bug/1418613
+2015-02-05T10:46:40  <pinesol_green> Launchpad bug 1418613 in OpenSRF "Per-tab websocket JS connections can re-send messages" (affected: 1, heat: 6) [Undecided,New]
+2015-02-05T11:01:49  <bshum> berick: I'm adjusting that entry if I can so that it points at OpenSRF 2.4.1
+2015-02-05T11:01:57  <bshum> Since 2.4.0 was already released last month
+2015-02-05T11:02:04  <berick> bshum: gracias
+2015-02-05T11:04:20  <bshum> All set.
+2015-02-05T11:04:23  <bshum> Thanks berick.
+2015-02-05T11:08:26  <eeevil>  berick: ah ... I imagine those "some cases" are when we send an opensrf message without a payload, a la DISCONNECT
+2015-02-05T11:08:48  <eeevil> because guess what else is /not/ getting to the server (hint: it's the DISCONNECT message)
+2015-02-05T11:08:58  <berick> eeevil: exactly...
+2015-02-05T11:14:20  *** gdunbar has quit IRC
+2015-02-05T11:14:49  <Dyrcona> That's bad.
+2015-02-05T11:14:55  <Dyrcona> ;)
+2015-02-05T11:16:23  *** mrpeters has quit IRC
+2015-02-05T11:16:34  <eeevil> Dyrcona: if you thought you had hanging opensrf sessions before... ;)
+2015-02-05T11:19:28  * csharp release his new album: The Hanging OpenSRF Sessions
+2015-02-05T11:19:39  <csharp> bleh s/release/releases/
+2015-02-05T11:19:50  * csharp is typo-ridden today
+2015-02-05T11:20:25  <csharp> @eightball are jokes funnier without typos?
+2015-02-05T11:20:25  <pinesol_green> csharp: You know the answer better than I.
+2015-02-05T11:24:56  *** mrpeters has joined #evergreen
+2015-02-05T11:30:56  <Dyrcona> heh
+2015-02-05T11:31:33  <Dyrcona> csharp: The Hanging OpenSRF Sessions sounds more like an album title.
+2015-02-05T11:31:37  <Dyrcona> OOf.
+2015-02-05T11:31:40  * Dyrcona is dumb.
+2015-02-05T11:31:50  <Dyrcona> I was thinking of it as a band name, sorry.
+2015-02-05T11:32:11  *** mrpeters1 has joined #evergreen
+2015-02-05T11:32:30  <Dyrcona> That's what happens when I pay more attention to work than to IRC. :)
+2015-02-05T11:33:22  *** mrpeters has quit IRC
+2015-02-05T11:37:03  *** mrpeters1 has quit IRC
+2015-02-05T11:45:26  *** graced has joined #evergreen
+2015-02-05T11:48:25  *** akilsdonk has quit IRC
+2015-02-05T11:55:13  <csharp> Dyrcona: ;-)
+2015-02-05T11:56:33  * Dyrcona has chicken curry for lunch, but with Nutella in the sauce.
+2015-02-05T12:00:21  <csharp> ewww
+2015-02-05T12:00:43  * csharp hasn't jumped on the nutella bandwagon yet ;-)
+2015-02-05T12:00:43  <Dyrcona> It actually tastes pretty good.
+2015-02-05T12:00:54  <Dyrcona> I don't usually consume much Nutella.
+2015-02-05T12:01:32  <Dyrcona> I got a taste before I decided to take it.
+2015-02-05T12:04:40  <Dyrcona> If you like spicy, you would probably like this dish.
+2015-02-05T12:09:36  <bshum> gmcharlt: Sorry I'll fix up 2.7.3 too and create a 2.7.4 for everyone.
+2015-02-05T12:09:59  <bshum> Old, old bug.  Back from my 2.0 days :(
+2015-02-05T12:10:29  <gmcharlt> bshum: ah, great - thanks for catching that!
+2015-02-05T12:11:33  <bshum> gmcharlt: I'm not sure if dbwells has cut 2.6.6.  He might not have yet and it could still get tested and applied there.  But more than likely I expect we'll keep that lock-step on bug fixes in general.
+2015-02-05T12:11:54  <bshum> gmcharlt++ # poking at ancient bugs
+2015-02-05T12:12:16  <gmcharlt> bshum: that's fine - that bug gets hit rarely enough, I think, that testing doesn't need to be super-rushed
+2015-02-05T12:12:40  <gmcharlt> our_customers++ # running into ancient bugs and KEEPING THEM ALIVE
+2015-02-05T12:13:34  <bshum> Reported by Ben Shum on 2011-12-15, zomg :(
+2015-02-05T12:13:49  *** sarabee has quit IRC
+2015-02-05T12:13:50  * bshum can't believe how long it's been :\
+2015-02-05T12:14:55  <bshum> Stompro++ # helping to announce new release on list with helpful notes and links!
+2015-02-05T12:15:08  <kmlussier> Any git admins available who might be able to a recent request made for access to the working repository? :)
+2015-02-05T12:15:15  <kmlussier> Recent being about 30 minutes ago.
+2015-02-05T12:15:26  <bshum> 30 minutes?!  The slackers...
+2015-02-05T12:15:29  <bshum> :D
+2015-02-05T12:15:52  <kmlussier> I was hoping to try pushing the branch while I'm sitting at her desk.
+2015-02-05T12:16:15  * kmlussier is learning how to use Git Gui today, which is fun.
+2015-02-05T12:16:30  <gmcharlt> kmlussier: one minute
+2015-02-05T12:16:38  <kmlussier> gmcharlt++ Thanks!
+2015-02-05T12:18:52  <gmcharlt> kmlussier: and tis done, and I've responded to cmorgan
+2015-02-05T12:19:09  <kmlussier> gmcharlt: Thank you Galen!
+2015-02-05T12:20:27  <Stompro> bshum,  I'm happy to do that in the future also.  I sent a note to the web team list about possibly doing the same thing for the web site blog.
+2015-02-05T12:32:00  *** kbutler has joined #evergreen
+2015-02-05T12:32:02  <kmlussier> bshum: You're familiar with Git Gui, right?
+2015-02-05T12:32:27  * tsbere is somewhat familiar with Git Gui
+2015-02-05T12:32:47  <bshum> kmlussier: Somewhat familiar, sure.
+2015-02-05T12:33:24  <Dyrcona> Gui? What is Gui? :P
+2015-02-05T12:33:49  <kmlussier> bshum: We're having a hard time figuring out how to push to the working repository. There doesn't seem to be a way to specify which directory you're pushing to.
+2015-02-05T12:34:03  <bshum> kmlussier: Yeah that can be weird.
+2015-02-05T12:34:13  <kmlussier> bshum: Do you remember how to do it?
+2015-02-05T12:34:20  <bshum> I think Meliss and I found that the best way to get around that was to name our local branches appropriately.
+2015-02-05T12:34:22  <bshum> Then push.
+2015-02-05T12:34:32  <bshum> So my local branch had to be named user/bshum/branch_name
+2015-02-05T12:34:40  <bshum> In order for it to accept it on the remote's end of things
+2015-02-05T12:34:44  <kmlussier> Ah! I see. We'll try that.
+2015-02-05T12:34:55  <bshum> I think there's a way to manually specify the name, but it ended up being more hasslesome
+2015-02-05T12:34:58  <bshum> So we just skipped that
+2015-02-05T12:35:06  <bshum> And stuck to giving good names for our local branches
+2015-02-05T12:35:38  * tsbere seems to recall having figured something about that out.....but can't remember what now >_>
+2015-02-05T12:39:41  <kmlussier> Hooray! We got it.
+2015-02-05T12:39:44  <kmlussier> bshum++
+2015-02-05T12:40:29  <kmlussier> One last question. Is there a way to set the remote url that we want to push to for the working repository? We had to type the entire URL in when pushing the branch.
+2015-02-05T12:40:31  *** sandbergja has joined #evergreen
+2015-02-05T12:42:36  <tsbere> kmlussier: Did you add the remote on the "Remote" menu?
+2015-02-05T12:43:04  *** buzzy has joined #evergreen
+2015-02-05T12:43:41  <kmlussier> tsbere: We did, but we added git://git.evergreen-ils.org/working/Evergreen.git as the URL, and that's not the URL we push to.
+2015-02-05T12:44:03  <kmlussier> Do we need to add a separate remote just for pushing changes?
+2015-02-05T12:44:07  <tsbere> kmlussier: So add the push SSH URL instead? It works for both read and write.
+2015-02-05T12:44:19  <kmlussier> tsbere: OK, we'll try that.
+2015-02-05T12:44:39  <tsbere> kmlussier: The git:// urls are mainly for "you don't plan on writing back" - If you can write the SSH ones work the same way anyway.
+2015-02-05T12:52:15  <dbs> Wow. I found people actively using bookbags!
+2015-02-05T12:52:51  <dbs> Unfortunately they're using it to work around our "Don't allow hold placement on items that are available / on the shelf" policy.
+2015-02-05T12:54:57  *** finnx has joined #evergreen
+2015-02-05T12:56:15  *** finnx has left #evergreen
+2015-02-05T12:59:56  *** nhilton has joined #evergreen
+2015-02-05T13:00:00  *** finnx1 has joined #evergreen
+2015-02-05T13:00:11  *** finnx1 has joined #evergreen
+2015-02-05T13:03:17  <tsbere> dbs: I am having trouble determining how that works around the issue in question.
+2015-02-05T13:03:35  <tsbere> dbs: Then again, we have people that use holds for things that I personally feel are better suited to bookbags....
+2015-02-05T13:05:33  <dbs> tsbere: We don't show the "Place a hold" button for items in the catalogue that have available copies.
+2015-02-05T13:06:14  <tsbere> dbs: So what, are they adding to the bookbag because the bookbag lets you try to place a hold anyway?
+2015-02-05T13:19:27  *** nhilton has quit IRC
+2015-02-05T13:19:41  *** mrpeters has joined #evergreen
+2015-02-05T13:24:13  <dbs> tsbere: yep, exactly (sorry for the delay, real life person came by)
+2015-02-05T13:24:43  <dbs> Not only lets you try to place a hold, but successfully places it.
+2015-02-05T13:25:17  <tsbere> dbs: You know, I think that is less of an abuse than "suspended holds as a reading history" >_> Problematic for you, granted, but less of an abuse.
+2015-02-05T13:26:03  <tsbere> dbs: And isn't there an option somewhere that makes "item is on the shelf" throw an error at hold placement time?
+2015-02-05T13:27:38  <kmlussier> @love grep
+2015-02-05T13:27:38  <pinesol_green> kmlussier: The operation succeeded.  kmlussier loves grep.
+2015-02-05T13:32:42  <dbs> I can take away the "Place holds on items in this list" option, but then someone is going to start using raw GET requests
+2015-02-05T13:33:25  <bshum> Darn kids :)
+2015-02-05T13:33:27  <dbs> There's a "throw ugly error when patron tries to renew an item that has a hold on it" thing
+2015-02-05T13:33:53  <dbs> Ultimately I feel like we're trying to bar enthusiastic patrons from using our library resources, but that's a policy issue.
+2015-02-05T13:34:28  *** akilsdonk has joined #evergreen
+2015-02-05T13:34:48  *** jihpringle has joined #evergreen
+2015-02-05T13:42:29  <tsbere> dbs: Looks like it is 100% inside of TPac, but circ.holds.hold_has_copy_at.block should apply to bookbag placement as well? Not 100% sure what your overall situation is, though. (Won't help either way right now if they drop straight into making direct hits against the gateway/translator)
+2015-02-05T13:44:22  * tsbere glares at the pile of spam that just hit his mailing list moderation queues, then goes and runs the batch discard script he wrote for moderating spam into oblivion anyway
+2015-02-05T13:46:46  <dbs> tsbere++ # that looks promising!
+2015-02-05T13:50:49  *** rsoulliere has joined #evergreen
+2015-02-05T13:51:19  <dbs> tsbere++ # That did the trick. Fantastic
+2015-02-05T13:52:18  <tsbere> dbs: Saves you the trouble of annoying people by removing buttons that were there previously. Added bonus of it telling them why it failed too. :D
+2015-02-05T13:52:51  <dbs> and it's only existed since 2011!
+2015-02-05T13:56:16  <yboston> heads up the DIG monthly meeting is starting at 2 Pm EST
+2015-02-05T14:00:37  <yboston> #startmeeting 2015-02-05 - DIG Monthly Meeting Evergreen Documentation Interest Group (DIG) Monthly Meeting.
+2015-02-05T14:00:37  <pinesol_green> Meeting started Thu Feb  5 14:00:37 2015 US/Eastern.  The chair is yboston. Information about MeetBot at http://wiki.debian.org/MeetBot.
+2015-02-05T14:00:37  <pinesol_green> Useful Commands: #action #agreed #help #info #idea #link #topic.
+2015-02-05T14:00:37  <pinesol_green> The meeting name has been set to '2015_02_05___dig_monthly_meeting_evergreen_documentation_interest_group__dig__monthly_meeting_'
+2015-02-05T14:00:54  <yboston> The agenda can be found here http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:dig_meeting_20150205-agenda
+2015-02-05T14:01:03  <yboston> #topic Introductions
+2015-02-05T14:01:14  <yboston> Please feel free to start introducing yourselves...
+2015-02-05T14:01:29  <remingtron> #info remingtron is Remington Steed, Hekman Library (Calvin College)
+2015-02-05T14:01:38  <yboston> #info yboston is Yamil Suarez @ Berklee College of Music - DIG meeting facilitator
+2015-02-05T14:01:52  <kbutler> #info kbutler is Kate Butler at Rodgers Memorial Library (Hudson, NH)
+2015-02-05T14:02:05  <bshum> #info bshum is Ben Shum, Bibliomation
+2015-02-05T14:02:08  <rsoulliere> #info rsoulliere is Robert Soulliere, Mohawk College
+2015-02-05T14:03:33  <phasefx> #info phasefx is Jason Etheridge, ESI
+2015-02-05T14:04:10  <yboston> My timer is done, ready to start
+2015-02-05T14:04:32  <yboston> any reports from content coordinators?
+2015-02-05T14:05:27  <rsoulliere> Nothing from me this time.
+2015-02-05T14:05:32  <yboston> OK
+2015-02-05T14:05:53  <yboston> Previous Action items...
+2015-02-05T14:06:11  <yboston> #topic yboston will contact krvmga to check in on his 2.7 docs work
+2015-02-05T14:06:35  <yboston> I forgot to reach out to krvmga; will push forward for next meeting
+2015-02-05T14:06:48  <yboston> #action yboston will contact krvmga to check in on his 2.7 docs work
+2015-02-05T14:07:00  <yboston> #topic kmlussier will complete the marc stream importer work and check on the status of the RDA docs
+2015-02-05T14:07:18  <kmlussier> Sorry. I wasn't paying attention.
+2015-02-05T14:07:28  <kmlussier> #info kmlussier is Kathy Lussier MassLNC
+2015-02-05T14:08:06  <yboston> did you want to postpone for next meeting?
+2015-02-05T14:08:18  <kmlussier> I was supposed to get the notes I have to Jane Sandberg so that she could work on the docs.
+2015-02-05T14:08:34  <kmlussier> Unfortunately, I forgot about my action item. I'll try to pull them together for Jane this afternoon.
+2015-02-05T14:09:54  <kmlussier> yboston: So, yes, in answer to your question, postpone to the next meeting.
+2015-02-05T14:10:00  <yboston> same wording?
+2015-02-05T14:10:03  <kmlussier> Sure
+2015-02-05T14:10:22  <yboston> #action kmlussier will complete the marc stream importer work and check on the status of the RDA docs
+2015-02-05T14:10:43  <yboston> #topic yboston will follow up with gmcharlt and Robert about provisioning a VM for DIG
+2015-02-05T14:11:29  <yboston> right before the start of our last meeting on December 4, 2014  I sent out an email to Galen and others to psuh this forward, but I did not hear back.
+2015-02-05T14:11:52  <yboston> right before this meeting I sent another email to try to push this forward
+2015-02-05T14:12:04  <yboston> I will postpone again this action item
+2015-02-05T14:12:14  <yboston> #action yboston will follow up with gmcharlt and Robert about provisioning a VM for DIG
+2015-02-05T14:12:26  <yboston> #topic remingtron will set up doodle to set up a meeting on IRC in Janaury 2015 to discuss re-organizing the EG docs
+2015-02-05T14:12:59  <remingtron> I have stalled on the docs re-org, mostly because of focusing on web client docs, but I'd like your feedback
+2015-02-05T14:13:24  <remingtron> should we pause web client work and work on re-org for a while, since webclient will take a while to progress?
+2015-02-05T14:13:36  <remingtron> (web client *may* take a while)
+2015-02-05T14:13:49  <remingtron> or press on with web client work?
+2015-02-05T14:14:11  <yboston> good question
+2015-02-05T14:14:43  <remingtron> And keep in mind that we want to shift focus to 2.8 when beta is released
+2015-02-05T14:14:54  <remingtron> (though I think that's a fairly small list of new features this time)
+2015-02-05T14:14:54  <kmlussier> remingtron: Do you recall if there was still work to be done on the circulation web client docs?
+2015-02-05T14:15:55  <remingtron> my perspective is just the wiki, which seems to have a lot more to do
+2015-02-05T14:16:00  <yboston> I did not finsih everything in "Circulation - Patron Record"
+2015-02-05T14:16:01  <remingtron> #link http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:webclient
+2015-02-05T14:16:42  <yboston> I also suspect, some features that were missing when I wrote the docs might have been ported over, so it would be useful for me to review again
+2015-02-05T14:16:54  <remingtron> ah, but now I see some comments that some items aren't in the web client yet, etc.
+2015-02-05T14:17:55  <kmlussier> Does it need to be either/or? To be honest, docs organization is not my strong suit. But I see there are still some areas I could work on for the web client.
+2015-02-05T14:18:31  <kmlussier> Whereas others may prefer to work on the reorganization.
+2015-02-05T14:19:04  <remingtron> sure, people can certainly do what they are most interested in
+2015-02-05T14:19:20  <remingtron> and if anyone doesn't know where to start, they can work on web client stuff
+2015-02-05T14:19:41  <remingtron> but I'll plan to shift focus to the reorganization project
+2015-02-05T14:20:54  <yboston> I am not sure on what to focus if we should only choose one. BTW, do we want to also put down a time in the near future to work on one or both do of these topics. Like an hour long IRC meeting or re-org were we can talk about different approaches?
+2015-02-05T14:22:15  <remingtron> where's that wiki page with suggestions from the OPW candidate?
+2015-02-05T14:23:34  <remingtron> maybe it was just an email
+2015-02-05T14:23:56  <yboston> I am trying to find it
+2015-02-05T14:24:16  <remingtron> #link http://markmail.org/thread/kjddts4zod2uwbe6
+2015-02-05T14:25:27  <remingtron> anyway, yes, I guess it is still worth a meeting to discuss reorganization approaches
+2015-02-05T14:25:45  <remingtron> I'll send a doodle
+2015-02-05T14:26:56  <yboston> How is this… "remingtron will set up doodle to set up a meeting on IRC in February 2015 to discuss re-organizing the EG docs"?
+2015-02-05T14:27:08  <remingtron> perfect
+2015-02-05T14:27:41  <yboston> #action remingtron will set up doodle to set up a meeting on IRC in February 2015 to discuss re-organizing the EG docs
+2015-02-05T14:28:17  <yboston> no more previous action items
+2015-02-05T14:28:49  <yboston> should we talk about the web client docs?
+2015-02-05T14:28:57  <remingtron> sure, I have a question
+2015-02-05T14:29:25  <remingtron> does anyone know where development progress is at? mainly, are they ready for using launchpad yet for filing bugs?
+2015-02-05T14:29:28  <yboston> go ahead
+2015-02-05T14:29:39  <remingtron> maybe that's a question for graced ?
+2015-02-05T14:29:59  *** gsams has joined #evergreen
+2015-02-05T14:30:38  <phasefx> I think we're pretty close; I can have a better answer tomorrow
+2015-02-05T14:30:58  <kmlussier> I know there is a lot of bug fixing going on in https://bugs.launchpad.net/evergreen/+bug/1402797
+2015-02-05T14:30:58  <pinesol_green> Launchpad bug 1402797 in Evergreen "Browser client sprint1 miscellaneous repairs" (affected: 1, heat: 8) [Undecided,New]
+2015-02-05T14:31:14  <phasefx> and here, http://git.evergreen-ils.org/?p=working/Evergreen.git;a=shortlog;h=refs/heads/collab/miker/web-client-sprint1-bug-fixing-rebased-collab
+2015-02-05T14:32:52  <remingtron> phasefx: thanks, we'd love to hear when you have an update
+2015-02-05T14:33:15  <yboston> I think there are still some web cleint docs hat have to be added to master
+2015-02-05T14:33:30  *** gsams has quit IRC
+2015-02-05T14:33:52  <phasefx> remingtron: no problem.  we need to be more proactive with updates
+2015-02-05T14:33:55  <yboston> I need to review some DIG related emails I have pilled up since the ned of last year
+2015-02-05T14:34:36  <yboston> I beleive there are a couple of web clients submissions through the DIG list there that need to be added
+2015-02-05T14:34:53  <remingtron> yboston: I think you're right. let's work together to get those into master
+2015-02-05T14:35:12  <yboston> specially to avoid the both of us working on the same content
+2015-02-05T14:35:26  *** gsams has joined #evergreen
+2015-02-05T14:35:27  <remingtron> but let's still not push into 2.7 branch until we're ready to use launchpad for web client bugs
+2015-02-05T14:35:38  *** gsams is now known as geoffsams
+2015-02-05T14:35:42  <yboston> I can set up a time to reach out to you early next week or even tomorrow to coordinate
+2015-02-05T14:35:55  <remingtron> great
+2015-02-05T14:36:36  <yboston> anything else web client related? or we can shift to another topic?
+2015-02-05T14:36:44  *** geoffsams is now known as Librator
+2015-02-05T14:36:53  *** Librator is now known as gsams
+2015-02-05T14:37:01  <yboston> (we are barely past the 30 minute mark)
+2015-02-05T14:37:14  <remingtron> sure, press on
+2015-02-05T14:38:04  <yboston> #topic Decide best presentation of web client install instructions
+2015-02-05T14:38:13  <yboston> See draft by bshum:
+2015-02-05T14:38:22  <yboston> #link http://evergreen-ils.org/~bshum/Evergreen-README.html#_optional_extra_steps_for_browser_based_staff_client
+2015-02-05T14:39:47  <yboston> remingtron: did you add this or was it bshum?
+2015-02-05T14:41:14  <yboston> I can move on to something else. I was just going downt he list
+2015-02-05T14:41:15  <remingtron> I think I did, but probably asked bshum first
+2015-02-05T14:41:42  <remingtron> basically, he wrote the instructions draft, and he wants some feedback
+2015-02-05T14:42:19  <remingtron> maybe he/we should ask the general and dev lists for help on that
+2015-02-05T14:42:52  <yboston> ats ome point I need to build a new test server to try out the web client, I can give him some feedback at that point
+2015-02-05T14:43:34  <yboston> I can put an action item to reach out to him to see if this has been included in master, and if others have been able to run his intructions
+2015-02-05T14:43:43  <yboston> they look fine to me, bu I have nos tested them yet
+2015-02-05T14:43:44  <bshum> It has not been added up to master yet.
+2015-02-05T14:43:53  *** ericar has quit IRC
+2015-02-05T14:43:54  <bshum> Sorry, stepped away a sec there.
+2015-02-05T14:44:16  <bshum> I'll work on it with more devs in the coming weeks.
+2015-02-05T14:44:49  <yboston> I can reach out to you when I am ready to build a new VM to test the web client, to make sure I use the latest version
+2015-02-05T14:45:07  <yboston> is there a git branch that has these instructions?
+2015-02-05T14:45:35  <bshum> yboston: I haven't put all the changes into a git branch yet.  That's also on my to-do list I think.
+2015-02-05T14:45:44  <yboston> no worries
+2015-02-05T14:46:31  <yboston> I can move on, but want suggestions on what action item if any we should leave for next meeting for this?
+2015-02-05T14:46:44  <yboston> (or we can continue on this topic too)
+2015-02-05T14:47:41  *** graced has quit IRC
+2015-02-05T14:47:48  <remingtron> maybe action item to revisit state of those install docs.
+2015-02-05T14:47:50  <yboston> another topic to cover is the next release
+2015-02-05T14:48:30  <yboston> #action all check in on state of latest web cleint docs from bshum or others
+2015-02-05T14:50:19  <yboston> let me take a moment to look up the milestone dates for EG 2.8
+2015-02-05T14:50:57  <yboston> Friday, February 20th is the 2.8 beta cut off date
+2015-02-05T14:51:40  *** buzzy has quit IRC
+2015-02-05T14:51:40  <yboston> the EG 2.8 beta release is scheduled for Wednesday, February 25th
+2015-02-05T14:51:47  *** graced has joined #evergreen
+2015-02-05T14:52:14  <yboston> when woud we want to focus on the docs for the new features?
+2015-02-05T14:52:21  <yboston> I ca't rmemebr what we have done in the past?
+2015-02-05T14:52:36  <kmlussier> I would say we should start as soon after the beta release as possible.
+2015-02-05T14:52:38  <remingtron> after the 25th beta should be "feature stable"
+2015-02-05T14:52:50  <remingtron> kmlussier: yes, I agree
+2015-02-05T14:53:23  <kmlussier> Also, I don't know if I'm going to be able to use the MassLNC server as a community server for doc work this time around.
+2015-02-05T14:53:24  <yboston> Also, the projected release for EG 2.8 is Monday, March 9th. Though these dates coudl slip a bit, understandably so
+2015-02-05T14:54:21  <yboston> remingtron: the 25th make sense
+2015-02-05T14:54:23  <remingtron> should we try to have a day (or half day) hack-fest to focus on 2.8 features, or only use a wiki page to track progress?
+2015-02-05T14:54:54  <kmlussier> hack-fests are very effective for me. Otherwise, I tend to let tasks slip. But maybe I'm the only one with that problem.
+2015-02-05T14:55:37  <yboston> Ihack-fest for me too, I have that problem
+2015-02-05T14:55:54  <remingtron> okay, I'm in too
+2015-02-05T14:56:25  <remingtron> maybe on a Friday?
+2015-02-05T14:56:28  <yboston> sure
+2015-02-05T14:56:37  <remingtron> March 27, April 6, April 13?
+2015-02-05T14:56:47  <yboston> any volunteers to run a doodle poll targetting after February 25th?
+2015-02-05T14:57:04  <remingtron> whoa, sorry, I'm a month off!
+2015-02-05T14:57:13  <remingtron> Feb 27, March 6, March 13
+2015-02-05T14:57:30  <kmlussier> Feb 27 is bad for me. The other dates look fine.
+2015-02-05T14:57:31  <yboston> we may be able to try just on the mailing list, I wonder if some potential volunteers are scared off by doodle?
+2015-02-05T14:58:07  <remingtron> hmm, let's try a combo of the list and doodle
+2015-02-05T14:58:21  <remingtron> I'll do it
+2015-02-05T14:58:42  <remingtron> and I suggest I wait on the reorganization meeting until after 2.8 docs are finished. thoughts?
+2015-02-05T14:59:02  <kmlussier> They're scared off by Doodle, but please write in AsciiDoc? :)
+2015-02-05T14:59:29  <remingtron> or I guess it makes sense to sqeeze in the reorg meeting now, before beta
+2015-02-05T14:59:39  <remingtron> nevermind, I'll do both doodles
+2015-02-05T14:59:39  <yboston> #action remingtron will set up a doodle poll and ask on the DIG list to set up a time for a DIG 2.8 hackfest
+2015-02-05T15:00:02  <remingtron> kmlussier: double standard, eh?
+2015-02-05T15:00:09  <yboston> kmlussier: point taken
+2015-02-05T15:01:29  <yboston> we are slightly past the one hour mark
+2015-02-05T15:01:38  <yboston> shoudl we stop now, or
+2015-02-05T15:01:47  <remingtron> I think we've covered everything
+2015-02-05T15:01:50  <yboston> is there one more topic or quick question we woudl like to cover?
+2015-02-05T15:02:07  <remingtron> kmlussier: are you able to make the wiki page for 2.8 features again?
+2015-02-05T15:03:20  <kmlussier> Yes, I can.
+2015-02-05T15:03:30  <kmlussier> Sorry, I was pulled into another discussion.
+2015-02-05T15:03:40  * gmcharlt jumps in to mention that I intend to provision the doc testing server next week
+2015-02-05T15:03:45  <gmcharlt> sorry for hte delay
+2015-02-05T15:03:50  <kmlussier> gmcharlt++
+2015-02-05T15:04:06  <yboston> no problem, you have a lot on your olate
+2015-02-05T15:04:11  <yboston> *plate
+2015-02-05T15:04:14  <remingtron> gmcharlt++
+2015-02-05T15:04:49  <yboston> I laughed when I realized this nice reply on code4lib list was from you, as another example of your omnipresence
+2015-02-05T15:04:59  <yboston> OK, I will end the meeting
+2015-02-05T15:05:12  <yboston> #endmeeting
+2015-02-05T15:05:12  <pinesol_green> Meeting ended Thu Feb  5 15:05:12 2015 US/Eastern.  Information about MeetBot at http://wiki.debian.org/MeetBot . (v 0.1.4)
+2015-02-05T15:05:12  <pinesol_green> Minutes:        http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-02-05-14.00.html
+2015-02-05T15:05:12  <pinesol_green> Minutes (text): http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-02-05-14.00.txt
+2015-02-05T15:05:12  <pinesol_green> Log:            http://evergreen-ils.org/meetings/evergreen/2015/evergreen.2015-02-05-14.00.log.html
+2015-02-05T15:05:21  <remingtron> yboston++
+2015-02-05T15:06:21  <kmlussier> yboston++
+2015-02-05T15:07:01  <kbutler> yboston++
+2015-02-05T15:14:01  <kmlussier> bshum / gmcharlt: I'm curious. Is there a reason why we don't include "Powered by WordPress" in our footer?
+2015-02-05T15:14:46  <gmcharlt> kmlussier: theme default, I assume
+2015-02-05T15:14:51  <bshum> kmlussier: What gmcharlt said
+2015-02-05T15:15:42  <kmlussier> OK. That's a shame.
+2015-02-05T15:20:39  <kmlussier> Would there be any objection to my trying to add it back into one of the footer widgets? I would like seeing it there, for the same reason I like seeing "Powered by Evergreen" in our library catalogs.
+2015-02-05T15:21:54  <kmlussier> Oh, wait. The footer widgets are for those blocks that are a little higher than the footer, aren't they?
+2015-02-05T15:23:05  <bshum> kmlussier: Right, those widgets are just above it.
+2015-02-05T15:23:14  <bshum> And it doesn't handle things like links.
+2015-02-05T15:23:28  <bshum> At least, it didn't work for the text block where the other stuff lives now.
+2015-02-05T15:23:55  *** Dyrcona1 has joined #evergreen
+2015-02-05T15:24:23  *** Dyrcona has quit IRC
+2015-02-05T15:24:31  *** Dyrcona1 is now known as Dyrcona
+2015-02-05T15:40:17  <kmlussier> eeevil / goood: I may have asked this question before, but I don't recall the answer. Is bug 1251394 ready for testing or does it still need work?
+2015-02-05T15:40:17  <pinesol_green> Launchpad bug 1251394 in Evergreen "Metabib Display Fields" (affected: 3, heat: 16) [Wishlist,Triaged] https://launchpad.net/bugs/1251394 - Assigned to Mike Rylander (mrylander)
+2015-02-05T15:40:57  *** mmorgan has quit IRC
+2015-02-05T15:45:28  <eeevil> kmlussier:  it's just the backend components, but I think they work. nothing knows how to use them yet, though
+2015-02-05T15:46:31  <kmlussier> eeevil: Ah, ok. So if we wanted something to be able to use them, it still needs work.
+2015-02-05T15:46:54  <eeevil> we'd talked about making use of the browse_entry table to limit db size growth. that would probably be a minor change, but a change nonetheless
+2015-02-05T15:47:58  *** rsoulliere has quit IRC
+2015-02-05T15:48:11  <eeevil> since they're field_safe, any client can grab the data given a bib ID ... just a matter of  committing and then doing so :)
+2015-02-05T16:20:14  *** Shae has quit IRC
+2015-02-05T16:22:16  *** graced has quit IRC
+2015-02-05T16:27:32  *** rjackson_isl_ has joined #evergreen
+2015-02-05T16:27:40  *** rjackson_isl has quit IRC
+2015-02-05T16:28:37  *** rjackson_isl_ has quit IRC
+2015-02-05T16:34:10  *** collum has quit IRC
+2015-02-05T16:34:16  *** maryj has quit IRC
+2015-02-05T16:39:33  *** julialima_ has left #evergreen
+2015-02-05T16:49:54  *** yboston has quit IRC
+2015-02-05T16:59:38  *** mrpeters has left #evergreen
+2015-02-05T17:01:23  *** kbutler has quit IRC
+2015-02-05T17:01:38  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-02-05T17:01:59  *** Dyrcona has quit IRC
+2015-02-05T17:31:56  *** chick has joined #evergreen
+2015-02-05T18:07:24  *** ningalls has joined #evergreen
+2015-02-05T19:19:25  *** graced has joined #evergreen
+2015-02-05T20:01:34  *** jwoodard has quit IRC
+2015-02-05T20:06:20  *** nhilton has joined #evergreen
+2015-02-05T20:07:03  *** graced has quit IRC
+2015-02-05T20:21:07  *** nhilton has quit IRC
+2015-02-05T20:37:44  *** jihpringle has quit IRC
+2015-02-05T20:41:33  *** sandbergja has quit IRC
+2015-02-05T22:58:02  *** eeevil has quit IRC
+2015-02-05T23:00:28  *** eeevil has joined #evergreen
+2015-02-05T23:04:39  *** book` has quit IRC
+2015-02-05T23:08:09  *** Sato has quit IRC
+2015-02-05T23:11:30  *** Sato has joined #evergreen

@@ -1,0 +1,415 @@
+2015-01-08T01:42:12  *** mtcarlson is now known as mtcarlson_away
+2015-01-08T02:30:55  *** mnsri_away is now known as mnsri
+2015-01-08T02:37:59  *** mnsri is now known as mnsri_away
+2015-01-08T05:09:15  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-08T05:44:35  *** tsbere_ has joined #evergreen
+2015-01-08T05:47:19  *** tsbere has quit IRC
+2015-01-08T06:13:09  *** graced has quit IRC
+2015-01-08T06:13:12  *** TaraC has quit IRC
+2015-01-08T06:13:12  *** Callender has quit IRC
+2015-01-08T06:13:15  *** BigRig has quit IRC
+2015-01-08T06:13:29  *** eeevil has quit IRC
+2015-01-08T06:13:29  *** mtate has quit IRC
+2015-01-08T06:13:51  *** maryj has quit IRC
+2015-01-08T06:14:00  *** phasefx has quit IRC
+2015-01-08T06:14:23  *** mtate has joined #evergreen
+2015-01-08T06:14:23  *** eeevil has joined #evergreen
+2015-01-08T06:14:23  *** phasefx has joined #evergreen
+2015-01-08T06:15:24  *** Callender has joined #evergreen
+2015-01-08T06:15:24  *** BigRig has joined #evergreen
+2015-01-08T06:15:24  *** TaraC has joined #evergreen
+2015-01-08T06:15:25  *** maryj has joined #evergreen
+2015-01-08T06:16:24  *** graced has joined #evergreen
+2015-01-08T07:14:06  <csharp> jeff: we would definitely be interested in a way to detect duplicate patrons - we just did a massive dedupe effort with the help of UMS
+2015-01-08T07:15:52  <csharp> my thought is to have an interface similar to Admin -> Local Administration -> Transit List that would allow library staff to input various parameters (matchpoints) to find dupes
+2015-01-08T07:17:45  <csharp> e.g., "match patrons registered in the last day/week/month/arbitrary date range at my library against the full patron set on first name, middle name, last name, DOB, etc."
+2015-01-08T07:23:13  *** jboyer-isl has joined #evergreen
+2015-01-08T07:53:38  *** julialima_ has joined #evergreen
+2015-01-08T07:54:41  *** Shae has joined #evergreen
+2015-01-08T07:57:23  <csharp> @weather 30345
+2015-01-08T07:57:24  <pinesol_green> csharp: The current temperature in Lakeside, Atlanta, Georgia is 10.9°F (7:45 AM EST on January 08, 2015). Conditions: Clear. Humidity: 68%. Dew Point: 3.2°F. Windchill: 10.4°F. Pressure: 30.67 in 1038 hPa (Falling).  Wind Chill Advisory in effect until 10 am EST this morning... 
+2015-01-08T07:57:35  <csharp> dayum that's cold
+2015-01-08T07:57:55  <eeevil>  @weather 30101
+2015-01-08T07:58:52  <eeevil> I think I broke it...
+2015-01-08T07:59:04  <csharp> I think it's a whitespace issue :-P
+2015-01-08T07:59:16  <eeevil> ha!
+2015-01-08T07:59:23  <eeevil> @weather 30101
+2015-01-08T07:59:24  <pinesol_green> eeevil: The current temperature in Mars Hill Acres, Acworth, Georgia is 7.2°F (7:58 AM EST on January 08, 2015). Conditions: Clear. Humidity: 86%. Dew Point: 3.2°F. Windchill: 6.8°F. Pressure: 30.58 in 1035 hPa (Rising).  Wind Chill Advisory in effect until 10 am EST this morning... 
+2015-01-08T07:59:35  <csharp> yowza
+2015-01-08T07:59:55  * eeevil switches to monospace font in quassel
+2015-01-08T08:03:27  *** collum has joined #evergreen
+2015-01-08T08:13:43  <gmcharlt> @wunder 99507
+2015-01-08T08:13:44  <pinesol_green> gmcharlt: The current temperature in APRSWXNET Anchorage AK US, Anchorage, Alaska is 19.9°F (3:38 AM AKST on January 08, 2015). Conditions: Overcast. Humidity: 81%. Dew Point: 15.8°F. Windchill: 19.4°F. Pressure: 30.07 in 1018 hPa (Falling).  Freezing Rain Advisory in effect from 4 am to noon akst Thursday...
+2015-01-08T08:13:52  <gmcharlt> @wunder 30097
+2015-01-08T08:13:53  <pinesol_green> gmcharlt: The current temperature in Norman Downes, Duluth, Georgia is 9.5°F (8:11 AM EST on January 08, 2015). Conditions: Clear. Humidity: 68%. Dew Point: 1.4°F. Windchill: 10.4°F. Pressure: 30.67 in 1038 hPa (Falling).  Wind Chill Advisory in effect until 10 am EST this morning... 
+2015-01-08T08:13:57  <csharp> haha
+2015-01-08T08:14:13  * csharp asks to borrow hbrennan's coat
+2015-01-08T08:14:19  *** Dyrcona has joined #evergreen
+2015-01-08T08:14:28  <gmcharlt> csharp++
+2015-01-08T08:20:33  *** ericar has joined #evergreen
+2015-01-08T08:28:45  *** mrpeters has joined #evergreen
+2015-01-08T08:29:01  <kmlussier> @wunder 02771
+2015-01-08T08:29:02  <pinesol_green> kmlussier: The current temperature in Rumford, East Providence, Rhode Island is 2.5°F (8:25 AM EST on January 08, 2015). Conditions: Partly Cloudy. Humidity: 53%. Dew Point: -11.2°F. Windchill: -9.4°F. Pressure: 30.35 in 1028 hPa (Rising).  Wind Chill Advisory in effect until 11 am EST this morning... 
+2015-01-08T08:32:53  <bshum> @weather 06776
+2015-01-08T08:32:54  <pinesol_green> bshum: The current temperature in Parkwood, New Milford, Connecticut is 1.0°F (8:32 AM EST on January 08, 2015). Conditions: Clear. Humidity: 73%. Dew Point: -5.8°F. Windchill: 1.4°F. Pressure: 30.38 in 1028 hPa (Rising).  Wind Chill Advisory in effect until 10 am EST this morning... 
+2015-01-08T08:39:01  *** mmorgan has joined #evergreen
+2015-01-08T08:46:36  *** abowling has joined #evergreen
+2015-01-08T08:51:16  <bshum> dbs: Aha, I found the bug I filed about the conflicting SIP config files
+2015-01-08T08:51:17  <bshum> https://bugs.launchpad.net/evergreen/+bug/1399790
+2015-01-08T08:51:17  <pinesol_green> Launchpad bug 1399790 in Evergreen "deprecate oils_sip.xml.example" (affected: 1, heat: 6) [Wishlist,Triaged]
+2015-01-08T08:54:02  *** jwoodard has joined #evergreen
+2015-01-08T09:03:40  <pinesol_green> [evergreen|Jason Stephenson] LP#1396359: Add tooltips for 264, 344, & 347 tags to en-US/marcedit-tooltips.xml. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=605bce0>
+2015-01-08T09:03:41  <pinesol_green> [evergreen|Jason Stephenson] LP#1396359: Add entries for 345 and 346 tags to en-US/marcedit-tooltips.xml. - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=f3a031f>
+2015-01-08T09:04:17  <Dyrcona> bshum++
+2015-01-08T09:09:27  <kmlussier> mmorgan: Do you want me to update your MassLNC Sandbox with the latest code from bug 1210541?
+2015-01-08T09:09:27  <pinesol_green> Launchpad bug 1210541 in Evergreen "Copy locations table should have a 'deleted' flag" (affected: 9, heat: 52) [Wishlist,Confirmed] https://launchpad.net/bugs/1210541 - Assigned to Michele Morgan (mmorgan)
+2015-01-08T09:09:35  <kmlussier> It would be nice to see that one make it into 2.8
+2015-01-08T09:10:05  <mmorgan> kmlussier: Yes, please!
+2015-01-08T09:24:47  *** rjackson-isl has joined #evergreen
+2015-01-08T09:33:23  * csharp makes the red alert noise LOUDER
+2015-01-08T09:36:08  <bshum> Oh gods why?
+2015-01-08T09:36:11  <bshum> :)
+2015-01-08T09:36:29  * csharp likes keeping PINES staff on their toes
+2015-01-08T09:36:29  <bshum> I still want to replace all the sounds on my Evergreen system with Super Mario clips
+2015-01-08T09:36:37  <csharp> bshum: that would be awesome
+2015-01-08T09:36:51  <csharp> each book checkin would be the coin sound!
+2015-01-08T09:37:02  <bshum> "Thank you for capturing this hold, but your item is needed in another library."
+2015-01-08T09:37:08  <Dyrcona> heh
+2015-01-08T09:37:18  <csharp> hold succesfully placed = mushroom noise
+2015-01-08T09:37:32  * csharp LOLs
+2015-01-08T09:37:37  <bshum> Hehe
+2015-01-08T09:39:12  *** sarabee has joined #evergreen
+2015-01-08T09:39:14  <csharp> you could even have the theme music play constantly as long as the staff client is on
+2015-01-08T09:39:34  * csharp rubs hands together evilly
+2015-01-08T09:40:11  <collum> http://themushroomkingdom.net/media/smw/wav
+2015-01-08T09:41:06  <csharp> collum++
+2015-01-08T09:41:49  <bshum> I remember that site
+2015-01-08T09:42:02  <bshum> I borrowed clips from there to experiment once on one of my test servers :)
+2015-01-08T09:45:30  <bshum> Hmm
+2015-01-08T09:45:34  <bshum> https://bugs.launchpad.net/evergreen/+bug/638509
+2015-01-08T09:45:34  <pinesol_green> Launchpad bug 638509 in Evergreen 2.4 "renewing lost items fails unintuitively" (affected: 6, heat: 30) [Medium,Confirmed]
+2015-01-08T09:45:48  <bshum> Dyrcona has some code on that bug
+2015-01-08T09:45:57  <bshum> Maybe we should pull it out of the dark
+2015-01-08T09:46:18  <kmlussier> No, that's not ready.
+2015-01-08T09:46:48  <kmlussier> I don't think that one can be worked on until dbwells is done tackling the fine generator changes he's been working on.
+2015-01-08T09:47:06  <bshum> Oh boy, gotcha.  So many interlinked bugs...
+2015-01-08T09:49:47  <dbwells> There are already two incompatible fine changes in master.  The negative balances bug is cursed.
+2015-01-08T09:49:57  <Dyrcona> 638509 doesn't depend on negative balance work.
+2015-01-08T09:50:18  * Dyrcona thinks billing is cursed. Everyone should just not charge fines. :)
+2015-01-08T09:53:24  <kmlussier> It doesn't depend on the negative balance work, but one of the remaining bugs was related to the generation of fines when the generate new fines for lost item return setting is enables.
+2015-01-08T09:53:40  <kmlussier> Which is similar to the bug that we came across with the negative balance bug.
+2015-01-08T09:54:27  <kmlussier> dbwells: Really? That makes me very sad. :(
+2015-01-08T09:56:01  <dbwells> Well, they aren't tear-your-hair-out changes, but they are another small roadblock on the road to integration.
+2015-01-08T10:00:15  *** Sally has joined #evergreen
+2015-01-08T10:27:48  * dbs has had three heated discussions over the past few days about "Grocery" bills
+2015-01-08T10:28:17  <dbs> All coming down to "Why is it called "Grocery"? We don't sell groceries!"
+2015-01-08T10:28:18  <dbs> *sigh*
+2015-01-08T10:28:26  <bshum> Sounds like my libraries.
+2015-01-08T10:28:41  <kmlussier> dbs: Yes, we hear that here too.
+2015-01-08T10:28:41  <bshum> Maybe that should be a 2.8 feature
+2015-01-08T10:28:51  <dbs> The best alternative I've been able to come up with, as a human-generated bill, is "Staff"
+2015-01-08T10:28:54  <kmlussier> To rename groceries?
+2015-01-08T10:28:58  <bshum> "Evergreeners, we hear you.  Nobody wants groceries, so in 2.8, we are renaming them!"
+2015-01-08T10:29:10  <bshum> Best Evergreen release ever.
+2015-01-08T10:29:12  <jboyer-isl> PEAS AND CARROTS.
+2015-01-08T10:29:18  <jeff> "non-circ"
+2015-01-08T10:29:21  <jboyer-isl> And books.
+2015-01-08T10:29:27  <dbs> jeff: but it is circ.
+2015-01-08T10:29:42  <jeff> "bill not tied to any circ"?
+2015-01-08T10:29:55  <berick> i always referred to them as "miscellaneous"
+2015-01-08T10:30:20  <dbs> Yeah. Except for when we create bills because a bill was voided or forgiven and we want to tie it back to the circ through the note.
+2015-01-08T10:30:31  <jeff> that gets confusing when you have a Misc/Miscellaneous billing type (which staff are forbidden to use! ;-)
+2015-01-08T10:30:40  <mmorgan> So, where did the "grocery" term come from? Inquiring minds want to know ;-)
+2015-01-08T10:30:41  <kmlussier> Staff makes sense to me.
+2015-01-08T10:30:42  <berick> jeff: hah, goog point.
+2015-01-08T10:30:43  <dbs> The main difference from my perspective is that one is system generated, one is human generated.
+2015-01-08T10:31:05  <kmlussier> It's similar to hold cancel reasons. Most are system-generated, but the ones that are done by staff are called "staff forced."
+2015-01-08T10:31:15  <dbs> mmorgan: Like a bag of groceries, it can contain many different items
+2015-01-08T10:31:15  <kmlussier> If you use the word "staff", you're providing a bit of consistency.
+2015-01-08T10:31:35  <jeff> dbs: i've seen migrations where the patron alert messages say "patron still owes on paid transactions for books X and Y", because in the old system you couldn't remove a book from public view (and holds) unless it was first checked in, and checking it in closed the 'lost item' bill...
+2015-01-08T10:32:05  <dbs> I've been saying that I don't want to put in the work to carry a local patch to customize it here for release after release, because of drift from core documentation etc
+2015-01-08T10:32:11  <berick> mmorgan: it came from.. when you buy something at the store and the machine has no designation for what you bought.  so, instead of saying "hotdogs", it just "grocery"  (IOW miscellanous)
+2015-01-08T10:32:29  <dbs> but if there's willingness to accept a change to "Staff" in 2.8, I would be willing to make that happen
+2015-01-08T10:32:36  <jeff> heh
+2015-01-08T10:32:59  <dbs> But then we have the sub-categories of Grocery that let you call it a hot dog again.
+2015-01-08T10:33:10  <dbs> Or at least "Heavily processed meat substances"
+2015-01-08T10:33:42  <jeff> i'd favor removing the distinction (and thus the need for any term) completely, as far as the staff interfaces are concerned -- backend and api and reporting are something else.
+2015-01-08T10:33:47  <kmlussier> Maybe a poll is in order?
+2015-01-08T10:34:01  <jeff> from a UI sense, transactions are transactions, and some have a circulation tied to them, and some don't.
+2015-01-08T10:34:06  <jeff> you pay them all the same way.
+2015-01-08T10:34:30  <berick> yeah, the 'grocery' analogy was quickly outgrown in the code.
+2015-01-08T10:34:48  <dbs> changing a label is relatively easy, I'm not sure how hard removing the distinction would be
+2015-01-08T10:35:04  * dbs isn't even sure if he understands what jeff is suggesting
+2015-01-08T10:35:29  <jeff> i'm opening the billing interface to make sure i understand what i'm suggesting.
+2015-01-08T10:35:32  * mmorgan is not totally comfortable removing the distinction between charges assessed by the system and those added by staff.
+2015-01-08T10:35:49  <jeff> mmorgan: i'm not advocating that.
+2015-01-08T10:36:01  <mmorgan> ok, good :)
+2015-01-08T10:36:05  <jeff> (i know that much without the interface having loaded yet :-)
+2015-01-08T10:36:56  <dbs> The problem for us isn't when the bill is being created (because you really only have the choice to add a Grocery bill)
+2015-01-08T10:37:20  <dbs> It's when people look at it after in a list of bills and their eyes boggle at Grocery.
+2015-01-08T10:38:05  <dbs> Transaction type: Grocery (only valid option) vs. Circulation (greyed out)
+2015-01-08T10:38:13  <jeff> so right now, to create a "grocery" transaction, you hit Bill Patron, and under Transaction Type the only option you can pick is Grocery (the same Bill Patron Wizard interface is used for Add Billing on an existing transaction)
+2015-01-08T10:38:27  <dbs> Billing type: Damaged item, Other, blah blah
+2015-01-08T10:38:30  <jeff> right, you just said all that as I was typing. :-)
+2015-01-08T10:39:31  <mmorgan> The "Last Billing Type" and "Last Billing Note" columns are more informative for staff. We advocate turning these two on.
+2015-01-08T10:40:18  *** tsbere_ is now known as tsbere
+2015-01-08T10:40:41  <jeff> the "Type" column could go away and Title could contain N/A when the transaction isn't tied to a circ, etc.
+2015-01-08T10:40:48  <jeff> and yes, mmorgan said what I was going to say next.
+2015-01-08T10:41:25  <jeff> bad news: i'm slow at expressing myself this morning using my keyboard. good news: i don't seem to be saying oddball things that nobody else is saying/thinking either? :-)
+2015-01-08T10:42:37  <eeevil> jeff: problem is, that's much simpler said than done, in both UIs ... the shape of the data is different, so there are layers of abstraction needed
+2015-01-08T10:42:46  * jeff nods
+2015-01-08T10:43:02  <eeevil> I'm totally +1 for relabeling for 2.8, though
+2015-01-08T10:43:11  <jeff> i agree with dbs' statement that "changing a label is relatively easy, I'm not sure how hard removing the distinction would be" :-)
+2015-01-08T10:44:04  <dbs> And patrons don't see "Grocery" in the Fines -> Other fees section, they just see the billing type.
+2015-01-08T10:44:37  * dbs totally typed "grocery -r Grocery" to see where the label would need to be changed.
+2015-01-08T10:44:47  <dbs> malkovich malkovich malkovich
+2015-01-08T10:45:01  <kmlussier> heh
+2015-01-08T10:46:24  <dbs> It looks like it could be as simple as one line (3 if we include fm_IDL.xml) to change the human visible occurrences.
+2015-01-08T10:47:16  * kmlussier is in favor of changing the label in 2.8 as long as the decision isn't made after a brief discussion in IRC among people from just a few Evergreen sites.
+2015-01-08T10:47:19  <dbs> "Other fees" to align with the category that we show to patrons? Or "Staff" to distinguish between human-generated and system-generated bills and align with the staff client cancel reasons like kmlussier
+2015-01-08T10:47:27  <eeevil> kmlussier++
+2015-01-08T10:47:27  <dbs> noted?
+2015-01-08T10:47:58  * dbs too, will create a bug and a patch and point at it on the mailing list
+2015-01-08T10:48:33  <dbs> Sorry, 8 more references in the docs.
+2015-01-08T10:48:37  <eeevil> interestingly, there's a third transaction type not represented on the refrerenced dropdowns (Booking) ... not that we need to add another greyed-out option, mind ;)
+2015-01-08T10:48:44  <dbs> heh
+2015-01-08T10:49:21  <kmlussier> dbs++
+2015-01-08T10:49:23  <dbs> I like "Staff" best, I think, because it captures the human-generated distinction
+2015-01-08T10:49:27  <eeevil> but the list has (at least in the backend) grown before, and I wouldn't say it never will again, and with an xact type that would be staff-selectable
+2015-01-08T10:49:28  <kmlussier> This all sounds good.
+2015-01-08T10:49:34  * kmlussier concurs with "staff."
+2015-01-08T10:50:23  * eeevil mumbles something about 640k of RAM
+2015-01-08T10:50:27  <dbs> eeevil: Cross that bridge when we get to it?
+2015-01-08T10:52:00  <eeevil> dbs: of course. I just don't want to see us rip out a bunch of code and replace it with abstractions that we later have to de-abstract ... assuming that a label change makes a significant improvement, which (IMO) it would
+2015-01-08T10:54:47  <dbs> oh damn, it looks like the raw label (lowercase version of "grocery") is used in the "Type" display of the patron bills
+2015-01-08T10:55:04  <dbs> That's bad for both i18n and for making this a clean change :/
+2015-01-08T10:57:13  <jeff> I don't think "staff" makes sense, since staff can and do manually add billings to circulation transactions.
+2015-01-08T10:57:54  <jeff> And A/T can automatically add "grocery" transactions (iirc).
+2015-01-08T10:58:23  <dbs> Well, sure, you can create grocery bills via sql too (and I did when we migrated)
+2015-01-08T10:58:44  <dbs> I think Staff makes sense in the context of the interfaces in which it appears.
+2015-01-08T10:59:44  <jeff> I just mean that in a setup where "the system" is configured to automatically generate grocery transactions for something like postal overdue notices, saying "this is a staff transaction, and not a system transaction" seems wrong.
+2015-01-08T11:00:20  <jeff> "circ" and "other"? *shrug*
+2015-01-08T11:00:23  *** pmurray_away is now known as pmurray
+2015-01-08T11:00:53  * mmorgan sees jeff's point
+2015-01-08T11:01:34  <mmorgan> "miscellaneous"?
+2015-01-08T11:02:05  <kmlussier> Quote from the meeting I'm sitting in on ATM: "[acq] is a charm."
+2015-01-08T11:02:37  <dbs> Everything is miscellaneous, quoth David Weinberger.
+2015-01-08T11:02:54  <dbs> "Other fees" would match the patron perspective, then.
+2015-01-08T11:03:32  <kmlussier> I would say any of the suggestions that have been raised so far is a more fitting description than grocery.
+2015-01-08T11:03:48  <eeevil> +1 to "Other fees" ... or maybe "General fees and fines"
+2015-01-08T11:04:08  <bshum> +1 "Other fees" then.  (shorter is better)
+2015-01-08T11:04:45  <jeff> Other is even shorter. ;-)
+2015-01-08T11:04:55  <dbs> X
+2015-01-08T11:05:00  <bshum> :)
+2015-01-08T11:06:21  <jeff> (since they might not all be "fees") :-)
+2015-01-08T11:06:54  <dbs> Oh? So we shouldn't call them fees in the OPAC Patron -> Fines section?
+2015-01-08T11:06:55  *** Sally has quit IRC
+2015-01-08T11:08:16  <dbs> Other Fines? and change the patron OPAC section to match?
+2015-01-08T11:10:15  * dbs is stepping back into the staff client XUL + JavaScript to try and figure out how to i18n-ize the xact_type properly and... ugh.
+2015-01-08T11:11:47  <jeff> yeah. i did have a moment of "shouldn't i be looking at the web interface and not xul" a few minutes ago.
+2015-01-08T11:21:58  * dbs should get the web staff client running some day
+2015-01-08T11:22:08  * dbs bad evergreen developer
+2015-01-08T11:26:14  * kmlussier wonders if we have any documentation on reshelving
+2015-01-08T11:27:30  <bshum> It would probably have fallen in the same area as setting up cronjobs.
+2015-01-08T11:27:36  <bshum> Which wasn't written
+2015-01-08T11:29:24  <bshum> It's not in the Book of Evergreen anyways :)
+2015-01-08T11:29:42  <kmlussier> Yeah, I don't see it. But I think it goes beyond cron jobs.
+2015-01-08T11:30:14  <bshum> I suppose so
+2015-01-08T11:30:44  <Dyrcona> IIRC there's a wiki page about cron jobs. I know I've seen something somewhere. Maybe just comments in the sample crontab.
+2015-01-08T11:30:45  <bshum> Someone can probably cobble a new section out of the random snippets I keep writing in my replies to the list :)
+2015-01-08T11:31:09  <kmlussier> It should also address how the cron job interacts with those OU settings and the recommendations on not running the process during the day.
+2015-01-08T11:31:15  <kmlussier> bshum: Yeah, that's what I was thinking.
+2015-01-08T11:31:23  <Dyrcona> This is a case of, "We expect you to know something about Linux before you install Evergreen." ;)
+2015-01-08T11:31:35  <kmlussier> I'm filing an LP bug. I'll work on it if I have time, but it will be there in case somebody else has the tuits to do it.
+2015-01-08T11:32:33  * dbs looks at the "20 * * * *" he has had running in production for the past five years and wonders why he hasn't seen problems
+2015-01-08T11:32:36  <bshum> kmlussier: Well not running it during the day may not be a problem for long if we tested tsbere's fix for https://bugs.launchpad.net/evergreen/+bug/1018011 and found it to solve the issue.
+2015-01-08T11:32:36  <pinesol_green> Launchpad bug 1018011 in Evergreen "Incorrect copy status caused by reshelving process colliding with item checkout" (affected: 5, heat: 24) [Medium,Confirmed]
+2015-01-08T11:33:58  <dbs> Ah, academics don't tend to be busy relative to publics, but yes, those symptoms sound familiar.
+2015-01-08T11:34:20  <bshum> dbs: I think Bmagic included a query for the auditor table to identify items that go through these bad transitions.
+2015-01-08T11:34:25  <bshum> It's in the bug comments
+2015-01-08T11:35:24  <Bmagic> bshum: ah yes, that was a fun query
+2015-01-08T11:35:53  <dbs> Hmm. 0 rows here.
+2015-01-08T11:36:21  <bshum> Just lucky I guess.
+2015-01-08T11:36:22  <bshum> :)
+2015-01-08T11:37:07  <Bmagic> dbs: do you purge the auditor table?
+2015-01-08T11:37:47  <bshum> I've got 20 in mine.  And that's even with purging our tables over the years and not running the script that often.  So maybe there's other reasons it can happen too.
+2015-01-08T11:38:15  <dbs> Bmagic: naw, there's 1104218 total rows in there
+2015-01-08T11:39:22  <dbs> Our last purge left everything from 2013-01-01 on
+2015-01-08T11:39:30  <Bmagic> dbs: lucky for sure! Or specifically, none of the circ staff are in the habbit of checking out items immediately after checking in
+2015-01-08T11:40:04  <dbs> I think the number of items we have to reshelve are so minimal that the race condition is unlikely to occur with us.
+2015-01-08T11:41:19  * bshum likes reading how many items get changed from reshelving every night in his nightly email notification of the completed cron job.
+2015-01-08T11:41:58  <bshum> It still boggles me to think that we had 142 reshelved things on the Christmas run
+2015-01-08T11:42:17  <bshum> Who used the library on Christmas day for crying out loud
+2015-01-08T11:44:00  <dbs> The most we've ever had reshelved at once was 65 items.
+2015-01-08T11:44:04  <dbs> (at least since June)
+2015-01-08T11:44:19  <bshum> Yeah
+2015-01-08T11:44:22  <dbs> Running the reshelving cron job more often might actually help us.
+2015-01-08T11:44:41  <dbs> This is why documentation is hard.
+2015-01-08T11:46:02  <dbs> "time" says that the reshelving script takes less than a tenth of a second to run when there are 0 items to reshelve, I guess I'll try changing the cronjob to see what happens with more items
+2015-01-08T11:46:27  <Bmagic> It seems like tsbere's solution to the problem would work
+2015-01-08T11:46:36  <Bmagic> It's so simple!
+2015-01-08T11:47:52  <bshum> It definitely should take longer, the more you have to reshelve
+2015-01-08T11:48:26  <bshum> If I believe the output, we took 43.844167 seconds for reshelving 11510 items last night.
+2015-01-08T11:49:00  <dbs> Sure, that makes sense.
+2015-01-08T11:51:07  <dbs> We've had a total of 18688 circ transactions since July 2014. Hah.
+2015-01-08T11:51:59  <dbs> "we" being just my library. include all of conifer, and that brings you up to a total of 27,000.
+2015-01-08T11:52:26  <dbs> This is why we need an academic library group I guess :)
+2015-01-08T11:52:32  <bshum> Heh
+2015-01-08T11:53:21  <Dyrcona> WE had 17,615 checkouts yesterday.
+2015-01-08T11:54:23  <tsbere> 3035375 overall circulations (including renewals) since midnight on july 1st for us. <_<
+2015-01-08T11:55:39  <bshum> Dyrcona: Only 13433 for us.
+2015-01-08T11:55:46  <bshum> Guess you guys were busier :)
+2015-01-08T11:55:55  <Dyrcona> :)
+2015-01-08T11:55:56  <dbs> wow
+2015-01-08T11:56:27  <Dyrcona> Well, with 36 libraries.... I wonder how many PINES or CW/MARS do in a day.
+2015-01-08T11:57:56  <berick> had to check.. kcls did 55330 yesterday
+2015-01-08T11:58:19  * berick is curious about pines and cw/mars too
+2015-01-08T12:00:06  <kmlussier> Ha ha. dbs' busiest reshelving day was still less busy than Christmas at Biblio.
+2015-01-08T12:00:08  <dbs> Small wonder public libraries freak out about how slow the staff client can be
+2015-01-08T12:00:33  <dbs> kmlussier: that was our busiest reshelving hour, but probably still less busy :)
+2015-01-08T12:01:43  <kmlussier> dbs: Ah, that's right. One hour.
+2015-01-08T12:02:06  <kmlussier> Not as stark of a difference as I thought. It would be a better story if that were your daily total.
+2015-01-08T12:06:24  <csharp> PINES did 7,785,770 since 7/1/2014 and 35,027 yesterday
+2015-01-08T12:07:57  <csharp> we did 63,464 on 1/5
+2015-01-08T12:13:14  <bshum> This would make a very fun infographic.
+2015-01-08T12:13:21  <bshum> Evergreen circ stats for the world!
+2015-01-08T12:13:33  <csharp> might be good for the State of Evergreen
+2015-01-08T12:13:41  <Dyrcona> Reshelving complete from last night was 15171, just for the sake of throwing that out there.
+2015-01-08T12:13:46  <bshum> A day in the life of Evergreeners everywhere.
+2015-01-08T12:13:58  <jeff> i've been (saying, not doing) that kind of thing for a while now. i'm pretty sure koha recently started doing similar.
+2015-01-08T12:14:10  <jeff> (so i'm not totally nuts)
+2015-01-08T12:14:26  <jeff> (though i suppose that relies on certain assumptions...)
+2015-01-08T12:15:22  *** jihpringle has joined #evergreen
+2015-01-08T12:15:47  <kmlussier> Now I'm curious about what C/W MARS' numbers are too. It's too bad tspindler isn't in here anymore.
+2015-01-08T12:17:56  <Dyrcona> @eightball Does is scale?
+2015-01-08T12:17:56  <pinesol_green> Dyrcona: Come again?
+2015-01-08T12:19:59  <jeffdavis> huh, 14,157 circs at Sitka yesterday (11,726 excluding renewals), and just over 2M since Jul 1
+2015-01-08T12:21:05  *** buzzy has joined #evergreen
+2015-01-08T12:23:14  <phasefx> you guys just counting all action.circulation rows with a given xact_start date or range?  Just thinking about fun with renewals, and whether they should count (I'd say so)
+2015-01-08T12:23:26  <csharp> phasefx: that's what I'm doing, yeah
+2015-01-08T12:23:46  <csharp> we count renewals as circs in all of our official stats
+2015-01-08T12:24:23  <phasefx> how about non-cats?
+2015-01-08T12:24:58  * phasefx really would love infographics for this stuff
+2015-01-08T12:29:42  <hopkinsju> Did someone say 'non-cat'? http://bit.ly/NMq9jn
+2015-01-08T12:30:14  <phasefx> hopkinsju++
+2015-01-08T12:36:29  <csharp> hopkinsju++
+2015-01-08T12:37:21  <csharp> phasefx: we record them, but in a separate stat.  I think the libraries add them up.
+2015-01-08T12:39:53  <kmlussier> hopkinsju++
+2015-01-08T12:41:41  <kmlussier> acq++ #It's getting rave reviews from MVLC's 2 acq pilot libraries. :)
+2015-01-08T12:42:51  <hopkinsju> kmlussier: Our first acq library just went live this week. We haven't heard back from them because their key folks are on vacation, but we're hopeful. Training went well apparently.
+2015-01-08T12:43:02  <Dyrcona> hopkinsju++
+2015-01-08T12:43:35  <kmlussier> hopkinsju: There were a few bumps in implementing it, but once it's set up, it seems to have gone smoothly for them.
+2015-01-08T12:43:44  * hopkinsju has discovered the secret of gaining karma on the internet: cat pictures.
+2015-01-08T12:43:55  <dbs> yay! we're supposed to start using acq for realz soon now. lessons learned would be very welcome :)
+2015-01-08T12:44:00  <kmlussier> hopkinsju: It works every time!
+2015-01-08T12:44:09  <hopkinsju> ikr!
+2015-01-08T12:45:01  <kmlussier> dbs: One lesson learned is paying attention to bug 1297967 and doing what it says.
+2015-01-08T12:45:01  <pinesol_green> Launchpad bug 1297967 in Evergreen "document openils-mapper code for enriched EDI" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1297967
+2015-01-08T12:45:14  <hopkinsju> dbs: Bmagic probably has some lessons to share. We ran into a few bugs/problems that he had to fix.
+2015-01-08T12:47:15  <dbs> We're probably a long way from implementing EDI
+2015-01-08T12:48:13  <dbs> as I'm certain Coutts isn't one of the out-of-the-box supported EDI configs :)
+2015-01-08T12:53:58  <csharp> we're going live with a pilot library next month, I think
+2015-01-08T12:54:13  <csharp> either next month or the following
+2015-01-08T12:54:43  * csharp just wants the Ruby stuff to disappear before we do :-)
+2015-01-08T12:55:15  <dbs> rub out the ruby!
+2015-01-08T13:18:48  <jeff> pretty sure this 500$a came from oclc: ``Gift of Kappa Delta Pi, Alpha Delta Omega Chapter International Honor Society in Education''
+2015-01-08T13:25:54  * dbs searches through local ticket history, finds a 3 year old bug complaining about "Grocery" where his response was effectively mmorgan's (to display "Last billing type" and "Last billing note")
+2015-01-08T13:26:24  * dbs adds a new comment to the long-ago closed ticket, doesn't mention forgetting history or being doomed to repeat it
+2015-01-08T13:26:52  <bshum> Heh
+2015-01-08T13:27:20  * bshum is probably just doomed
+2015-01-08T13:33:47  <csharp> dbs: beware bug 1206936 when dealing with last billing type/last billing note
+2015-01-08T13:33:47  <pinesol_green> Launchpad bug 1206936 in Evergreen "money.transaction_billing_summary view displays incorrect billing_type and billing_note for the actual last transaction" (affected: 1, heat: 6) [Medium,Triaged] https://launchpad.net/bugs/1206936
+2015-01-08T13:35:14  <dbs> csharp: oh, seriously? Damn
+2015-01-08T13:35:42  * csharp was working that fix a while back but got bogged down when trying to incorporate PG window functions into money.billable_xact_summary
+2015-01-08T13:38:07  <csharp> wow - August was the last time I looked at it?!  time she is a flying
+2015-01-08T13:40:50  *** mtcarlson_away is now known as mtcarlson
+2015-01-08T13:47:33  <collum> Better late than never. 5,347 ckos for yesterday.  However, the busiest of our 3 branches is getting some renovation done.  New carpet.
+2015-01-08T13:50:08  <csharp> okay... google-fu is failing... wasn't there a fix for the repeating format icons issue when grouping formats & editions?
+2015-01-08T13:50:40  <dbs> csharp: turning off grouping fixed the problem for us. heh.
+2015-01-08T13:50:56  <csharp> heh - I wish ;-)
+2015-01-08T13:52:02  <bshum> There was a fix for that yes.
+2015-01-08T13:52:19  <csharp> bshum: thank god you remember - I'm on another wild goose chase ;-)
+2015-01-08T13:52:46  <bshum> It's probably associated with the 2.7.2
+2015-01-08T13:53:18  <dbs> csharp: umm, did you compare the performance difference of the corrected windowed view vs. the one that returns incorrect info?
+2015-01-08T13:53:26  * csharp remembers kmlussier being in on the discussion
+2015-01-08T13:53:30  <dbs> 'cause on our tiny system, the results seem to be painful
+2015-01-08T13:53:40  <bshum> Yep: https://bugs.launchpad.net/evergreen/+bug/1401177
+2015-01-08T13:53:40  <pinesol_green> Launchpad bug 1401177 in Evergreen 2.6 "Results of a metarecord search will display duplicate format icons" (affected: 5, heat: 26) [Medium,Fix committed]
+2015-01-08T13:54:01  <dbs> Seq Scan on billing, yay
+2015-01-08T13:54:04  <bshum> csharp: See above
+2015-01-08T13:54:07  <csharp> dbs: when I tested long ago on our test server with real PINES data, it was speedy to acceptable
+2015-01-08T13:54:15  <csharp> dbs: but it's been a while
+2015-01-08T13:55:11  <csharp> bshum++ # thanks
+2015-01-08T13:56:33  * dbs throws in CREATE INDEX CONCURRENTLY m_b_xact_time_idx ON money.billing (xact, billing_ts); and gets an index scan instead
+2015-01-08T13:59:23  <dbs> Still 8600 ms
+2015-01-08T14:00:22  <dbs> But better than the 16500ms without the index
+2015-01-08T14:00:52  <dbs> But nobody wants to wait 8 seconds to retrieve each bill. *sigh*
+2015-01-08T14:01:31  * dbs suspects that despite our low circulation, our money.billing table is abnormally high due to some libraries that instituted fines that accumulate every 5 minutes.
+2015-01-08T14:02:18  <dbs> Yeah, the non-indexed version was resulting in a disk sort
+2015-01-08T14:03:04  * bshum is hopeful that PG 9.4's newly resized indexes will be beautiful.
+2015-01-08T14:03:16  * bshum plans to try that sometime in the coming months.
+2015-01-08T14:04:12  <dbs> 0.5 ms with the old-but-incorrect view. heh.
+2015-01-08T14:04:54  <dbs>  SELECT COUNT(*) FROM money.billing; -- says 2681879 rows
+2015-01-08T14:12:36  <csharp> dbs: eeevil was advising me along the way - he may have some opinions about the overall approach in light of your findings
+2015-01-08T14:37:26  *** mtcarlson is now known as mtcarlson_away
+2015-01-08T15:08:49  *** mtcarlson_away is now known as mtcarlson
+2015-01-08T15:23:04  <abowling> just making a note that I pushed a patch to working that corrects the "Add Search Row" on the Advanced Search tab that creates a new blank input, rather than a pre-populated one with the value from the second row. i bring it up here, because the LP bug already had a pullrequest tag assigned to it.
+2015-01-08T15:23:06  <abowling> https://bugs.launchpad.net/evergreen/+bug/1154656
+2015-01-08T15:23:06  <pinesol_green> Launchpad bug 1154656 in Evergreen 2.4 "MARC Expert Search "Add Rows" adds duplicate row" (affected: 5, heat: 22) [Medium,Confirmed]
+2015-01-08T15:24:12  <bshum> abowling: Cool, when you set the comment, if you can include a link to your patch, it'll make it easier for those of us who get LP notifications on new comments, etc. for bugs
+2015-01-08T15:24:25  <bshum> The "pullrequest" tag is mainly for searchability or filtering in LP.
+2015-01-08T15:25:26  <bshum> By itself, it doesn't mean we'll know where to look for your branch.  Though I did find it easily enough... just good practice to link to your git changes :D
+2015-01-08T15:26:55  <abowling> np, bshum
+2015-01-08T15:39:06  <eeevil> dbs/csharp: I wonder if we can use the mat view instead there? (that's my opinion ... haven't looked at the perl/js in question to confirm it's possible)
+2015-01-08T15:47:25  <dbs> eeevil: mmm, something like CREATE OR REPLACE VIEW money.transaction_billing_summary AS SELECT id AS xact, last_billing_type, last_billing_note, last_billing_t2, total_owed FROM money.materialized_billable_xact_summary;
+2015-01-08T15:47:41  <dbs> ts, not t2. no metal men.
+2015-01-08T15:51:55  <eeevil> dbs: seems legit ... from my phone
+2015-01-08T15:53:01  <eeevil>  dbs: unless the mat view triggers use that view ;)
+2015-01-08T15:54:59  * jeff grins
+2015-01-08T16:00:13  <dbs> eeevil: I looked at the triggers before suggesting that; doesn't seem to be a problem.
+2015-01-08T16:00:32  <dbs> And the materialized view serves up the correct data, too :)
+2015-01-08T16:00:44  <csharp> dbs++
+2015-01-08T16:01:14  <dbs> Total runtime: 0.094 ms
+2015-01-08T16:01:24  <dbs> me likes.
+2015-01-08T16:01:33  <bshum> Pretty...
+2015-01-08T16:06:24  *** pmurray is now known as pmurray_away
+2015-01-08T16:14:12  * dbs needs to figure out why "Stay logged in?" prevents users from successfully logging in. Might be due to HTTPS-only mode, might be due to LDAP auth. FUN
+2015-01-08T16:22:55  <dbwells> dbs: That sounds familiar.  Let me see if we had to do something about that.
+2015-01-08T16:23:49  *** ericar has quit IRC
+2015-01-08T16:24:51  <dbwells> dbs: I think we had to add <type>persist</type> to the <login_types> in the auth_proxy settings.
+2015-01-08T16:26:02  *** julialima_ has left #evergreen
+2015-01-08T16:28:17  *** rjackson-isl has quit IRC
+2015-01-08T16:31:27  <dbs> dbwells: ah, interesting
+2015-01-08T16:31:51  <dbwells> dbs: I am making a bug about it now, to at least get it in the sample config.
+2015-01-08T16:32:34  <bshum> dbwells++
+2015-01-08T16:32:43  *** collum has quit IRC
+2015-01-08T16:34:25  <dbs> dbwells++
+2015-01-08T16:35:19  * dbs suspects fellow devs hate it when we finally catch up to a current version of evergreen :)
+2015-01-08T16:36:46  <bshum> Nah, just the RMs :)
+2015-01-08T16:38:17  * bshum likes dbs' patches anyways
+2015-01-08T16:39:06  * kmlussier loves it when Conifer catches up. :)
+2015-01-08T16:41:59  *** wjr has joined #evergreen
+2015-01-08T16:51:29  <pinesol_green> Incoming from qatests: Test Failure - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-01-08T17:00:10  *** Dyrcona has quit IRC
+2015-01-08T17:11:15  *** mmorgan has left #evergreen
+2015-01-08T17:29:51  *** mrpeters has left #evergreen
+2015-01-08T17:47:39  *** mtcarlson is now known as mtcarlson_away
+2015-01-08T18:06:45  *** mtcarlson_away is now known as mtcarlson
+2015-01-08T18:22:12  *** Shae has quit IRC
+2015-01-08T19:36:53  *** mtcarlson is now known as mtcarlson_away
+2015-01-08T20:03:40  *** jwoodard has quit IRC
+2015-01-08T20:29:32  *** jihpringle has quit IRC
+2015-01-08T20:36:02  *** buzzy has joined #evergreen
+2015-01-08T20:41:09  *** buzzy has quit IRC
+2015-01-08T20:54:41  <dbs> Aww, you guys are too nice
+2015-01-08T20:55:04  * dbs glares at [ERR :32299:action.pm:1856:] Processing of hold failed:  Can't locate object method "workstation" via package "action::circulation" at /usr/local/share/perl/5.14.2/OpenILS/Application/Storage/CDBI.pm line 181.
+2015-01-08T20:57:48  *** buzzy has joined #evergreen
+2015-01-08T21:02:37  <dbs> I guess "workstation" should be in the Essential list for CDBI/action.pm's circulation definition?
+2015-01-08T21:02:40  * dbs is rusty
+2015-01-08T21:17:26  *** kmlussier has quit IRC
+2015-01-08T21:18:51  *** bshum has quit IRC
+2015-01-08T21:19:35  *** kmlussier has joined #evergreen
+2015-01-08T21:21:13  *** bshum has joined #evergreen
+2015-01-08T22:09:15  *** buzzy has quit IRC
+2015-01-08T22:16:23  *** finnx has quit IRC
+2015-01-08T23:06:20  *** akilsdonk has quit IRC

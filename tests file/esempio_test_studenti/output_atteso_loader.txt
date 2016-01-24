@@ -1,0 +1,25 @@
+Numero di file in dirLogs: 4
+Numero di file di tipo chat: 2
+Numero di file di tipo query: 2
+Numero totale di byte: 46780
+Numero totale di righe: 1551
+chat.evergreen.01.01-Thu-2015.log Tipo di file: chat
+chat.evergreen.01.01-Thu-2015.log Numero totale di byte: 2001
+chat.evergreen.01.01-Thu-2015.log Numero totale di righe: 32
+chat.evergreen.01.01-Thu-2015.log Numero totale di login/logout: 18
+chat.evergreen.01.01-Thu-2015.log Numero totale di messaggi: 10
+chat.evergreen.01.01-Thu-2015.log Numero totale di azioni: 1
+chat.evergreen.05.03-Sun-2015.log Tipo di file: chat
+chat.evergreen.05.03-Sun-2015.log Numero totale di byte: 1913
+chat.evergreen.05.03-Sun-2015.log Numero totale di righe: 19
+chat.evergreen.05.03-Sun-2015.log Numero totale di login/logout: 2
+chat.evergreen.05.03-Sun-2015.log Numero totale di messaggi: 17
+chat.evergreen.05.03-Sun-2015.log Numero totale di azioni: 0
+query.first_lines_of_user-ct-test-collection-01.txt.gz Tipo di file: query
+query.first_lines_of_user-ct-test-collection-01.txt.gz Numero totale di byte: 13614
+query.first_lines_of_user-ct-test-collection-01.txt.gz Numero totale di righe: 1000
+query.first_lines_of_user-ct-test-collection-01.txt.gz Numero totale di interrogazioni: 999
+query.first_lines_of_user-ct-test-collection-02.txt Tipo di file: query
+query.first_lines_of_user-ct-test-collection-02.txt Numero totale di byte: 29252
+query.first_lines_of_user-ct-test-collection-02.txt Numero totale di righe: 500
+query.first_lines_of_user-ct-test-collection-02.txt Numero totale di interrogazioni: 499

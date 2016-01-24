@@ -1,0 +1,228 @@
+2015-03-17T01:13:59  *** gsams has quit IRC
+2015-03-17T01:14:03  *** geoffsams has joined #evergreen
+2015-03-17T01:54:34  *** rashma is now known as rashma_away
+2015-03-17T01:55:35  *** gsams has joined #evergreen
+2015-03-17T01:58:34  *** geoffsams has quit IRC
+2015-03-17T07:17:01  *** akilsdonk has joined #evergreen
+2015-03-17T08:07:42  *** rjackson_isl has joined #evergreen
+2015-03-17T08:07:50  *** Shae has joined #evergreen
+2015-03-17T08:21:09  <kmlussier> Happy St. Patrick's Day #evergreen!
+2015-03-17T08:31:31  *** ericar has joined #evergreen
+2015-03-17T08:40:21  *** Dyrcona has joined #evergreen
+2015-03-17T08:40:26  *** darshana has joined #evergreen
+2015-03-17T08:42:00  *** yboston has joined #evergreen
+2015-03-17T08:49:21  *** mmorgan has joined #evergreen
+2015-03-17T08:59:45  * kmlussier is planning to put 2.8 beta through its paces today.
+2015-03-17T09:08:19  *** jwoodard has joined #evergreen
+2015-03-17T09:25:10  *** mrpeters has joined #evergreen
+2015-03-17T09:51:05  *** ericar has quit IRC
+2015-03-17T10:01:28  *** gsams has quit IRC
+2015-03-17T10:04:38  *** gsams has joined #evergreen
+2015-03-17T10:09:52  * mmorgan missed a fun holds discussion on Friday! ... and has a question :)
+2015-03-17T10:10:21  <mmorgan> Within a soft-stalling period, if there's a hold for pickup at Abbot Library, and Abbot does not own a copy, does the soft stalling interval still apply?
+2015-03-17T10:15:56  * kmlussier doesn't remember.
+2015-03-17T10:18:10  <kmlussier> mmorgan: I haven't tested it, but I think it would. Because the stalling is there to give the library who has it on their pull list time to pull it.
+2015-03-17T10:18:28  <kmlussier> The pull list library most likely wouldn't be the pickup library in this case.
+2015-03-17T10:19:25  <bshum> The soft stalling should still apply to keep any other library (not targeted) from capturing the hold opportunistically.
+2015-03-17T10:21:35  <kmlussier> Way back when we were first learning about Evergreen, I found that phasefx's explanation in this thread - http://georgialibraries.markmail.org/thread/ulkblq7rgzcj7g64 - very helpful.
+2015-03-17T10:26:24  <mmorgan> ok, so during the stalling interval, only the single targeted copy could fill the hold. I think that's the part that was never quite clear to me.
+2015-03-17T10:26:45  <kmlussier> Or, if an opportunistic capture happens at the pickup library.
+2015-03-17T10:27:26  <mmorgan> kmlussier: Oh right! Because even if the pickup library doesn't own it, another library's copy could get checked in there.
+2015-03-17T10:30:29  * mmorgan fits another piece into the million piece jigsaw puzzle that is Evergreen holds :)
+2015-03-17T10:33:12  *** sandbergja has joined #evergreen
+2015-03-17T10:50:09  *** dkyle1 has quit IRC
+2015-03-17T10:51:00  *** dkyle1 has joined #evergreen
+2015-03-17T10:57:46  *** dkyle1 has quit IRC
+2015-03-17T10:58:29  *** dkyle1 has joined #evergreen
+2015-03-17T11:02:47  <berick> hmm, there are a number of docs commits in master that were not back-ported to rel_2_8.  most of them look related to 2.8, so I'm going to back-port for RC1
+2015-03-17T11:04:04  <kmlussier> Is there any documentation or even rough notes on how to go about installing hatch?
+2015-03-17T11:04:18  <berick> there's a readme for linux in the repository
+2015-03-17T11:04:42  <berick> phasefx said recently that he installed on windows, possible he documented it
+2015-03-17T11:05:23  <kmlussier> The readme will work for me.
+2015-03-17T11:05:59  <kmlussier> And I think these must be the Windows instructions? https://raw.githubusercontent.com/phasefx/random/hatch/README.win
+2015-03-17T11:06:00  <bshum> berick: It's probably that the docs folks didn't realize there was already the rel_2_8 branch
+2015-03-17T11:06:32  <berick> bshum: that's my assumption
+2015-03-17T11:06:53  <remingtron> berick: bshum: you assume correctly!
+2015-03-17T11:07:20  <phasefx> kmlussier: that's them re: README.win
+2015-03-17T11:07:31  <yboston> berick: I may be guilty of this, roughly how long ago was the rel_2_8 branch created?
+2015-03-17T11:07:37  <pastebot> "berick" at 64.57.241.14 pasted "back-porting docs commits to rel_2_8" (9 lines) at http://paste.evergreen-ils.org/46
+2015-03-17T11:08:03  <remingtron> berick: yup, mostly me
+2015-03-17T11:08:08  <berick> yboston: guilty is a strong word ;)
+2015-03-17T11:08:21  <berick> i should have made more noise when the new branch was created
+2015-03-17T11:08:43  <yboston> "I may be allegedly responsible for that"
+2015-03-17T11:08:58  <berick> "I can neither confirm nor deny"
+2015-03-17T11:09:27  <berick> ok, pushed
+2015-03-17T11:09:34  <remingtron> berick++
+2015-03-17T11:12:29  *** dkyle1 has quit IRC
+2015-03-17T11:15:08  <kmlussier> Just to be clear, if you don't install hatch, you can still print, but you would just be relying on the Windows printer settings, right?
+2015-03-17T11:15:41  <kmlussier> Are there other things hatch does other than handle printer settings?
+2015-03-17T11:16:35  <berick> kmlussier: correct.  and, yes, hatch does other things
+2015-03-17T11:16:35  *** jboyer-isl has quit IRC
+2015-03-17T11:16:37  <berick> http://wiki.evergreen-ils.org/doku.php?id=dev:browser_staff:hatch:who_needs_it
+2015-03-17T11:17:00  *** jboyer-isl has joined #evergreen
+2015-03-17T11:18:13  <kmlussier> berick++ Thank you!
+2015-03-17T11:18:25  <berick> Hatch, huh, good God, what is it good for
+2015-03-17T11:18:40  *** jwoodard has quit IRC
+2015-03-17T11:18:50  <kmlussier> Oh, right. offline. I forgot about that.
+2015-03-17T11:21:07  <berick> @weather 27712
+2015-03-17T11:21:08  <pinesol_green> berick: The current temperature in Heritage Heights, Durham, North Carolina is 77.4°F (11:15 AM EDT on March 17, 2015). Conditions: Clear. Humidity: 31%. Dew Point: 44.6°F. Pressure: 29.80 in 1009 hPa (Falling). 
+2015-03-17T11:21:18  <berick> that's what I'm talking about
+2015-03-17T11:21:40  * kmlussier wonders how a 2.8-testing kind of day turned into a web-client-testing kind of day.
+2015-03-17T11:21:44  <Dyrcona> @weather 01845
+2015-03-17T11:21:46  <pinesol_green> Dyrcona: The current temperature in WB1CHU, Lawrence, Massachusetts is 39.0°F (11:21 AM EDT on March 17, 2015). Conditions: Light Rain. Humidity: 100%. Dew Point: 39.2°F. Windchill: 39.2°F. Pressure: 29.49 in 998 hPa (Falling). 
+2015-03-17T11:22:21  <Dyrcona> berick: "Absolutely nothin'!"
+2015-03-17T11:22:25  <Dyrcona> berick++
+2015-03-17T11:22:38  <berick> ;)
+2015-03-17T11:22:39  <kmlussier> 39 feels like spring to me.
+2015-03-17T11:23:04  <Dyrcona> Me, too.
+2015-03-17T11:23:48  <mmorgan> Me three!
+2015-03-17T11:24:13  *** rashma_away is now known as rashma
+2015-03-17T11:24:32  <kmlussier> I could do with a little less rain, though.
+2015-03-17T11:24:55  *** dkyle1 has joined #evergreen
+2015-03-17T11:25:00  *** jmccarty has joined #evergreen
+2015-03-17T11:25:32  <mmorgan> Me too, unless it's the REAL spring kind of rain.
+2015-03-17T11:25:38  <mmorgan> This is not that.
+2015-03-17T11:26:00  <jmccarty> anyone know where I can look to find out why clark-kent.pl isn't starting? I run the script to start the reporter then the ps -ef | grep -i clark shows nothing running....
+2015-03-17T11:26:36  <Dyrcona> jmccarty: Does /tmp/reporter.lock or whatever exist?
+2015-03-17T11:27:04  <jmccarty> no reporter.lock file in /tmp
+2015-03-17T11:27:05  <Dyrcona> jmccarty: /tmp/reporter-LOCK
+2015-03-17T11:27:17  <Dyrcona> Sorry. Had to look it up.
+2015-03-17T11:27:35  <jmccarty> no worries, reporter-LOCK does not exist in /tmp either
+2015-03-17T11:28:13  <Dyrcona> So, you run the start script and get no output and clark isn't running? I've never seen that. It has always printed an error on screen.
+2015-03-17T11:28:22  <yboston> EG conference question, who should I contact to ask if there are plans to reserve meeting time for various Eg groups like the authoritites group or the cataloging group?
+2015-03-17T11:30:05  <kmlussier> yboston: Beth Longwell had sent a message to the list a couple of weeks ago asking people about interest groups. So I would say she's the person.
+2015-03-17T11:30:11  <jmccarty> yeah, I run the script and afterwards it says you have new mail in /var/mail/opensrf and then I check the results with ps -f | grep -i clark and it shows nothing (usually shows clark-kent waiting for trouble [or something to that effect])
+2015-03-17T11:30:21  <kmlussier> I already asked her about authorities, though. Because I wanted the cheese flan.
+2015-03-17T11:31:07  <kmlussier> yboston: bshum is on programming. He might know if something is already scheduled.
+2015-03-17T11:31:09  <yboston> kmlussier: I have no recollection of that email, if you have a copy can you send it to me? also, PM me so we can arrange the quid pro cuo
+2015-03-17T11:31:11  * berick is really curious about the shuttle status
+2015-03-17T11:32:05  <bshum> yboston: kmlussier: Programs committee is still ongoing in terms of finalizing the schedule, we had some preliminary stuff we're still batting around in committee.
+2015-03-17T11:32:24  <bshum> That said, the last draft included dedicated time slots for Cataloging, Authorities interest groups.
+2015-03-17T11:32:28  <kmlussier> berick: I've seen some information on that, but I don't know if it's been firmed up enough to share. buzzy was handling it.
+2015-03-17T11:32:38  <bshum> Well, "dedicated" meaning they'll be on the schedule somewhere.
+2015-03-17T11:32:39  <yboston> bshum: is the catalogign group in consideration for getting a meeting time?
+2015-03-17T11:32:47  <yboston> bshum: if you happen to recall
+2015-03-17T11:32:57  <yboston> bshum: thanks
+2015-03-17T11:33:55  <bshum> blongwell is lead on the programs committee and I do believe she did send something about interest groups already.  I expect she'll do a follow-up on that soon.
+2015-03-17T11:35:00  <berick> thanks, kmlussier
+2015-03-17T11:36:20  <yboston> I am "allegedly" an idiot, I saw Beth's email and just focused on the survey and completed it. I missed the part about the interest groups
+2015-03-17T11:41:53  *** chatley has joined #evergreen
+2015-03-17T12:01:04  *** jihpringle has joined #evergreen
+2015-03-17T12:06:01  *** graced has joined #evergreen
+2015-03-17T12:41:38  *** jwoodard has joined #evergreen
+2015-03-17T12:53:40  <mmorgan> Hmm. So is there a permission to control who can mark a circulation "Claimed Never Checked Out"?
+2015-03-17T12:53:47  <mmorgan> I am not seeing one.
+2015-03-17T12:57:45  *** jmccarty has quit IRC
+2015-03-17T12:57:58  <mmorgan> Looks like in an attempt to renew items, sometimes "Mark Claimed Never Checked Out" is chosen, which is right above "Renew" on the menu :-(
+2015-03-17T12:58:42  *** Dyrcona has quit IRC
+2015-03-17T13:07:38  <kmlussier> :(
+2015-03-17T13:14:55  *** kitteh_ has joined #evergreen
+2015-03-17T13:17:31  *** akilsdonk has quit IRC
+2015-03-17T13:20:51  *** akilsdonk has joined #evergreen
+2015-03-17T13:27:49  *** DPearl has joined #evergreen
+2015-03-17T13:30:29  * bshum waves at DPearl
+2015-03-17T13:30:43  <bshum> DPearl: Out of curiosity, have you had any time to take a poke at https://bugs.launchpad.net/evergreen/+bug/1406786 ?
+2015-03-17T13:30:43  <pinesol_green> Launchpad bug 1406786 in Evergreen "Merge parts functionality fails to preserve copy_part mapping" (affected: 4, heat: 20) [Medium,Confirmed]
+2015-03-17T13:31:10  *** Dyrcona has joined #evergreen
+2015-03-17T13:36:08  <DPearl> bshum: Hi, Ben.  I have desk-checked the code and it looks fine.  I am shortly going to try it on a 2.7.4 after I get that up on my dev machine to repro the problem, which I haven't seen.  The original bug fix commit looks complete.
+2015-03-17T13:47:16  <bshum> DPearl: Okay, let us know what you see on your next test system.  I'm still poking at it slowly myself to try figuring out where things went awry.
+2015-03-17T13:49:50  <Dyrcona> Probably because it updates the monograph part to point to the new record, any link with the old is broken and not preserved.
+2015-03-17T13:51:30  <Dyrcona> There's a pcrud update going on in the JavaScript.
+2015-03-17T13:53:29  <bshum> Well I would have expected something to change the copy map to point at the new part before the delete. But yeah, hmm...
+2015-03-17T13:57:53  <DPearl> Is the pcrud update asynchronous?  Is there some mechanism for a callback which I need to use.  As it is written, the intention is to write out the new copy_map items, then it will get rid of the unneeded parts.  If the pcrud update has not occured, then getting rid of the part will get rid of the copy_part map entry.
+2015-03-17T13:58:05  <Dyrcona> Well, the bug suggests that someone expects the old copy part map to remain.
+2015-03-17T13:58:37  <Dyrcona> Ah. Maybe I misunderstand the problem.
+2015-03-17T14:00:39  <Dyrcona> I don't think it should be asynchronous, but I don't know the JavaScript that well.
+2015-03-17T14:02:39  <eeevil> DPearl: what js lib are you using to make the pcrud calls? there are a few different ways to do it. and, there are sync and async versions. but what you probably want to do is just create the fieldmapper objects you want (with isdeleted, isnew, ischanged set to a truthy value as needed) and then use pcrud.apply()
+2015-03-17T14:03:45  <Dyrcona> eeevil: it uses pcrud.update().
+2015-03-17T14:04:24  <eeevil> Dyrcona: for updates, yes. and pcrud.create() and pcrud.eliminate() (IIRC) for insert and delete
+2015-03-17T14:04:35  <eeevil> Dyrcona: or, do you mean the existing code, sorry
+2015-03-17T14:05:50  <eeevil> aaaaaaaaaaaaaaaaaaaaaand, gtalk is broke
+2015-03-17T14:06:02  <Dyrcona> I mean the current code.
+2015-03-17T14:06:13  <Dyrcona> http://git.evergreen-ils.org/?p=Evergreen.git;a=blob;f=Open-ILS/web/js/dojo/openils/biblio/monographPartMerge.js;h=59b557e89e75e4ed357c888f27f1f988c8224ffd;hb=8f4d3efb029f109d3dc7dc69cf458c2834c725d6
+2015-03-17T14:06:13  <pinesol_green> [evergreen|Dan Pearl] LP#1099979 Provide facility to merge parts in the Monograph Parts display - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=8f4d3ef>
+2015-03-17T14:52:47  *** darshana has quit IRC
+2015-03-17T14:57:40  *** Newziky has quit IRC
+2015-03-17T15:13:54  *** Newziky has joined #evergreen
+2015-03-17T15:25:44  <bshum> berick++
+2015-03-17T15:26:25  <berick> i think we need dual release managers.  one technical manager, one PR manager ;)
+2015-03-17T15:27:44  * berick could use some eg-ils.org site admin help, though
+2015-03-17T15:33:21  *** Newziky has quit IRC
+2015-03-17T15:34:07  *** Dyrcona has quit IRC
+2015-03-17T15:36:01  * kmlussier likes the release team approach that I thought was used for a release a few years ago. 
+2015-03-17T15:36:05  <kmlussier> berick: What do you need help with?
+2015-03-17T15:36:07  *** Newziky has joined #evergreen
+2015-03-17T15:41:32  <berick> kmlussier: changing the downloads page from beta to rc1
+2015-03-17T15:43:25  *** Dyrcona has joined #evergreen
+2015-03-17T15:44:24  * kmlussier can do that
+2015-03-17T15:48:22  <dbs> rather randomly for bshum and Dyrcona, gogs.io might be an alternative to gitolite + launchpad :)
+2015-03-17T15:49:44  <bshum> For a short time, moodaepo and I experimented with gitlab back in the day.  Though I've heard off rumblings about that.
+2015-03-17T15:50:02  <bshum> In my abundant spare time, maybe I'll try to take a look at gogs.io.  Thanks dbs ;)
+2015-03-17T15:50:07  <dbs> heh
+2015-03-17T15:50:11  * dbs goes for kids
+2015-03-17T15:52:35  <bshum> From a cursory glance, it looks very github-like with the issue tracker
+2015-03-17T15:54:26  <Dyrcona> Well, it would be another reason to play with Go some more.
+2015-03-17T15:55:44  <kmlussier> Do we stay at red for a release candidate?
+2015-03-17T15:55:55  <bshum> Yellow alert.
+2015-03-17T15:57:24  <Dyrcona> Yellow card? Red card?
+2015-03-17T15:58:05  <Dyrcona> Hey! What's that other git site that I signed up for but don't use as much as github? ;)
+2015-03-17T15:58:18  <Dyrcona> I'm drawing a blank on its name.
+2015-03-17T15:58:27  <Dyrcona> I s'pose I could look it up.
+2015-03-17T15:58:41  <bshum> I used bitbucket for a short time
+2015-03-17T15:58:54  <Dyrcona> Not bitbucket, has git in its name.
+2015-03-17T15:58:59  * bshum was not super impressed but didn't use all the suites
+2015-03-17T15:59:21  <bshum> Gitorious?
+2015-03-17T15:59:33  <Dyrcona> Yes. Gitorious!
+2015-03-17T15:59:41  <Dyrcona> Their code is available to use.
+2015-03-17T15:59:49  <bshum> Which seems to be acquired by Gitlab.
+2015-03-17T15:59:56  <Dyrcona> It's AGPL, IIRC.
+2015-03-17T15:59:59  <Dyrcona> It was?
+2015-03-17T16:00:11  <bshum> There's a thingy on the Gitorious site that's sending us to Gitlab.com
+2015-03-17T16:00:24  <bshum> Maybe it's a hosting change.
+2015-03-17T16:00:27  <Dyrcona> Oh bummer.
+2015-03-17T16:00:36  <Dyrcona> They want you to move to gitlab.
+2015-03-17T16:00:53  <bshum> http://thenextweb.com/insider/2015/03/03/gitlab-acquires-rival-gitorious-will-shut-june-1/
+2015-03-17T16:00:53  <Dyrcona> I believe everything I have on Gitorious is on github already.
+2015-03-17T16:00:55  <bshum> Yep
+2015-03-17T16:01:08  <Dyrcona> Too much to keep up with.
+2015-03-17T16:02:14  <jeffdavis> Are there good reasons not to just use github if we were to move away from gitolite/launchpad?
+2015-03-17T16:02:16  <kmlussier> berick: Links are updated
+2015-03-17T16:02:45  <berick> kmlussier++ thanks!
+2015-03-17T16:03:29  <Dyrcona> A better issue tracker than github's might be desirable.
+2015-03-17T16:04:24  <Dyrcona> I wanted to experiment with Gitorious' code at some point but never made the time.
+2015-03-17T16:05:19  <Dyrcona> So, I only have two projects on gitorious and I'm watching three others, one of which belongs to dbs.
+2015-03-17T16:05:34  <bshum> jeffdavis: I think people also had some qualms about being hosted by a third party that wasn't open source and under our full control.
+2015-03-17T16:05:47  <bshum> We kind of talked about some ideas in Vancouver at different tables and meetings, but we didn't get too far along.
+2015-03-17T16:07:48  <bshum> That said, I'm not committed to any particular system.
+2015-03-17T16:08:03  <Dyrcona> IIRC, github, gitorious, gitlabs were all discussed.
+2015-03-17T16:08:45  <Dyrcona> I'd like better bug searching, but I've not found too many ticket/bug systems with decent search.
+2015-03-17T16:09:45  *** DPearl has left #evergreen
+2015-03-17T16:12:03  <Dyrcona> Maybe I'll try gitlab for "fun."
+2015-03-17T16:15:12  <Dyrcona> Funny. gogs is hosted on github. :)
+2015-03-17T16:29:46  *** rjackson_isl has quit IRC
+2015-03-17T16:30:30  *** jboyer-isl has quit IRC
+2015-03-17T16:40:31  *** bmills has joined #evergreen
+2015-03-17T16:44:33  *** Shae has quit IRC
+2015-03-17T16:59:50  <Dyrcona> Well, time to go. This time for reals.
+2015-03-17T16:59:57  *** Dyrcona has quit IRC
+2015-03-17T17:10:07  *** graced has quit IRC
+2015-03-17T17:17:51  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-17T17:18:14  *** mmorgan has left #evergreen
+2015-03-17T17:35:21  *** mglass has joined #evergreen
+2015-03-17T18:04:38  *** dreuther has quit IRC
+2015-03-17T18:09:22  *** mrpeters has quit IRC
+2015-03-17T18:16:55  *** yboston has quit IRC
+2015-03-17T19:21:48  *** Newziky1 has joined #evergreen
+2015-03-17T19:23:59  *** Newziky has quit IRC
+2015-03-17T19:33:42  *** akilsdonk has quit IRC
+2015-03-17T19:57:02  *** akilsdonk has joined #evergreen
+2015-03-17T20:01:13  *** jwoodard has quit IRC
+2015-03-17T20:06:04  *** sarabee has quit IRC
+2015-03-17T20:09:48  *** sarabee has joined #evergreen
+2015-03-17T20:33:48  *** jihpringle has quit IRC
+2015-03-17T20:46:20  *** sandbergja has quit IRC
+2015-03-17T20:52:03  *** akilsdonk has quit IRC
+2015-03-17T22:12:41  *** bmills has quit IRC
+2015-03-17T23:33:33  *** user259205087017 has quit IRC
+2015-03-17T23:45:16  *** user259205087017 has joined #evergreen
+2015-03-17T23:45:22  *** bmills has joined #evergreen

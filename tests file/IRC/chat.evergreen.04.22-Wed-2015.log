@@ -1,0 +1,225 @@
+2015-04-22T01:52:04  *** tsbere has quit IRC
+2015-04-22T01:56:43  *** tsbere has joined #evergreen
+2015-04-22T02:00:19  *** rashma is now known as rashma_away
+2015-04-22T03:32:04  *** dcook has quit IRC
+2015-04-22T07:10:43  *** sbrylander has joined #evergreen
+2015-04-22T07:13:43  *** sarabee has quit IRC
+2015-04-22T07:27:49  *** graced has joined #evergreen
+2015-04-22T07:49:12  *** rjackson_isl has joined #evergreen
+2015-04-22T07:58:34  *** jboyer-isl has joined #evergreen
+2015-04-22T07:59:05  *** mrpeters has joined #evergreen
+2015-04-22T08:33:05  *** mmorgan has joined #evergreen
+2015-04-22T08:33:57  *** akilsdonk has joined #evergreen
+2015-04-22T08:36:03  *** collum has joined #evergreen
+2015-04-22T08:37:33  *** RoganH has joined #evergreen
+2015-04-22T08:41:33  *** Newziky has joined #evergreen
+2015-04-22T08:46:31  *** Shae has joined #evergreen
+2015-04-22T08:49:34  *** Dyrcona has joined #evergreen
+2015-04-22T09:08:42  <jeff> csharp: looking at the bug, i'm going to need to refresh my memory and review the conversation :-)
+2015-04-22T09:14:05  *** maryj has joined #evergreen
+2015-04-22T09:15:16  <Dyrcona> I missed the conversation.
+2015-04-22T09:15:34  <jeff> bug 1446860
+2015-04-22T09:15:35  <pinesol_green> Launchpad bug 1446860 in Evergreen "staff users can edit their own accounts" (affected: 1, heat: 6) [High,New] https://launchpad.net/bugs/1446860 - Assigned to Chris Sharp (chrissharp123)
+2015-04-22T09:15:39  <Dyrcona> But, the bug description sounds OK to me, if it only affects the staff client.
+2015-04-22T09:16:15  <csharp> it only affects the staff client, yet
+2015-04-22T09:16:20  <csharp> s/yet/yes/g
+2015-04-22T09:18:00  <jeff> If the concern is that staff are able to edit their own accounts, then I'd point out that the branch in that bug does nothing to prevent the behavior as-currently-designed that permits that at the API level.
+2015-04-22T09:18:49  <jeff> So if it's concensus that Evergreen should prevent that (and I suppose the reasons why should be stated), then a more complete set of changes would be in order.
+2015-04-22T09:19:47  <jeff> I think that the previous discussion on this issue trailed off and wasn't resumed that I can remember.
+2015-04-22T09:20:35  <tsbere> I think there are issues with being able to edit anything about yourself, but editing some of your stuff as a staff member seems fine most of the time. <_<
+2015-04-22T09:21:04  <tsbere> Though I wouldn't mind a way to say "these accounts can't edit themselves" :/
+2015-04-22T09:21:36  <jeff> Other than permissions-related things -- which should already be prevented at the API level -- what concerns are there with staff users being able to edit themselves? Short of "prevent these accounts from self-edit (or even from self-password-change)", which might be a nice addition.
+2015-04-22T09:21:41  <tsbere> Maybe a new flag or permission on groups for "self edit" compared to "anyone edit"
+2015-04-22T09:21:44  *** akilsdonk has quit IRC
+2015-04-22T09:22:01  <jeff> Though on that last part, I'm hesitant, because I think it might encourage use of generic role accounts, which I'm not a huge fan of. :-)
+2015-04-22T09:22:11  <tsbere> jeff: My main concern is that our members insisted on generic accounts, we don't want them changing a lot of stuff on those
+2015-04-22T09:22:25  <tsbere> As we already *have* generic accounts....
+2015-04-22T09:23:09  <tsbere> I could also see "staff-ish member that isn't allowed full staff rights". Volunteers may only be permitted to do certain staff actions, for example...
+2015-04-22T09:25:43  <jeff> In your volunteer example, can you be more specific about what the concern is with the volunteer user self-editing?
+2015-04-22T09:27:00  *** akilsdonk has joined #evergreen
+2015-04-22T09:27:39  <tsbere> Honestly, my main concern would likely be stat cats.
+2015-04-22T09:27:42  <tsbere> <_<
+2015-04-22T09:28:19  <tsbere> Beyond that they may not be trusted to replace barcodes, edit their username, etc
+2015-04-22T09:28:57  <jeff> So, they'd be permitted to edit those items on other patron accounts but not their own?
+2015-04-22T09:29:32  <csharp> jeff: in the original EG design for PINES, it was designated that staff would need another staff member of higher permission levels to edit their accounts (for accountability reasons)
+2015-04-22T09:30:03  <csharp> so for us it's kind of a dogmatic assumption that staff can't edit themselves ("us" being the PINES library staff)
+2015-04-22T09:31:42  *** yboston has joined #evergreen
+2015-04-22T09:31:58  <Dyrcona> jeff: I think the volunteer account thing is a bit convoluted, we don't actually have volunteer accounts. They would just use the generic circ accounts at our libraries.
+2015-04-22T09:32:33  <jeff> csharp: Can you detail any specific concerns with staff editing their own user account?
+2015-04-22T09:32:36  <csharp> in the issue that sent me off looking for the fix that never got finished, a staff member had edited her agency affiliation to make changes on another system's patron account, and according to our policies and expectations, she should not have been allowed by the software to do what she did
+2015-04-22T09:32:36  <Dyrcona> But, yeah, I can see there being accounts that we don't want to self-edit and others we don't mind if they do.
+2015-04-22T09:33:04  <jeff> csharp: Ah, so she edited her home_ou?
+2015-04-22T09:33:09  <csharp> jeff: yep
+2015-04-22T09:33:30  <jeff> Okay, so if that were addressed -- any other concerns?
+2015-04-22T09:33:56  <csharp> if another staff member had to have been involved, I don't think the issue (which has caused some serious tension in an already fraught relationship between the two systems) would have even happened
+2015-04-22T09:34:30  <Dyrcona> well, in some sense that makes it worse, 'cause it would require a conspiracy of two.
+2015-04-22T09:35:12  <csharp> Dyrcona: well it would definitely change the tone of the conversation from "oops!" to "we definitely meant to do this"
+2015-04-22T09:35:25  <tsbere> csharp: The more I look at the "fix" the more I disagree with it. <_<
+2015-04-22T09:35:27  <jeff> csharp: the issue which you are beginning to veer off into may not be a technical issue and may not have a technical solution. :-)
+2015-04-22T09:35:55  <Dyrcona> Well, technically, you can stop staff from editing their own accounts.
+2015-04-22T09:35:56  <csharp> jeff: I agree with that
+2015-04-22T09:36:05  <Dyrcona> So there is in some sense a technical solution.
+2015-04-22T09:36:17  <Dyrcona> You can also stop other staff from editing staff accounts.
+2015-04-22T09:36:37  <csharp> it's definitely "software enforcing where management doesn't want to"
+2015-04-22T09:36:52  <Dyrcona> We've given special profiles to staff with elevated permissions so that the generic accounts cannot edit them.
+2015-04-22T09:37:42  <csharp> tsbere: at the risk of sounding pedantic, I think the "fix" is actually just correcting the original intent of the code
+2015-04-22T09:38:00  <csharp> so the real argument is probably with the original solution's intent
+2015-04-22T09:38:02  <tsbere> csharp: I disagree. But I am going to comment via Launchpad instead.
+2015-04-22T09:38:08  <csharp> ok
+2015-04-22T09:39:22  *** Callender has quit IRC
+2015-04-22T09:39:36  <Dyrcona> Well, people will do whatever the software allows, and the best way to enforce policy is through the software.
+2015-04-22T09:40:12  <eeevil> fwiw, the original intent was, indeed, to disallow self-edits, except via the restricted email/phone/username API calls. pcrud opens an API hole ... I haven't looked at the code to see if pcrud is used to edit au's anywhere, but if not (yet) we could remove pcrud as a controller and tighten the API inside open-ils.actor
+2015-04-22T09:41:14  <tsbere> csharp: https://bugs.launchpad.net/evergreen/+bug/1446860/comments/2
+2015-04-22T09:41:14  <pinesol_green> Launchpad bug 1446860 in Evergreen "staff users can edit their own accounts" (affected: 1, heat: 6) [High,New] - Assigned to Chris Sharp (chrissharp123)
+2015-04-22T09:41:23  <eeevil> and the original intent was actually not driven by policy, but security. require a conspiracy and you reduce the incidents
+2015-04-22T09:41:38  <Dyrcona> FWIW, I'm not concerned about the API (as jeff is). If you're using the API, then you can probably do a lot of things that the client or other methods would not allow.
+2015-04-22T09:42:13  <Dyrcona> And that probably should be "definitely."
+2015-04-22T09:42:24  <eeevil> well, even if we adjust the API, we should also adjust the client (change && to ||) so we can disable the buttons
+2015-04-22T09:44:18  <jeff> Almost by definition, the API allows many things that the UI does not. Most reasonable APIs do. I think the impotatnt distinction is that in cases where the API allows bypass of either security or policy, these are (IMO) bugs.
+2015-04-22T09:45:05  <eeevil> I don't see, personally, where the burden is in having to have another staff member adjust your staff account. I can't see how it's not very rare. and seemingly-safe changes can have "bad" consequences; see: csharp's example
+2015-04-22T09:45:18  <jeff> And yes, it should be a goal to have the UI not offer users the option to do things that we "know" will fail -- agreeing with eeevil on the "UI should be adjusted", but in a more general sense also. :-)
+2015-04-22T09:46:05  <Dyrcona> eeevil: I'm not sure anyone is arguing that it is a burden.
+2015-04-22T09:46:26  <eeevil> Dyrcona: I thought jeff was, but I may be misunderstanding his position
+2015-04-22T09:46:32  <Dyrcona> My comment about the conspiracy was more of a moral quip, i.e. two people now have to compromise themselves.
+2015-04-22T09:47:05  <eeevil> or rather, I thought jeff was saying his staff expect to be able to self-edit
+2015-04-22T09:47:12  <jeff> if memory serves, early patron editor let you self-edit, then it didn't, then it did again -- in our eyes, it was a bug that was fixed. I haven't made time to troll through history to see if my memory is correct or if there was a comment/bug confirming tha fix. I suspect it was just part of the overhaul.
+2015-04-22T09:47:24  <Dyrcona> Well, if pcrud is removed from the actor.usr object, NCIPServer will need to be rewritten.
+2015-04-22T09:47:39  <Dyrcona> It uses pcrud quite extensively.
+2015-04-22T09:47:49  <eeevil> for update?
+2015-04-22T09:47:59  <Dyrcona> And that will, should be changed to "may"
+2015-04-22T09:48:05  <jeff> But re-stating something from the original conversation, it's a more common use case when staff are using one account for "patron-y" and "staff-y" things, and I like to discourage that locally.
+2015-04-22T09:48:44  <eeevil> jeff: gotcha, sorry for misrepresenting you
+2015-04-22T09:48:52  <jeff> No, it's easy to do. :-)
+2015-04-22T09:49:06  <Dyrcona> jeff: We originally wanted staff to use one account for both their staff and patron logins, but some of them went ape at that suggestion.
+2015-04-22T09:49:27  <Dyrcona> They couldn't wrap their heads around it, and one even wrongly claimed it was illegal.
+2015-04-22T09:49:47  <csharp> the main disadvantage to keeping staff from self-edits has been when someone needs to adjust the expiration date on their account and there's no one around with higher perms to do it - that causes endless staff frustration
+2015-04-22T09:49:47  <jeff> Any new staff have been getting a "only for staff things" user in Evergreen and a "here's your patron user" in Evergreen.
+2015-04-22T09:49:51  <Dyrcona> We have always had generic staff accounts and they insisted we do that with Evergreen, too.
+2015-04-22T09:50:36  <Dyrcona> csharp: That reminds me: I "expire" in August this year. ;)
+2015-04-22T09:50:37  <eeevil> csharp: sounds like a job for cron :)
+2015-04-22T09:50:48  <tsbere> "Staff move around the desks frequently and don't have time to be logging in over and over" is one of the common arguments, at least for circ.
+2015-04-22T09:51:13  <Dyrcona> Anyway, we're getting off topic.
+2015-04-22T09:51:18  * tsbere thinks that cataloging accounts could easily be switched away from generic accounts at MVLC, but this isn't the place to discuss that ;)
+2015-04-22T09:51:38  <Dyrcona> I really have no issue with the proposed changes.
+2015-04-22T09:51:53  <Dyrcona> Except I would be very careful about changing the API.
+2015-04-22T09:52:04  <Dyrcona> You'll likely break stuff other people are doing. :P
+2015-04-22T09:52:20  <Dyrcona> tsbere: I think it is too late for changing the cataloging accounts.
+2015-04-22T09:52:26  <csharp> tsbere: eeevil: you're both correct - I'll adjust my branch from '&&' to '||'
+2015-04-22T09:53:12  <dbwells> When we migrated, I think I set all of our "perpetual" alumni accounts to expire in 2020, which was really meant as some unimaginably far date into the future.  I'm sure I'll remember to deal with that before it blows up in my face ;)  Tick, tick, tick, tick, tick...
+2015-04-22T09:53:56  <Dyrcona> We have some migrated patron accounts that don't expire until 2033 or something, 'cause our libraries were doing all kinds of crazy stuff with expiration.
+2015-04-22T09:54:12  <Dyrcona> During migration we got them to agree on the same time for patron accounts.
+2015-04-22T09:54:43  <Dyrcona> I think we gave generic accounts something like a 50 year expiration.
+2015-04-22T09:54:54  <tsbere> We have some accoutns right now that expire in 5015. <_<
+2015-04-22T09:54:59  <tsbere> er, accounts
+2015-04-22T09:55:15  <Dyrcona> Typoes, obviously. :)
+2015-04-22T09:55:32  <tsbere> Not to mention 30xx, 29xx...
+2015-04-22T09:55:45  *** Callender has joined #evergreen
+2015-04-22T09:56:11  <jeff> misread, thought you had patrons expiring in 29 pixels
+2015-04-22T09:59:15  * csharp saw that the staff member involved in the issue referenced above has a birth year of 1000
+2015-04-22T09:59:26  <csharp> however, THERE CAN BE ONLY ONE
+2015-04-22T10:00:09  <graced> heh
+2015-04-22T10:09:53  <jonadab> Birthdates is another thing some people might use as a reason to disallow self-edit.
+2015-04-22T10:10:29  <jonadab> Currently, we don't have a problem, but in the past we have had staff who deliberately sabotaged their own birthdate data in the ILS, to conceal their age.
+2015-04-22T10:11:36  <csharp> our libraries use the dummy date of 1901-01-01 for that
+2015-04-22T10:19:27  <RoganH> csharp: I use 1911-01-01
+2015-04-22T10:23:05  * jonadab has cleverly concealed his birthdate by saving it in his patron record under the "birthdate" field.  No one will think to look for it there!
+2015-04-22T10:43:54  *** krvmga has joined #evergreen
+2015-04-22T10:52:05  <jeff> Now you're veering off into "this staff user shouldn't be able to edit this patron user because the two user objects represent the same person" territory. :P
+2015-04-22T10:56:49  * phasefx registers some fake patrons for evil purposes :)
+2015-04-22T10:59:05  <phasefx> can't stop everything
+2015-04-22T11:12:58  <dbs> jeff: time to migrate actor.usr to linked data
+2015-04-22T11:22:03  *** vlewis has joined #evergreen
+2015-04-22T11:26:46  *** RoganH has quit IRC
+2015-04-22T11:37:25  *** bmills has joined #evergreen
+2015-04-22T11:39:13  *** akilsdonk has quit IRC
+2015-04-22T11:39:37  *** akilsdonk has joined #evergreen
+2015-04-22T11:54:27  *** rashma_away is now known as rashma
+2015-04-22T11:55:12  *** jwoodard has joined #evergreen
+2015-04-22T12:00:48  *** Dyrcona1 has joined #evergreen
+2015-04-22T12:03:25  *** Dyrcona has quit IRC
+2015-04-22T12:13:42  *** bmills has quit IRC
+2015-04-22T12:13:53  *** Dyrcona1 is now known as Dyrcona
+2015-04-22T12:14:42  <Dyrcona> Too much wifi saturation in the office. Hopefully it will be better in the new offices.
+2015-04-22T12:20:37  *** bmills has joined #evergreen
+2015-04-22T12:31:30  <dbs> Looking at http://docs.evergreen-ils.org/2.8/_managing_holds.html trying to find evidence for my brain which is telling me the "Last notify time" on the holds screen only gets populated when explicitly set through "Edit phone notification", and not when an email is automatically sent.
+2015-04-22T12:33:21  * dbs looks at action.hold_notification instead
+2015-04-22T12:33:42  <tsbere> dbs: I thought "Last notify time" was pulled from action.hold_notification and would be updated when the post-email "create a notification entry" cleanup ran in A/T
+2015-04-22T12:33:58  <tsbere> assuming your A/T is using said cleanup, anyway...
+2015-04-22T12:36:27  * dbs wonders if his A/T is using said cleanup.
+2015-04-22T12:41:37  * dbs checks action_trigger log, sees "reacted":0 for the notification event in question
+2015-04-22T12:43:58  <tsbere> dbs: Specifically, "Success Cleanup" of "CreateHoldNotification" - We have it on our email and sms notification event defs
+2015-04-22T12:49:52  <dbs> okay, right, action_trigger.event_definition.cleanup_success is set to 'CreateHoldNotification'; presumably that's what I need
+2015-04-22T12:50:18  <dbs> and cleanup_failure is NULL
+2015-04-22T12:50:30  * dbs goes to check email logs to see if it's just been failing
+2015-04-22T12:53:00  *** jihpringle has joined #evergreen
+2015-04-22T13:16:06  <tsbere> dbs: Just for the sake of sanity: Did you make sure that the hold(s) in question have email notification turned on?
+2015-04-22T13:16:25  <tsbere> (or SMS as the case may be, I suppose)
+2015-04-22T13:21:51  *** buzzy has joined #evergreen
+2015-04-22T13:25:01  <buzzy> critically-important conference-related question: what did you guys use for the twitter/instagram/whatever hashtag?
+2015-04-22T13:28:53  <csharp> buzzy: last year's was #egils14
+2015-04-22T13:29:14  <csharp> (twitter only afaik)
+2015-04-22T13:29:43  <gmcharlt> berick: I want to call your attention to user/gmcharlt/lp741788_wip -- it overlaps with some of the cleanup you've got going in bug 1384740
+2015-04-22T13:29:43  <pinesol_green> Launchpad bug 1384740 in Evergreen "Add authority records support to marc stream importer (Connexion)" (affected: 2, heat: 12) [Wishlist,New] https://launchpad.net/bugs/1384740
+2015-04-22T13:38:17  <buzzy> thanks, csharp!
+2015-04-22T13:39:29  <gmcharlt> buzzy: given trends in hashtag usage, if you haven't suggested one yet for this conference, I recommend #evgils15
+2015-04-22T13:41:48  <berick> gmcharlt: thanks for the heads up.  /me mentally prepares for some merging
+2015-04-22T13:42:32  <buzzy> gmcharlt: rather than #egils15?
+2015-04-22T13:42:38  <gmcharlt> buzzy: correct
+2015-04-22T14:20:51  *** mglass has joined #evergreen
+2015-04-22T14:26:26  *** krvmga has quit IRC
+2015-04-22T14:29:48  *** dMiller_ has joined #evergreen
+2015-04-22T14:49:16  *** yboston has quit IRC
+2015-04-22T14:52:16  <dbs> tsbere: yeah, I think I found the problem. An updated template introduced a linefeed at the start of the email.
+2015-04-22T15:14:04  * dbs carefully tweaks a few [%- blah blah -%] parts of the template
+2015-04-22T15:14:32  <dbs> Hoping not to end up with To: dbs@example.orgFrom: library@example.org
+2015-04-22T15:35:25  *** Callender_ has joined #evergreen
+2015-04-22T15:38:06  *** Callender has quit IRC
+2015-04-22T15:43:50  *** Callender_ is now known as Callender
+2015-04-22T15:49:36  *** bmills has quit IRC
+2015-04-22T15:52:42  *** bmills has joined #evergreen
+2015-04-22T16:06:04  *** ningalls has joined #evergreen
+2015-04-22T16:20:38  *** collum has quit IRC
+2015-04-22T16:22:54  *** rjackson_isl has quit IRC
+2015-04-22T16:24:58  *** maryj has quit IRC
+2015-04-22T16:29:50  *** jboyer-isl has quit IRC
+2015-04-22T16:45:53  *** Shae has quit IRC
+2015-04-22T16:49:26  *** neopsyche has joined #evergreen
+2015-04-22T16:49:37  <neopsyche> Evergreen:?
+2015-04-22T16:52:48  <neopsyche> library sys/
+2015-04-22T16:53:03  <neopsyche> Is ayone able to assist with developing education network for delivery of ebooks?
+2015-04-22T17:00:06  *** Dyrcona has quit IRC
+2015-04-22T17:11:15  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-22T17:14:00  *** graced has quit IRC
+2015-04-22T17:18:59  *** mmorgan has left #evergreen
+2015-04-22T17:29:06  *** Newziky has quit IRC
+2015-04-22T18:01:31  *** jihpringle has quit IRC
+2015-04-22T18:04:56  *** mglass_ has joined #evergreen
+2015-04-22T18:06:56  *** mglass has quit IRC
+2015-04-22T18:11:37  *** mglass has joined #evergreen
+2015-04-22T18:14:50  *** mglass_ has quit IRC
+2015-04-22T18:18:56  *** mrpeters has quit IRC
+2015-04-22T18:39:42  *** vlewis has quit IRC
+2015-04-22T18:44:33  *** dMiller_ has quit IRC
+2015-04-22T19:12:56  *** jihpringle has joined #evergreen
+2015-04-22T20:00:04  *** buzzy has quit IRC
+2015-04-22T20:02:31  *** jwoodard has quit IRC
+2015-04-22T20:08:13  *** akilsdonk has quit IRC
+2015-04-22T20:14:33  *** jihpringle has quit IRC
+2015-04-22T20:47:55  <jeff> neopsyche: what you describe isn't quite something that Evergreen handles. depending on your need, you might have more luck in #code4lib -- other than that, I don't have many suggestions for you.
+2015-04-22T20:52:55  <jonadab> In a perfect world, a library's ILS would handle that sort of thing.  But currently I don't think that is legally possible, unless all your ebooks are public domain.
+2015-04-22T20:53:23  <jonadab> I'd like to be wrong about this...
+2015-04-22T21:04:53  <jeff> sometimes you need to stop cramming EVERYTHING into your ILS and just start integrating things with your ILS. :-)
+2015-04-22T21:05:24  *** pmurray is now known as pmurray_away
+2015-04-22T21:10:56  *** bmills has quit IRC
+2015-04-22T21:11:56  *** akilsdonk has joined #evergreen
+2015-04-22T21:13:04  *** bmills has joined #evergreen
+2015-04-22T21:14:53  <jonadab> jeff: Ok, fair.
+2015-04-22T21:15:35  <jonadab> Although, we think of ebook checkouts as circulations -- heck we report them to the state as circulations.
+2015-04-22T21:16:38  <jonadab> Patrons use a library card to check them out, and they're not available to the next patron until they're returned or the loan period expires, etc.
+2015-04-22T21:17:12  <jonadab> If you don't know anything about the underlying technology, it _feels_ like it ought to be something the ILS would do, from a layperson's perspective.
+2015-04-22T21:20:09  <jonadab> But as I said, I don't think it's currently legally possible anyway.  The publishers would never put up with _libraries_ having that much control over the ebooks.
+2015-04-22T21:26:06  *** bmills has quit IRC
+2015-04-22T22:34:35  *** akilsdonk has quit IRC
+2015-04-22T22:46:51  *** akilsdonk has joined #evergreen
+2015-04-22T23:12:16  *** akilsdonk has quit IRC
+2015-04-22T23:13:53  *** sandbergja has quit IRC

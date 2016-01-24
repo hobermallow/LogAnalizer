@@ -1,0 +1,240 @@
+2015-03-31T00:06:43  *** akilsdonk has quit IRC
+2015-03-31T02:29:15  *** dcook__ has quit IRC
+2015-03-31T04:59:14  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-31T07:22:30  *** graced has joined #evergreen
+2015-03-31T07:22:37  *** jboyer-isl has joined #evergreen
+2015-03-31T07:39:14  *** sbrylander has joined #evergreen
+2015-03-31T07:40:34  *** sarabee has quit IRC
+2015-03-31T08:00:39  *** Newziky has joined #evergreen
+2015-03-31T08:03:52  *** Shae has joined #evergreen
+2015-03-31T08:06:19  *** collum has joined #evergreen
+2015-03-31T08:32:51  *** akilsdonk has joined #evergreen
+2015-03-31T08:34:31  *** mrpeters has joined #evergreen
+2015-03-31T08:42:36  *** mmorgan has joined #evergreen
+2015-03-31T08:45:47  *** rjackson_isl has joined #evergreen
+2015-03-31T08:54:23  *** maryj has joined #evergreen
+2015-03-31T08:54:58  *** ericar has joined #evergreen
+2015-03-31T08:59:41  *** remingtron has quit IRC
+2015-03-31T09:04:25  *** remingtron has joined #evergreen
+2015-03-31T09:12:10  *** pmurray_away is now known as pmurray
+2015-03-31T09:22:53  *** Newziky1 has joined #evergreen
+2015-03-31T09:28:15  *** mrpeters has quit IRC
+2015-03-31T09:30:14  *** mrpeters has joined #evergreen
+2015-03-31T09:38:49  *** yboston has joined #evergreen
+2015-03-31T09:59:57  *** akilsdonk has quit IRC
+2015-03-31T10:05:49  *** Newziky1 has quit IRC
+2015-03-31T10:05:53  *** Newziky2 has joined #evergreen
+2015-03-31T10:12:01  <csharp> @quote random
+2015-03-31T10:12:01  <pinesol_green> csharp: Quote #16: "<berick> why's it broken? just bugcause." (added by gmcharlt at 01:37 PM, October 12, 2011)
+2015-03-31T10:14:59  <berick> so proud of that one
+2015-03-31T10:15:39  * kmlussier groans
+2015-03-31T10:18:59  <jboyer-isl> kmlussier would prefer "just bee-cause?"
+2015-03-31T10:19:30  <kmlussier> Heh, not sure that's much better. :)
+2015-03-31T10:20:09  * jboyer-isl : Lowering expectations since 1979.
+2015-03-31T10:24:24  <kmlussier> jboyer-isl++
+2015-03-31T10:51:23  <pinesol_green> [evergreen|Bill Erickson] Forward-porting 2.7.4-2.8.0 DB upgrade - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=3608741>
+2015-03-31T10:53:18  <bshum> berick++
+2015-03-31T10:54:12  * berick renames and moves the rc1 files into their 2.8.0 slots
+2015-03-31T10:54:50  <bshum> Will that work, or will the upgrade script in the rc1 tarball have the wrong stamp?
+2015-03-31T10:55:02  <bshum> Or did you make it as straight 2.8.0
+2015-03-31T10:55:09  <berick> i built rc1 with version =  2.8.0
+2015-03-31T10:55:24  <berick> for just this reason
+2015-03-31T10:55:25  <bshum> Ahh, slick ;)
+2015-03-31T11:00:32  * berick could use a volunteer to update the downloads page
+2015-03-31T11:01:36  <kmlussier> I can do that
+2015-03-31T11:01:52  <berick> kmlussier++
+2015-03-31T11:02:14  <berick> as a reminder, files are now under downloads/ instead of downloads/previews/
+2015-03-31T11:03:24  *** Newziky has quit IRC
+2015-03-31T11:03:55  <kmlussier> What does this mean for 2.5 and 2.6? Does 2.5 get pushed off the downloads page? Is 2.6 security only now?
+2015-03-31T11:05:00  <kmlussier> We provide support for one month after two stable releases have been made available. So that means 2.6 is still supported.
+2015-03-31T11:05:41  <bshum> 2.5 is off.
+2015-03-31T11:05:50  <kmlussier> No, wait, I'm reading something old.
+2015-03-31T11:05:52  <bshum> 2.6 is now "security release only" I think.
+2015-03-31T11:08:22  <kmlussier> Well, technically I think it's still supported. It gets 12 months, right? Looks like it was released at the end of April last year.
+2015-03-31T11:08:44  <bshum> Yeah, but more or less it's over :)
+2015-03-31T11:08:59  <bshum> You'd have to look at the exact release date if you want to get all technical about it ;)
+2015-03-31T11:09:27  * bshum runs off to his next meeting.
+2015-03-31T11:10:10  <kmlussier> April 21
+2015-03-31T11:11:58  <jonadab> IMO, supporting existing installs of an old version is one thing, and continuing to have it featured on the download page is different, because that encourages new installs of that version.
+2015-03-31T11:13:47  *** sandbergja has joined #evergreen
+2015-03-31T11:32:52  <kmlussier> berick: One thing I'm stuck on. What is the ChangeLog URL? I tried http://evergreen-ils.org/downloads/ChangeLog-2.7.4-2.8.0
+2015-03-31T11:34:55  *** vlewis has joined #evergreen
+2015-03-31T11:36:31  <jeffdavis> kmlussier: http://evergreen-ils.org/downloads/previews/ChangeLog-2.7.4-2.8.0 works at the moment
+2015-03-31T11:37:22  <kmlussier> Yeah, I noticed that. I'm not sure if it should be moving out of the previews directory now.
+2015-03-31T11:38:00  <berick> ohh
+2015-03-31T11:38:03  <berick> i forgot to move that
+2015-03-31T11:38:06  * berick fixes
+2015-03-31T11:38:31  <berick> kmlussier: ok, moved out of previews, into downloads
+2015-03-31T11:39:43  <kmlussier> berick: Downloads page is updated.
+2015-03-31T11:39:52  <berick> kmlussier++
+2015-03-31T11:39:53  <berick> thanks
+2015-03-31T11:40:00  <kmlussier> But you might want to check everything to make sure I didn't miss anything.
+2015-03-31T11:40:14  <berick> will do
+2015-03-31T11:40:41  <kmlussier> I left 2.6 as stable since it was released on April 21. But if y'all think it should be put into security only, I can make that change.
+2015-03-31T11:41:21  <kmlussier> berick++ #Getting 2.8.0 out by the end of March!
+2015-03-31T11:42:43  <berick> page looks good.  links all work
+2015-03-31T11:49:55  <bshum> kmlussier++
+2015-03-31T12:06:23  *** jihpringle has joined #evergreen
+2015-03-31T12:14:44  *** buzzy has joined #evergreen
+2015-03-31T12:14:57  *** Susan has joined #evergreen
+2015-03-31T12:15:57  *** buzzy has quit IRC
+2015-03-31T12:16:28  *** Susan has quit IRC
+2015-03-31T12:20:09  *** bmills has joined #evergreen
+2015-03-31T12:32:24  *** jboyer-isl has quit IRC
+2015-03-31T12:32:47  *** jboyer-isl has joined #evergreen
+2015-03-31T12:38:48  *** _1_selvan has joined #evergreen
+2015-03-31T12:39:05  *** _1_selvan has left #evergreen
+2015-03-31T12:51:15  *** graced has quit IRC
+2015-03-31T12:53:00  *** graced has joined #evergreen
+2015-03-31T13:10:29  *** jwoodard has joined #evergreen
+2015-03-31T13:29:48  *** eady has quit IRC
+2015-03-31T13:31:04  *** eady has joined #evergreen
+2015-03-31T13:35:17  *** eady has quit IRC
+2015-03-31T13:36:31  *** eady has joined #evergreen
+2015-03-31T13:41:47  *** eady has quit IRC
+2015-03-31T13:45:36  *** Newziky2 has quit IRC
+2015-03-31T13:45:49  *** eady has joined #evergreen
+2015-03-31T13:55:33  *** Newziky has joined #evergreen
+2015-03-31T13:59:23  <dbs> Hmm. so acq.invoice_payment_method is empty by default, that seems a bit surprising
+2015-03-31T14:10:19  <kmlussier> dbs: It would be nice to set a default when configuring the payment methods. Or maybe make that field sticky.
+2015-03-31T14:10:46  <kmlussier> I don't know if our libs make heavy use of that field since they tend to use the same payment method for everything.
+2015-03-31T14:25:58  <dbs> huh, 'obj = {"acqlia":[{"1":"uncommon","__fuzzy":true}ÿÿÿÿð' seems bad (JavaScript console error trying to view the history of an invoice
+2015-03-31T14:26:17  <dbs> err, view history of a line item
+2015-03-31T14:30:53  *** buzzy has joined #evergreen
+2015-03-31T14:30:54  <dbs> getting fun DB query errors trying to do things like "Show POs where PO-Creator is not dscott" too
+2015-03-31T14:36:10  <dbs> oh, you need to use the value of actor.usr.id, not usrname. That seems... unfriendly
+2015-03-31T14:39:54  <kmlussier> dbs: You don't think everyone knows their user id off the top of their heads?
+2015-03-31T14:40:42  <dbs> Their own, maybe, I'm more worried about acq admins QAing the efforts of a new orderer :)
+2015-03-31T14:41:20  * dbwells thinks "Who am I?  2-4-6-0-1!!!!!"
+2015-03-31T14:41:51  <jboyer-isl> dbwells++
+2015-03-31T14:41:56  <jboyer-isl> Should be in the stock data set.
+2015-03-31T14:43:48  * kmlussier certainly wouldn't know her own user id.
+2015-03-31T14:53:41  * dbs praises Sitka for http://docs.sitka.bclibraries.ca/Acq/current/html/
+2015-03-31T14:53:49  <dbs> huzzah for task-oriented docs!
+2015-03-31T14:56:33  <dbs> Looks like our special snowflake acq process is going to be to create tons of individual POs, then create an invoice when we receive a shipment by adding those POs progressively to the invoice, then receiving the entire invoice in bulk
+2015-03-31T14:57:37  <dbs> which turns everything from "encumbered" to "paid", but isn't really paid until a month or so later when the uni finance dept actually cuts a cheque, at which point we add charges/credits for currency adjustments to the invoice before closing it
+2015-03-31T14:58:20  <dbs> kind of wish the "encumbered" would stay "encumbered" when the items are received but the invoice hasn't been closed, but oh well; should work
+2015-03-31T15:00:37  *** jihpringle has quit IRC
+2015-03-31T15:02:05  <kmlussier> dbs: That's been on our wishlist for a while.
+2015-03-31T15:04:21  <kmlussier> In fact, one of our partners is looking for quotes to do something similar if anyone is interested in doing some acq work. http://wiki.evergreen-ils.org/doku.php?id=evergreen_features:proposed_development_projects#approval_process_for_edi_invoices
+2015-03-31T15:04:31  <kmlussier> Except, in this case, it would just be for EDI invoices.
+2015-03-31T15:06:02  <kmlussier> dbs: When you say individual POs, do you mean creating a PO for each lineitem?
+2015-03-31T15:07:53  <dbs> kmlussier: I guess just individual lineitems that just float around until we receive a shipment + invoice
+2015-03-31T15:08:15  <dbs> For Amazon orders, though, individual prepaid POs
+2015-03-31T15:11:18  *** akilsdonk has joined #evergreen
+2015-03-31T15:11:54  <csharp> @praise sitka for awesome acq docs
+2015-03-31T15:11:54  * pinesol_green sitka is the very model of a modern major hacker for awesome acq docs
+2015-03-31T15:12:50  <kmlussier> dbs: It doesn't sound too special snowflake to me. Our libraries put a bunch of lineitems on a PO to place the order and then gather the lineitems from one shipment into an invoice as you described.
+2015-03-31T15:13:35  <kmlussier> When it's not an EDI invoice, that is.
+2015-03-31T15:13:55  <dbs> actually no, we do need to create tons of individual POs
+2015-03-31T15:14:38  <dbs> I guess they could add individual line items to a single PO but there doesn't seem to be much advantage to that
+2015-03-31T15:16:44  <kmlussier> dbs: If you were using EDI, it would be advantageous. But even when ordering manually, I think our libraries like to see all of the titles ordered at one time in one place.
+2015-03-31T15:21:19  <kmlussier> I'm looking at the "Obscure the Date of birth field" OU setting.
+2015-03-31T15:21:29  <kmlussier> The description says: "When true, the Date of Birth column in patron lists will default to Not Visible, and in the Patron Summary sidebar the value will display as unless the field label is clicked."
+2015-03-31T15:21:50  <kmlussier> Which patron lists is it referring to? I looked in the list of patron search results, but the DOB is visible.
+2015-03-31T15:27:26  *** DPearl has quit IRC
+2015-03-31T15:27:31  *** DPearl1 has joined #evergreen
+2015-03-31T15:27:50  <tsbere> kmlussier: Did you log out and back in after changing the setting?
+2015-03-31T15:27:58  <kmlussier> Yes
+2015-03-31T15:28:04  * tsbere has no other ideas then
+2015-03-31T15:28:05  <kmlussier> I can try again
+2015-03-31T15:28:23  <kmlussier> There really aren't that many patron lists in the client.
+2015-03-31T15:28:49  <tsbere> I just know a lot of settings like that are, in effect, cached once at login and never checked again during your session.
+2015-03-31T15:29:18  <phasefx> kmlussier: looks like it should only touch patron search, patron summary, and the patron Groups interface
+2015-03-31T15:29:57  <phasefx> I also don't see anything that suggests it actually works anymore, at least in patron search
+2015-03-31T15:29:59  <kmlussier> It works in patron summary. As far as I can tell, it doesn't work in patron search, but I'm also not on a clean, master system.
+2015-03-31T15:30:26  <kmlussier> OK, it's not just me. I'm actually filing the bug for the webclient, but I always like to check to see how it worked in xul first.
+2015-03-31T15:30:55  *** DPearl has joined #evergreen
+2015-03-31T15:31:22  <phasefx> kmlussier: bug I introduced with 64d3349c978389a57511ee1b65514a9679cae6d3
+2015-03-31T15:31:22  <pinesol_green> [evergreen|phasefx] move Patron Search over to fm_columns instead of patron.util.columns (the former makes use of fm_IDL.xml and can automagically make use of new fields, etc.).  Also give fm_columns the ability to hide virtual fields from the column picker - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=64d3349>
+2015-03-31T15:31:30  *** DPearl1 has quit IRC
+2015-03-31T15:31:43  <phasefx> kmlussier: 'au_dob' : { 'hidden' : false } needs to be 'dob' : { 'hidden' : obscure_dob }
+2015-03-31T15:32:42  <kmlussier> phasefx: Would that affect the patron groups interface too?
+2015-03-31T15:32:46  <phasefx> way back in 2010; you can see how well used and loved that feature is
+2015-03-31T15:33:09  <phasefx> kmlussier: that interface looks like it should work
+2015-03-31T15:34:10  <phasefx> correction on search, 'au_dob' : { 'hidden' : false } needs to be 'au_dob' : { 'hidden' : obscure_dob }
+2015-03-31T15:34:41  <kmlussier> I can't get the groups interface to work either.
+2015-03-31T15:34:46  <kmlussier> I wonder if anyone has it enabled. :)
+2015-03-31T15:35:03  <phasefx> kmlussier: it's only the default columns, so once you save your columns once, defaults don't come into play
+2015-03-31T15:35:21  <phasefx> try a new xulrunner profile?
+2015-03-31T15:36:20  <kmlussier> I'll just add it to the bug for the webclient. Not sure how much time I want to spend nailing down a xulrunner issue. :)
+2015-03-31T15:36:48  <phasefx> it's a very minor bug/feature given the configurability of columns
+2015-03-31T15:37:10  <kmlussier> Yeah, I think most people have customized those.
+2015-03-31T15:37:23  <phasefx> particularly if they care about "obscuring" dob
+2015-03-31T15:38:32  * kmlussier now can't recall what she was doing when she found that setting. :(
+2015-03-31T15:39:45  * phasefx would vote for that yaous going way, "maybe we can turn the tide on YAOUS proliferation :)
+2015-03-31T15:40:29  <phasefx> particularly given how much easier the web client will be to skin/customize
+2015-03-31T15:40:58  <kmlussier> I have no opinion on that particular setting, but I generally am a fan of YAOUS. :)
+2015-03-31T15:41:03  <kmlussier> @whocares yaous
+2015-03-31T15:41:03  <pinesol_green> kmlussier and bshum love yaous
+2015-03-31T15:42:11  <kmlussier> I also work with three separate sites, so you can see why I would like an easy setting to make something work a certain way. :)
+2015-03-31T15:43:52  <phasefx> it's a question of where to put the easy :)
+2015-03-31T15:44:07  <phasefx> and for whom ;)
+2015-03-31T15:44:16  <kmlussier> For the libraries, of course!
+2015-03-31T15:44:35  <phasefx> :)
+2015-03-31T15:44:47  <jboyer-isl> @hate YOUS
+2015-03-31T15:44:47  <pinesol_green> jboyer-isl: The operation succeeded.  jboyer-isl hates YOUS.
+2015-03-31T15:45:30  <jboyer-isl> I'm more in the middle than that, but there isn't really a @WouldRatherNotHaveSoMuch YOUS
+2015-03-31T15:45:45  <kmlussier> @whocares YOUS
+2015-03-31T15:45:45  <pinesol_green> jboyer-isl hates YOUS
+2015-03-31T15:45:45  * phasefx does think skins are better than settings for controlling UI elements like that, or perhaps a "sticky" UI infrastructure that is easy to propogate
+2015-03-31T15:45:54  <jboyer-isl> @hate YAOUS
+2015-03-31T15:45:54  <pinesol_green> jboyer-isl: The operation succeeded.  jboyer-isl hates YAOUS.
+2015-03-31T15:46:02  <jboyer-isl> @love YOUS
+2015-03-31T15:46:02  <pinesol_green> jboyer-isl: But jboyer-isl already hates YOUS!
+2015-03-31T15:46:14  <jboyer-isl> Huh.
+2015-03-31T15:46:20  <jboyer-isl> @dontcare YOUS
+2015-03-31T15:46:20  <pinesol_green> jboyer-isl: The operation succeeded.  jboyer-isl no longer hates YOUS.
+2015-03-31T15:46:24  <jboyer-isl> Hah.
+2015-03-31T15:46:25  <kmlussier> jboyer-isl: Phew! I was beginning to worry you were turning on all of us. :)
+2015-03-31T15:46:56  <tsbere> We need an option for "loves and hates" - They are not always mutually exclusive. <_<
+2015-03-31T15:47:10  <jboyer-isl> tsbere: Reports, for instance.
+2015-03-31T15:47:22  <jboyer-isl> kmlussier: Never think it!
+2015-03-31T15:47:38  <tsbere> Perhaps a counter system. "Hated X times, Loved Y times" ;)
+2015-03-31T15:48:00  <bshum> Heh
+2015-03-31T15:48:30  <tsbere> Kindof like the karma system, but on a personal basis with things, I guess.
+2015-03-31T15:49:19  <kmlussier> phasefx: I do think there may be opportunities to remove some GUI settings with the web client since it is easier to customize the web client.
+2015-03-31T15:50:00  <kmlussier> At the same time, I think there will always be some sites that find it easier to flip a switch than to customize a tt2 file, for example.
+2015-03-31T15:50:45  * phasefx has nightmares of everything becoming a switch :D
+2015-03-31T15:51:37  <dbs> we just removed the pertinent fields from the XUL completely
+2015-03-31T15:56:53  <kmlussier> @karma yaous
+2015-03-31T15:56:53  <pinesol_green> kmlussier: Karma for "yaous" has been increased 3 times and decreased 4 times for a total karma of -1.
+2015-03-31T15:57:04  <kmlussier> yaous++
+2015-03-31T16:08:44  *** Newziky has quit IRC
+2015-03-31T16:20:27  *** buzzy has quit IRC
+2015-03-31T16:29:22  *** rjackson_isl has quit IRC
+2015-03-31T16:32:51  *** collum has quit IRC
+2015-03-31T16:36:17  *** Shae has quit IRC
+2015-03-31T16:36:39  *** maryj has quit IRC
+2015-03-31T16:49:03  <eeevil> yaous++
+2015-03-31T16:50:50  <kmlussier> eeevil: :)
+2015-03-31T16:52:20  <eeevil> honoring_yaous++
+2015-03-31T17:10:58  *** graced has quit IRC
+2015-03-31T17:15:26  *** mmorgan has left #evergreen
+2015-03-31T17:29:23  *** bbqben has joined #evergreen
+2015-03-31T17:33:16  *** DPearl has quit IRC
+2015-03-31T17:46:12  *** Newziky has joined #evergreen
+2015-03-31T17:51:43  *** buzzy has joined #evergreen
+2015-03-31T17:53:13  *** Newziky has left #evergreen
+2015-03-31T18:04:32  *** dcook has joined #evergreen
+2015-03-31T18:14:22  *** ericar has quit IRC
+2015-03-31T18:56:19  *** sandbergja has quit IRC
+2015-03-31T19:03:40  *** vlewis has quit IRC
+2015-03-31T19:13:06  *** mrpeters has quit IRC
+2015-03-31T19:23:09  *** yboston has quit IRC
+2015-03-31T19:36:27  *** wlayton has joined #evergreen
+2015-03-31T19:39:14  *** jihpringle has joined #evergreen
+2015-03-31T20:11:54  *** akilsdonk has quit IRC
+2015-03-31T20:13:14  <gmcharlt> http://evergreen-ils.org/evergreen-2-8-0-released/
+2015-03-31T20:19:22  <gmcharlt> berick++
+2015-03-31T20:24:23  *** wlayton has quit IRC
+2015-03-31T20:34:33  <kmlussier> Ack! Forgot about Release Note acknowledgements
+2015-03-31T20:35:10  * kmlussier can work on them later this week.
+2015-03-31T20:37:49  *** bbqben has quit IRC
+2015-03-31T20:39:05  *** jihpringle has quit IRC
+2015-03-31T20:43:20  *** akilsdonk has joined #evergreen
+2015-03-31T22:03:45  *** akilsdonk has quit IRC
+2015-03-31T22:09:52  *** akilsdonk has joined #evergreen
+2015-03-31T22:20:44  *** bmills has quit IRC
+2015-03-31T22:22:22  *** pmurray is now known as pmurray_away
+2015-03-31T22:52:09  *** akilsdonk has quit IRC

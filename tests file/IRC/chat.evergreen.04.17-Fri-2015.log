@@ -1,0 +1,191 @@
+2015-04-17T01:30:31  *** rashma is now known as rashma_away
+2015-04-17T01:52:05  *** geoffsams has joined #evergreen
+2015-04-17T01:54:24  *** gsams has quit IRC
+2015-04-17T05:04:06  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-17T07:39:38  *** graced has joined #evergreen
+2015-04-17T07:46:28  *** krvmga has joined #evergreen
+2015-04-17T07:50:19  *** mrpeters has joined #evergreen
+2015-04-17T07:57:48  *** rjackson_isl has joined #evergreen
+2015-04-17T07:58:35  *** pmurray is now known as pmurray_away
+2015-04-17T08:05:16  *** Callender has quit IRC
+2015-04-17T08:07:47  *** collum has joined #evergreen
+2015-04-17T08:22:03  *** akilsdonk has joined #evergreen
+2015-04-17T08:31:14  *** DPearl1 has left #evergreen
+2015-04-17T08:32:05  *** Newziky has joined #evergreen
+2015-04-17T08:33:12  <kmlussier> gmcharlt: Following up on your trademark email, the minutes from http://wiki.evergreen-ils.org/doku.php?id=governance:minutes:2012-10-17 lead me to believe it's not a draft policy and doesn't need finalization from the EOB. Does that sound right to you?
+2015-04-17T08:33:13  *** Callender has joined #evergreen
+2015-04-17T08:34:02  <gmcharlt> kmlussier: I'll need to go through it; I think there is a pending (minor) issue about the the logo itself, but I think you are probably correct that the overall policy was approved
+2015-04-17T08:34:20  <kmlussier> ok, thanks!
+2015-04-17T08:39:44  *** Shae has joined #evergreen
+2015-04-17T08:41:11  *** mmorgan has joined #evergreen
+2015-04-17T08:49:21  *** remingtron_ is now known as remingtron
+2015-04-17T08:58:22  *** krvmga has quit IRC
+2015-04-17T09:00:50  *** RBecker has quit IRC
+2015-04-17T09:06:07  *** akilsdonk has quit IRC
+2015-04-17T09:10:12  *** Dyrcona has joined #evergreen
+2015-04-17T09:10:16  *** akilsdonk has joined #evergreen
+2015-04-17T09:18:56  *** Newziky has left #evergreen
+2015-04-17T09:20:45  *** akilsdonk has quit IRC
+2015-04-17T09:23:16  *** akilsdonk has joined #evergreen
+2015-04-17T09:26:53  *** maryj has joined #evergreen
+2015-04-17T09:27:37  *** yboston has joined #evergreen
+2015-04-17T09:46:04  <csharp> gmcharlt: also, if you want the files from the GPLS server, I'm sure I can get those to you - just need to check with a couple of folks on this end that all is ok
+2015-04-17T09:46:35  <gmcharlt> csharp: thanks!
+2015-04-17T10:33:08  *** collum has quit IRC
+2015-04-17T10:40:41  *** collum has joined #evergreen
+2015-04-17T10:47:20  *** ningalls has quit IRC
+2015-04-17T10:47:31  <jboyer-isl> eeevil: I thought I'd try to test the inverse of your fix for bug 1438136 (common searches, uncommon attributes, I think), but I can't use the queries in that ticket to find common or uncommon values in pg 9.1. Do you know off hand of a good way to get those on more uh, mature, versions of pg?
+2015-04-17T10:47:31  <pinesol_green> Launchpad bug 1438136 in Evergreen "OPAC searching significantly slowed by adding format filters" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438136
+2015-04-17T10:51:55  *** mllewellyn has joined #evergreen
+2015-04-17T10:54:18  <eeevil> jboyer-isl: let me look.  in the mean time, were you able to test the branch, or does it not work for you on 9.1?
+2015-04-17T10:55:38  <rjackson_isl> eeevil: jboyer-isl is afk currently - just thought I would let you know as he isn't ignoring you!
+2015-04-17T10:55:40  <eeevil> jboyer-isl: ah ... well, I can tell it wont work. the array stats arrive in 9.2
+2015-04-17T10:55:54  <eeevil> rjackson_isl: thanks! :)
+2015-04-17T10:57:30  *** ningalls has joined #evergreen
+2015-04-17T11:04:58  *** rashma_away is now known as rashma
+2015-04-17T11:06:30  <jboyer-isl> I haven't tested the branch itself (only the core query test in the ticket) because the only non-production database machines I have available are miserably slow regardless of what's searched how. :(
+2015-04-17T11:09:34  <eeevil> jboyer-isl: ha! understood
+2015-04-17T11:21:57  <jeff> something i haven't spent much time thinking about yet, but thought I'd throw out for feedback: we have the materialized view asset.opac_visible_copies, which aiui is mostly (exclusively?) for performance reasons -- it saves us from having to join a lot of things and examine a lot of columns at search time.
+2015-04-17T11:22:43  <eeevil> jeff: yes
+2015-04-17T11:22:43  <csharp> I put the branch on a test server and am seeing much better search returns, but for some reason, running the core query from one of the search attempts took just as long as before - I'm assuming I was doing something dumb (I'll add that I was exhausted when I looked last night ;-))
+2015-04-17T11:23:19  <csharp> next.gapines.org vs. gapines.org (if someone is interested in front end results)
+2015-04-17T11:23:28  <csharp> next has the patch, gapines.org doesn't
+2015-04-17T11:23:48  <jeff> with that as (very light) inspiration, would a materialized view representing (something like) record, circ_lib, shelving location be of much help in making locations() filtering faster, or in enabling crazy things like faceting on copy locations?
+2015-04-17T11:24:02  <jeff> also, does the idea get crazier if you expand/replace the idea with copy location groups?
+2015-04-17T11:25:18  <csharp> specific searches: http://gapines.org/eg/opac/results?query=lusitania&qtype=keyword&fi%3Asearch_format=book&locg=117&sort= vs http://next.gapines.org/eg/opac/results?query=lusitania&qtype=keyword&fi%3Asearch_format=book&locg=117
+2015-04-17T11:25:33  <eeevil> csharp: but, now they're cached ;)
+2015-04-17T11:25:48  <csharp> doh!
+2015-04-17T11:26:10  *** ningalls has quit IRC
+2015-04-17T11:26:17  <csharp> I guess changing the query= in the URL would demonstrate ;-)
+2015-04-17T11:28:27  <eeevil> csharp: it would, yes
+2015-04-17T11:30:15  *** jboyer-isl has quit IRC
+2015-04-17T11:31:42  *** graced has quit IRC
+2015-04-17T11:32:49  *** ningalls has joined #evergreen
+2015-04-17T11:33:16  *** RBecker has joined #evergreen
+2015-04-17T11:33:47  <eeevil> jeff: for cases where the copy locations only have a few copies, it's possible, but for locations with more copies than you'd get from the tsearch part, it would be a slowdown ... we could "facet" by location today, really, if someone added the appropriate widget. that's effectively what happens on the advanced search page
+2015-04-17T11:34:03  <eeevil> by "it's possible" I mean "it's possible that it could be faster"
+2015-04-17T11:34:36  *** ningalls has quit IRC
+2015-04-17T11:36:33  <eeevil> jeff: IOW, you want the core query to focus on conditions that will return the smallest possible set given the whole search request, and I doubt that, other than things like "display" locations, copy location would be /that/ ... if that makes sense
+2015-04-17T11:37:13  *** Shae has quit IRC
+2015-04-17T11:38:21  <jeff> i think i follow, yes.
+2015-04-17T11:39:40  <jeff> and thinking about it a bit more, the only time "that's slow / incomplete / etc" is the classic problematic "empty search with JUST a locations() filter"
+2015-04-17T11:39:45  <Stompro> Hello, for those staying in Portland on Saturday night of the conference, which hotel are you staying at?
+2015-04-17T11:40:19  <jeff> Stompro: i am staying at PDX to wait for my midnight flight out :-)
+2015-04-17T11:40:29  <Stompro> I'm looking to be lazy and not have to look at tripadvisor reviews.
+2015-04-17T11:40:52  <Dyrcona> Stompro: The airport Marriott for me.
+2015-04-17T11:41:37  <jeff> er, "the only time" is perhaps inaccurate, but I think I gave the general idea.
+2015-04-17T11:41:57  <Stompro> Jeff: fun, my flight out is at 5:30am, so that means I need to get there at ~4:30 or earlier... maybe I should just stay up that night :)  If I was 25 I might be able to handle that:)
+2015-04-17T11:42:21  <jeff> "filtering on a bunch of locations" isn't nearly as problematic (perhaps not problematic at all) compared to "trying to 'browse' all copies in a location by doing an empty search with a locations() filter"
+2015-04-17T11:42:22  <Dyrcona> Courtyard Portland Airport
+2015-04-17T11:43:52  <Stompro> Dyrcona, thanks.
+2015-04-17T11:44:10  <Dyrcona> I can paste the phone number if you like.
+2015-04-17T11:44:18  <Dyrcona> Or pm it.
+2015-04-17T11:44:37  <Stompro> Dyrcona, no need but thanks for the offer.
+2015-04-17T11:44:59  <jonadab> jeff: Isn't there a way to limit the number of rows returned to a thousand, or something?
+2015-04-17T11:45:32  <Dyrcona> My flight out is scheduled for 6:45 am Sunday, so not as bad as yours, but still early enough that leaving from Hood River makes no sense.
+2015-04-17T11:46:36  <Stompro> Dyrcona, they have no rooms available according to their website, so I'll have to keep looking.
+2015-04-17T11:46:54  <Dyrcona> Oops.
+2015-04-17T11:52:14  <jeff> jonadab: the problem as i understand it (and i might not) with "show me everything in this shelving location" is that it essentially looks for everything at the library/libraries in scope, then filters those results -- and the first "find everything" is limited to a max of X items (configurable, but not without performance impact)
+2015-04-17T11:52:56  <jeff> jonadab: so since you're not really trying to search but mostly trying to browse, it probably makes sense to have a better approach. it isn't (that I've found) THAT common a use case, but we occasionally do run into it.
+2015-04-17T11:53:04  <jeff> "show me all the puppets", for example.
+2015-04-17T11:53:13  <jonadab> Ah.
+2015-04-17T11:53:28  <jeff> now arguably that could also be done with something like local subjects...
+2015-04-17T11:53:43  *** sandbergja has joined #evergreen
+2015-04-17T11:54:38  *** ningalls has joined #evergreen
+2015-04-17T11:55:11  <eeevil> jeff: that's a case where it might be useful to optimize -- when we see there are locations, but no search terms. like a smarter version of what we do for bucket searches. we'd surely want a mat view for that, which has a cost as well (albeit not hugenormous)
+2015-04-17T11:56:35  <jeff> eeevil: and using a container-like approach might make more sense than trying to use the actual "browse" or "shelf browse by shelving location, not call number".
+2015-04-17T11:57:23  <jeff> eeevil++ thanks for the feedback
+2015-04-17T11:57:24  <eeevil> for small record sets, yep, I agree.
+2015-04-17T11:57:27  <eeevil> np
+2015-04-17T11:58:20  <eeevil> fwiw, containers seem better for "new books" and "display" and such anyway, since they're transient "states", and you'll probably want to batch edit the items at some point, which containers facilitate
+2015-04-17T12:01:20  <jeff> copy location is "better" for other reasons like the OPAC displaying that the item is in a display location, or checkin giving an alert that the copy needs to go to an unusual location, etc.
+2015-04-17T12:01:58  <eeevil> jeff: right, that makes sense
+2015-04-17T12:02:31  <eeevil> so, container for search, location for inventory management
+2015-04-17T12:07:25  *** mrpeters has quit IRC
+2015-04-17T12:07:50  *** jihpringle has joined #evergreen
+2015-04-17T12:07:50  <jeff> and part of me would want auto-population of the container based on the copy locations, treating location as the authoritative part.
+2015-04-17T12:08:17  <jeff> (to avoid the requirement for duplicate staff action and/or conflicts between location/container)
+2015-04-17T12:09:00  <jeff> and then a few thoughts later i remember that i have the day off as soon as i finish this task that i'm not working on. :-)
+2015-04-17T12:09:39  <eeevil> a new container type ("location"?) and some triggers, and a bool on the location to control if it exists... interesting thought
+2015-04-17T12:10:11  <jeff> yeah... middle ground between nothing and building some special purpose mat view.
+2015-04-17T12:11:01  <jeff> are "large" containers a problem, or is that just "large containers with many many (MANY!) duplicate items"?
+2015-04-17T12:15:32  <jeff> this ticket needs an infographic/dashboard of its own. "Number of support technicians participating", "Instances of 'thank you for your patience', 'Please accept our apologies for the delay in response'"...
+2015-04-17T12:16:03  <eeevil> jeff: heh... LARGE ones would not be a good thing, but there's no difference between "has dupes" and unique today.
+2015-04-17T12:17:28  <jeff> "number of attempts to reissue certificate: 6, i think?", "number of certificates that have been issued which violate CA/Browser Forum Basic Requirements for validity period: see previous number"
+2015-04-17T12:17:46  <eeevil> we could make LARGE ones less painful by pushing the LIMIT into the container select
+2015-04-17T12:18:10  <eeevil> the CTE, I mean
+2015-04-17T12:41:55  *** graced has joined #evergreen
+2015-04-17T12:42:21  <eeevil> @later tell jboyer-isl I've pushed another commit to the working branch for bug 1438136 that will protect your ANCIENT version of postgres ;)
+2015-04-17T12:42:21  <pinesol_green> eeevil: The operation succeeded.
+2015-04-17T12:43:39  <kmlussier> eeevil: I'm curious. Will the branch help the search query on that ancient version? Or is the commit you just added a "do no harm" thing?
+2015-04-17T12:44:14  * kmlussier thinks there is still a MassLNC site on 9.1.
+2015-04-17T12:47:34  <Dyrcona> Umm, us...
+2015-04-17T12:53:06  <kmlussier> Dyrcona: Oh, you're not the site I was thinking of. :)
+2015-04-17T12:53:15  <kmlussier> Correction, two MassLNC sites.
+2015-04-17T12:53:40  <kmlussier> I give up. I can't keep track of you all anymore. :)
+2015-04-17T12:55:44  *** Newziky has joined #evergreen
+2015-04-17T12:55:47  *** Newziky has left #evergreen
+2015-04-17T12:55:49  <Dyrcona> heh
+2015-04-17T12:56:00  <Dyrcona> S'ok. Neither can I.
+2015-04-17T13:00:54  <eeevil> kmlussier / Dyrcona: it will help, yes, if you're hitting the problem, but you might not be. based on the plans I saw the other day, you aren't
+2015-04-17T13:01:22  <Dyrcona> eeevil: Cool. We'll be on 9.3 or 9.4 before too long.
+2015-04-17T13:01:54  <Dyrcona> I'll build a new branch on Monday if anyone cares.
+2015-04-17T13:02:05  <Dyrcona> This time I'll make sure my database reload actually happens. :)
+2015-04-17T13:09:07  <Dyrcona> tsbere just reminded me that Monday is Patriots' Day, so make that Tuesday.
+2015-04-17T13:36:26  *** ningalls has quit IRC
+2015-04-17T14:10:58  <kmlussier> Dyrcona: Just back from a conference call. Did you say you're building a new branch on your dev server?
+2015-04-17T14:11:26  <Dyrcona> kmlussier: Yes, on Tuesday. It won't differ much from what I loaded yesterday.
+2015-04-17T14:22:59  *** Newziky has joined #evergreen
+2015-04-17T14:36:36  *** TaraC has quit IRC
+2015-04-17T14:36:54  <jeff> nothing worse than a non-tuned postgres instance that you only need once a year or so.
+2015-04-17T14:37:05  <jeff> ...and you're in a hurry
+2015-04-17T14:38:29  *** TaraC has joined #evergreen
+2015-04-17T14:38:32  *** TaraC_ has joined #evergreen
+2015-04-17T14:38:57  <tsbere> jeff: At least it is functional?
+2015-04-17T14:39:16  *** TaraC_ has quit IRC
+2015-04-17T14:39:21  *** dbs has quit IRC
+2015-04-17T14:39:21  *** dbs has joined #evergreen
+2015-04-17T14:46:12  *** ningalls has joined #evergreen
+2015-04-17T15:09:56  *** TaraC has quit IRC
+2015-04-17T15:18:50  *** TaraC has joined #evergreen
+2015-04-17T15:22:19  <jeff> ERROR:  invalid input syntax for type money: "John Smith"
+2015-04-17T15:22:31  <jeff> tsbere: functional database, or functional data? :-)
+2015-04-17T15:23:16  <eeevil> jeff: you and I have differing definitions of "nothing" methinks
+2015-04-17T15:23:19  <tsbere> jeff: Apparently I need to revise my statement. ;)
+2015-04-17T15:24:13  <jeff> eeevil: yeah, "nothing worse than" was perhaps a bit hyperbolic. :-)
+2015-04-17T15:25:13  <Dyrcona> I'll see your John Smith and raise you 2 Bob Hopes.
+2015-04-17T15:29:47  <jeff> some good news, though: my certificate supplier has provided me with a workaround while the CA tries to get better at math.
+2015-04-17T15:42:29  <eeevil> welp, it's a good think we didn't go down the super-dense seamicro server route a couple years ago... http://seamicro.com
+2015-04-17T15:43:05  <jeff> eeevil: yikes
+2015-04-17T15:43:13  *** Newziky has left #evergreen
+2015-04-17T16:03:32  * dbwells sheds a tear for his AMD stock
+2015-04-17T16:06:37  <Dyrcona> Stompro++ # For testing with Jessie.
+2015-04-17T16:08:07  *** ningalls has quit IRC
+2015-04-17T16:28:24  *** rjackson_isl has quit IRC
+2015-04-17T16:33:05  *** maryj has quit IRC
+2015-04-17T16:33:47  *** collum has quit IRC
+2015-04-17T16:58:47  *** gsams has joined #evergreen
+2015-04-17T16:58:54  *** StomproJ has joined #evergreen
+2015-04-17T16:59:22  *** geoffsams has quit IRC
+2015-04-17T16:59:31  *** Dyrcona has quit IRC
+2015-04-17T17:02:42  *** Stompro has quit IRC
+2015-04-17T17:07:16  *** graced has quit IRC
+2015-04-17T17:08:51  *** mllewellyn has quit IRC
+2015-04-17T17:20:49  *** mmorgan has left #evergreen
+2015-04-17T17:40:21  *** Newziky has joined #evergreen
+2015-04-17T17:48:43  *** Newziky has quit IRC
+2015-04-17T18:35:16  *** sarabee has quit IRC
+2015-04-17T18:59:33  *** akilsdonk has quit IRC
+2015-04-17T19:21:11  *** yboston has quit IRC
+2015-04-17T19:28:39  *** akilsdonk has joined #evergreen
+2015-04-17T20:05:39  *** sandbergja has quit IRC
+2015-04-17T20:19:54  *** akilsdonk has quit IRC
+2015-04-17T20:52:09  *** jihpringle has quit IRC
+2015-04-17T21:40:06  *** bshum has quit IRC
+2015-04-17T21:40:06  *** kmlussier has quit IRC
+2015-04-17T21:40:06  *** mceraso has quit IRC
+2015-04-17T21:40:18  *** kmlussier has joined #evergreen
+2015-04-17T21:40:20  *** mceraso has joined #evergreen
+2015-04-17T21:40:22  *** bshum has joined #evergreen
+2015-04-17T21:42:30  *** Callender has quit IRC
+2015-04-17T21:42:56  *** Callender has joined #evergreen

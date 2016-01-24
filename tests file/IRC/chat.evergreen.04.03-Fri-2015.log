@@ -1,0 +1,246 @@
+2015-04-03T04:54:09  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-03T07:02:02  *** akilsdonk has joined #evergreen
+2015-04-03T07:13:07  *** TaraC has joined #evergreen
+2015-04-03T07:33:29  *** Callender_ is now known as Callender
+2015-04-03T07:50:46  *** collum has joined #evergreen
+2015-04-03T08:23:04  *** mrpeters has joined #evergreen
+2015-04-03T08:28:58  *** mmorgan has joined #evergreen
+2015-04-03T08:31:55  *** graced has joined #evergreen
+2015-04-03T08:34:40  *** Shae has joined #evergreen
+2015-04-03T08:38:26  *** akilsdonk has quit IRC
+2015-04-03T08:52:31  *** ericar has joined #evergreen
+2015-04-03T08:54:51  *** akilsdonk has joined #evergreen
+2015-04-03T08:57:26  *** maryj has joined #evergreen
+2015-04-03T08:59:58  *** akilsdonk has quit IRC
+2015-04-03T09:05:12  *** Newziky has joined #evergreen
+2015-04-03T09:12:54  <kmlussier> Is there a reason why, on the downloads page, we link to release notes at http://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_8.html instead of linking to the ones in the official docs?
+2015-04-03T09:13:51  <kmlussier> Well, I guess it looks nicer to have the entirety of the release notes listed on one page. I withdraw my question.
+2015-04-03T09:15:43  <kmlussier> berick: I made some additions to the release notes yesterday that will need to be incorporated in the notes we link to from the downloads page. But I expect more tweaking to happen early next week. so you may want to hold off until then.
+2015-04-03T09:16:30  *** RoganH has joined #evergreen
+2015-04-03T09:21:07  *** yboston has joined #evergreen
+2015-04-03T09:40:08  *** akilsdonk has joined #evergreen
+2015-04-03T09:42:21  *** Dyrcona has joined #evergreen
+2015-04-03T09:53:33  <berick> kmlussier: OK.  I'm happy to update them when you're done
+2015-04-03T10:24:44  <kmlussier> Either I was wrong when I reported bug 1438362 or a fix for the bug has already been loaded on webby.
+2015-04-03T10:24:44  <pinesol_green> Launchpad bug 1438362 in Evergreen "Web staff client: secondary permission groups missing from patron registration screen" (affected: 1, heat: 6) [Undecided,New] https://launchpad.net/bugs/1438362
+2015-04-03T10:24:47  <kmlussier>  If I was wrong, I should mark it invalid. If it was indeed a bug that has been fixed on webby, then I should leave it open so the patch can be added there.
+2015-04-03T10:25:51  <kmlussier> I suspect I was wrong because I didn't realize the secondary permission group button never appears with new registrations.
+2015-04-03T10:31:32  <Dyrcona> Oh no! We're four cents over budget on our new servers.
+2015-04-03T10:32:20  <mmorgan> Quick! Check under the couch cushions!
+2015-04-03T10:33:19  <Dyrcona> It looks really odd on the quote: $30,000.04. :)
+2015-04-03T10:33:46  <jeff> @blame floating point math
+2015-04-03T10:33:46  <pinesol_green> jeff: floating point math musta been an Apple employee.
+2015-04-03T10:37:41  <jeff> Dyrcona: this is what came to mind first: http://dilbert.com/strip/1995-06-24
+2015-04-03T10:40:36  <Dyrcona> jeff: I liked that one.
+2015-04-03T10:41:13  <Dyrcona> One of my favorite quotes: UNIX is user friendly. It's just picky about who its friends are.
+2015-04-03T10:45:53  <RoganH> Dyrcona++
+2015-04-03T10:49:07  <Dyrcona> Heh. I like today's Dilbert.
+2015-04-03T10:49:27  <Dyrcona> I stopped reading Dilbert regularly around 2002.
+2015-04-03T10:50:01  <Dyrcona> Someone should put this on badges: "Hi! I'm Dick from the Internet."
+2015-04-03T10:59:13  <berick> wow, that site is hard to look at
+2015-04-03T10:59:22  <berick> is there an rss feed i'm not seeing?
+2015-04-03T11:00:10  <RoganH> Dyrcona: reminds me of the Penny Arcade internet theory.  https://cdn.shopify.com/s/files/1/0042/9942/products/dickwad2_det_1024x1024.jpg?v=1305060896
+2015-04-03T11:00:46  <Dyrcona> RoganH: Ah, but the cartoon version is more profane and funnier.
+2015-04-03T11:01:07  <RoganH> Dyrcona: I was trying to keep it relatively clean for IRC :)
+2015-04-03T11:01:19  <Dyrcona> heh.
+2015-04-03T11:02:26  *** graced has quit IRC
+2015-04-03T11:05:42  *** taterr has joined #evergreen
+2015-04-03T11:06:20  *** taterr has left #evergreen
+2015-04-03T11:27:08  *** sarabee has joined #evergreen
+2015-04-03T11:49:33  *** sandbergja has joined #evergreen
+2015-04-03T11:49:50  <kmlussier> @weather 02771
+2015-04-03T11:49:51  <pinesol_green> kmlussier: The current temperature in Rumford, East Providence, Rhode Island is 56.1°F (11:40 AM EDT on April 03, 2015). Conditions: Overcast. Humidity: 73%. Dew Point: 48.2°F. Pressure: 29.84 in 1010 hPa (Steady).  Wind Advisory in effect from 10 am to 9 PM EDT Saturday... 
+2015-04-03T11:50:06  <RoganH> @weather 29732
+2015-04-03T11:50:07  <pinesol_green> RoganH: The current temperature in Winthrop University, Rock Hill, South Carolina is 72.9°F (11:50 AM EDT on April 03, 2015). Conditions: Clear. Humidity: 56%. Dew Point: 55.4°F. Pressure: 30.07 in 1018 hPa (Steady). 
+2015-04-03T11:50:38  <kmlussier> RoganH: I'll trade weather reports with you
+2015-04-03T11:51:08  <RoganH> kmlussier: I appreciate the offer but I'll live with the burden of living in the south for now.
+2015-04-03T11:51:59  <kmlussier> RoganH: You'll be sorry when July/August rolls around. :)
+2015-04-03T11:52:27  * kmlussier is actually quite pleased with today's temps.
+2015-04-03T11:52:37  <kmlussier> Now, if I could just go outside to enjoy them.
+2015-04-03T11:52:57  <RoganH> kmlussier: it's not always so bad, last year the summer was actually pretty mild but yeah, July and August can be like in a sauna in Hell
+2015-04-03T11:53:38  <RoganH> kmlussier: But now that gmcharlt has moved back I'm expecting it to be pretty bad because the universe knows how much he prefers the heat to the cold
+2015-04-03T11:53:58  <mmorgan> \me is pleased with the current temp, too. The melting continues...:)
+2015-04-03T11:54:36  <gmcharlt> RoganH: refrigerate the entire neighborhood?
+2015-04-03T11:54:41  <gmcharlt> DON'T MIND IF I DO!!!!
+2015-04-03T11:54:43  <gmcharlt> ;)
+2015-04-03T11:54:46  <RoganH> :)
+2015-04-03T11:55:33  <kmlussier> mmorgan: Do you still have snow? I think yesterday cleared out the rest of ours. Now I'm just waiting for the crocuses to begin appearing.
+2015-04-03T11:56:30  <mmorgan> kmlussier: Oh yes, we do! Still small mountains in places, but some actual grass (such as it is) is beginning to appear.
+2015-04-03T11:56:43  <mmorgan> Not much sign of plant life yet.
+2015-04-03T11:58:11  <kmlussier> The example text on the patron registration form typically only displays if there is a regex supplied in the OU settings.
+2015-04-03T11:58:30  <kmlussier> But the DOB example text displays even if the "Format Dates with this pattern" setting is null.
+2015-04-03T11:59:09  <kmlussier> How does the system decide what to show as an example, in that case? Is it hardcoded to mm/dd/yyyy. Or is it looking at some other setting?
+2015-04-03T12:03:00  <jeffdavis> Last I checked, the example was hardcoded.
+2015-04-03T12:03:33  <kmlussier> jeffdavis: Thanks!
+2015-04-03T12:05:29  <jeffdavis> kmlussier: hang on a sec while I double-check my memory though ;)
+2015-04-03T12:09:44  *** graced has joined #evergreen
+2015-04-03T12:15:14  <jeffdavis> kmlussier: my mistake, looks like there's a line in register.js that checks the format.date org setting
+2015-04-03T12:15:41  <Dyrcona> @weather 01845
+2015-04-03T12:15:42  <pinesol_green> Dyrcona: The current temperature in WB1CHU, Lawrence, Massachusetts is 61.0°F (12:15 PM EDT on April 03, 2015). Conditions: Clear. Humidity: 53%. Dew Point: 44.6°F. Pressure: 29.80 in 1009 hPa (Steady).  Wind Advisory in effect from 10 am to 9 PM EDT Saturday... 
+2015-04-03T12:15:54  <kmlussier> jeffdavis: Yes, but if that org setting is null, it still displays an example here m/dd/yyyy
+2015-04-03T12:16:21  <Dyrcona> kmlussier: It is common to have a hard coded fall back for when a setting is not set.
+2015-04-03T12:17:26  <kmlussier> OK, then. That's what I was trying to verify. If that fall back was hardcoded or coming from somewhere else.
+2015-04-03T12:17:33  <kmlussier> jeffdavis++ Dyrcona++
+2015-04-03T12:18:43  <jeffdavis> ftd.appendChild(document.createTextNode(localeStrings.EXAMPLE + dojo.date.locale.format(new Date(1970,0,31),{selector: "date", fullYear: true, datePattern: (orgSettings['format.date'] ? orgSettings['format.date'] : null)})));
+2015-04-03T12:20:58  <kmlussier> jeffdavis: That actually makes sense to me. Thanks! :)
+2015-04-03T12:21:47  <Dyrcona> Glad that makes sense to someone. :)
+2015-04-03T12:25:31  * csharp just read the title of bug 1440114 and wondered what a "support blanket" is
+2015-04-03T12:25:31  <pinesol_green> Launchpad bug 1440114 in Evergreen "Support blanket orders in acquisitions via direct charges" (affected: 1, heat: 6) [Wishlist,New] https://launchpad.net/bugs/1440114
+2015-04-03T12:25:52  <csharp> @who needs a support blanket?
+2015-04-03T12:25:52  <pinesol_green> csharp needs a support blanket.
+2015-04-03T12:26:08  <csharp> pinesol_green: well played, my friend.  well played
+2015-04-03T12:26:08  <pinesol_green> csharp: I am only a bot, please don't think I'm intelligent :)
+2015-04-03T12:26:09  <pinesol_green> csharp: Sorry, that command is only available to Evergreen Premium™ Subscribers. Please upgrade your subscription ASAP!
+2015-04-03T12:26:32  <mmorgan> :)
+2015-04-03T12:26:36  <kmlussier> Ha ha. I read it the same way.
+2015-04-03T12:35:39  <Dyrcona> Where's Linus when you need him?
+2015-04-03T12:41:46  <Dyrcona> Trivia of the day: I tried to learn Linus and Lucy on the piano, but the left hand proved too difficult for me.
+2015-04-03T12:53:07  *** ericar_ has joined #evergreen
+2015-04-03T12:56:03  *** ericar has quit IRC
+2015-04-03T12:56:14  *** ericar_ is now known as ericar
+2015-04-03T12:59:45  * berick chuckles at 'support blanket'
+2015-04-03T12:59:54  <berick> the Evergreen Binky module
+2015-04-03T13:00:45  *** ericar has quit IRC
+2015-04-03T13:05:12  <kmlussier> @love clam chowdah
+2015-04-03T13:05:12  <pinesol_green> kmlussier: The operation succeeded.  kmlussier loves clam chowdah.
+2015-04-03T13:20:32  <Bmagic> When a patron has a long overdue item, and they use the OPAC, their account summary will have a one in parenthesis (1) indicating that have 1 item checked out. When you click on it, the resulting page says "You have no items checked out"
+2015-04-03T13:21:02  <Bmagic> Would this be because the code that sifts the items from action.circulation does not include the long overdue status?
+2015-04-03T13:23:21  <Bmagic> Another way to phrase it: Should "special" circulations be considered at all in this context?
+2015-04-03T13:25:00  <bshum> Hmm, that seems like a good thing to look at.
+2015-04-03T13:25:53  <bshum> Depends on what long overdue means?
+2015-04-03T13:26:13  <bshum> For me, I would think to show those circs to the user and count them.
+2015-04-03T13:26:35  <bshum> But maybe this is a case for YAOUS? :\
+2015-04-03T13:27:09  <kmlussier> I would consider long overdues to still be checked out.
+2015-04-03T13:27:11  <berick> i think they should show, too.
+2015-04-03T13:27:14  <Bmagic> What does the TPAC do for Lost?
+2015-04-03T13:27:21  <Bmagic> I think we have a bug here
+2015-04-03T13:27:21  <kmlussier> Which is a distinct difference from what it should do for lost.
+2015-04-03T13:27:40  <Bmagic> the TPAC says that they have 1 item checked out, but when you view the items that they have checked out, it shows none
+2015-04-03T13:28:47  <kmlussier> We have an OU setting that says whether lost items should be included in the staff client count. I would think you would want the tpac count to be the same as the staff client count.
+2015-04-03T13:29:46  <berick> for LO, the fix is simple.  Account.pm:1385, remove 'LONGOVERDUE' from the array
+2015-04-03T13:29:52  <berick> for tpac display
+2015-04-03T13:30:16  <Bmagic> so, the count is different than the list of check outs?
+2015-04-03T13:30:21  <Bmagic> and there is a setting for this?
+2015-04-03T13:30:58  <kmlussier> Bmagic: There is a setting just for lost. Not long overdue. And it's for the patron summary only, not tpac.
+2015-04-03T13:31:23  <Bmagic> kmlussier: I am speaking about the OPAC/TPAC only
+2015-04-03T13:32:10  <kmlussier> Yes, I know. I was just musing that it would make sense for it to handle both counts.
+2015-04-03T13:32:15  * kmlussier will stop musing now.
+2015-04-03T13:32:34  <Bmagic> kmlussier: I see the setting "Items Out Long-Overdue display setting" "1 = top list, bottom list. 2 = bottom list"
+2015-04-03T13:32:44  <Bmagic> Is that the setting you are talking about?
+2015-04-03T13:33:02  <kmlussier> Include lost circulation in lump sum tallies in Patron Display
+2015-04-03T13:33:33  <Bmagic> oh I see
+2015-04-03T13:33:56  <Bmagic> So, did I uncover a bug in the OPAC/TPAC ?
+2015-04-03T13:35:00  <kmlussier> For the long overdues? Yes, I would say it's a bug.
+2015-04-03T13:36:19  <kmlussier> Given that there seemed to be initial consensus here that they should display as items out, I don't think a YAOUS is required. But that's just me.
+2015-04-03T13:36:48  <bshum> I'd wait for csharp and his folks to weigh in.  Since longoverdue was their feature, right?
+2015-04-03T13:36:48  <bshum> :)
+2015-04-03T13:36:59  <kmlussier> yeah
+2015-04-03T13:38:41  * mmorgan thinks that "long overdue" implies that they are still checked out. But maybe that's just me :)
+2015-04-03T13:39:20  <Bmagic> Here is a screen shot
+2015-04-03T13:39:21  <Bmagic> https://drive.google.com/file/d/0B8kJTfmejGJ1TU1CLTNzRTl1N2s/view?usp=sharing
+2015-04-03T13:42:08  <kmlussier> Whatever the desired behavior is, I think the fact that the count displays and then no titles display is a bug. It's just a matter of nailing down whether it should be part of the count and listed or whether it shouldn't. We can work that out on the bug report.
+2015-04-03T13:45:33  <Bmagic> I took a quick peek at a patron who has the same scenario but instead of long overdue, it was lost, and it didn't show (1) for the lost circ
+2015-04-03T13:45:49  <Bmagic> Is there a bug report?
+2015-04-03T13:45:58  <kmlussier> Yes
+2015-04-03T13:48:38  <Bmagic> Which bug?
+2015-04-03T13:49:20  *** buzzy has joined #evergreen
+2015-04-03T13:49:32  <kmlussier> What I said in [13:42:08]
+2015-04-03T13:51:22  <Bmagic> I dont see a bug number mentioned
+2015-04-03T13:52:06  <kmlussier> Bmagic: Sorry, I thought you were asking if there was a bug there that was worthy of reporting. AFAIK, there isn't one.
+2015-04-03T13:52:09  <kmlussier> But I haven't looked
+2015-04-03T13:52:34  <Bmagic> Oh ok, I just made one then https://bugs.launchpad.net/evergreen/+bug/1440148
+2015-04-03T13:52:34  <pinesol_green> Launchpad bug 1440148 in Evergreen "Long overdue Items out TPAC OPAC display My Account" (affected: 1, heat: 6) [Undecided,New]
+2015-04-03T13:58:32  *** ericar has joined #evergreen
+2015-04-03T14:02:49  *** akilsdonk has quit IRC
+2015-04-03T14:21:44  * csharp appears
+2015-04-03T14:22:51  <kmlussier> poof!
+2015-04-03T14:24:22  <csharp> so, our issue is one of terminology, I think, and "longoverdue" has been fraught with misunderstanding and ambiguity since its inception
+2015-04-03T14:24:54  <csharp> what we *wanted* was "auto-lost but use the term 'longoverdue' to show that it was system set"
+2015-04-03T14:25:19  <csharp> some of our specifications were vague on some of the finer points, so there are some differences
+2015-04-03T14:25:41  <csharp> the main one being whether longoverdue and paid for items should show on a patron account
+2015-04-03T14:26:12  <kmlussier> Oh, but in this case are they paid for or are they just long overdue?
+2015-04-03T14:26:33  <csharp> s/items/circs/  - even the terminology can get confusing just talking about it ;-)
+2015-04-03T14:27:10  <csharp> we probably want them to act like Lost items and *not* show
+2015-04-03T14:27:47  <csharp> but I can understand the thought behind the "longoverdue means still checked out" that led to the fact that they *do* continue to show after payment
+2015-04-03T14:27:52  <kmlussier> csharp: OK, in that case then, it probably would be worthwhile to have a YAOUS.
+2015-04-03T14:28:00  <csharp> I haven't seen Bmagic's issue yet, though
+2015-04-03T14:28:16  <csharp> kmlussier: I agree, since there are different expectations
+2015-04-03T14:28:27  <kmlussier> And I hadn't considered the after payment question. I think my opinion is different for longoverdues that have been paid.
+2015-04-03T14:28:46  <Dyrcona> Well, for that you have lostandpaid.
+2015-04-03T14:28:53  <Dyrcona> At least, you do now. ;)
+2015-04-03T14:28:58  <kmlussier> But not all sites use lostandpaid.
+2015-04-03T14:29:10  <csharp> yeah, we're not using lostandpaid
+2015-04-03T14:29:21  * csharp makes note to investigate that later
+2015-04-03T14:29:24  <Dyrcona> Too many options, choices, and knobs. It's as simple as that. :)
+2015-04-03T14:29:31  <csharp> Dyrcona: true dat
+2015-04-03T14:30:02  <jeff> relevant: bug 1424646
+2015-04-03T14:30:02  <pinesol_green> Launchpad bug 1424646 in Evergreen "Paid-For Long Overdue Items Still Appear in "Other/Special Circulations" Window" (affected: 3, heat: 16) [Undecided,New] https://launchpad.net/bugs/1424646
+2015-04-03T14:30:02  * csharp wishes our libraries had just gone with automatic lost and not gone down the longoverdue path
+2015-04-03T14:30:20  <kmlussier> csharp: FWIW, I find that's it's difficult to outline every piece of behavior you need to outline when writing up specs for a project like this. Finer points always get missed. :)
+2015-04-03T14:30:32  <csharp> jeff++ # thanks - I was pretty sure I'd done a bug on it
+2015-04-03T14:30:44  <csharp> kmlussier: yup
+2015-04-03T14:31:08  <kmlussier> csharp: We also have a couple of sites that are very happy the longoverdue functionality is there.
+2015-04-03T14:31:23  <csharp> overall, we're really happy with it
+2015-04-03T14:31:25  <Dyrcona> It's the same as lost, just a different name.
+2015-04-03T14:31:31  <kmlussier> Although, even here, there are differences in the way our sites are implementing it.
+2015-04-03T14:31:42  <csharp> if the paid-for longoverdues didn't show on the list of items out, we'd be cool
+2015-04-03T14:31:56  <Dyrcona> We don't use it or lostand paid. We'd figured it would cause too much confusion. :)
+2015-04-03T14:32:15  <csharp> and obviously, if Bmagic's OPAC-side issue affects us, we'll want that fix too
+2015-04-03T14:32:26  <Dyrcona> csharp: That is a bug, IMO.
+2015-04-03T14:32:46  <csharp> Dyrcona: the irony is that "longoverdue" was chosen so that it would be immediately clear to staff what had happened
+2015-04-03T14:33:11  <Dyrcona> csharp: Yes, that seems like it would be simpler to explain than "lost" which could have different meanings.
+2015-04-03T14:33:18  <csharp> after we implemented it, though, we got lots of "what is this?" tickets
+2015-04-03T14:33:33  <Dyrcona> But, having a committee vote to change a numeric limit from 10 to 20 is enough to confuse some people.
+2015-04-03T14:33:52  <csharp> Dyrcona: heh - we've got lots of examples like that
+2015-04-03T14:34:39  <Dyrcona> In our case, all of the limits were 20 but this one, so the Executive committee decided it would be less confusing to make this one 20 also. :)
+2015-04-03T14:34:57  <Dyrcona> Confusion over the change ensues....
+2015-04-03T14:35:00  <csharp> "and now we have X+1 problems..."
+2015-04-03T14:35:13  <Dyrcona> In general, I think librarians, and circ staff in particular, do not like change.
+2015-04-03T14:35:47  * Dyrcona has a MSLS, so is technically a librarian.
+2015-04-03T14:37:15  <Dyrcona> csharp: And tomorrow it will be X+2. :)
+2015-04-03T14:55:34  <Bmagic> csharp: we adpoted it with the thought that long overdue would happen first, then eventually the trigger to make them lost would come later. We didn't want the same functionality as lost in the mean time
+2015-04-03T14:56:20  <Bmagic> csharp: So we introduced the library setting "Assess Billing When Marked Long-Overdue" from this bug https://bugs.launchpad.net/evergreen/+bug/1331174
+2015-04-03T14:56:20  <pinesol_green> Launchpad bug 1331174 in Evergreen "Long Overdue processing needs org unit settings separate from Lost Processing" (affected: 3, heat: 14) [Wishlist,Confirmed]
+2015-04-03T15:01:52  <mmorgan> Bmagic: Have you implemented this?
+2015-04-03T15:02:31  <Bmagic> mmorgan: We were sort of waiting for it to be tested, now that it has, we are feeling good about merging it
+2015-04-03T15:06:23  <mmorgan> gotcha. How were you thinking of using the Long Overdue vs. Lost?
+2015-04-03T15:35:17  <Bmagic> mmorgan: So the trigger would turn something into long overdue and fire an alert to the patron at 20 days overdue and not bill. Then at 40 days overdue, the trigger would mark them lost and bill them accordingly. For example.
+2015-04-03T15:36:09  *** gsams has quit IRC
+2015-04-03T15:37:24  *** gsams has joined #evergreen
+2015-04-03T15:40:26  <mmorgan> Ok, thanks. We were thinking similarly. Probably longer intervals, though. We would also use the long overdue status to help staff identify the items better, and block the patron appropriately.
+2015-04-03T15:41:05  *** collum has quit IRC
+2015-04-03T15:48:44  *** mrpeters has left #evergreen
+2015-04-03T16:19:50  <Bmagic> mmorgan: exactly
+2015-04-03T16:20:01  *** maryj has quit IRC
+2015-04-03T16:26:54  <jonadab> Just one more data point, the phrase "long overdue" to our staff means something different from "lost".  "lost" means the patron's account has been charged for the item, "long overdue" merely means they can't check other items out until they deal with the item (either bring it back or declare it lost), IIRC.  Something like that.
+2015-04-03T16:30:20  *** Shae has quit IRC
+2015-04-03T16:42:08  *** ericar has quit IRC
+2015-04-03T16:48:38  *** RoganH has quit IRC
+2015-04-03T16:52:02  <mmorgan> jonadab: Yes, that's what this option is meant to allow. A way to identify the items as seriously overdue, and provide a condition that can apply a block to the patron.
+2015-04-03T16:53:15  <jonadab> Sounds good.
+2015-04-03T16:58:56  *** Dyrcona has quit IRC
+2015-04-03T17:05:34  *** mmorgan has left #evergreen
+2015-04-03T17:08:48  *** graced has quit IRC
+2015-04-03T17:17:42  <Bmagic> What does a "-1" mean in the context of hold status? Inside a patron xul UI?
+2015-04-03T17:18:49  <Bmagic> Another example of a status would be "Waiting for Copy"
+2015-04-03T17:18:55  <berick> Bmagic: it means there's something inconsistent with with the hold
+2015-04-03T17:19:01  <berick> "something ain't right"
+2015-04-03T17:19:30  <Bmagic> berick: so it won't be filled? In this example, there is a current copy
+2015-04-03T17:20:34  <berick> what's the copy status?
+2015-04-03T17:20:35  <phasefx> Bmagic: happens most often with data migrations, say, a hold thinks it has something on the hold shelf but the item status doesn't agree
+2015-04-03T17:20:37  <Bmagic> available
+2015-04-03T17:20:49  <berick> that's it
+2015-04-03T17:20:56  <berick> it should be on-holds-shelf or in-transit
+2015-04-03T17:20:58  <Bmagic> could be the reshelver?
+2015-04-03T17:21:00  *** Newziky has left #evergreen
+2015-04-03T17:21:36  <berick> if it was captured while reshelver was running, maybe
+2015-04-03T17:22:45  <Bmagic> Thanks, I think that will get me to the answer
+2015-04-03T17:29:58  *** yboston has quit IRC
+2015-04-03T17:40:21  <csharp> bmills: just sent you an email re: the shuttle
+2015-04-03T17:40:56  <csharp> my flight is scheduled to arrive at 4:51 p.m. Tuesday and I'm hoping it will wait for me (understanding if not, though ;-))
+2015-04-03T18:10:59  <Bmagic> have a good weekend everyone!
+2015-04-03T18:14:04  *** buzzy has quit IRC
+2015-04-03T18:50:55  *** sandbergja has quit IRC
+2015-04-03T19:18:03  <jeff> oh, that's right. there's a conference coming up.
+2015-04-03T19:48:24  *** chatley has quit IRC
+2015-04-03T22:52:24  *** bmills has quit IRC

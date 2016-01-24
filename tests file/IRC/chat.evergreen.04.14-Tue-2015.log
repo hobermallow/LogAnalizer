@@ -1,0 +1,297 @@
+2015-04-14T01:47:14  *** Newziky has joined #evergreen
+2015-04-14T02:26:08  *** chatley has quit IRC
+2015-04-14T02:26:19  *** dreuther has quit IRC
+2015-04-14T02:27:27  *** dreuther has joined #evergreen
+2015-04-14T02:27:37  *** chatley has joined #evergreen
+2015-04-14T02:31:42  *** dreuther has quit IRC
+2015-04-14T02:31:53  *** chatley has quit IRC
+2015-04-14T02:34:00  *** dreuther has joined #evergreen
+2015-04-14T02:34:04  *** chatley has joined #evergreen
+2015-04-14T05:01:25  *** chatley has quit IRC
+2015-04-14T05:01:26  *** dreuther has quit IRC
+2015-04-14T05:02:32  *** dreuther has joined #evergreen
+2015-04-14T05:03:13  *** chatley has joined #evergreen
+2015-04-14T05:08:59  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-14T05:31:11  *** remingtron has quit IRC
+2015-04-14T05:31:30  *** remingtron has joined #evergreen
+2015-04-14T06:02:03  *** rashma_ has joined #evergreen
+2015-04-14T06:02:41  *** rashma has quit IRC
+2015-04-14T06:02:46  *** rashma_ is now known as rashma
+2015-04-14T06:22:55  *** gsams has joined #evergreen
+2015-04-14T06:25:44  *** geoffsams has quit IRC
+2015-04-14T07:25:50  *** jboyer-isl has joined #evergreen
+2015-04-14T07:26:32  *** graced has joined #evergreen
+2015-04-14T07:48:17  *** mrpeters has joined #evergreen
+2015-04-14T07:58:36  *** collum has joined #evergreen
+2015-04-14T08:00:15  *** pmurray_away is now known as pmurray
+2015-04-14T08:00:23  *** pmurray is now known as pmurray_away
+2015-04-14T08:05:12  *** rjackson_isl has joined #evergreen
+2015-04-14T08:49:16  *** RoganH has joined #evergreen
+2015-04-14T08:55:01  *** Shae has joined #evergreen
+2015-04-14T09:00:48  *** pmurray_away is now known as pmurray
+2015-04-14T09:03:30  *** ericar has joined #evergreen
+2015-04-14T09:07:27  *** Dyrcona has joined #evergreen
+2015-04-14T09:10:22  * jeff does the "no longer on 2.5" dance
+2015-04-14T09:10:51  <csharp> jeff++
+2015-04-14T09:11:15  *** tsbere has joined #evergreen
+2015-04-14T09:11:32  * csharp does the "trying to build EG debs on 14.04" shuffle
+2015-04-14T09:12:08  <jeff> ESI++ also
+2015-04-14T09:12:30  * Dyrcona does "the cleanup after OOM killer" twitch.
+2015-04-14T09:12:36  <jeff> and Callender++ in particular
+2015-04-14T09:22:07  *** substack has left #evergreen
+2015-04-14T09:27:47  *** Dyrcona has quit IRC
+2015-04-14T09:28:07  *** yboston has joined #evergreen
+2015-04-14T09:29:39  *** Dyrcona has joined #evergreen
+2015-04-14T09:33:36  <dbwells> bshum: https://bugs.launchpad.net/evergreen/+bug/1443952
+2015-04-14T09:33:37  <pinesol_green> Launchpad bug 1443952 in Evergreen 2.8 "Fines can accrue past max (up to double) on lost item return with certain settings" (affected: 1, heat: 6) [High,New]
+2015-04-14T09:42:50  <Dyrcona> kmlussier: Would you like to test the above on my dev server?
+2015-04-14T10:06:17  <bshum> dbwells: I'll poke at that again shortly.
+2015-04-14T10:06:45  <bshum> Trying to see if we found more problems. Got a report that checkin modifiers aren't working now.
+2015-04-14T10:07:02  <bshum> Specifically clear hold shelf.
+2015-04-14T10:09:09  <bshum> Ugh, yep, bug
+2015-04-14T10:10:19  <bshum> It's spawning network errors.
+2015-04-14T10:13:36  <Dyrcona> So that's on 2.8?
+2015-04-14T10:13:46  <bshum> Yeah
+2015-04-14T10:13:54  <bshum> I'm not sure if it's cause of the last round of changes last night.
+2015-04-14T10:14:11  <bshum> Nobody mentioned it till this morning, but it could be that nobody was using circ modifiers till this morning.
+2015-04-14T10:14:21  <bshum> Err, checkin modifiers I mean
+2015-04-14T10:14:50  <kmlussier> Do you want me to test the clear holds shelf on another server?
+2015-04-14T10:15:05  <bshum> kmlussier: If you don't mind, yeah
+2015-04-14T10:15:10  <kmlussier> Dyrcona: I don't know if I should test that patch since I never saw the problem behavior.
+2015-04-14T10:15:17  <bshum> I'm getting a snap of the error
+2015-04-14T10:15:35  <bshum> It looked mightily unhappy
+2015-04-14T10:15:41  <Dyrcona> kmlussier: It apparently only happens in master/2.8, so you wouldn't have seen it in the wild.
+2015-04-14T10:16:12  <bshum> kmlussier: Actually it'd be good to see if you see the error in master or 2.8 before dbwells' refactoring of code
+2015-04-14T10:16:21  <bshum> From the branch above
+2015-04-14T10:16:39  <bshum> If it doesn't happen there, then it might be something that got  moved around wrong in the code
+2015-04-14T10:16:42  <Dyrcona> bshum: Under what circumstances do you see the error?
+2015-04-14T10:16:57  <Dyrcona> I mean the network error with clear holds shelf.
+2015-04-14T10:17:56  <Dyrcona> Never mind, I found it!
+2015-04-14T10:18:07  <bshum> Call to [open-ils.circ.checkin] failed for session ... thread trace [1]:\nCan't locate object method \"max_chunk_size\" via package \"OpenSRF::AppSubrequest\" at /usr/local/share/perl/5.14.2/OpenILS/Application/Circ/Holds.pm line 3630.
+2015-04-14T10:18:18  <bshum> Something like that.  (sorry typed that, I hate screenshots)
+2015-04-14T10:18:40  <Dyrcona> Looks like an OpenSRF problem.
+2015-04-14T10:18:44  <kmlussier> I found it too. But I suspect Dyrcona and I might be using the same server. :)
+2015-04-14T10:18:47  <bshum> Yeah, it's not good.
+2015-04-14T10:18:47  <Dyrcona> Yep, that's what I get.
+2015-04-14T10:19:31  <Dyrcona> Although, could be something was removed from OpenSRF and Holds.pm was missed when Evergreen was fixed.
+2015-04-14T10:19:45  <bshum> We didn't change OpenSRF when we upgraded. Since not enough changed for us.
+2015-04-14T10:19:54  <Dyrcona> bshum: if you bug it, I'll comfirm it.
+2015-04-14T10:19:56  <csharp> that sub does exist in OpenSRF::AppSession
+2015-04-14T10:20:16  <tsbere> Doesn't look like OpenSRF changed much in that department
+2015-04-14T10:20:24  <Dyrcona> Right, but is it in the OpenSRF::AppSubrequest package?
+2015-04-14T10:21:32  <csharp> nope - AppRequest
+2015-04-14T10:21:46  <Dyrcona> Well, then, Holds.pm has the bug.
+2015-04-14T10:21:57  <csharp> OpenSRF::AppRequest
+2015-04-14T10:22:03  <tsbere> Looks like 4ccbf980e1f2eadf9f99e015e7ac3d4765d046f2 is the likely "added max_chunk_size" commit
+2015-04-14T10:22:03  <pinesol_green> [evergreen|Mike Rylander] LP#1402797 Hold Shefl: Use max_chunk_size to pass updates in a timely fashion; Notify on the correct array to allow paging back to work - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4ccbf98>
+2015-04-14T10:22:32  <bshum> http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4ccbf980e1f2eadf9f99e015e7ac3d4765d046f2
+2015-04-14T10:22:32  <pinesol_green> [evergreen|Mike Rylander] LP#1402797 Hold Shefl: Use max_chunk_size to pass updates in a timely fashion; Notify on the correct array to allow paging back to work - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=4ccbf98>
+2015-04-14T10:22:38  <bshum> Ah, yeah
+2015-04-14T10:23:03  <bshum> bug 1402797
+2015-04-14T10:23:03  <pinesol_green> Launchpad bug 1402797 in Evergreen "Browser client sprint1 miscellaneous repairs" (affected: 2, heat: 12) [Undecided,New] https://launchpad.net/bugs/1402797
+2015-04-14T10:23:09  <bshum> of course...
+2015-04-14T10:23:09  <bshum> Sigh
+2015-04-14T10:23:33  <bshum> Well that ain't good
+2015-04-14T10:23:42  <berick> what version of opensrf you running, bshum?
+2015-04-14T10:24:04  <bshum> berick: Master as of e8f78636586aeca15632bcfbf0cae20beb2d66a6
+2015-04-14T10:24:04  <pinesol_green> [opensrf|Galen Charlton] LP#1002028: set Access-Control-Expose-Headers - <http://git.evergreen-ils.org/?p=OpenSRF.git;a=commit;h=e8f7863>
+2015-04-14T10:24:25  <bshum> I didn't apply the last websocket thinko fix, the rest are just README changes
+2015-04-14T10:25:15  *** RoganH has quit IRC
+2015-04-14T10:25:17  <tsbere> Looks to me like OpenSRF has had the max_chunk_size in the current state for years anyway?
+2015-04-14T10:25:45  <berick> yeah, been there a while
+2015-04-14T10:27:19  <berick> ah, ok, so the func probably just needs to be added to OpenSRF::AppSubrequest
+2015-04-14T10:28:43  <berick> or teach EG to check for the presence of the func before calling it directly
+2015-04-14T10:30:53  * bshum ponders ripping it out for now and seeing if people can at least circ while we think about further solutions.
+2015-04-14T10:32:26  <kmlussier> Since it came from a web client repair, one would think it wouldn't cause harm to rip it out.
+2015-04-14T10:32:52  <bshum> That's what I'm thinking.
+2015-04-14T10:32:58  <berick> it won't hurt to remove it.  but it's just as easy to:
+2015-04-14T10:32:59  * bshum tries that first to get his people back on track
+2015-04-14T10:32:59  <berick> +    $client->max_chunk_size($$params{chunk_size}) if $client->can('max_chunk_size');
+2015-04-14T10:34:10  <berick> ok, it's not just as easy, but it's close
+2015-04-14T10:39:11  <bshum> berick: Alright I can try that.
+2015-04-14T10:39:29  <bshum> I wonder about the other line additions from that changeset and whether those need modification later.
+2015-04-14T10:39:36  <bshum> I haven't tested what those other things are yet.
+2015-04-14T10:40:24  <berick> hm, it is called in a couple of places
+2015-04-14T10:41:35  <berick> though i doubt any of the others are called in subrequests
+2015-04-14T10:41:52  <Dyrcona> Well, I can test it and see.
+2015-04-14T10:43:02  <Dyrcona> Wouldn't hurt to add the if everywhere though.
+2015-04-14T10:43:12  <berick> agreed
+2015-04-14T10:46:04  *** RoganH has joined #evergreen
+2015-04-14T11:02:52  <bshum> Whoops
+2015-04-14T11:02:55  <bshum> $$params is bad
+2015-04-14T11:03:04  <bshum> And causes things to blow up
+2015-04-14T11:04:12  <Dyrcona> kmlussier: Did you clear the hold shelf on my dev system?
+2015-04-14T11:04:14  <bshum> Or hmm
+2015-04-14T11:04:27  * bshum double checks what he's missing here
+2015-04-14T11:04:30  <kmlussier> Did I clear it? No
+2015-04-14T11:07:30  <Dyrcona> Well, looks like clear holds shelf in checkin behavior may have changed.
+2015-04-14T11:08:01  <Dyrcona> I checked in one copy with that modifier, but all of my expired hold shelf items now say they were cleared.
+2015-04-14T11:08:58  <Dyrcona> Hmm... I wonder if I have a dump old enough.
+2015-04-14T11:10:35  <Dyrcona> Nope. Can't get those holds back. I'd have to rig something or change locations.
+2015-04-14T11:21:15  <Dyrcona> Is Clear Holds Shelf supposed to clear the holds when you open the interface? I thought you had to actually do something to clear the holds.
+2015-04-14T11:22:36  <jboyer-isl> Dyrcona: That sounds familiar, and may be why we recommend staff here not use that feature. Should be an LP on it somewhere...
+2015-04-14T11:23:23  <bshum> https://bugs.launchpad.net/evergreen/+bug/1189980
+2015-04-14T11:23:23  <pinesol_green> Launchpad bug 1189980 in Evergreen "Clear Shelf-Expired Holds confirmation needed" (affected: 4, heat: 18) [Wishlist,Confirmed]
+2015-04-14T11:23:41  <jboyer-isl> Ah, bshum beat me to the paste. :)
+2015-04-14T11:24:04  <bshum> Dyrcona++ # rescuing me from bad mistakes
+2015-04-14T11:24:17  <bshum> berick++ # we're testing your fix now
+2015-04-14T11:24:33  <bshum> I'll get a bug report going on it later this afternoon after I finish writing up after-action reports.
+2015-04-14T11:27:25  <Dyrcona> I'll add the if statements in the other two places, just in case.
+2015-04-14T11:28:01  <Dyrcona> I'm not sure how to trigger clear_shelf_cache.
+2015-04-14T11:33:37  <berick> that's called by the UI after running clear-shelf
+2015-04-14T11:34:38  *** sandbergja has joined #evergreen
+2015-04-14T11:38:51  <Dyrcona> Well, so far it looks like only the clear holds shelf circ modifier needed the change, but I've added the ifs on all three max_chunk_size calls just to be safe on my dev system.
+2015-04-14T11:39:21  <Dyrcona> The pull lit and clearing the holds shelf seem to still work. :)
+2015-04-14T11:40:03  <berick> cool, as expected. Dyrcona++
+2015-04-14T12:27:32  *** bmills has joined #evergreen
+2015-04-14T12:32:30  *** Dyrcona has quit IRC
+2015-04-14T12:33:59  *** Newziky1 has joined #evergreen
+2015-04-14T12:38:02  *** mglass has joined #evergreen
+2015-04-14T12:40:06  *** bmills has quit IRC
+2015-04-14T12:41:35  *** Dyrcona has joined #evergreen
+2015-04-14T12:42:30  *** mglass_ has joined #evergreen
+2015-04-14T12:44:00  *** mglass__ has joined #evergreen
+2015-04-14T12:45:13  *** mglass has quit IRC
+2015-04-14T12:47:00  *** mglass_ has quit IRC
+2015-04-14T12:47:22  <Dyrcona> I am getting database query errors with browse holds shelf in master.
+2015-04-14T12:48:35  <Bmagic> delete from action.hold_request where 1=1  That should do it
+2015-04-14T12:48:48  <Dyrcona> Looks like it retrieved 46 out of 96 clearable holds then the errors start.
+2015-04-14T12:48:58  *** jihpringle has joined #evergreen
+2015-04-14T12:48:59  <Dyrcona> Don't even need the where.
+2015-04-14T12:49:13  <Bmagic> I know, lol, just wanted to be more funny
+2015-04-14T12:49:51  <Bmagic> Anything showing up in the opensrf logs?
+2015-04-14T12:50:38  <Dyrcona> 2015-04-14 12:40:14 EDT STATEMENT:  SELECT * FROM money.open_balance_by_owning_lib AS x WHERE 1=0;
+2015-04-14T12:50:38  <Dyrcona> 2015-04-14 12:40:14 EDT ERROR:  relation "money.open_circ_balance_by_circ_and_owning_lib" does not exist at character 15
+2015-04-14T12:50:44  <Dyrcona> That's from the postgres logs.
+2015-04-14T12:50:55  <csharp> I've seen that before
+2015-04-14T12:51:00  <Dyrcona> It may be related to a branch I installed, maybe that rings a bell with dbwells?
+2015-04-14T12:51:27  <jeff> i think that's an optional view in Open-ILS/src/sql/Pg/example.reporter-extension.sql
+2015-04-14T12:51:44  <Dyrcona> Although, that might not be it because that is possibly older.
+2015-04-14T12:51:50  <berick> yeah, looks like a startup error, probably harmless
+2015-04-14T12:52:09  <berick> (if you're not using the view)
+2015-04-14T12:52:34  <Dyrcona> Oh, nice.. Ran out of circ drones.
+2015-04-14T12:52:34  <jeff> yah. there's an IDL entry for rmocbbcol but it's not referenced... so it's not that something's trying to flesh to a class that lacks a view/table.
+2015-04-14T12:53:05  <csharp> so... has anyone played around with trying to get EG/OpenSRF running within the normal FHS locations (i.e., not /openils)?
+2015-04-14T12:53:13  <tsbere> Perhaps something reading the IDL is checking "does that exist for me to publish my methods for it?"
+2015-04-14T12:53:16  <berick> csharp: dbs has
+2015-04-14T12:53:21  <Dyrcona> Guess I should go with fresher data.
+2015-04-14T12:53:58  <jeff> tsbere: likely -- as berick said, "looks like a startup error, probably harmless"
+2015-04-14T12:54:25  <Dyrcona> Well, think my real problem is I ran out of circ drones.
+2015-04-14T12:54:36  <csharp> I'm interested in what would happen if I moved /openils/conf to /etc/openils or /etc/opensrf and moved the binary files to /usr/bin
+2015-04-14T12:54:41  <Dyrcona> And, I tried using a not so busy library.
+2015-04-14T12:54:47  * csharp will play with that if he gets the time
+2015-04-14T12:55:00  <csharp> right now just trying to build a deb the ol' fashioned way
+2015-04-14T12:55:05  <jeff> csharp: you'd likely find overlooked hardcoded assumptions worthy of bugs :-)
+2015-04-14T12:55:09  <jeff> (and fixing!)
+2015-04-14T12:55:31  <csharp> yep
+2015-04-14T12:56:48  <dbwells> people stop blaming me for stuff!  Just kidding, it's actually a pretty good strategy ;)
+2015-04-14T12:56:54  <Dyrcona> heh.
+2015-04-14T12:56:55  <jeff> the nice thing is that there are good examples to pattern fixes after, like how sitemap_generator uses "eg_config --sysconfdir" to construct a path to opensrf.xml instead of saying "/openils/conf/opensrf.xml unless otherwise specified on the command line"
+2015-04-14T12:57:15  <Dyrcona> Sorry, I just have the negative balance branch loaded and wasn't sure if it was something you added....
+2015-04-14T12:57:20  <jeff> (sitemap_generator being just the closest example at-hand)
+2015-04-14T12:58:06  <Dyrcona> csharp: You'll likely end up with a lot more .in files.
+2015-04-14T12:58:18  <Dyrcona> Well, maybe not a lot, but I'd suspect a few.
+2015-04-14T13:07:24  *** bmills has joined #evergreen
+2015-04-14T13:10:24  <dbs> csharp: I run EG/OpenSRF in FHS locations on Fedora, I put a bunch of work into patches that were accepted for that purpose a while back
+2015-04-14T13:11:16  <dbs> just bear in mind that I might have missed lots of scripts that wouldn't get invoked in regular dev/testing workflows that would suddenly become important in production
+2015-04-14T13:12:43  <dbs> I was hoping that we would cut over to standard FHS locations rather than continuing to document --prefix=/openils but since we've followed the latter path, wouldn't be surprised if more non-relocatable stuff creeps in
+2015-04-14T13:28:53  *** bmills has quit IRC
+2015-04-14T13:43:19  <csharp> dbs: great - looks like a good foundation
+2015-04-14T13:43:47  <csharp> I'll try and get that working on Ubuntu 14.04 and/or Debian jessie
+2015-04-14T13:45:58  * csharp wants the next Debian release to be "lotso"
+2015-04-14T13:47:07  <jeff> so i'd like to make a minor change to sitemap_generator to exclude the precat bib (bre.id -1) -- "id >= 1", "id >0", "id >-1"? I'm leaning toward "id >= 1"
+2015-04-14T13:47:20  <csharp> looks like that discussion has been had before, though: https://lists.debian.org/debian-curiosa/2010/07/msg00013.html
+2015-04-14T13:47:38  <jeff> i'm sure there are a myriad other ways of spelling it in the code already...
+2015-04-14T13:48:29  <bshum> jeff: I think that seems logical to me.
+2015-04-14T13:48:49  <bshum> Also there are potentials for negative bib IDs anyways (can't remember what uses it, but I think we go upwards past -45 last I looked)
+2015-04-14T13:49:13  <jeff> oh? i figured we'd potentially have others in the future, but i'm surprised that you have them now. :-)
+2015-04-14T13:49:24  <bshum> I can't remember what feature generates those.
+2015-04-14T13:49:35  <bshum> But something did.
+2015-04-14T13:49:45  <bshum> They're all deleted now, at least...
+2015-04-14T13:49:48  <bshum> But they still lurk there.
+2015-04-14T13:52:15  <eeevil> csharp: not FHS, but it certainly works outside /openils
+2015-04-14T13:52:20  <eeevil> (from before)
+2015-04-14T14:12:06  <jboyer-isl> eeevil: does that "not FHS" mean that it currently can't work from /usr/bin, or just that it will work from some other prefix and /usr/bin is uncertain?
+2015-04-14T14:13:32  <jeff> jboyer-isl: i took his statement to mean that eeevil has experience operating from a non-FHS, non-/openils location.
+2015-04-14T14:13:36  <berick> jboyer-isl: i think he means he didn't specifically test FHS, but did test other non-/openils options
+2015-04-14T14:16:44  <jboyer-isl> jeff, berick: makes sense, thanks.
+2015-04-14T14:19:17  <eeevil> jboyer-isl: there's no reason it won't work under FHS, but I'm using under a set of paths that are non-FHS
+2015-04-14T14:19:25  <eeevil> what berick said :)
+2015-04-14T14:20:41  <jboyer-isl> eeevil: that's good to hear. Maybe the next time I go to rebuild a dev server I'll try /usr/bin out and see how it goes.
+2015-04-14T14:22:27  <jeff> i believe we have gotten staff excited about trying the web staff client for basic patron/circ tasks. not 24 hours since upgrading to 2.7 we have inquiries. :-)
+2015-04-14T14:22:58  <csharp> jeff: the sign of a smooth upgrade ;-)
+2015-04-14T14:24:23  <berick> jeff++
+2015-04-14T14:26:10  <eeevil> Callender++
+2015-04-14T14:26:45  <berick> Callender++ indeed
+2015-04-14T14:26:50  <jeff> upgrade-wise, i just tested and cherry-picked things beforehand. Callender pulled the trigger in production, and every single contributor helped build a quality release. upgrades keep getting smoother.
+2015-04-14T14:27:35  <jeff> and yes, i'll repeat my increments from this morning's "no longer on 2.5 dance": ESI++ and Callender++ in particular :-)
+2015-04-14T14:30:03  *** Newziky1 has left #evergreen
+2015-04-14T14:31:17  <jeff> I think part of it is "lots of development effort focused elsewhere", part of it is "things are a bit more mature/stable", but also a good helping of "intentional efforts to make upgrades less painful" :-)
+2015-04-14T14:32:19  <jeff> I was surprised at how few external systems/processes needed tweaking as part of the upgrade. Even the number of (immediately required) changes to templates was low.
+2015-04-14T14:33:05  <jeff> And by low, I think I mean "zero changes required to maintain functionality", though of course we'll be making changes to enable new features, etc.
+2015-04-14T14:34:09  *** TaraC has quit IRC
+2015-04-14T14:59:18  *** bmills has joined #evergreen
+2015-04-14T15:11:38  *** TaraC has joined #evergreen
+2015-04-14T15:15:16  *** bmills1 has joined #evergreen
+2015-04-14T15:17:03  *** bmills has quit IRC
+2015-04-14T15:27:54  <jeff> It's gone well enough that I'm putting non-upgrade-related template changes in place (closing pre-upgrade tickets) and experimenting with sitemaps and robots.txt changes.
+2015-04-14T16:06:18  *** sarabee has quit IRC
+2015-04-14T16:09:47  *** collum has quit IRC
+2015-04-14T16:19:07  *** RBecker has quit IRC
+2015-04-14T16:20:32  *** RBecker has joined #evergreen
+2015-04-14T16:27:33  <pinesol_green> [evergreen|Galen Charlton] LP#1442701: prune 'message_id' and 'single' CGI params from TPAC dashboard links - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=07da4e2>
+2015-04-14T16:28:49  *** rjackson_isl has quit IRC
+2015-04-14T16:29:33  <pinesol_green> [evergreen|Galen Charlton] LP#1442695: install purge_pending_users.srfsh to /openils/bin by default - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=73d671a>
+2015-04-14T16:30:50  *** sarabee has joined #evergreen
+2015-04-14T16:31:34  <pinesol_green> [evergreen|Dan Wells] LP#1443952 Move overdue restore above lost void/adjustment - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=749e63f>
+2015-04-14T16:31:35  <pinesol_green> [evergreen|Dan Wells] LP#1443952 Lost fine handling refactor - <http://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=6b0d8e7>
+2015-04-14T16:43:14  *** bmills1 has quit IRC
+2015-04-14T16:43:24  *** bmills has joined #evergreen
+2015-04-14T16:45:52  *** Shae has quit IRC
+2015-04-14T16:51:28  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-04-14T17:00:43  *** Dyrcona has quit IRC
+2015-04-14T17:00:45  *** RoganH has quit IRC
+2015-04-14T17:03:10  *** ericar has quit IRC
+2015-04-14T17:10:16  *** graced has quit IRC
+2015-04-14T17:23:39  *** yboston has quit IRC
+2015-04-14T17:39:16  *** mglass has joined #evergreen
+2015-04-14T17:40:06  *** Newziky has left #evergreen
+2015-04-14T17:41:24  *** mrpeters has quit IRC
+2015-04-14T18:02:46  *** akilsdonk has joined #evergreen
+2015-04-14T18:02:48  <jeffdavis> anyone able to spare some eyeballs for bug 1429317 ?
+2015-04-14T18:02:48  <pinesol_green> Launchpad bug 1429317 in Evergreen "Serials in holdings view should be able to sort in ascending and descending order as well as by call number" (affected: 2, heat: 14) [Wishlist,New] https://launchpad.net/bugs/1429317
+2015-04-14T18:02:50  *** maryj has joined #evergreen
+2015-04-14T18:21:09  *** maryj has quit IRC
+2015-04-14T18:24:34  <dbwells> jeffdavis: I'm just about to head home, but I have looked at it a few times.  It seems pretty intense, and I have a number of questions about it.
+2015-04-14T18:26:28  <dbwells> Chief among them: is there a reason we aren't using the existing serial.unit sort_key field to sort?
+2015-04-14T18:27:14  *** akilsdonk has quit IRC
+2015-04-14T18:27:45  <dbwells> The sort_key is currently lacking for serials with no enumeration at all, but that would be a very doable enhancement.
+2015-04-14T18:28:13  <dbwells> I'll try to find some time tomorrow morning to comment on the bug ticket.
+2015-04-14T18:28:25  <ldw> dbwells: I wrote this code about a year ago, and I was not aware of sort_key at the time.
+2015-04-14T18:29:53  <dbwells> ldw: back in JSPAC we had a branch which tried to do something similar to this using the sort_key, but it never got integrated, then JSPAC went the way of the dodo.
+2015-04-14T18:30:45  <dbwells> It generally worked for us, but we never ported it to TPAC, as we generally don't track our serials at the issue-as-copy level.
+2015-04-14T18:30:56  <dbwells> At least not on the public side.
+2015-04-14T18:31:54  <ldw> the code in: XXX.schema.rank_serial_copy_by_issuance could be repurposed to populate sort_key if I understand how sort_key is supposed to be used.
+2015-04-14T18:32:48  <dbwells> I really gotta run, but I will still plan to comment on the bug as soon as possible.
+2015-04-14T18:33:08  <ldw> I tried to document that function fairly in-depth, but I will admit it was created over a week long nightly process with some other tweaks, and it is complex for me to look at as well.
+2015-04-14T18:39:37  <jeffdavis> dbwells++
+2015-04-14T18:39:38  <jeffdavis> ldw++
+2015-04-14T18:39:42  <jeffdavis> thanks!
+2015-04-14T19:09:42  *** mglass has quit IRC
+2015-04-14T19:23:07  *** jihpringle has quit IRC
+2015-04-14T20:37:11  *** graced has joined #evergreen
+2015-04-14T20:51:24  *** sandbergja has quit IRC
+2015-04-14T21:07:46  *** pmurray is now known as pmurray_away
+2015-04-14T21:10:56  *** graced has quit IRC
+2015-04-14T22:31:35  <kmlussier> @librarian
+2015-04-14T22:31:35  <pinesol_green> kmlussier: Management:12, Cataloging:15, Acquisitions:15, Reference:16, Circulation:10, Systems:14, Research:11, Custodial:9
+2015-04-14T22:47:02  <bshum> @roulette
+2015-04-14T22:47:02  <pinesol_green> bshum: *click*
+2015-04-14T23:12:53  <kmlussier> @sortinghat
+2015-04-14T23:12:53  <pinesol_green> Hmm... kmlussier... Let me see now... RAVENCLAW!
+2015-04-14T23:14:03  <bshum> Heh
+2015-04-14T23:14:18  <kmlussier> @sortinghat bshum
+2015-04-14T23:14:18  <pinesol_green> Hmm... bshum... Let me see now... SLYTHERIN!
+2015-04-14T23:14:23  <kmlussier> I knew it!
+2015-04-14T23:18:35  *** RBecker has quit IRC
+2015-04-14T23:24:33  *** RBecker has joined #evergreen

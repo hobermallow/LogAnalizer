@@ -1,0 +1,222 @@
+2015-03-09T00:00:05  *** bmills has quit IRC
+2015-03-09T01:42:52  *** RBecker has quit IRC
+2015-03-09T01:43:46  *** RBecker has joined #evergreen
+2015-03-09T01:49:43  *** bmills has joined #evergreen
+2015-03-09T01:54:17  *** bmills has quit IRC
+2015-03-09T03:03:04  <bshum> Insomnia sucks.  But I'm going to try to sleep a little now... :\
+2015-03-09T03:13:52  *** remingtron_ has joined #evergreen
+2015-03-09T03:16:22  *** _bott_ has quit IRC
+2015-03-09T03:17:09  *** remingtron has quit IRC
+2015-03-09T03:17:15  *** _bott_ has joined #evergreen
+2015-03-09T03:42:15  *** dbwells_ has joined #evergreen
+2015-03-09T03:45:17  *** dbwells has quit IRC
+2015-03-09T05:04:02  *** book` has quit IRC
+2015-03-09T05:06:10  *** book` has joined #evergreen
+2015-03-09T05:14:31  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-09T07:27:51  *** jboyer-isl has joined #evergreen
+2015-03-09T07:49:37  *** graced has joined #evergreen
+2015-03-09T08:18:37  *** mrpeters has joined #evergreen
+2015-03-09T08:19:24  *** ericar has joined #evergreen
+2015-03-09T08:22:29  *** pmurray_away is now known as pmurray
+2015-03-09T08:24:20  *** mrpeters has quit IRC
+2015-03-09T08:30:07  *** mrpeters has joined #evergreen
+2015-03-09T08:32:01  *** akilsdonk has joined #evergreen
+2015-03-09T08:35:40  *** mmorgan has joined #evergreen
+2015-03-09T08:42:27  *** collum has joined #evergreen
+2015-03-09T08:43:28  *** ericar has quit IRC
+2015-03-09T08:45:35  *** Dyrcona has joined #evergreen
+2015-03-09T08:47:52  *** rjackson_isl has joined #evergreen
+2015-03-09T08:49:01  *** sarabee has joined #evergreen
+2015-03-09T08:57:16  *** Shae has joined #evergreen
+2015-03-09T09:06:45  *** dbwells_ is now known as dbwells
+2015-03-09T09:08:30  *** remingtron_ is now known as remingtron
+2015-03-09T09:12:18  *** ericar has joined #evergreen
+2015-03-09T09:14:12  *** julialima_ has joined #evergreen
+2015-03-09T09:28:18  *** Newziky has joined #evergreen
+2015-03-09T09:35:44  *** maryj has joined #evergreen
+2015-03-09T09:50:10  <kmlussier> Happy Monday #evergreen!
+2015-03-09T09:52:46  <csharp> Happy George Vernon Hudson Day!
+2015-03-09T09:53:52  * kmlussier googles George Vernon Hudson and now knows who to blame for her excessive sleepiness this morning.
+2015-03-09T09:54:14  <csharp> all because he wanted more evening daylight hours to hunt bugs
+2015-03-09T09:54:51  <kmlussier> I think I hate that man.
+2015-03-09T09:54:56  <csharp> "I could either 1) get up an hour earlier and hunt bugs in the morning or 2) force the entire Western world to get up an hour earlier.  I choose 2!
+2015-03-09T09:55:03  <csharp> "
+2015-03-09T09:57:13  *** dkyle has joined #evergreen
+2015-03-09T09:57:23  *** yboston has joined #evergreen
+2015-03-09T09:58:30  *** akilsdonk has quit IRC
+2015-03-09T10:45:17  * berick wonders if this Wed. is too early to cut RC1
+2015-03-09T10:46:44  <bshum> berick: fwiw, mceraso and I were planning on getting a full sized test system (with a snapshot of our production db) upgraded to latest master (aka 2.8) in the next couple days.
+2015-03-09T10:47:10  <bshum> So I'll let you know if anything blows up ;)
+2015-03-09T10:47:57  <bshum> Along the way, I decided to try out PG 9.4.
+2015-03-09T10:48:15  <berick> bshum: good to know
+2015-03-09T10:48:24  <bshum> I'm poking at that more this afternoon to see what blows up, if anything.
+2015-03-09T10:49:27  <bshum> Nobody uses the .0 version anyways. Smart ones wait for the .1
+2015-03-09T10:49:38  * bshum is only half kidding
+2015-03-09T10:49:55  <Dyrcona> I have master as of Friday running on my development vm.
+2015-03-09T10:54:54  <csharp> I did more experimentation with new ejabberd and Fedora - I discovered that Debian Jessie is running the same version, but Debian works while Fedora 21's ejabberd is utterly broken ;-/
+2015-03-09T10:55:01  <csharp> (version is 14.07)
+2015-03-09T10:57:37  <Dyrcona> Welcome to the wonderful world of erlang packages.....
+2015-03-09T10:57:44  <csharp> https://bugzilla.redhat.com/show_bug.cgi?id=1163812 is the bug report - looks like someone has suggested a workaround to get users registered (comment 2)
+2015-03-09T10:58:03  <csharp> Dyrcona: yeah, it gets pretty deep pretty fast
+2015-03-09T10:58:08  * Dyrcona wonders if the ousted Debian maintainer ended up at Red Hat..... ;)
+2015-03-09T10:58:27  <csharp> heh
+2015-03-09T11:28:58  *** akilsdonk has joined #evergreen
+2015-03-09T12:06:35  *** jihpringle has joined #evergreen
+2015-03-09T12:13:12  *** buzzy has joined #evergreen
+2015-03-09T12:19:12  *** bbqben has joined #evergreen
+2015-03-09T12:23:58  *** maryj has quit IRC
+2015-03-09T12:41:14  <csharp> asciidoc++
+2015-03-09T12:41:22  <csharp> @karma asciidoc
+2015-03-09T12:41:22  <pinesol_green> csharp: Karma for "asciidoc" has been increased 5 times and decreased 1 time for a total karma of 4.
+2015-03-09T12:44:51  *** maryj has joined #evergreen
+2015-03-09T12:45:19  *** bmills has joined #evergreen
+2015-03-09T12:47:07  *** sandbergja has joined #evergreen
+2015-03-09T13:07:33  <bshum> julialima++
+2015-03-09T13:12:29  <julialima_> :)
+2015-03-09T13:12:57  <julialima_> Evergreen++
+2015-03-09T13:17:00  *** wjr has joined #evergreen
+2015-03-09T13:17:55  <dbs> julialima++ # indeed - you're always welcome here!
+2015-03-09T13:29:47  *** bbqben has quit IRC
+2015-03-09T13:39:40  *** bbqben has joined #evergreen
+2015-03-09T13:50:01  *** akilsdonk has quit IRC
+2015-03-09T14:15:18  <dbs> bshum: Hmm. I wonder if Howard is getting hit by the "yaz package in distro repo doesn't work" problem
+2015-03-09T14:15:55  <dbs> but then i read it all over again and no, it sounds like yaz is working just fine
+2015-03-09T14:16:00  * dbs has no idea
+2015-03-09T14:16:15  <bshum> dbs: I'm not sure what you mean about the yaz package not working actually.
+2015-03-09T14:16:31  <bshum> As far as I knew, it was fine, but maybe I'm behind somewhere.
+2015-03-09T14:16:43  <dbs> it's fine for him. Doesn't work in wheezy IIR
+2015-03-09T14:16:45  <dbs> IIRC
+2015-03-09T14:16:48  <bshum> We're talking about Ubuntu's yaz
+2015-03-09T14:16:53  <dbs> yeah
+2015-03-09T14:17:32  <dbs> actually yes, Ubuntu's yaz is toast
+2015-03-09T14:17:40  * dbs is so confused and should not be on IRC
+2015-03-09T14:18:12  * jonadab tosses dbs a unicorn horn.
+2015-03-09T14:21:03  <Dyrcona> Ubuntu 12.04's yaz is toast. 14.04 is OK.
+2015-03-09T14:22:42  <dbs> Dyrcona++ # thank you
+2015-03-09T14:24:18  <bshum> Are you sure?  I thought 12.04 was fine and it was 10.04 that was broken back in the day.  (which is why I started just using the yaz that came direct off the repo and just using the "latest" version)
+2015-03-09T14:24:33  * bshum looks for what everyone's talking about yaz being broken
+2015-03-09T14:27:11  <Dyrcona> More correctly, simple2zoom blows up with the yaz that shipped with 12.04: lp 117332
+2015-03-09T14:27:11  <pinesol_green> Launchpad bug 124896 in spe (Ubuntu Hardy) "duplicate for #117332 spe 0.8.2a+repack-1 fails with python-wxgtk2.8" (affected: 0, heat: 204) [High,Fix released] https://launchpad.net/bugs/124896 - Assigned to Stani (stani)
+2015-03-09T14:27:19  <Dyrcona> oh....
+2015-03-09T14:27:23  <Dyrcona> wrong bug number
+2015-03-09T14:27:33  <Dyrcona> lp 1172332
+2015-03-09T14:27:33  <pinesol_green> Launchpad bug 1172332 in Evergreen "simple2zoom has segmentation faults" (affected: 1, heat: 8) [Undecided,Confirmed] https://launchpad.net/bugs/1172332
+2015-03-09T14:27:51  <Dyrcona> Switching the indexdata package resolved it for me.
+2015-03-09T14:28:39  *** bmills has quit IRC
+2015-03-09T14:29:14  <bshum> That sounds more familiar to me.
+2015-03-09T14:29:16  <dbs> and that's what resolved it for us, too. but we got pushback on standardizing that
+2015-03-09T14:29:37  <bshum> I did find an older closed bug on yaz issues too https://bugs.launchpad.net/evergreen/+bug/802523, but that was long ago resolved, and we don't support 10.04 anymore anyways.
+2015-03-09T14:29:37  <pinesol_green> Launchpad bug 802523 in Evergreen master "Yaz & XML::RPC packages broken on Ubuntu Lucid" (affected: 2, heat: 10) [Medium,Fix released]
+2015-03-09T14:30:10  <bshum> That issue is for external access to Evergreen's z39.50 though right?  The simple2zoom issue/
+2015-03-09T14:30:27  <bshum> Meaning if someone tries to talk to our Evergreen server and we have a broken yaz, they can't get anything from us.
+2015-03-09T14:30:45  <bshum> vs. Howard's problem where he seemed not to find bibs on other z39.50 sources and pulling them in?
+2015-03-09T14:30:51  <bshum> (i.e. different problems?)
+2015-03-09T14:30:56  <Dyrcona> bshum: I think they get the first so many results, and it dies if they ask for more.
+2015-03-09T14:31:00  <bshum> Just trying not to conflate issues.
+2015-03-09T14:31:46  <Dyrcona> Howard's problem is a lack of knowledge.
+2015-03-09T14:33:31  <bshum> Fwiw, I also use Indexdata's repo, just cause I like being on the edge and making fun of other vendors who still use archaic older versions.
+2015-03-09T14:34:12  <bshum> But only for our z39.50 server.  The rest of our app servers use the regular packaged versions that come with their distros.
+2015-03-09T14:34:34  <bshum> So it's a specific problem area to me :\
+2015-03-09T14:47:08  <Dyrcona> Well, most people don't split hairs. If anything related to Evergreen fails, it's an Evergreen problem. :)
+2015-03-09T14:47:28  <csharp> @blame Evergreen
+2015-03-09T14:47:28  <pinesol_green> csharp: Evergreen wants the TRUTH?! Evergreen CAN'T HANDLE THE TRUTH!!
+2015-03-09T15:00:08  <Dyrcona> @blame Ubuntu
+2015-03-09T15:00:08  <pinesol_green> Dyrcona: Ubuntu must eat cottage cheese!
+2015-03-09T15:00:57  <dbs> bshum: yes, sorry, my confused memory was around yaz w/ simple2zoom specific, as Dyrcona pointed out
+2015-03-09T15:01:18  <dbs> Dyrcona++ # again, thanks
+2015-03-09T15:01:31  <Dyrcona> Well, I still blame the yaz package on Ubuntu for the seg faults. You just don
+2015-03-09T15:01:37  <Dyrcona> don't notice it in the staff client.
+2015-03-09T15:03:39  <Dyrcona> Unrelated lp 1026869 is driving me nuts, and I may work on it in my own time.
+2015-03-09T15:03:39  <pinesol_green> Launchpad bug 1026869 in firefox (Ubuntu) "Firefox accepts dictionaries and spell check entries from every which spell check backend, leaving problems with defaults and the language selector enables this behavior" (affected: 2, heat: 10) [Undecided,Confirmed] https://launchpad.net/bugs/1026869
+2015-03-09T15:03:52  *** buzzy has joined #evergreen
+2015-03-09T15:09:17  *** akilsdonk has joined #evergreen
+2015-03-09T15:15:24  *** chatley has quit IRC
+2015-03-09T15:16:34  *** chatley has joined #evergreen
+2015-03-09T15:16:51  *** Bmagic has joined #evergreen
+2015-03-09T15:18:47  *** Callender_ has joined #evergreen
+2015-03-09T15:20:52  *** bmills has joined #evergreen
+2015-03-09T15:21:32  *** Callender has quit IRC
+2015-03-09T15:26:18  * Dyrcona figures out how to debug the hold targeter.
+2015-03-09T15:30:51  *** ericar has quit IRC
+2015-03-09T15:31:45  <jeffdavis> after applying the security fix for bug 1424755, we are finding that some org settings related to patron registration are not working correctly - anyone else see this?
+2015-03-09T15:31:45  <pinesol_green> Launchpad bug 1424755 in Evergreen 2.7 "Org Unit Setting View Permissions Can Be Bypassed" (affected: 1, heat: 256) [Critical,Fix committed] https://launchpad.net/bugs/1424755
+2015-03-09T15:35:35  <Dyrcona> jeffdavis: You might have added permissions to them.
+2015-03-09T15:35:46  <Dyrcona> I don't think they come that way in stock.
+2015-03-09T15:36:12  <Dyrcona> I know we've added permissions to some org unit settings, but can't say which ones off the top of my head.
+2015-03-09T15:36:36  <Dyrcona> Also, they may have had permissions at one time, that were removed in the schema files, but no upgrade script was made.
+2015-03-09T15:36:59  <Dyrcona> I vaguely recall something like that happening once, but could be a faulty memory.
+2015-03-09T15:37:33  <Dyrcona> I do believe the only thing with permissions in stock these days are related to credit card processor settings.
+2015-03-09T15:37:47  <Dyrcona> View permission, anyway.
+2015-03-09T15:40:42  <jeffdavis> I'm quite sure we added perms to the affected settings. But the issue is that the behavior governed by the settings is not affected by the setting, not that you can't view/edit the settings in the settings editor interface.
+2015-03-09T15:41:47  <jeffdavis> Hmm.
+2015-03-09T16:00:16  *** bmills has quit IRC
+2015-03-09T16:03:38  *** collum has quit IRC
+2015-03-09T16:11:18  *** Shae has quit IRC
+2015-03-09T16:15:56  <Dyrcona> jeffdavis: I do not think I follow what you last said.
+2015-03-09T16:16:12  <jeff> I think I have a lead, based on some further details.
+2015-03-09T16:16:44  <Dyrcona> OK.
+2015-03-09T16:16:54  *** julialima_ has left #evergreen
+2015-03-09T16:23:50  *** maryj has quit IRC
+2015-03-09T16:27:38  *** rjackson_isl has quit IRC
+2015-03-09T16:29:07  *** ericar has joined #evergreen
+2015-03-09T16:29:47  *** jboyer-isl has quit IRC
+2015-03-09T16:42:33  *** bbqben has quit IRC
+2015-03-09T16:46:48  <kmlussier> @dessert [someone]
+2015-03-09T16:46:48  * pinesol_green grabs some Banana Puddin' for kitteh_
+2015-03-09T16:49:26  * bshum wants chocolate.
+2015-03-09T16:49:33  <bshum> @dessert search chocolate
+2015-03-09T16:49:33  <pinesol_green> bshum: 6 found: #1: "Chocolate Chip Cookies", #26: "pineapple chocolate things from New Zealand", #27: "Chocolate Mousse", #28: "of jcamins' amazing mint-wasabi chocolate chip...", #2: "Chocolate Pudding", and #3: "Mint Chocolate Chip Ice Cream"
+2015-03-09T16:49:36  *** Newziky has left #evergreen
+2015-03-09T16:50:27  <bshum> But I'll settle for some mllewellyn cupcakes :D
+2015-03-09T16:56:11  <bshum> berick: So far, I'm not seeing anything in the 2.8 upgrade script that'll require any reingests. Which sounds good to me. :)
+2015-03-09T16:56:14  *** dreuther_ has joined #evergreen
+2015-03-09T16:56:42  <bshum> That will help speed along testing, for sure...
+2015-03-09T16:56:54  <berick> bshum: thanks for reviewing.  i didn't see anything, either.  what a relief.
+2015-03-09T16:56:55  <pinesol_green> Incoming from qatests: Test Success - http://testing.evergreen-ils.org/~live/test.html <http://testing.evergreen-ils.org/~live/test.html>
+2015-03-09T16:57:30  <berick> bshum: and beware the upgrade script is going to get shorter, once I "rebase" it to current 2.7
+2015-03-09T16:57:41  <bshum> berick: Right on.
+2015-03-09T16:58:05  <bshum> Speaking of which, I feel like we really need to talk about that during one of these next meetings, or maybe at the conference.
+2015-03-09T16:58:31  <bshum> How people who keep following a series past the point it diverges to the next major series, usually end up having to disentangle upgrade scripts conflicts.
+2015-03-09T16:58:40  *** dreuther has quit IRC
+2015-03-09T16:59:05  <bshum> I know a long time ago, eeevil had some ideas that didn't quite make it to the lists, but I'd like to see what we can brainstorm up on that front sometime I guess.
+2015-03-09T16:59:30  <jeff> +1 to unraveling a better way to avoid disentangling
+2015-03-09T16:59:42  <bshum> Well, eeevil and others?  Or maybe not eeevil.... it was some really old agenda item that kept getting deferred away :)
+2015-03-09T17:00:11  <bshum> I only mention it recently cause of that email on the lists asking about jumping from 2.6.4 to 2.7.0 when the script goes from 2.6.3.
+2015-03-09T17:00:29  <bshum> Trying to explain in the email about diff'ing the version upgrade scripts and dealing with conflicts felt hard.
+2015-03-09T17:01:52  *** bbqben has joined #evergreen
+2015-03-09T17:03:00  *** Dyrcona has quit IRC
+2015-03-09T17:03:31  *** dreuther has joined #evergreen
+2015-03-09T17:06:20  *** ericar_ has joined #evergreen
+2015-03-09T17:06:29  *** dreuther_ has quit IRC
+2015-03-09T17:08:11  *** ericar has quit IRC
+2015-03-09T17:08:14  *** ericar__ has joined #evergreen
+2015-03-09T17:08:17  *** ericar__ is now known as ericar
+2015-03-09T17:08:47  *** graced has quit IRC
+2015-03-09T17:10:20  *** Bmagic has quit IRC
+2015-03-09T17:11:30  *** mmorgan has left #evergreen
+2015-03-09T17:12:16  *** ericar_ has quit IRC
+2015-03-09T17:20:33  *** bmills has joined #evergreen
+2015-03-09T17:21:51  *** Bmagic has joined #evergreen
+2015-03-09T17:27:19  *** Bmagic has quit IRC
+2015-03-09T17:38:05  *** jeff__ has quit IRC
+2015-03-09T17:38:12  *** mglass has joined #evergreen
+2015-03-09T17:38:22  *** jeff__ has joined #evergreen
+2015-03-09T17:49:38  *** Bmagic has joined #evergreen
+2015-03-09T18:18:53  *** Bmagic has quit IRC
+2015-03-09T18:20:18  *** Bmagic has joined #evergreen
+2015-03-09T18:37:19  *** ericar has quit IRC
+2015-03-09T18:43:08  *** RBecker has quit IRC
+2015-03-09T18:44:49  *** yboston has quit IRC
+2015-03-09T18:48:05  *** RBecker has joined #evergreen
+2015-03-09T18:57:17  *** akilsdonk has quit IRC
+2015-03-09T19:01:31  *** akilsdonk has joined #evergreen
+2015-03-09T19:16:42  *** wlayton has joined #evergreen
+2015-03-09T19:59:52  *** mrpeters has quit IRC
+2015-03-09T20:31:29  *** wlayton has quit IRC
+2015-03-09T20:38:41  *** bbqben has quit IRC
+2015-03-09T20:40:48  *** sandbergja has quit IRC
+2015-03-09T20:44:52  *** akilsdonk has quit IRC
+2015-03-09T21:23:34  *** akilsdonk has joined #evergreen
+2015-03-09T21:26:26  *** bmills has quit IRC
+2015-03-09T21:52:45  *** jihpringle has quit IRC
+2015-03-09T22:32:13  *** akilsdonk has quit IRC
