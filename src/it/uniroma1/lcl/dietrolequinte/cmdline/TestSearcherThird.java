@@ -1,3 +1,5 @@
+package it.uniroma1.lcl.dietrolequinte.cmdline;
+
 import it.uniroma1.lcl.dietrolequinte.search.Searcher;
 import it.uniroma1.lcl.dietrolequinte.search.SearchResult;
 import it.uniroma1.lcl.dietrolequinte.Utente;
