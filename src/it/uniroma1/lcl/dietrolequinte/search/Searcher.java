@@ -101,12 +101,12 @@ public class Searcher {
 	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info) throws ClassNotFoundException 
+	public Collection<SearchResult> search(String info, Utente u) throws ClassNotFoundException 
 	{
 		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
 		
 		for (AbstractLoader l: loader.getLoaders())
-			searchGenerico(u, info, l, output);
+			searchGenerico(info, u, l, output);
 		
 		return output;
 	}
@@ -118,7 +118,7 @@ public class Searcher {
 	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info, String file) throws ClassNotFoundException
+	public Collection<SearchResult> search(String info, Utente u, String file) throws ClassNotFoundException
 	{
 		
 		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
@@ -126,7 +126,7 @@ public class Searcher {
 		for (AbstractLoader l: loader.getLoaders())
 		{
 			if(l.getNomeFile().equals(file))
-				searchGenerico(u, info, l, output);
+				searchGenerico(info, u, l, output);
 		}
 		return output;
 		
@@ -140,12 +140,12 @@ public class Searcher {
 	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
+	public Collection<SearchResult> search(String info, Utente u, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
 	{
 		ArrayList<SearchResult> output= new ArrayList<SearchResult>();
 	
 		for (AbstractLoader l: loader.getLoaders())
-			searchGenerico(u, info, l, output);
+			searchGenerico(info, u, l, output);
 		
 		return filterDate(output, begin, end);
 	}
@@ -159,9 +159,9 @@ public class Searcher {
 	 * @return ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException 
 	 */
-	public Collection<SearchResult> search(Utente u, String info, String file, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
+	public Collection<SearchResult> search(String info, Utente u, String file, LocalDateTime begin, LocalDateTime end) throws ClassNotFoundException
 	{
-		ArrayList<SearchResult> output= (ArrayList<SearchResult>) search(u, info, file);
+		ArrayList<SearchResult> output= (ArrayList<SearchResult>) search(info, u, file);
 		
 		return filterDate(output, begin, end);
 		
@@ -194,7 +194,7 @@ public class Searcher {
 	 * @param output ritorna una collezione iterabile di SearchResult
 	 * @throws ClassNotFoundException
 	 */
-	private void searchGenerico(Utente u, String info, AbstractLoader l, Collection<SearchResult> output) throws ClassNotFoundException
+	private void searchGenerico(String info,Utente u,  AbstractLoader l, Collection<SearchResult> output) throws ClassNotFoundException
 	{
 		if(l.checkValidSearch(info))
 		{

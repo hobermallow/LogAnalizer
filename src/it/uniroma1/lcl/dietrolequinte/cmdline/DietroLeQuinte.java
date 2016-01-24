@@ -23,7 +23,7 @@ import it.uniroma1.lcl.dietrolequinte.loader.query.Interrogazione;;
 
 /**
  * Classe eseguibile, che implementa un sistema di interogazione dell'analizzatore
- * di file di log, sia in modalitÃ  batch sia in modalità  interattiva da terminale
+ * di file di log, sia in modalitÃ  batch sia in modalitï¿½ interattiva da terminale
  * 
  * @author onoda
  *
@@ -36,7 +36,7 @@ public class DietroLeQuinte {
 	private String nomeDirectory;
 	
 	/**
-	 * Campo statico rappresentante il Searcher, cui questa classe farà riferimento
+	 * Campo statico rappresentante il Searcher, cui questa classe farï¿½ riferimento
 	 * per cercare attraverso i file di log
 	 */
 	static private Searcher searcher;
@@ -151,7 +151,7 @@ public class DietroLeQuinte {
 		Collection<SearchResult> list;
 		String info = l.get(0);
 		if(l.size()==3) {
-			list = searcher.search(new Utente(l.get(1)), info);
+			list = searcher.search(info, new Utente(l.get(1)));
 		}
 		else if(l.size()==5) {
 			LocalDateTime ldt_prima = parseDataOra(l.get(3));
@@ -160,15 +160,15 @@ public class DietroLeQuinte {
 				System.out.println("Date nell'ordine sbagliato");
 				return;
 			}
-			list = searcher.search(new Utente(l.get(1)), info, ldt_prima , ldt_dopo);
+			list = searcher.search(info, new Utente(l.get(1)), ldt_prima , ldt_dopo);
 
 		}
 		else if(l.get(0).equals("interrogazione")){
 			if(l.size()==4) {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione");
+				list = searcher.search("interrogazione", new Utente(l.get(1)));
 			}
 			else {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione", parseDataOra(l.get(4)), parseDataOra(l.get(5)));
+				list = searcher.search("interrogazione", new Utente(l.get(1)), parseDataOra(l.get(4)), parseDataOra(l.get(5)));
 			}
 			List<SearchResult> searchValide = new ArrayList<>();
 			for(SearchResult s: list) {
@@ -217,7 +217,7 @@ public class DietroLeQuinte {
 		
 		
 		if(l.size()==3) {
-			list = searcher.search(new Utente(l.get(1)), info);
+			list = searcher.search(info, new Utente(l.get(1)));
 		}
 		else if(l.size()==5) {
 			LocalDateTime ldt_prima = parseDataOra(l.get(3));
@@ -226,7 +226,7 @@ public class DietroLeQuinte {
 				System.out.println("Date nell'ordine sbagliato");
 				return;
 			}
-			list = searcher.search(new Utente(l.get(1)), info, ldt_prima , ldt_dopo);
+			list = searcher.search(info, new Utente(l.get(1)), ldt_prima , ldt_dopo);
 		}
 		else {
 			list = new ArrayList<>();
@@ -265,17 +265,17 @@ public class DietroLeQuinte {
 	private void richiestaNum(List<String> l) throws ClassNotFoundException, EndProgramException {
 		Collection<SearchResult> list;
 		if(l.size()==2) {
-			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1]);
+			list = searcher.search(l.get(0).split("_")[1], new Utente(l.get(1)));
 		}
 		else if(l.size()==4) {
-			list = searcher.search(new Utente(l.get(1)), l.get(0).split("_")[1], parseDataOra(l.get(2)), parseDataOra(l.get(3)));
+			list = searcher.search(l.get(0).split("_")[1], new Utente(l.get(1)), parseDataOra(l.get(2)), parseDataOra(l.get(3)));
 		}
 		else if(l.get(0).contains("interrogazione")){
 			if(l.size()==3) {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione");
+				list = searcher.search("interrogazione", new Utente(l.get(1)), "interrogazione");
 			}
 			else {
-				list = searcher.search(new Utente(l.get(1)), "interrogazione", parseDataOra(l.get(3)), parseDataOra(l.get(4)));
+				list = searcher.search("interrogazione", new Utente(l.get(1)), parseDataOra(l.get(3)), parseDataOra(l.get(4)));
 			}
 			List<SearchResult> searchValide = new ArrayList<>();
 			for(SearchResult s: list) {
@@ -294,7 +294,7 @@ public class DietroLeQuinte {
 
 	/**
 	 * Gestisce l'input del comando da utilizzare. Implementa sia il caso in cui si stia
-	 * utilizzando la modalità  interattiva, sia la modalità  batch
+	 * utilizzando la modalitï¿½ interattiva, sia la modalitï¿½ batch
 	 * 
 	 * @return la  lista delle "parole" contenute nella linea di comando
 	 * @throws IOException
@@ -318,7 +318,7 @@ public class DietroLeQuinte {
 	}
 	
 	/**
-	 * Il metodo è d'ausilio all'uso della reflection. Modifica il tipo
+	 * Il metodo ï¿½ d'ausilio all'uso della reflection. Modifica il tipo
 	 * d'informazione del comando in modo da farlo corrispondere a quello di una
 	 * delle classi che ereditano da AbstractInterrogzione (ad esempio, "azioni" diviene "azione"). Da modificare nel caso 
 	 * s'aggiungano altri comandi
@@ -376,7 +376,7 @@ public class DietroLeQuinte {
 
 	/**
 	 * Prova a costruire un oggetto di tipo DietroLeQuinte, a partire da due argomenti
-	 * Altrimenti, prova a costruirlo con un solo argomento (modalità  interattiva).
+	 * Altrimenti, prova a costruirlo con un solo argomento (modalitï¿½ interattiva).
 	 * A qual punto richiama il metodo cicloProgramma()
 	 * 
 	 * @param args argomenti in input da linea di comando
