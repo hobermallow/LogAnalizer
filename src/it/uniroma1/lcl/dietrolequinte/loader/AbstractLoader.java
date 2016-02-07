@@ -152,9 +152,9 @@ public abstract class AbstractLoader {
 		sb.append(getNomeFile()+" Tipo di file: "+getNomeFile().split("\\.")[0]+"\n");
 		sb.append(getNomeFile()+" Numero totale di byte: "+getFileSize()+"\n");
 		sb.append(getNomeFile()+" Numero totale di righe: "+getLinesNumber()+"\n");
-		for(String s: getListValidSearch()) {
+		for(String s: modifyValidSearchList(getListValidSearch())) {
 			try {
-				sb.append(getNomeFile()+" Numero totale di "+s+": "+countSpecificAbstractInterrogazione(s)+"\n");
+				sb.append(getNomeFile()+" Numero totale di "+modifystr(s)+": "+countSpecificAbstractInterrogazione(s)+"\n");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -170,7 +170,7 @@ public abstract class AbstractLoader {
 	private int countSpecificAbstractInterrogazione(String s) throws ClassNotFoundException {
 		List<AbstractInterrogazione> l = new ArrayList<>();
 		Class c = Class.forName(getPath()+(Character.toUpperCase(s.charAt(0))+s.substring(1)));
-
+	
 		for(AbstractInterrogazione a: getInterrogazioni()) {
 			if(c.isInstance(a)) {
 				l.add(a);
@@ -195,5 +195,22 @@ public abstract class AbstractLoader {
 	public Integer getLinesNumber() {
 		return linesNumber;
 	}
-	
+	/**
+	 * Meotdo che modifica le stringhe corrispondenti alle ValidSearch per 
+	 * la corretta stampa del toString di questa classe (es. modifica da singolare a plurale)
+	 * di default non fa nulla, effettuare l'override per le proprie esigenze
+	 * @param s stringa da modificare
+	 * @return
+	 */
+	public String modifystr(String s){
+		return s;
+	}
+	/**
+	 * Ritorna la lista filtrata delle ValidSearch che si vogliono stampare
+	 * @param ss lista delle ValidSearch
+	 * @return
+	 */
+	public List<String> modifyValidSearchList(List<String> ss){
+		return ss;
+	}
 }

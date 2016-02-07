@@ -60,4 +60,12 @@ public class QueryLoader extends AbstractLoader {
 		
 		addUtente(new Utente(riga.get(0)));
 	}
+	@Override
+	public String modifystr(String s) {
+		switch(s){
+			case "interrogazione":
+				return "interrogazioni";
+		}
+		return s;
+	}
 }

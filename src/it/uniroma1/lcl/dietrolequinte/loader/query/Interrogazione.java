@@ -67,8 +67,8 @@ public class Interrogazione extends AbstractInterrogazione {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("Link Cliccato: "+linkCliccato+"\n");
-		sb.append("Posizione Link: "+posizioneLink+"\n");
+		sb.append("Link cliccato: "+linkCliccato+"\n");
+		sb.append("Posizione link cliccato: "+posizioneLink+"\n");
 		return super.toString()+sb.toString();
 	}
 
